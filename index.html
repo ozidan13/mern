@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FullStack Academy — Zero-Build Modern Full-Stack Learning Platform</title>
-  <meta name="description" content="Master modern JavaScript full-stack engineering with bilingual (AR/EN) lessons, narrated visualizers, and in-browser execution. Zero build, zero servers, 100% offline.">
+  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة</title>
+  <meta name="description" content="تعلم هندسة الويب الشاملة (MERN & PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع محاكيات مباشرة وتشريح الكود">
 
-  <!-- Core Stylesheets -->
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
@@ -15,673 +15,973 @@
 
   <style>
     /* ============================================================
-       MASTERPIECE COCKPIT — COMPACT, FOCUSED, TRENDY MODERN UI
+       STYLE-REFERENCE HERO & PARTICLES ARCHITECTURE
        ============================================================ */
-
-    /* Desktop Viewport-Lock (Zero Scroll Cockpit) */
-    @media (min-height: 720px) and (min-width: 1024px) {
-      body {
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
-      .fsa-cockpit {
-        height: calc(100vh - var(--topbar-h));
-        overflow: hidden;
-      }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    .fsa-cockpit {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1.15fr 1.85fr;
-      gap: var(--space-5);
-      padding: var(--space-4) var(--space-6);
-      max-width: 1680px;
-      margin-inline: auto;
+    body {
+      background: #07070d;
+      color: #e0e0e0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: var(--font-arabic);
+    }
+
+    /* Hero Container with Deep Radial Glow */
+    .hero {
+      min-height: 100vh;
       width: 100%;
-      align-items: stretch;
-    }
-
-    @media (max-width: 1024px) {
-      .fsa-cockpit {
-        grid-template-columns: 1fr;
-        height: auto;
-        overflow: visible;
-        padding: var(--space-4);
-      }
-    }
-
-    /* ---- Left Column: Launchpad & Resume Cockpit ---- */
-    .fsa-launchpad {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: var(--space-6);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%), var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-1);
+      align-items: center;
+      padding: 40px 24px 60px;
       position: relative;
       overflow: hidden;
+      background: radial-gradient(ellipse 120% 80% at 50% 0%, #0e1630 0%, #07070d 65%);
     }
 
-    .fsa-launchpad::before {
-      content: "";
+    /* Floating Aurora Glow Blobs */
+    .aurora {
       position: absolute;
-      inset-block-start: -80px;
-      inset-inline-start: -80px;
-      width: 260px;
-      height: 260px;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0;
+      animation: auroraIn 2s ease forwards;
       pointer-events: none;
     }
 
-    /* Pulsing Status Pill */
-    .fsa-status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      padding: 3px 12px;
-      border-radius: var(--radius-full);
-      background: rgba(16, 185, 129, 0.10);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      color: var(--accent-success);
-      font-size: var(--fs-xs);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      margin-block-end: var(--space-3);
-      width: fit-content;
+    .aurora-1 {
+      width: 550px;
+      height: 550px;
+      top: -10%;
+      left: -5%;
+      background: rgba(59, 130, 246, 0.14);
+      animation: auroraIn 2s ease forwards, auroraFloat1 20s ease-in-out infinite 2s;
     }
 
-    .fsa-status-dot {
+    .aurora-2 {
+      width: 450px;
+      height: 450px;
+      bottom: 10%;
+      right: -5%;
+      background: rgba(139, 92, 246, 0.12);
+      animation: auroraIn 2s ease forwards, auroraFloat2 18s ease-in-out infinite 2.5s;
+    }
+
+    .aurora-3 {
+      width: 400px;
+      height: 400px;
+      top: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(16, 185, 129, 0.08);
+      animation: auroraIn 2s ease forwards, auroraFloat3 22s ease-in-out infinite 3s;
+    }
+
+    @keyframes auroraIn { to { opacity: 1; } }
+    @keyframes auroraFloat1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, 30px); }
+    }
+    @keyframes auroraFloat2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-30px, -40px); }
+    }
+    @keyframes auroraFloat3 {
+      0%, 100% { transform: translateX(-50%) translate(0, 0); }
+      50% { transform: translateX(-50%) translate(20px, -20px); }
+    }
+
+    /* Grid Overlay with Radial Fade */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+      mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, black 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+
+    /* Interactive Floating Particles Canvas */
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1440px;
+    }
+
+    /* =================== TOP BAR NAV =================== */
+    .fsa-nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      margin-bottom: 40px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 100px;
+    }
+
+    .fsa-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      font-family: var(--font-sans);
+    }
+
+    .fsa-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fsa-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .fsa-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* =================== TITLE SECTION =================== */
+    .title-section {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 100px;
+      background: rgba(59, 130, 246, 0.10);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: #60a5fa;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease 0.2s forwards;
+    }
+
+    .title-badge-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--accent-success);
-      box-shadow: 0 0 8px var(--accent-success);
-      animation: fsa-status-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background: #3b82f6;
+      box-shadow: 0 0 8px #3b82f6;
+      animation: fsa-status-pulse 2s infinite;
     }
 
-    @keyframes fsa-status-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    /* Main Hero Typography */
-    .fsa-hero-title {
-      font-size: clamp(1.6rem, 2.3vw, 2.2rem);
+    .title-section h1 {
+      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
       font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      color: var(--text-primary);
-      margin-block-end: var(--space-2);
-    }
-
-    .fsa-hero-title span {
-      background: linear-gradient(135deg, #60A5FA 0%, #C084FC 100%);
+      line-height: 1.25;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #60a5fa 35%, #c084fc 70%, #ffffff 100%);
+      background-size: 300% 100%;
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: gradientText 8s ease infinite, fadeSlideUp 0.8s ease 0.4s both;
     }
 
-    .fsa-hero-desc-en {
-      font-size: var(--fs-sm);
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-block-end: var(--space-2);
+    @keyframes gradientText {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
-    .fsa-hero-desc-ar {
-      font-size: var(--fs-sm);
-      color: var(--text-secondary);
-      line-height: var(--lh-arabic);
-      margin-block-end: var(--space-3);
+    .title-section p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease 0.6s forwards;
     }
 
-    /* Dynamic Resume / Quick Start Card */
-    .fsa-resume-card {
-      padding: var(--space-3) var(--space-4);
-      background: var(--bg-raised);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-md);
-      margin-block: var(--space-3);
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =================== STATS & ACTION BAR =================== */
+    .stats-bar {
       display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      position: relative;
-    }
-
-    .fsa-resume-card__header {
-      display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      font-size: var(--fs-xs);
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-bottom: 45px;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease 0.8s forwards;
     }
 
-    .fsa-resume-card__label {
-      font-weight: 700;
-      color: var(--accent-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .fsa-resume-card__title {
-      font-size: var(--fs-sm);
-      font-weight: 700;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .fsa-resume-card__progress-bg {
-      height: 4px;
-      width: 100%;
-      background: var(--bg-canvas);
-      border-radius: var(--radius-full);
-      overflow: hidden;
-    }
-
-    .fsa-resume-card__progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent-primary), #60A5FA);
-      border-radius: var(--radius-full);
-      transition: width 0.4s ease;
-    }
-
-    /* Key Stats Strip */
-    .fsa-hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-2);
-      padding: var(--space-2) var(--space-3);
-      background: var(--bg-canvas);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      margin-block: var(--space-2);
-    }
-
-    .fsa-stat-pill {
+    .stat-item {
       text-align: center;
     }
 
-    .fsa-stat-pill__num {
-      font-size: var(--fs-md);
-      font-weight: 800;
-      color: var(--text-primary);
+    .stat-number {
       font-family: var(--font-mono);
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
       line-height: 1.2;
     }
 
-    .fsa-stat-pill__lbl {
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-block-start: 1px;
+    .stat-label {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-top: 3px;
     }
 
-    /* Hero Action Controls */
-    .fsa-hero-actions {
+    .stat-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Quick Resume Box */
+    .quick-resume-box {
       display: flex;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      margin-block-start: var(--space-3);
-    }
-
-    .fsa-feature-pills {
-      display: flex;
-      gap: var(--space-2);
-      flex-wrap: wrap;
-      margin-block-start: var(--space-3);
-    }
-
-    .fsa-feature-tag {
-      display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-canvas);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-    }
-
-    .fsa-feature-tag svg {
-      width: 12px;
-      height: 12px;
-      color: var(--accent-success);
-    }
-
-    /* ---- Right Column: 8-Track Grid Matrix ---- */
-    .fsa-matrix-pane {
-      display: flex;
-      flex-direction: column;
       justify-content: space-between;
-      height: 100%;
+      gap: 20px;
+      padding: 14px 24px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 16px;
+      margin-bottom: 45px;
+      box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.15);
+      flex-wrap: wrap;
     }
 
-    .fsa-matrix-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-block-end: var(--space-3);
-    }
-
-    .fsa-matrix-title {
-      font-size: var(--fs-sm);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
+    .quick-resume-info {
       display: flex;
       align-items: center;
-      gap: var(--space-2);
+      gap: 14px;
     }
 
-    .fsa-matrix-grid {
+    .quick-resume-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* =================== TRACKS 8-GRID CONTAINER =================== */
+    .tracks-container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-3);
-      flex: 1;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+      width: 100%;
     }
 
-    @media (max-width: 640px) {
-      .fsa-matrix-grid {
+    @media (max-width: 1300px) {
+      .tracks-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .tracks-container {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Track Cards with High Craft Hover & Depth */
-    .fsa-track-item {
+    /* =================== TRACK CARD =================== */
+    .track-card {
+      background: rgba(15, 15, 25, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+      opacity: 0;
+      transform: translateY(40px);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: var(--space-3) var(--space-4);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%), var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      text-decoration: none;
-      color: inherit;
+    }
+
+    .track-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Top Glowing Line */
+    .track-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      border-radius: 1px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      background: linear-gradient(90deg, transparent, var(--track-color, #3B82F6), transparent);
+    }
+
+    .track-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Corner Glow on Hover */
+    .track-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      background: radial-gradient(circle, var(--track-glow, rgba(59, 130, 246, 0.1)), transparent 70%);
+    }
+
+    .track-card:hover::after {
+      opacity: 1;
+    }
+
+    .track-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 50px -15px var(--track-shadow, rgba(59, 130, 246, 0.2));
+    }
+
+    /* Track Header */
+    .track-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       position: relative;
-      box-shadow: var(--shadow-sm);
-      transition:
-        border-color var(--dur-fast) var(--ease-out),
-        box-shadow var(--dur-fast) var(--ease-out),
-        transform var(--dur-fast) var(--ease-out),
-        background var(--dur-fast) var(--ease-out);
+      z-index: 1;
     }
 
-    .fsa-track-item:hover {
-      border-color: var(--track-color, var(--accent-primary));
-      box-shadow: 0 0 20px -4px rgba(var(--track-rgb, 59, 130, 246), 0.25), var(--shadow-1);
-      transform: translateY(-2px);
-      background: var(--bg-raised);
-    }
-
-    .fsa-track-item__header {
+    .track-number {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: var(--space-2);
-    }
-
-    .fsa-track-item__title {
-      font-size: var(--fs-sm);
-      font-weight: 700;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .fsa-track-item__dot {
-      width: 8px;
-      height: 8px;
-      border-radius: var(--radius-full);
-      background: var(--track-color);
-      box-shadow: 0 0 8px var(--track-color);
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: white;
+      background: var(--track-gradient, linear-gradient(135deg, #3B82F6, #1D4ED8));
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    .fsa-track-item__version {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-muted);
-      background: var(--bg-canvas);
-      padding: 1px 6px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-subtle);
+    .track-info {
+      flex: 1;
+      min-width: 0;
     }
 
-    .fsa-track-item__concepts {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-block: 4px;
+    .track-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .fsa-track-item__footer {
+    .track-subtitle {
+      font-size: 0.73rem;
+      color: #64748b;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      direction: ltr;
+      text-align: right;
+    }
+
+    /* Lessons List */
+    .lessons-list {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .lesson-item {
+      display: flex;
       align-items: center;
-      font-size: 11px;
-      color: var(--text-muted);
-      border-block-start: 1px solid var(--border-subtle);
-      padding-block-start: 4px;
-      margin-block-start: 4px;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      overflow: hidden;
     }
 
-    .fsa-track-item__arrow {
-      color: var(--text-muted);
-      transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    .lesson-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .fsa-track-item:hover .fsa-track-item__arrow {
-      color: var(--track-color, var(--accent-primary));
-      transform: translateX(3px);
+    .lesson-item:hover::before {
+      opacity: 1;
+    }
+
+    .lesson-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateX(-4px);
+    }
+
+    .lesson-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      background: var(--track-icon-bg, rgba(59, 130, 246, 0.12));
+      color: var(--track-icon-color, #60a5fa);
+      transition: transform 0.3s ease;
+    }
+
+    .lesson-item:hover .lesson-icon {
+      transform: scale(1.1) rotate(-4deg);
+    }
+
+    .lesson-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lesson-name {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      direction: ltr;
+      text-align: left;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+
+    .lesson-item:hover .lesson-name {
+      color: var(--track-color, #60a5fa);
+    }
+
+    .lesson-desc {
+      font-family: var(--font-arabic);
+      font-size: 0.70rem;
+      color: #64748b;
+      direction: rtl;
+      text-align: right;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lesson-arrow {
+      color: #334155;
+      font-size: 0.75rem;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .lesson-item:hover .lesson-arrow {
+      transform: translateX(-3px);
+      color: #94a3b8;
+    }
+
+    /* Footer Note */
+    .footer-note {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    .footer-note a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-note a:hover {
+      color: #c084fc;
     }
   </style>
 </head>
+
 <body>
   <!-- Accessible Skip Link -->
   <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
 
-  <div class="fsa-shell">
-    <!-- Topbar Navigation -->
-    <header class="fsa-topbar">
-      <div class="fsa-topbar__start">
-        <a href="index.html" class="fsa-topbar__brand">
-          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-code"></use></svg>
-          <span>FullStack Academy</span>
-          <span class="fsa-topbar__brand-badge">Sovereign Edition</span>
-        </a>
-      </div>
+  <section class="hero" id="main-content">
+    <!-- Aurora glow blobs -->
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
 
-      <div class="fsa-topbar__center">
-        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
-          <span style="display: flex; align-items: center; gap: 6px;">
-            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Search Curriculum · بحث شامل</span>
-          </span>
-          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
-        </button>
-      </div>
+    <!-- Floating particles canvas -->
+    <canvas id="particles"></canvas>
 
-      <div class="fsa-topbar__end">
-        <a href="dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="Dashboard · لوحة المتابعة">
-          <svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
-        </a>
-
-        <a href="playground.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm fsa-hide-mobile" title="JS Playground">
-          <svg><use href="assets/icons.svg#fsa-icon-terminal"></use></svg>
-          <span>Playground</span>
-        </a>
-
-        <a href="reference/index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm fsa-hide-mobile" title="Reference Docs">
-          <svg><use href="assets/icons.svg#fsa-icon-book"></use></svg>
-          <span>Reference</span>
-        </a>
-
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
-          <svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
-        </button>
-      </div>
-    </header>
-
-    <!-- Cockpit Main Surface -->
-    <main id="main-content" class="fsa-cockpit">
+    <div class="hero-content">
       
-      <!-- Left Column: Hero & Launchpad -->
-      <section class="fsa-launchpad">
-        <div>
-          <!-- Live Status Indicator -->
-          <div class="fsa-status-pill">
-            <span class="fsa-status-dot"></span>
-            <span>Zero Build · Zero Dependencies · 100% Offline</span>
+      <!-- Top Navigation Bar -->
+      <nav class="fsa-nav-header">
+        <a href="index.html" class="fsa-nav-brand">
+          <svg style="width: 22px; height: 22px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-code"></use></svg>
+          <span>FullStack Academy</span>
+        </a>
+
+        <div class="fsa-nav-links">
+          <button class="fsa-nav-btn" data-fsa-search-trigger>
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>بحث شامل</span>
+            <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+          </button>
+
+          <a href="dashboard.html" class="fsa-nav-btn">
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+            <span>لوحة المتابعة</span>
+          </a>
+
+          <a href="playground.html" class="fsa-nav-btn">
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg>
+            <span>Playground</span>
+          </a>
+
+          <a href="reference/index.html" class="fsa-nav-btn">
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-book"></use></svg>
+            <span>المراجع</span>
+          </a>
+
+          <button id="themeToggleBtn" class="fsa-nav-btn" data-fsa-theme-toggle aria-label="Toggle Theme">
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Title & Value Proposition -->
+      <div class="title-section">
+        <div class="title-badge">
+          <span class="title-badge-dot"></span>
+          <span>Zero-Build · Zero Dependencies · 100% Offline Platform</span>
+        </div>
+
+        <h1>FullStack Academy · الخوارزميات وهندسة الويب</h1>
+        <p>
+          تعلم هندسة الويب الشاملة (MERN &amp; PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع محاكيات مباشرة، تشريح الكود سطراً بسطر، وتمارين تنفيذ داخل المتصفح بدون أي تثبيت.
+        </p>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-number">8</div>
+          <div class="stat-label">مسارات متكاملة</div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item">
+          <div class="stat-number">106+</div>
+          <div class="stat-label">دروس تفاعلية</div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">مستقل بدون نت</div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item">
+          <div class="stat-number">0 ms</div>
+          <div class="stat-label">إعداد بيئة العمل</div>
+        </div>
+      </div>
+
+      <!-- Quick Resume Box (Personalized from localStorage) -->
+      <div class="quick-resume-box" id="quickResumeBox">
+        <div class="quick-resume-info">
+          <div class="quick-resume-icon">
+            <svg style="width: 20px; height: 20px;"><use href="assets/icons.svg#fsa-icon-play"></use></svg>
           </div>
-
-          <h1 class="fsa-hero-title">
-            Master Modern <span>Full-Stack</span> JavaScript
-          </h1>
-
-          <p class="fsa-hero-desc-en">
-            The sovereign, in-browser curriculum covering Foundations, React 19, Node.js, Express, MongoDB, PostgreSQL, and Prisma with narrated visualizers.
-          </p>
-
-          <p class="fsa-ar fsa-hero-desc-ar" dir="rtl">
-            منصة هندسة الويب الشاملة بالعربي: شرح معزز بالمحاكيات التفاعلية، تشريح الكود خطوة بخطوة، وبيئة تنفيذ برمجية فورية بدون أي أدوات خارجية.
-          </p>
-
-          <!-- Dynamic Resume / Quick Start Card -->
-          <div class="fsa-resume-card" id="homeResumeCard">
-            <div class="fsa-resume-card__header">
-              <span class="fsa-resume-card__label" id="resumeCardLabel">
-                <svg style="width: 13px; height: 13px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                Recommended Start
-              </span>
-              <span style="font-size: 11px; color: var(--text-muted);" id="resumeCardMeta">Level 1 · 20 mins</span>
-            </div>
-            <div class="fsa-resume-card__title" id="resumeCardTitle">
-              How the Web Works: HTTP/3 & DNS Resolution
-            </div>
-            <div class="fsa-resume-card__progress-bg">
-              <div class="fsa-resume-card__progress-fill" id="resumeCardFill" style="width: 0%;"></div>
-            </div>
-          </div>
-
-          <!-- Key Metrics -->
-          <div class="fsa-hero-stats">
-            <div class="fsa-stat-pill">
-              <div class="fsa-stat-pill__num">8</div>
-              <div class="fsa-stat-pill__lbl">Specializations</div>
-            </div>
-            <div class="fsa-stat-pill">
-              <div class="fsa-stat-pill__num">106+</div>
-              <div class="fsa-stat-pill__lbl">Interactive Lessons</div>
-            </div>
-            <div class="fsa-stat-pill">
-              <div class="fsa-stat-pill__num">0 ms</div>
-              <div class="fsa-stat-pill__lbl">Setup Overhead</div>
-            </div>
+          <div>
+            <div style="font-size: 0.78rem; color: #60a5fa; font-weight: 700;" id="resumeTrackLabel">المسار الموصى به: الأساسيات</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: #fff;" id="resumeLessonTitle">How the Web Works: HTTP/3 &amp; DNS Resolution</div>
           </div>
         </div>
 
-        <div>
-          <!-- CTA Action Buttons -->
-          <div class="fsa-hero-actions">
-            <a href="learn/foundations/how-web-works.html" class="fsa-btn fsa-btn--primary" id="homePrimaryCta">
-              <svg><use href="assets/icons.svg#fsa-icon-play"></use></svg>
-              <span>Start Learning · ابدأ الآن</span>
+        <a href="learn/foundations/how-web-works.html" class="fsa-btn fsa-btn--primary fsa-btn--sm" id="resumeActionBtn">
+          <span>ابدأ الآن &larr;</span>
+        </a>
+      </div>
+
+      <!-- 8 Tracks Matrix Grid -->
+      <div class="tracks-container">
+        
+        <!-- Track 1: Foundations -->
+        <div class="track-card" style="--track-color: #F59E0B; --track-glow: rgba(245, 158, 11, 0.12); --track-shadow: rgba(245, 158, 11, 0.25); --track-gradient: linear-gradient(135deg, #F59E0B, #D97706); --track-icon-bg: rgba(245, 158, 11, 0.15); --track-icon-color: #FBBF24;">
+          <div class="track-header">
+            <div class="track-number">1</div>
+            <div class="track-info">
+              <div class="track-title">أساسيات الويب واللغة</div>
+              <div class="track-subtitle">Web &amp; JS Foundations (ES2026)</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/foundations/how-web-works.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">How the Web Works</div>
+                <div class="lesson-desc">بروتوكولات HTTP/3، فك نطاقات DNS، وتدفق الطلبات</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-
-            <a href="dashboard.html" class="fsa-btn fsa-btn--ghost">
-              <svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
-              <span>My Progress · تقدّمي</span>
+            <a href="learn/foundations/js-essentials.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">JS Execution &amp; Scope</div>
+                <div class="lesson-desc">مكدس V8 Call Stack، نطاق الدوال، ومفهوم Closures</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/async-js.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Async JS &amp; Event Loop</div>
+                <div class="lesson-desc">وعود الـ Promises، والمهام الصغرى Microtasks</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/fetch-api.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Fetch API &amp; Streams</div>
+                <div class="lesson-desc">حل التدفق الثنائي، معايير REST، و AbortController</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </div>
+        </div>
 
-          <!-- Feature Trust Badges -->
-          <div class="fsa-feature-pills">
-            <span class="fsa-feature-tag"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Narrated Visualizers</span>
-            <span class="fsa-feature-tag"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Worker Sandboxes</span>
-            <span class="fsa-feature-tag"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Dual AR/EN Prose</span>
-            <span class="fsa-feature-tag"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Local-First Storage</span>
+        <!-- Track 2: React.js -->
+        <div class="track-card" style="--track-color: #38BDF8; --track-glow: rgba(56, 189, 248, 0.12); --track-shadow: rgba(56, 189, 248, 0.25); --track-gradient: linear-gradient(135deg, #0284C7, #0369A1); --track-icon-bg: rgba(56, 189, 248, 0.15); --track-icon-color: #38BDF8;">
+          <div class="track-header">
+            <div class="track-number">2</div>
+            <div class="track-info">
+              <div class="track-title">ريآكت الحديثة</div>
+              <div class="track-subtitle">React.js 19.2 Architecture</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/react/thinking-in-react.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Thinking in React</div>
+                <div class="lesson-desc">تدفق البيانات الأحادي وتقسيم شجرة المكونات</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-state.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">useState &amp; Fiber Hooks</div>
+                <div class="lesson-desc">ترتيب استدعاء الـ Hooks والتحديثات المتزامنة</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-effect.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">useEffect &amp; Lifecycle</div>
+                <div class="lesson-desc">المزامنة مع الأنظمة الخارجية ودوال التنظيف</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/reconciliation.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Reconciliation &amp; VDOM</div>
+                <div class="lesson-desc">خوارزمية المقارنة O(n) وحفظ الهوية عبر المفاتيح</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
           </div>
         </div>
-      </section>
 
-      <!-- Right Column: 8-Track Interactive Grid -->
-      <section class="fsa-matrix-pane">
-        <div class="fsa-matrix-header">
-          <div class="fsa-matrix-title">
-            <svg style="width: 15px; height: 15px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-book"></use></svg>
-            <span>Curriculum Tracks · مسارات التعلم</span>
+        <!-- Track 3: Node.js -->
+        <div class="track-card" style="--track-color: #84CC16; --track-glow: rgba(132, 204, 22, 0.12); --track-shadow: rgba(132, 204, 22, 0.25); --track-gradient: linear-gradient(135deg, #65A30D, #4D7C0F); --track-icon-bg: rgba(132, 204, 22, 0.15); --track-icon-color: #A3E635;">
+          <div class="track-header">
+            <div class="track-number">3</div>
+            <div class="track-info">
+              <div class="track-title">نود جي إس والبيئة</div>
+              <div class="track-subtitle">Node.js 24 LTS Runtime</div>
+            </div>
           </div>
-          <span style="font-size: var(--fs-xs); color: var(--text-muted); font-family: var(--font-mono);">
-            8 Core Disciplines
-          </span>
+          <div class="lessons-list">
+            <a href="learn/nodejs/what-node-is.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Node.js &amp; libuv Core</div>
+                <div class="lesson-desc">محرك V8 وتفويض العمليات لمكتبة libuv والـ Thread Pool</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/event-loop.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">The 6-Phase Event Loop</div>
+                <div class="lesson-desc">المراحل الست بالتفصيل وفروق nextTick و setImmediate</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/streams-buffers.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Streams, Buffers &amp; Flow</div>
+                <div class="lesson-desc">معالجة التدفقات الثنائية والتحكم في Backpressure</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
         </div>
 
-        <div class="fsa-matrix-grid">
-          
-          <!-- 0. Foundations -->
-          <a href="learn/foundations/how-web-works.html" class="fsa-track-item" style="--track-color: var(--track-found); --track-rgb: 245, 158, 11;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>Web & JS Foundations</span>
-                </div>
-                <span class="fsa-track-item__version">ES2026</span>
+        <!-- Track 4: Express.js -->
+        <div class="track-card" style="--track-color: #A1A1AA; --track-glow: rgba(161, 161, 170, 0.12); --track-shadow: rgba(161, 161, 170, 0.25); --track-gradient: linear-gradient(135deg, #71717A, #52525B); --track-icon-bg: rgba(161, 161, 170, 0.15); --track-icon-color: #E4E4E7;">
+          <div class="track-header">
+            <div class="track-number">4</div>
+            <div class="track-info">
+              <div class="track-title">إكسبريس وبناء الـ APIs</div>
+              <div class="track-subtitle">Express.js 5.2 Server</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/express/hello-express.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Server &amp; Route Setup</div>
+                <div class="lesson-desc">إنشاء الخادم، التوجيه الأساسي، وتخصيص المنافذ</div>
               </div>
-              <div class="fsa-track-item__concepts">HTTP/3, V8 Call Stack, Event Loop, Fetch API</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–2 · 16 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 1. React -->
-          <a href="learn/react/thinking-in-react.html" class="fsa-track-item" style="--track-color: var(--track-react); --track-rgb: 56, 189, 248;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>React.js</span>
-                </div>
-                <span class="fsa-track-item__version">19.2</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/middleware.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Middleware Pipeline</div>
+                <div class="lesson-desc">سلسلة المعالجات الوسيطة واستدعاء دالة next()</div>
               </div>
-              <div class="fsa-track-item__concepts">Component Flow, Hooks Fiber, Reconciliation</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–4 · 20 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 2. Node.js -->
-          <a href="learn/nodejs/what-node-is.html" class="fsa-track-item" style="--track-color: var(--track-node); --track-rgb: 132, 204, 22;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>Node.js</span>
-                </div>
-                <span class="fsa-track-item__version">24 LTS</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/rest-crud.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Production REST CRUD</div>
+                <div class="lesson-desc">معايير REST وأكواد الردود وفحص المدخلات</div>
               </div>
-              <div class="fsa-track-item__concepts">6-Phase Event Loop, Streams & Backpressure</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–3 · 14 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 3. Express.js -->
-          <a href="learn/express/hello-express.html" class="fsa-track-item" style="--track-color: var(--track-express); --track-rgb: 161, 161, 170;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>Express.js</span>
-                </div>
-                <span class="fsa-track-item__version">5.2</span>
-              </div>
-              <div class="fsa-track-item__concepts">Middleware Conveyor, REST CRUD, Error Guard</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–3 · 12 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 4. MongoDB -->
-          <a href="learn/mongodb/document-model.html" class="fsa-track-item" style="--track-color: var(--track-mongo); --track-rgb: 34, 197, 94;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>MongoDB</span>
-                </div>
-                <span class="fsa-track-item__version">8.0</span>
-              </div>
-              <div class="fsa-track-item__concepts">BSON Model, Embedding Tradeoffs, Aggregation</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–3 · 12 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 5. PostgreSQL -->
-          <a href="learn/postgresql/relational-model.html" class="fsa-track-item" style="--track-color: var(--track-pg); --track-rgb: 96, 165, 250;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>PostgreSQL</span>
-                </div>
-                <span class="fsa-track-item__version">18.x</span>
-              </div>
-              <div class="fsa-track-item__concepts">Relational Joins, ACID Isolation, Indexing</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–3 · 12 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 6. Prisma -->
-          <a href="learn/prisma/what-is-an-orm.html" class="fsa-track-item" style="--track-color: var(--track-prisma); --track-rgb: 129, 140, 248;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>Prisma ORM</span>
-                </div>
-                <span class="fsa-track-item__version">7.x</span>
-              </div>
-              <div class="fsa-track-item__concepts">Rust Engine, Type-Safe Queries, Migrations</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Levels 1–2 · 10 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
-          <!-- 7. Architecture -->
-          <a href="learn/architecture/request-lifecycles.html" class="fsa-track-item" style="--track-color: var(--track-arch); --track-rgb: 192, 132, 252;">
-            <div>
-              <div class="fsa-track-item__header">
-                <div class="fsa-track-item__title">
-                  <span class="fsa-track-item__dot"></span>
-                  <span>Architecture</span>
-                </div>
-                <span class="fsa-track-item__version">Modern</span>
-              </div>
-              <div class="fsa-track-item__concepts">End-to-End Request Lifecycle, Caching Strategy</div>
-            </div>
-            <div class="fsa-track-item__footer">
-              <span>Level 3 · 10 Lessons</span>
-              <span class="fsa-track-item__arrow">&rarr;</span>
-            </div>
-          </a>
-
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
         </div>
-      </section>
 
-    </main>
-  </div>
+        <!-- Track 5: MongoDB -->
+        <div class="track-card" style="--track-color: #22C55E; --track-glow: rgba(34, 197, 94, 0.12); --track-shadow: rgba(34, 197, 94, 0.25); --track-gradient: linear-gradient(135deg, #16A34A, #15803D); --track-icon-bg: rgba(34, 197, 94, 0.15); --track-icon-color: #4ADE80;">
+          <div class="track-header">
+            <div class="track-number">5</div>
+            <div class="track-info">
+              <div class="track-title">مونجو وقواعد المستندات</div>
+              <div class="track-subtitle">MongoDB 8.0 NoSQL Engine</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/mongodb/document-model.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">BSON Document Model</div>
+                <div class="lesson-desc">تضمين البيانات مقابل الإسناد وحد الـ 16MB</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="reference/mongodb/cheatsheet.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-book"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Query &amp; Update Operators</div>
+                <div class="lesson-desc">عوامل المقارنة $gt وتحديث المصفوفات $push و $set</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 6: PostgreSQL -->
+        <div class="track-card" style="--track-color: #60A5FA; --track-glow: rgba(96, 165, 250, 0.12); --track-shadow: rgba(96, 165, 250, 0.25); --track-gradient: linear-gradient(135deg, #2563EB, #1D4ED8); --track-icon-bg: rgba(96, 165, 250, 0.15); --track-icon-color: #93C5FD;">
+          <div class="track-header">
+            <div class="track-number">6</div>
+            <div class="track-info">
+              <div class="track-title">بوستجرس والأنظمة العلائقية</div>
+              <div class="track-subtitle">PostgreSQL 18.x Relational</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/postgresql/relational-model.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">ACID &amp; Relational Core</div>
+                <div class="lesson-desc">الذرية والاتساق وسلامة المعاملات البنكية</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="reference/postgresql/cheatsheet.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-book"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">SQL Joins &amp; Commands</div>
+                <div class="lesson-desc">عمليات الدمج INNER و LEFT JOIN والتحكم بالمعاملات</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 7: Prisma ORM -->
+        <div class="track-card" style="--track-color: #818CF8; --track-glow: rgba(129, 140, 248, 0.12); --track-shadow: rgba(129, 140, 248, 0.25); --track-gradient: linear-gradient(135deg, #6366F1, #4F46E5); --track-icon-bg: rgba(129, 140, 248, 0.15); --track-icon-color: #A5B4FC;">
+          <div class="track-header">
+            <div class="track-number">7</div>
+            <div class="track-info">
+              <div class="track-title">بريزما والتعامل الآمن</div>
+              <div class="track-subtitle">Prisma 7.x Type-Safe ORM</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/prisma/what-is-an-orm.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">What is an ORM</div>
+                <div class="lesson-desc">محرك Rust والأمان النوعي الكامل Type Safety</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="reference/prisma/errors.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-alert"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma Errors Playbook</div>
+                <div class="lesson-desc">تشخيص أخطاء P2002 و P2025 وحلها إنتاجياً</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 8: Architecture -->
+        <div class="track-card" style="--track-color: #C084FC; --track-glow: rgba(192, 132, 252, 0.12); --track-shadow: rgba(192, 132, 252, 0.25); --track-gradient: linear-gradient(135deg, #9333EA, #7E22CE); --track-icon-bg: rgba(192, 132, 252, 0.15); --track-icon-color: #E9D5FF;">
+          <div class="track-header">
+            <div class="track-number">8</div>
+            <div class="track-info">
+              <div class="track-title">المعمارية الشاملة</div>
+              <div class="track-subtitle">Full-Stack Architecture</div>
+            </div>
+          </div>
+          <div class="lessons-list">
+            <a href="learn/architecture/request-lifecycles.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">End-to-End Request Flow</div>
+                <div class="lesson-desc">رحلة الطلب: React &larr; Express &larr; Prisma &larr; Postgres</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="projects/index.html" class="lesson-item">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Capstone Projects Hub</div>
+                <div class="lesson-desc">مشاريع التخرج العملية مع قوائم التحقق المحفوظة</div>
+              </div>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Section -->
+      <footer class="footer-note">
+        <p>© 2026 FullStack Academy | صُممت كمعيار مفتوح ومستقل للتعليم البرمجي عالي الجودة باللغة العربية</p>
+      </footer>
+
+    </div>
+  </section>
 
   <!-- Zero-Build Shared Scripts -->
   <script src="js/fsa-namespace.js"></script>
@@ -693,50 +993,132 @@
   <script src="js/app.js"></script>
 
   <script>
-    // Personalize primary CTA & Resume Card dynamically from localStorage
+    // =================== FLOATING PARTICLES ===================
+    const canvas = document.getElementById('particles');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let particles = [];
+    let mouse = { x: -1000, y: -1000 };
+
+    if (canvas && ctx) {
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      document.addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      class Particle {
+        constructor() { this.reset(); }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.5;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.4 + 0.1;
+          this.hue = Math.random() > 0.5 ? 215 : 265;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          const dx = this.x - mouse.x, dy = this.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            const force = (120 - dist) / 120 * 0.8;
+            this.x += (dx / dist) * force;
+            this.y += (dy / dist) * force;
+          }
+          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${this.hue}, 70%, 70%, ${this.opacity})`;
+          ctx.fill();
+        }
+      }
+
+      const particleCount = Math.min(80, Math.floor(window.innerWidth / 16));
+      for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+      function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 130) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(100, 140, 255, ${0.06 * (1 - dist / 130)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        drawLines();
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // =================== SCROLL REVEAL ===================
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const delay = Array.from(document.querySelectorAll('.track-card')).indexOf(card) * 90;
+          setTimeout(() => card.classList.add('visible'), delay);
+          observer.unobserve(card);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.track-card').forEach(card => observer.observe(card));
+
+    // =================== TILT EFFECT ON CARDS ===================
+    document.querySelectorAll('.track-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `translateY(-6px) perspective(800px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+      });
+    });
+
+    // =================== DYNAMIC RESUME FROM LOCALSTORAGE ===================
     document.addEventListener('DOMContentLoaded', () => {
       if (window.FSA.progress && window.FSA.curriculum) {
         const store = window.FSA.progress.getStore();
         const curriculum = window.FSA.curriculum;
         
         const completedCount = Object.keys(store.lessons || {}).filter(k => store.lessons[k].status === 'completed').length;
-        const totalCount = curriculum.flatList ? curriculum.flatList.length : 18;
-        const percent = Math.min(100, Math.round((completedCount / (totalCount || 1)) * 100));
-
-        // Find current or next lesson
         const nextLesson = curriculum.flatList.find(l => !store.lessons[l.slug] || store.lessons[l.slug].status !== 'completed');
-        
-        if (nextLesson) {
-          const btn = document.getElementById('homePrimaryCta');
-          const cardLabel = document.getElementById('resumeCardLabel');
-          const cardTitle = document.getElementById('resumeCardTitle');
-          const cardMeta = document.getElementById('resumeCardMeta');
-          const cardFill = document.getElementById('resumeCardFill');
 
+        if (nextLesson && completedCount > 0) {
+          const trackLabel = document.getElementById('resumeTrackLabel');
+          const title = document.getElementById('resumeLessonTitle');
+          const btn = document.getElementById('resumeActionBtn');
+
+          if (trackLabel) trackLabel.textContent = `متابعة الدراسة (${completedCount} دروس مكتملة)`;
+          if (title) title.textContent = nextLesson.title;
           if (btn) {
             btn.href = nextLesson.url;
-            btn.querySelector('span').textContent = completedCount > 0 
-              ? `Continue: ${nextLesson.title.split(':')[0]} · متابعة`
-              : 'Start Learning · ابدأ الآن';
-          }
-
-          if (cardLabel && completedCount > 0) {
-            cardLabel.innerHTML = `
-              <svg style="width: 13px; height: 13px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
-              Resume Learning (${percent}%)
-            `;
-          }
-
-          if (cardTitle) {
-            cardTitle.textContent = nextLesson.title;
-          }
-
-          if (cardMeta) {
-            cardMeta.textContent = `${nextLesson.track.toUpperCase()} · ${nextLesson.estMinutes || 20} mins`;
-          }
-
-          if (cardFill) {
-            cardFill.style.width = `${percent}%`;
+            btn.querySelector('span').textContent = 'أكمل الدرس ←';
           }
         }
       }

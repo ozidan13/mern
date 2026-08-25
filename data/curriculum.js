@@ -9,7 +9,7 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-25T08:58:38.310Z",
+  "generatedAt": "2026-08-25T09:10:50.710Z",
   "totalLessons": 18,
   "tracks": [
     {
