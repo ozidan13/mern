@@ -653,8 +653,8 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 | 13 | Content Wave 1 — Foundations + React | ✅ Completed | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
 | 14 | Content Wave 2 — Node + Express | ✅ Completed | 13 | ~26 lessons + event-loop & conveyor flagships |
 | 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | ✅ Completed | 14 | ~44 lessons + remaining flagships |
-| 16 | Hardening — A11y, Responsive, Performance | In Progress | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
-| 17 | QA & Launch | Pending | 16 | Smoke protocol passed; live on GitHub Pages |
+| 16 | Hardening — A11y, Responsive, Performance | ✅ Completed | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
+| 17 | QA & Launch | ✅ Completed | 16 | Smoke protocol passed; live on GitHub Pages |
 
 ---
 
@@ -778,17 +778,17 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 14.
 **Acceptance:** every flagship interactive built on the untouched Phase-6 engine · SQL/Mongo exercises ship as steppers + expected-output panels with the honesty note · full-corpus check-content green · every lesson has interactive practice and visual engagement.
 
-### Phase 16 — Hardening: Accessibility, Responsive, Performance *(weeks 26–28)*
+### Phase 16 — Hardening: Accessibility, Responsive, Performance *(Completed)*
 
 **Objective:** production polish without production infrastructure.
-**Key tasks:** axe sweep fixes site-wide · manual NVDA/VoiceOver passes on stepper, quiz, exercise · reduced-motion audit · device-matrix pass (Part 12) · contrast re-audit both themes · performance budget verification · focus-management audit (drawer, palette, details elements) · **bilingual legibility audit: mixed-direction punctuation, bidi isolation of EN terms inside AR prose, Arabic line-height at all breakpoints** · RTL spot-check across every page type.
+**Key tasks:** axe sweep fixes site-wide · manual NVDA/VoiceOver passes on stepper, quiz, exercise · reduced-motion audit · device-matrix pass (Part 12) · contrast re-audit both themes · performance budget verification · focus-management audit (drawer, palette, details elements) · **bilingual legibility audit: mixed-direction punctuation, bidi isolation of EN terms inside AR prose, Arabic line-height at all breakpoints** · RTL spot-check across every page type · print stylesheet rules.
 **Deliverables:** hardening changelog; signed-off audits.
 **Depends on:** 11–15.
 **Acceptance:** zero critical axe issues · WCAG 2.2 AA checklist signed · all budgets green · no horizontal scroll at 320px anywhere.
 
-### Phase 17 — QA & Launch *(week 29)*
+### Phase 17 — QA & Launch *(Completed)*
 
-**Objective:** ship it.
+**Objective:** ship it cleanly.
 **Key tasks:** run the full smoke journey protocol · fix findings · finalize README/docs · GitHub Pages setup (relative paths verified, `404.html`, meta descriptions + OG images per page, sitemap.xml + robots.txt) · tag v1.0.0 · schedule the quarterly version-chip review ritual (calendar entry, owner named).
 **Deliverables:** live site + launch checklist record.
 **Depends on:** 16.

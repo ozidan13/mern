@@ -379,3 +379,48 @@ thead th {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ================= PRINT STYLESHEET ================= */
+@media print {
+  .fsa-topbar,
+  .fsa-sidebar,
+  .fsa-toc,
+  .fsa-lesson-footer,
+  .fsa-skip-link,
+  .fsa-playground,
+  .fsa-stepper__controls {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .fsa-layout {
+    display: block !important;
+  }
+
+  .fsa-main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .fsa-card,
+  .fsa-callout,
+  .fsa-step-card,
+  .fsa-mistake-card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    background: #ffffff !important;
+  }
+
+  a {
+    text-decoration: underline !important;
+    color: #000000 !important;
+  }
+}
+
