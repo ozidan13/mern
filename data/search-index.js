@@ -262,6 +262,28 @@
     "norm": "prisma orm error code catalog p2002 — unique constraint violation how to fix in production · الحل النموذجي p2025 — record not found complete diagnostic and resolution playbook for common prisma database exceptions. triggered when: an insert or update query attempts to store a duplicate value in a column marked with @unique or as a primary key. السبب: محاوله ادخال او تعديل حقل يحمل قيمه مكرره في عمود مقيد بشرط الفراده (unique constraint)، مثل تكرار البريد الالكتروني. try { await prisma.user.create({ data: { email: req.body.email } }); } catch (error) { if (error.code === 'p2002') { return res.status(409).json({ error: 'email already registered' }); } throw error; } p2025 — record not found not found triggered when: an operation that requires an existing record (such as update or delete ) failed because the matching record does not exist. السبب: محاوله تعديل او حذف سجل غير موجود مسبقا في قاعده البيانات."
   },
   {
+    "t": "React 19.2 Hooks & API Reference",
+    "url": "reference/react/cheatsheet.html",
+    "track": "",
+    "kind": "reference",
+    "level": "1",
+    "h": "Core Built-in Hooks · React 19 Modern Additions",
+    "body": "Complete signature reference, dependencies rules, and best practices.",
+    "code": "conststatesetStateuseStateinitial useEffectsetupdependencies dep1dep2 useMemocalculateValuedependencies useCallbackfndependencies useRefinitialValue useContextSomeContext usePromiseContext useActionStatefninitial useOptimisticstateupdateFn",
+    "norm": "react 19.2 hooks & api reference core built-in hooks react 19 modern additions complete signature reference, dependencies rules, and best practices."
+  },
+  {
+    "t": "React Error Diagnostics & Solutions",
+    "url": "reference/react/errors.html",
+    "track": "",
+    "kind": "reference",
+    "level": "1",
+    "h": "Maximum update depth exceeded · How to Fix · الحل النموذجي · Hydration failed because the initial UI does not match",
+    "body": "Complete diagnostic playbook for common React runtime and render errors. Triggered when: A component repeatedly calls setState inside render or inside a useEffect without a dependency array, creating an infinite rendering loop. السبب: استدعاء دالة تحديث الحالة (setState) مباشرة أثناء رسم المكون أو داخل useEffect بدون مصفوفة اعتماديات، مما يجبر React على إعادة الرسم بلا توقف. // ❌ BROKEN: Invokes handler immediately on render &lt;button onClick={setCount(count + 1)}&gt;Click&lt;/button&gt; // ✅ FIXED: Pass an inline arrow function &lt;button onClick={() => setCount(c => c + 1)}&gt;Click&lt;/button&gt; Hydration failed because the initial UI does not match SSR Mismatch Triggered when: The server-rendered HTML markup differs from the client's first render pass (e.g. using window , localStorage , or Date.now() during initial render). السبب: اختلاف محتوى الـ HTML المولّد على السيرفر عن ما تم حسابه على المتصفح عند أول دورة رسم.",
+    "code": "setState useEffect BROKENInvokeshandlerimmediatelyonrenderltbuttononClicksetCountcount1gtClickltbuttongtFIXEDPassaninlinearrowfunctionltbuttononClicksetCountcc1gtClickltbuttongt window localStorage Date.now",
+    "norm": "react error diagnostics & solutions maximum update depth exceeded how to fix · الحل النموذجي hydration failed because the initial ui does not match complete diagnostic playbook for common react runtime and render errors. triggered when: a component repeatedly calls setstate inside render or inside a useeffect without a dependency array, creating an infinite rendering loop. السبب: استدعاء داله تحديث الحاله (setstate) مباشره اثناء رسم المكون او داخل useeffect بدون مصفوفه اعتماديات، مما يجبر react علي اعاده الرسم بلا توقف. // ❌ broken: invokes handler immediately on render &lt;button onclick={setcount(count + 1)}&gt;click&lt;/button&gt; // ✅ fixed: pass an inline arrow function &lt;button onclick={() => setcount(c => c + 1)}&gt;click&lt;/button&gt; hydration failed because the initial ui does not match ssr mismatch triggered when: the server-rendered html markup differs from the client's first render pass (e.g. using window , localstorage , or date.now() during initial render). السبب: اختلاف محتوي الـ html المولد علي السيرفر عن ما تم حسابه علي المتصفح عند اول دوره رسم."
+  },
+  {
     "t": "Capstone Project: React Kanban Task Board",
     "url": "projects/kanban-board.html",
     "track": "",
@@ -271,6 +293,17 @@
     "body": "Build a production-grade multi-column task board with state persistence and filter capabilities. مشروع عملي لبناء لوحة كانبان متكاملة لإدارة المهام باستخدام React 19 وحفظ البيانات محلياً. Check off milestones as you complete them. Your progress is saved automatically.",
     "code": "",
     "norm": "capstone project: react kanban task board project milestones · مراحل التنفيذ build a production-grade multi-column task board with state persistence and filter capabilities. مشروع عملي لبناء لوحه كانبان متكامله لاداره المهام باستخدام react 19 وحفظ البيانات محليا. check off milestones as you complete them. your progress is saved automatically."
+  },
+  {
+    "t": "Capstone Project: Production Authentication & REST API",
+    "url": "projects/rest-api.html",
+    "track": "",
+    "kind": "project",
+    "level": "1",
+    "h": "Project Milestones · مراحل التنفيذ",
+    "body": "Build a battle-tested Express & Prisma authentication service with JWT tokens, refresh rotation, and role-based access control (RBAC). مشروع متكامل لبناء خادم مصادقة واحتساب صلاحيات باستخدام Express و Prisma مع تشفير كلمات المرور وحفظ الرموز. Check off milestones as you build. Your progress is saved automatically in localStorage.",
+    "code": "",
+    "norm": "capstone project: production authentication & rest api project milestones · مراحل التنفيذ build a battle-tested express & prisma authentication service with jwt tokens, refresh rotation, and role-based access control (rbac). مشروع متكامل لبناء خادم مصادقه واحتساب صلاحيات باستخدام express و prisma مع تشفير كلمات المرور وحفظ الرموز. check off milestones as you build. your progress is saved automatically in localstorage."
   }
 ];
 })();

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Error Codes & Diagnostics · أخطاء ريآكت الشائعة — FullStack Academy</title>
+  
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Reference</span>
+        </a>
+      </div>
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="fsa-main" style="max-width: 960px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <nav class="fsa-breadcrumbs">
+        <a href="../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Reference</a> &rsaquo;
+        <span>React Errors</span>
+      </nav>
+
+      <h1>React Error Diagnostics & Solutions</h1>
+      <p class="fsa-lead">Complete diagnostic playbook for common React runtime and render errors.</p>
+
+      <!-- Maximum update depth exceeded -->
+      <section id="max-update-depth" class="fsa-card" style="margin-block: var(--space-6); border-inline-start: 4px solid var(--accent-danger);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="margin: 0; font-family: var(--font-mono); font-size: var(--fs-xl);">Maximum update depth exceeded</h2>
+          <span class="fsa-badge" style="color: var(--accent-danger); border-color: var(--accent-danger);">Infinite Loop</span>
+        </div>
+        
+        <p style="margin-block: var(--space-3);">
+          <strong>Triggered when:</strong> A component repeatedly calls <code>setState</code> inside render or inside a <code>useEffect</code> without a dependency array, creating an infinite rendering loop.
+        </p>
+
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary);">
+          <strong>السبب:</strong> استدعاء دالة تحديث الحالة (setState) مباشرة أثناء رسم المكون أو داخل useEffect بدون مصفوفة اعتماديات، مما يجبر React على إعادة الرسم بلا توقف.
+        </p>
+
+        <div style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm); margin-block: var(--space-3);">
+          <span style="color: var(--accent-danger);">Uncaught Error:</span> Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
+        </div>
+
+        <h3>How to Fix · الحل النموذجي</h3>
+        <pre style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm);"><code>// ❌ BROKEN: Invokes handler immediately on render
+&lt;button onClick={setCount(count + 1)}&gt;Click&lt;/button&gt;
+
+// ✅ FIXED: Pass an inline arrow function
+&lt;button onClick={() => setCount(c => c + 1)}&gt;Click&lt;/button&gt;</code></pre>
+      </section>
+
+      <!-- Hydration failed -->
+      <section id="hydration-error" class="fsa-card" style="margin-block: var(--space-6); border-inline-start: 4px solid var(--accent-warning);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="margin: 0; font-family: var(--font-mono); font-size: var(--fs-xl);">Hydration failed because the initial UI does not match</h2>
+          <span class="fsa-badge" style="color: var(--accent-warning); border-color: var(--accent-warning);">SSR Mismatch</span>
+        </div>
+        
+        <p style="margin-block: var(--space-3);">
+          <strong>Triggered when:</strong> The server-rendered HTML markup differs from the client's first render pass (e.g. using <code>window</code>, <code>localStorage</code>, or <code>Date.now()</code> during initial render).
+        </p>
+
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary);">
+          <strong>السبب:</strong> اختلاف محتوى الـ HTML المولّد على السيرفر عن ما تم حسابه على المتصفح عند أول دورة رسم.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

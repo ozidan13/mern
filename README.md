@@ -1,63 +1,120 @@
-# FullStack Academy — Static Edition
+# FullStack Academy · أكاديمية الفول ستاك
 
-A complete educational platform for the modern JavaScript full-stack (Foundations · React · Node.js · Express · MongoDB · PostgreSQL · Prisma · Architecture) built as **pure HTML + CSS + JavaScript** — no frameworks, no build step, no server, no database.
+> **The Sovereign, Zero-Build Modern Full-Stack Learning Platform**  
+> *Clone &rarr; Double-click &rarr; Learn. Zero build steps, zero external CDN dependencies, 100% offline-ready.*
 
-Modeled on the Algorithms & Data Structures course: **open a file, it works; push, it's live.**
-Lessons are bilingual — English carries titles/code/UI, Arabic carries the explanations.
+---
 
-## Run it
+## 🌟 The Vision
 
-No install. No `npm install`. No build.
+**FullStack Academy** is designed from the ground up to solve the friction of modern web education. Most coding platforms require complex local dev setups, npm installs, build steps, or constant internet connectivity to external CDNs. 
 
-- **Locally:** double-click `index.html` — or serve statically (`npx serve` / `python -m http.server`) if you prefer a URL.
-- **Offline:** clone or download the repo; everything (styles, scripts, data, fonts) ships inside it. Zero CDN requests at runtime.
+**FullStack Academy eliminates all barriers:**
+- **Zero-Build Architecture:** Pure HTML5, CSS3, and modern Vanilla JavaScript (ES2026).
+- **Runs Directly from `file://`:** Double-click `index.html` on any device without spinning up a local server.
+- **100% Vendored & Offline:** Cairo variable Arabic fonts, SVG icons, and styling are completely self-hosted.
+- **Safe In-Browser Execution:** JavaScript sandboxes run in isolated Web Workers with 3-second infinite loop guards.
+- **Local-First Progress:** Real-time progress tracking, checkpoint scores, and milestone checklists persisted safely in `localStorage` with JSON export/import.
 
-## Deploy
+---
 
-Push to GitHub and enable GitHub Pages (project site, root). Relative paths only — that is a constitutional rule (see below), so it works both from `file://` and from `https://<user>.github.io/<repo>/`.
+## 📚 The 8-Track Complete Curriculum
 
-## Repo layout
+| Track | Level | Key Flagship Topics & Interactive Visualizers |
+|---|---|---|
+| **Foundations** | L1–L2 | HTTP/3 QUIC stream multiplexing, V8 Call Stack & Closures, Event Loop microtasks, Fetch API stream resolution |
+| **React.js** | L1–L3 | Thinking in React, `useState` Fiber call-order stepper, `useEffect` synchronization & cleanup, $O(n)$ Virtual DOM diffing |
+| **Node.js** | L1–L3 | V8 + libuv architecture, 6-phase Event Loop deep dive, binary Buffers & stream backpressure pipelines |
+| **Express.js** | L1–L3 | Server setup, linear middleware conveyor pipeline, `next()`, REST CRUD API standards |
+| **MongoDB** | L1–L3 | BSON document model, Embedding vs Referencing tradeoffs, 16MB document boundaries, Aggregation pipeline |
+| **PostgreSQL** | L1–L3 | Relational algebra, ACID transaction guarantees (Atomicity, Consistency, Isolation, Durability), Foreign keys |
+| **Prisma ORM** | L1–L3 | Rust query engine, type-safe CRUD operations, schema relations, and N+1 query prevention |
+| **Architecture** | L3 | 4-Tier End-to-End Request Lifecycle (React &rarr; Express &rarr; Prisma &rarr; PostgreSQL), 4-layer caching |
 
-| Path | Purpose |
-|---|---|
-| `index.html` | Landing page |
-| `learn/<track>/<lesson>.html` | Lessons — the product |
-| `reference/<tech>/` | Cheatsheets, error catalogs, version pages |
-| `projects/` `exercises/` `tasks/` | Project briefs, exercise catalog, standalone gate apps |
-| `dashboard.html` | Progress, streak, bookmarks, notes, review queue (all in `localStorage`) |
-| `search.html` + Ctrl-K | Client-side search over a pre-built index |
-| `playground.html` | Free JS sandbox (Worker-isolated, 3s timeout) |
-| `css/` `js/` `data/` | Shared stylesheets, shared scripts, shared data (`window.FSA.*`) |
-| `templates/` | The copy-paste starting point for new lessons |
-| `scripts/` | Dev-only zero-dependency Node 22+ tools — never shipped, never needed to browse |
-| `docs/AUTHORING.md` | **Read this before adding any page** |
+---
 
-## The ten zero-build rules (constitution)
+## 🎯 The 9-Beat Canonical Learning Loop
 
-1. No build step — no bundler, transpiler, framework, or `npm install` required to browse or author.
-2. Hand-authored pages/assets + zero-dependency Node dev-scripts only; dev-scripts never ship.
-3. Shared CSS, shared JS — per-page code is limited to that lesson's data and render functions.
-4. All shared data ships as `.js` assigning to `window.FSA.*`, never fetched `.json` (so `file://` works).
-5. Relative paths only — no leading slashes, no absolute URLs.
-6. No CDN dependencies — system/vendored fonts, inline SVG sprite icons, CSS animations gated on `prefers-reduced-motion`.
-7. Progressive enhancement — every interactive has a static fallback readable with JS disabled.
-8. State is namespaced and versioned under `localStorage` keys prefixed `fsa.` with schema versioning.
-9. Untrusted code never runs in the page origin — student code goes through the Worker runner with timeouts.
-10. Content is the interface — chrome recedes; every lesson is readable, printable, self-contained.
+Every lesson is authored as a **complete standalone interactive learning module** following our strict 9-beat pedagogical structure:
 
-Changes to these rules require editing them here first, plus an entry in `docs/DECISIONS.md`.
+1. **BEAT 1: INTRO & OBJECTIVES** — Level badge, bilingual titles, estimated duration, and 3–4 crisp learning outcomes.
+2. **BEAT 2: LEARN** — Plain & formal definitions, why the concept exists, mandatory Arabic real-life analogy, and numbered step sequence cards (`.fsa-step-card`).
+3. **BEAT 3: SEE** — Mounted interactive Stepper engine (`FSA.stepper`) + responsive animated SVG diagram.
+4. **BEAT 4: TRY** — Interactive sandbox (`.fsa-try-it`) running in Web Worker with Predict-Before-You-Run experiment.
+5. **BEAT 5: ANATOMY** — Synced two-pane code breakdown with line-by-line Arabic annotations.
+6. **BEAT 6: DEEP DIVE** — Internals, edge cases, and Time/Space complexity analysis cards (`.fsa-complexity-grid`).
+7. **BEAT 7: PRACTICE** — Common mistakes gallery with Broken vs Fixed diff cards + Mini-Glossary.
+8. **BEAT 8: PROVE** — Interactive Mastery Checkpoint quiz with instant bilingual feedback and review anchors.
+9. **BEAT 9: PRODUCTION NOTES** — Senior interview questions and real-world system design considerations.
 
-## Contributing a lesson
+---
 
-See `docs/AUTHORING.md`. Short version:
+## 🗂️ Codebase Architecture
 
+```text
+mern/
+├── index.html                   # Viewport-locked cockpit homepage & resume card
+├── search.html                  # Full-page client-side search engine (Ctrl+K)
+├── dashboard.html               # Student progress dashboard & JSON backup
+├── playground.html              # Standalone JavaScript Web Worker sandbox
+├── 404.html                     # Bilingual error fallback page
+├── css/
+│   ├── tokens.css               # Design tokens (colors, spacing, typography, radii)
+│   ├── base.css                 # Reset, typography, Cairo font, and print stylesheet
+│   ├── layout.css               # Shell layout, 3-column cockpit, and responsive drawer
+│   ├── components.css           # Buttons, cards, badges, callouts, and step sequences
+│   └── learning.css             # Steppers, playgrounds, quizzes, and complexity grids
+├── js/
+│   ├── fsa-namespace.js         # Window.FSA namespace initialization
+│   ├── theme.js                 # Dark/Light theme switcher with localStorage sync
+│   ├── progress.js              # Local-first progress store & stats calculation
+│   ├── stepper.js               # Visualizer stepper engine with transport controls
+│   ├── playground.js            # In-browser Web Worker code runner
+│   ├── quiz.js                  # Interactive checkpoint quiz engine
+│   ├── search.js                # Weighted client-side Arabic-normalized search engine
+│   └── app.js                   # Navigation, drawer toggle, and table of contents
+├── data/
+│   ├── curriculum.js            # Auto-generated curriculum metadata (ships as JS)
+│   ├── search-index.js          # Auto-generated client search index
+│   ├── technologies.js          # Track metadata, colors, and versions
+│   └── tips.js                  # Daily bilingual engineering tips
+├── learn/                       # 8 Track directories containing all lessons
+├── reference/                   # Cheatsheets and error code catalogs (P2002, EADDRINUSE)
+├── projects/                    # Capstone project briefs with persistent checklists
+├── templates/                   # Canonical lesson template (lesson-template.html)
+└── scripts/                     # Zero-dependency maintenance & validation scripts
+    ├── check-content.mjs        # Content CI-lite validator (17 depth elements)
+    ├── gen-curriculum.mjs       # Curriculum index generator
+    ├── build-search-index.mjs   # Full-text search index builder with Arabic normalization
+    └── build-track-pages.mjs    # Track listing pages generator
 ```
-node scripts/new-lesson.mjs react use-state
-# fill the template following its commented slots
-node scripts/check-content.mjs   # quality gate
-node scripts/gen-curriculum.mjs  # refresh sidebar/search data
+
+---
+
+## 🚀 How to Run & Develop
+
+### 1. Zero-Install Instant Run
+Clone the repository and double-click `index.html`:
+```bash
+git clone https://github.com/ozidan13/mern.git
+cd mern
+# Double click index.html or open with your preferred browser
 ```
 
-## Status
+### 2. Running Content CI-Lite & Generators
+If you author or update lessons:
+```bash
+# Validate all lessons against the 17-element inventory
+node scripts/check-content.mjs
 
-Implementation follows `docs/final-plan.md` (17 phases). Current phase: **1 — Foundation & Conventions**.
+# Rebuild curriculum index & full-text search index
+node scripts/gen-curriculum.mjs
+node scripts/build-search-index.mjs
+```
+
+---
+
+## 📄 License & Attribution
+
+Designed and engineered for **FullStack Academy** as an open, sovereign, bilingual learning standard.  
+*Built with ❤️ for modern software engineers.*
