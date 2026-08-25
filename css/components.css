@@ -478,3 +478,64 @@ tbody tr:nth-child(even) {
   max-width: 720px;
   height: auto;
 }
+
+/* ================= GLASS CARDS & GRADIENTS ================= */
+.fsa-card--glass {
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-1);
+}
+
+.fsa-text-gradient {
+  background: linear-gradient(135deg, var(--accent-primary), #67E8F9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ================= STEP-BY-STEP SEQUENCE CARDS ================= */
+.fsa-step-card {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-4) var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 4px solid var(--step-accent, var(--accent-primary));
+  border-radius: var(--radius-md);
+  margin-block-end: var(--space-3);
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.fsa-step-card:hover {
+  transform: translateX(2px);
+  border-color: var(--border-default);
+}
+
+.fsa-step-card__badge {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--step-accent, var(--accent-primary));
+  color: var(--text-on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  flex-shrink: 0;
+}
+
+.fsa-step-card__content {
+  flex: 1;
+}
+
+.fsa-step-card__title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-block-end: var(--space-1);
+}
+

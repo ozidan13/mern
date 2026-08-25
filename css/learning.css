@@ -535,3 +535,82 @@
     transition: none;
   }
 }
+
+/* ================= TRY-IT / INTERACTIVE PRACTICE SECTION ================= */
+.fsa-try-it {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-block: var(--space-6);
+  box-shadow: var(--shadow-1);
+}
+
+.fsa-try-it__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.fsa-try-it__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--tint-primary);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.fsa-try-it__controls {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-block-end: var(--space-4);
+}
+
+/* ================= COMPLEXITY ANALYSIS GRID ================= */
+.fsa-complexity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin-block: var(--space-6);
+}
+
+.fsa-complexity-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-block-start: 4px solid var(--complexity-color, var(--accent-primary));
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-1);
+}
+
+.fsa-complexity-card__title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--complexity-color, var(--accent-primary));
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-4);
+}
+
+.fsa-complexity-card__big {
+  font-size: var(--fs-2xl);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  text-align: center;
+  color: var(--complexity-color, var(--accent-primary));
+  margin-block: var(--space-3);
+}
+

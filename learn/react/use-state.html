@@ -8,14 +8,14 @@
   <meta name="fsa-track" content="react">
   <meta name="fsa-lesson" content="use-state">
   <meta name="fsa-level" content="1">
-  <meta name="fsa-order" content="1">
-  <meta name="fsa-title" content="State with useState">
+  <meta name="fsa-order" content="2">
+  <meta name="fsa-title" content="State with useState & Immutability">
   <meta name="fsa-est-minutes" content="25">
   <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="Core Concept">
+  <meta name="fsa-pattern-label" content="Core Hooks">
   <meta name="fsa-root" content="../../">
 
-  <title>State with useState · FullStack Academy</title>
+  <title>State with useState & Immutability · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -44,7 +44,7 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Search · بحث</span>
+            <span>Quick Find · بحث سريع</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
@@ -67,12 +67,11 @@
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-react)"></span>
-            <span style="text-transform: capitalize;">react Track</span>
+            <span>React.js Track</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
-            <!-- Rendered dynamically from data/curriculum.js -->
             <li>
-              <a href="#" class="fsa-sidebar__link is-active" aria-current="page">
+              <a href="use-state.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
                 <span>State with useState</span>
               </a>
@@ -81,173 +80,254 @@
         </nav>
       </aside>
 
-      <!-- ================= MAIN READING CONTENT ================= -->
+      <!-- ================= MAIN READING CONTENT (9-BEAT MASTERPIECE LOOP) ================= -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
-          <!-- HEADER & OBJECTIVES (#1) -->
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
               <a href="../../index.html">Home</a> &rsaquo;
               <a href="../index.html">Learn</a> &rsaquo;
-              <a href="index.html" style="text-transform: capitalize;">react</a> &rsaquo;
-              <span>State with useState</span>
+              <a href="index.html">React.js</a> &rsaquo;
+              <span>useState & Immutability</span>
             </nav>
 
-            <h1>State with useState</h1>
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 1 · REACT 19.2</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">State with useState & Immutability</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              إدارة الحالة مع useState ومبدأ عدم القابلية للتعديل المباشر
+            </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: react · reviewed Aug 2026</span>
+              <span class="fsa-chip">Teaches: React 19.2 · reviewed Aug 2026</span>
               <span class="fsa-badge">Level 1</span>
               <span class="fsa-badge">25 mins · دقيقة</span>
             </div>
 
+            <!-- Objectives Card -->
             <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
-              <div class="fsa-callout__title">Objectives · ماذا ستتعلم في هذا الدرس</div>
-              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm);">
-                <li>Understand the core mechanism and lifecycle.</li>
-                <li>Master common production patterns and avoid gotchas.</li>
-                <li>Apply the concept in runnable exercises and real-world projects.</li>
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Understand component memory and how React preserves state across re-renders.</li>
+                <li>Master the functional updater pattern: <code>setCount(c =&gt; c + 1)</code>.</li>
+                <li>Avoid stale closures, direct mutations, and infinite rendering loops.</li>
+                <li>Explore React 19 automatic batching mechanics inside the interactive sandbox.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 1: LEARN ================= -->
-          <section id="learn">
-            <h2>1. Learn the Concept · الشرح النظري</h2>
+          <!-- ================= BEAT 2: LEARN (ANALOGY, DEFINITIONS & STEP-BY-STEP) ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
 
-            <!-- Mandatory Arabic Analogy (#5) -->
+            <!-- Mandatory Arabic Analogy -->
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                Real-Life Analogy · تشبيه من الواقع
+                <span>Real-Life Analogy · تشبيه السبورة والنسخة الجديدة</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                [اكتب هنا التشبيه الواقعي باللغة العربية لشرح الفكرة بطريقة بسيطة وسهلة التذكر].
+                تخيّل أن لديك سبورة بيضاء يكتب عليها الرسام لوحة. المتغيرات العادية داخل الدالة هي مثل <strong>الملاحظات المكتوبة بالطبشور السريع الزوال</strong> — بمجرد انتهاء تنفيذ الدالة، تُمسح السبورة تماماً وتبدأ من الصفر في كل مرة!
+                أما <code>useState</code> فهو بمثابة <strong>خزنة خاصة بالمكون</strong> خارج السبورة: عندما تطلب تغيير قيمة، فإنك لا تعدل الورقة القديمة بقلم حبر، بل تعطي الرسام ورقة جديدة كلياً ليضعها على السبورة في الرسمة القادمة. هذا هو جوهر الـ <strong>Immutability</strong>.
               </p>
             </div>
 
-            <!-- Definitions (#2 & #3) -->
+            <!-- Definitions -->
             <h3>Definition & Purpose</h3>
             <p>
-              [English concise definition of the topic and where it fits in modern architecture].
+              In React, <code>useState</code> is the fundamental hook that declares a state variable preserved across re-renders. It returns a tuple containing the current state value and a setter function that schedules a reconciliation pass.
             </p>
             <p class="fsa-ar" dir="rtl">
-              [الشرح العربي التفصيلي للمفهوم مع الحفاظ على المصطلحات التقنية باللغة الإنجليزية كما هي].
+              دالة <code>useState</code> هي الـ Hook الأساسي الذي يمنح المكون ذاكرة خاصة. تعيد الدالة مصفوفة ثنائية (Tuple): العنصر الأول هو <strong>القيمة الحالية للحالة</strong>، والعنصر الثاني هو <strong>دالة التحديث</strong> التي تخبر React بجدولة إعادة رسم المكون.
             </p>
 
-            <!-- Why it exists (#4) -->
-            <h3>Why It Exists · لماذا تم ابتكار هذا المفهوم؟</h3>
+            <!-- Why It Exists -->
+            <h3>Why It Exists · لماذا لا نستخدم متغيرات JavaScript العادية؟</h3>
             <p class="fsa-ar" dir="rtl">
-              [شرح المشكلة التي كانت تواجه المطورين قبل ظهور هذه الميزة أو التقنية وكيف حلتها].
+              المتغيرات العادية (مثل <code>let count = 0</code>) تفقد قيمتها عند انتهاء تنفيذ الدالة، كما أن تغيير قيمتها <strong>لا يعطي أي إشارة لـ React</strong> ليقوم بتحديث شجرة الـ DOM. يحل <code>useState</code> هاتين المشكلتين معاً: الاحتفاظ بالذاكرة وإطلاق دورة إعادة الرسم (Re-render).
             </p>
 
-            <!-- Step-by-step mechanics (#6) -->
-            <h3>Step-by-Step Mechanics · خطوات العمل خطوة بخطوة</h3>
-            <ol style="padding-inline-start: var(--space-5); line-height: 1.8;">
-              <li><strong>Step 1:</strong> Initial setup and trigger.</li>
-              <li><strong>Step 2:</strong> Internal execution and transformation.</li>
-              <li><strong>Step 3:</strong> State synchronization and DOM/network commit.</li>
-            </ol>
+            <!-- Step-by-Step Mechanics (Numbered Step Cards) -->
+            <h3>Step-by-Step Mechanics · مسار حياة تحديث الحالة</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">1. Initial Render & Fiber Allocation</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  عند أول ظهور للمكون، يقوم React بإنشاء خلية ذاكرة داخل شجرة الـ Fiber ويسجل القيمة الابتدائية (Initial State).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. State Dispatch & Action Queue</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  عند استدعاء <code>setCount(...)</code>، يضع React التحديث في طابور التحديثات (Action Queue) ويجدول معالجة الشجرة.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">3. Reconciliation & DOM Commit</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  يُعاد استدعاء دالة المكون بالقيمة الجديدة، وتتم مقارنة شجرة الـ Virtual DOM لعكس الفروقات فقط على الـ DOM الحقيقي.
+                </p>
+              </div>
+            </div>
           </section>
 
-          <!-- ================= BEAT 2: SEE (VISUALIZER) ================= -->
+          <!-- ================= BEAT 3: SEE (STEPPER VISUALIZER & SVG DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. See It in Action · الرؤية البصرية والتفاعلية</h2>
-            <p>Trace the internal state transitions step-by-step.</p>
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through React's internal Fiber Hook linked list order:</p>
             <p class="fsa-ar" dir="rtl">
-              شاهد حركة البيانات وتغير الحالة لحظة بلحظة مع سجل التنفيذ:
+              شاهد كيف يحفظ React ترتيب الـ Hooks داخل القائمة المترابطة (Linked List):
             </p>
 
-            <!-- Stepper Engine Mount (#8) -->
-            <div class="fsa-stepper" id="lesson-stepper"></div>
+            <!-- Stepper Engine Mount -->
+            <div class="fsa-stepper" id="useStateStepper"></div>
 
-            <!-- Conceptual SVG Diagram (#8) -->
+            <!-- Conceptual SVG Diagram with Flow Animation -->
             <div class="fsa-diagram">
-              <svg viewBox="0 0 600 140" width="100%" height="140" aria-label="Conceptual diagram">
-                <title>State with useState Architecture Flow</title>
-                <desc>Visual diagram depicting request and state flows</desc>
-                <line x1="120" y1="70" x2="260" y2="70" stroke="var(--border-default)" stroke-width="3" />
-                <line x1="120" y1="70" x2="260" y2="70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-                <g transform="translate(30, 40)">
-                  <rect width="90" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                  <text x="45" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Input</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="State to DOM Reconciliation Flow">
+                <title>React State to DOM Commit Flow</title>
+                <desc>State mutation triggers reconciliation and DOM patch</desc>
+                <line x1="130" y1="70" x2="240" y2="70" stroke="var(--border-default)" stroke-width="3" />
+                <line x1="130" y1="70" x2="240" y2="70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <g transform="translate(20, 40)">
+                  <rect width="110" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="55" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">setState(val)</text>
                 </g>
-                <g transform="translate(260, 40)" class="fsa-anim-pulse">
-                  <rect width="100" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
-                  <text x="50" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Processing</text>
+                <g transform="translate(240, 40)" class="fsa-anim-pulse">
+                  <rect width="140" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                  <text x="70" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Reconciliation Diff</text>
                 </g>
-                <line x1="360" y1="70" x2="480" y2="70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-                <g transform="translate(480, 40)">
-                  <rect width="90" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="45" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Output</text>
+                <line x1="380" y1="70" x2="490" y2="70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <g transform="translate(490, 40)">
+                  <rect width="110" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="55" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">DOM Commit</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: TRY (PLAYGROUND & EXPERIMENT) ================= -->
+          <!-- ================= BEAT 4: TRY (INTERACTIVE TRY-IT & PLAYGROUND) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة العملية</h2>
-            <p>Run and modify the code below in the sandboxed browser runner:</p>
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">Interactive Sandbox</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs 100% in Web Worker</span>
+              </div>
+              <p>Run and modify the code below in the sandboxed browser runner:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك الآن: عدل الكود وشاهد مخرجات الـ Console فورياً:
+              </p>
 
-            <!-- Playground Mount (#9) -->
-            <div class="fsa-playground" id="lesson-playground"></div>
+              <!-- Playground Mount -->
+              <div class="fsa-playground" id="useStatePlayground"></div>
+            </div>
 
-            <!-- Experiment Block (#8.2) -->
+            <!-- Experiment Block -->
             <div class="fsa-experiment">
               <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What happens if you trigger two state updates consecutively?</p>
-              <p class="fsa-ar" dir="rtl">ماذا سيحدث إذا قمت بتحديث الحالة مرتين متتاليتين؟</p>
+              <p>If you call <code>setCount(count + 1)</code> three times in one event handler, what is the final value?</p>
+              <p class="fsa-ar" dir="rtl">إذا استدعيت <code>setCount(count + 1)</code> ثلاث مرات متتالية، ما هي القيمة النهائية؟</p>
               <div class="fsa-experiment__choices">
                 <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
                 <div class="fsa-experiment__reveal">
-                  <p class="fsa-ar" dir="rtl">يتم دمج التحديثين تلقائياً في عملية إعادة رسم واحدة (Automatic Batching)!</p>
+                  <p class="fsa-ar" dir="rtl">
+                    القيمة ستزيد <strong>بمقدار 1 فقط</strong>! لأن كل استدعاء يقرأ نفس قيمة <code>count</code> المغلقة في دالة الحدث (Stale Closure). لحل ذلك استخدم: <code>setCount(c =&gt; c + 1)</code>.
+                  </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: ANATOMY ================= -->
+          <!-- ================= BEAT 5: ANATOMY (TWO-PANE SYNCED HIGHLIGHT) ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
             <h2>4. Code Anatomy · تشريح الكود سطراً بسطر</h2>
+            <p>Hover over each line to see its architectural purpose in React 19:</p>
             <div class="fsa-anatomy">
               <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: const [state, setState] = useState(0);</span>
+                <span class="fsa-anatomy__line" data-line="1">1: import { useState } from 'react';</span>
                 <span class="fsa-anatomy__line" data-line="2">2: </span>
-                <span class="fsa-anatomy__line" data-line="3">3: function handleIncrement() {</span>
-                <span class="fsa-anatomy__line" data-line="4">4:   setState(prev => prev + 1);</span>
-                <span class="fsa-anatomy__line" data-line="5">5: }</span>
+                <span class="fsa-anatomy__line" data-line="3">3: export function Counter() {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   const [count, setCount] = useState(0);</span>
+                <span class="fsa-anatomy__line" data-line="5">5: </span>
+                <span class="fsa-anatomy__line" data-line="6">6:   function handleIncrement() {</span>
+                <span class="fsa-anatomy__line" data-line="7">7:     setCount(prev =&gt; prev + 1);</span>
+                <span class="fsa-anatomy__line" data-line="8">8:   }</span>
+                <span class="fsa-anatomy__line" data-line="9">9: }</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 1:</strong> تعريف المتغير ودالة التحديث مع القيمة الابتدائية.
+                  <strong>السطر 4:</strong> تفكيك مصفوفة الـ Hook إلى القيمة الحالية <code>count</code> ودالة التحديث <code>setCount</code>.
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> استخدام دالة التحديث بالاعتماد على القيمة السابقة لضمان الدقة.
+                  <strong>السطر 7:</strong> استخدام دالة التحديث الوظيفية <code>prev =&gt; prev + 1</code> يضمن الحصول على أحدث حالة دائماً.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: DEEP DIVE & GOTCHAS ================= -->
+          <!-- ================= BEAT 6: DEEP DIVE & COMPLEXITY ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Edge Cases · الغوص في الأعماق</h2>
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Time Complexity</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1)</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تحديث قيمة الحالة في الذاكرة عملية فورية بزمن ثابت O(1).
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>Space Complexity</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1)</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  كل استدعاء لـ useState يستهلك خلية ثابتة داخل الـ Fiber Node للمكون.
+                </p>
+              </div>
+            </div>
+
             <details class="fsa-details" open>
-              <summary>Under the Hood: Internals & Gotchas</summary>
+              <summary>Under the Hood: The Fiber Hook Linked List</summary>
               <div class="fsa-details__body">
                 <p class="fsa-ar" dir="rtl">
-                  [شرح التفاصيل الدقيقة لكيفية عمل الميزة تحت الغطاء والحالات الخاصة التي يجب الانتباه لها].
+                  كيف يعرف React أي حالة تنتمي لأي متغير؟ السر يكمن في <strong>قواعد الـ Hooks</strong>: لا تضع Hook داخل <code>if</code> أو <code>loop</code>. يقرأ React الـ Hooks بترتيب استدعائها الثابت عبر مؤشر <code>workInProgressHook.next</code>.
                 </p>
               </div>
             </details>
           </section>
 
-          <!-- ================= BEAT 6: PRACTICE & MISTAKES ================= -->
+          <!-- ================= BEAT 7: PRACTICE & COMMON MISTAKES ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
             <h2>6. Practice & Common Mistakes · تمارين وأخطاء شائعة</h2>
 
-            <!-- Mistakes Gallery (#11) -->
+            <!-- Mistakes Gallery -->
             <h3>Common Mistakes Gallery · معرض الأخطاء الشائعة</h3>
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
@@ -257,61 +337,74 @@
                 </div>
                 <div class="fsa-mistake-card__diff">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ BROKEN<br>state.count += 1;</code>
+                    <code>// ❌ BROKEN<br>user.name = 'Omar';<br>setUser(user);</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ FIXED<br>setState(c => c + 1);</code>
+                    <code>// ✅ FIXED<br>setUser({ ...user, name: 'Omar' });</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> التعديل المباشر لا يغير المرجع، وبالتالي يتجاهل المحرك إعادة الرسم.
+                  <strong>التشخيص:</strong> لأن المرجع <code>user === user</code> لم يتغير، يعتبر React أنه لا يوجد أي تعديل ويتجاهل إعادة الرسم.
                 </p>
               </div>
             </div>
 
-            <!-- Mini Glossary (#13) -->
+            <!-- Mini Glossary -->
             <h3>Mini-Glossary · قاموس المصطلحات</h3>
             <dl class="fsa-term-card">
               <dt>Immutability (عدم القابلية للتعديل المباشر)</dt>
               <dd class="fsa-ar" dir="rtl">المبدأ القائم على إنشاء نسخة جديدة من البيانات عند الرغبة في التعديل بدلاً من تغيير الكائن الأصلي.</dd>
+              <dt>Automatic Batching (دمج التحديثات التلقائي)</dt>
+              <dd class="fsa-ar" dir="rtl">ميزة في React تدمج عدة استدعاءات لتحديث الحالة في دورة رسم واحدة لتعزيز الأداء.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 7: PROVE (CHECKPOINT) ================= -->
+          <!-- ================= BEAT 8: PROVE (INTERACTIVE CHECKPOINT) ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Checkpoint · اختبر فهمك</h2>
-            <div class="fsa-checkpoint" id="lesson-checkpoint"></div>
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="useStateCheckpoint"></div>
             
-            <!-- Question Pool Data -->
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "Why is direct state mutation discouraged?",
+                  "q": "Why does React require state to be updated immutably?",
                   "options": [
-                    "It causes syntax errors in JavaScript",
-                    "It bypasses change detection and breaks UI sync",
-                    "It makes the network slower"
+                    "Because mutable objects cause JavaScript syntax errors",
+                    "React relies on shallow reference equality (Object.is) to detect changes",
+                    "To prevent CSS layout thrashing"
                   ],
                   "answer": 1,
-                  "why": "React uses reference equality checks to schedule re-renders. Modifying in-place skips this trigger.",
-                  "whyAr": "لأن React يعتمد على مقارنة المراجع لاكتشاف التغييرات وإعادة رسم الواجهة.",
+                  "why": "React checks if the new state reference is different from the old one before triggering a re-render. Mutating the existing object retains the same memory address.",
+                  "whyAr": "لأن React يقارن مرجع الكائن الجديد بالقديم لاكتشاف التغييرات. التعديل المباشر يحتفظ بنفس عنوان الذاكرة فيتجاهل التحديث.",
                   "anchor": "practice"
+                },
+                {
+                  "q": "What is the primary benefit of the functional updater: setCount(prev => prev + 1)?",
+                  "options": [
+                    "It runs synchronously on the main thread",
+                    "It ensures access to the latest state value even inside async callbacks or multiple batched updates",
+                    "It bypasses the React reconciliation phase"
+                  ],
+                  "answer": 1,
+                  "why": "Functional updates read directly from the pending update queue rather than stale closure variables.",
+                  "whyAr": "تضمن قراءة القيمة الأحدث مباشرة من طابور التحديثات وتتفادى مشاكل الـ Stale Closures.",
+                  "anchor": "learn"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 8: PRODUCTION NOTES & INTERVIEWS ================= -->
+          <!-- ================= BEAT 9: PRODUCTION NOTES & INTERVIEWS ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
             <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
-            <details class="fsa-details">
-              <summary>Typical Interview Questions & Answers</summary>
+            <details class="fsa-details" open>
+              <summary>Senior Interview Questions & Production Insights</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: How do you handle complex state transformations?</strong></p>
+                <p><strong>Q: What happens under the hood when you call setState with the exact same primitive value?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> استخدام الـ Functional updates أو الاستعانة بـ <code>useReducer</code> لإدارة الحالات المعقدة بطريقة مركزية وقابلة للاختبار.
+                  <strong>الإجابة (Bailing Out):</strong> يقوم React بمقارنة القيمة عبر <code>Object.is</code>. إذا كانت متطابقة تماماً، يقوم React بعمل <strong>Bailout</strong> ويتجاوز إعادة رسم المكون وأبنائه بالكامل لتوفير الموارد.
                 </p>
               </div>
             </details>
@@ -319,7 +412,7 @@
 
           <!-- ================= FOOTER NAVIGATION ================= -->
           <footer class="fsa-lesson-footer">
-            <a href="#" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+            <a href="thinking-in-react.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
               <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
               <span>Previous · السابق</span>
             </a>
@@ -329,7 +422,7 @@
               <span>Mark Complete · أكملت الدرس</span>
             </button>
 
-            <a href="#" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+            <a href="use-effect.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
               <span>Next · التالي</span>
               <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
             </a>
@@ -360,6 +453,92 @@
   <script src="../../js/playground.js"></script>
   <script src="../../js/quiz.js"></script>
   <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
   <script src="../../js/app.js"></script>
+
+  <!-- Interactive Mount Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mount Stepper
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'useStateStepper',
+          title: 'React Fiber Hook Call Order & State Updates',
+          init: () => ({
+            hooks: [
+              { name: 'count', val: 0, active: false },
+              { name: 'text', val: 'Hello', active: false },
+              { name: 'isOpen', val: true, active: false }
+            ]
+          }),
+          steps: (state) => [
+            {
+              activeIdx: 0,
+              msgEn: 'Hook #1 (count) requested. Fiber reads value: 0',
+              say: 'الـ Hook الأول (count) يُقرأ من العقدة: القيمة 0'
+            },
+            {
+              activeIdx: 1,
+              msgEn: 'Hook #2 (text) requested. Fiber reads value: "Hello"',
+              say: 'الـ Hook الثاني (text) يُقرأ بالتسلسل: القيمة "Hello"'
+            },
+            {
+              activeIdx: 2,
+              msgEn: 'Hook #3 (isOpen) requested. Fiber reads value: true',
+              say: 'الـ Hook الثالث (isOpen) يُقرأ بالتسلسل: القيمة true'
+            },
+            {
+              activeIdx: 0,
+              updatedVal: 1,
+              msgEn: 'setCount(c => c + 1) triggered! New state scheduled: 1',
+              say: 'تم استدعاء setCount! تم تحديث قيمة count إلى 1 وإعادة تشغيل الدورة'
+            }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells">
+                ${state.hooks.map((h, i) => {
+                  const isActive = step.activeIdx === i;
+                  const val = (i === 0 && step.updatedVal !== undefined) ? step.updatedVal : h.val;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 100px; height: 60px;">
+                      <span style="font-size: 10px; color: var(--text-muted);">${h.name}</span>
+                      <span style="font-size: 14px; font-weight: bold; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${val}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      // Mount Playground
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'useStatePlayground',
+          starterCode: `// Simulation of React useState mechanics
+function createComponent() {
+  let state = 0;
+  
+  function setState(updater) {
+    state = typeof updater === 'function' ? updater(state) : updater;
+    console.log('State updated to:', state);
+  }
+  
+  return {
+    getState: () => state,
+    increment: () => setState(prev => prev + 1)
+  };
+}
+
+const component = createComponent();
+component.increment();
+component.increment();
+console.log('Final state in component:', component.getState());`
+        });
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference Documentation & Error Catalog · التوثيق المرجعي — FullStack Academy</title>
+  
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/learning.css">
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Reference</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Search error codes (e.g. P2002)...</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span>Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="fsa-main" style="max-width: 1100px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <div class="fsa-lesson-header">
+        <nav class="fsa-breadcrumbs">
+          <a href="../index.html">Home</a> &rsaquo;
+          <span>Reference</span>
+        </nav>
+        <h1>Full-Stack Reference & Error Catalogs</h1>
+        <p class="fsa-lead">
+          Dense, practical cheat sheets, error explanations, and diagnostic playbooks.
+        </p>
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-md); margin-block-start: var(--space-2);">
+          دليل مرجعي سريع لحل أشهر أخطاء الـ Backend والـ Frontend ومعاني رسائل الأخطاء الشائعة وحلولها الجذرية.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-5); margin-block-start: var(--space-6);">
+        <!-- React Reference -->
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-react);">
+          <div class="fsa-card__title">React 19.2 Cheatsheet</div>
+          <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-2);">
+            All built-in Hooks signatures, dependencies rules, and lifecycle equivalents.
+          </p>
+          <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-3);">
+            <a href="react/cheatsheet.html" class="fsa-btn fsa-btn--primary fsa-btn--sm">Cheatsheet</a>
+            <a href="react/errors.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">Common Errors</a>
+          </div>
+        </div>
+
+        <!-- Node Reference -->
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-node);">
+          <div class="fsa-card__title">Node.js 24 LTS Errors</div>
+          <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-2);">
+            EADDRINUSE, ECONNREFUSED, unhandledRejection diagnosis and resolution.
+          </p>
+          <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-3);">
+            <a href="nodejs/errors.html" class="fsa-btn fsa-btn--primary fsa-btn--sm">Error Catalog</a>
+          </div>
+        </div>
+
+        <!-- Prisma Reference -->
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-prisma);">
+          <div class="fsa-card__title">Prisma 7.x Error Catalog</div>
+          <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-2);">
+            P2002 Unique constraint, P2025 Record not found, and connection pooling issues.
+          </p>
+          <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-3);">
+            <a href="prisma/errors.html" class="fsa-btn fsa-btn--primary fsa-btn--sm">Error Catalog</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/fsa-namespace.js"></script>
+  <script src="../data/curriculum.js"></script>
+  <script src="../data/search-index.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

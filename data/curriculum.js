@@ -9,7 +9,7 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-25T05:16:59.707Z",
+  "generatedAt": "2026-08-25T05:34:11.733Z",
   "totalLessons": 1,
   "tracks": [
     {
@@ -33,12 +33,12 @@
             {
               "track": "react",
               "lesson": "use-state",
-              "title": "State with useState",
+              "title": "State with useState & Immutability",
               "level": 1,
-              "order": 1,
+              "order": 2,
               "estMinutes": 25,
               "teachesVersion": "React 19.2",
-              "patternLabel": "Core Concept",
+              "patternLabel": "Core Hooks",
               "prereqs": [],
               "url": "learn/react/use-state.html",
               "slug": "react/use-state",
@@ -103,9 +103,9 @@
       "slug": "react/use-state",
       "track": "react",
       "lesson": "use-state",
-      "title": "State with useState",
+      "title": "State with useState & Immutability",
       "level": 1,
-      "order": 1,
+      "order": 2,
       "url": "learn/react/use-state.html",
       "prev": null,
       "next": null

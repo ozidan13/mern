@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Playground · حقل التجارب البرمجي — FullStack Academy</title>
+  <meta name="description" content="Instant, offline, zero-build JavaScript sandbox running in an isolated Web Worker with console proxying and infinite loop protection.">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/learning.css">
+
+  <style>
+    .fsa-playground-full {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      height: calc(100vh - var(--topbar-h) - 40px);
+      padding: var(--space-4) var(--space-6);
+      max-width: 1600px;
+      margin-inline: auto;
+    }
+
+    @media (max-width: 900px) {
+      .fsa-playground-full {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    .fsa-playground-pane {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-2);
+    }
+
+    .fsa-playground-pane__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-raised);
+      border-block-end: 1px solid var(--border-subtle);
+    }
+
+    .fsa-full-editor {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      background: var(--bg-code);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      line-height: 1.6;
+      padding: var(--space-4);
+      border: none;
+      outline: none;
+      resize: none;
+      tab-size: 2;
+    }
+
+    .fsa-full-console {
+      flex: 1;
+      background: var(--bg-code);
+      padding: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Playground</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Search · بحث</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="fsa-playground-full">
+      <!-- Left: Editor Pane -->
+      <section class="fsa-playground-pane">
+        <div class="fsa-playground-pane__header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent-primary);"></span>
+            <span style="font-weight: 700; font-size: var(--fs-sm);">JavaScript Sandbox</span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <select id="snippetSelector" class="fsa-btn fsa-btn--ghost fsa-btn--sm" style="background: var(--bg-canvas);">
+              <option value="custom">-- Load Sample Snippet --</option>
+              <option value="async">Async/Await & Promises</option>
+              <option value="closure">Closures & Scope</option>
+              <option value="array">Array Transformations (Map, Filter, Reduce)</option>
+              <option value="binary">Binary Search Algorithm</option>
+            </select>
+            <button id="runBtn" class="fsa-btn fsa-btn--primary fsa-btn--sm">
+              <svg><use href="assets/icons.svg#fsa-icon-play"></use></svg>
+              <span>Run · تشغيل</span>
+            </button>
+          </div>
+        </div>
+        <textarea id="playgroundCode" class="fsa-full-editor" spellcheck="false">// Welcome to FullStack Academy JS Playground
+// Runs in an isolated Web Worker (3s timeout guard)
+
+function calculateStats(items) {
+  const sum = items.reduce((acc, curr) => acc + curr, 0);
+  const avg = sum / items.length;
+  return { count: items.length, sum, avg: avg.toFixed(2) };
+}
+
+const numbers = [12, 45, 68, 23, 89, 90, 34];
+console.log('Original Array:', numbers);
+console.log('Calculated Stats:', calculateStats(numbers));
+</textarea>
+      </section>
+
+      <!-- Right: Console Output Pane -->
+      <section class="fsa-playground-pane">
+        <div class="fsa-playground-pane__header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg style="width: 16px; height: 16px; color: var(--accent-success);"><use href="assets/icons.svg#fsa-icon-code"></use></svg>
+            <span style="font-weight: 700; font-size: var(--fs-sm);">Console Output · مخرجات التنفيذ</span>
+          </div>
+          <button id="clearConsoleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+            <span>Clear · مسح</span>
+          </button>
+        </div>
+        <div id="playgroundConsole" class="fsa-full-console">
+          <div style="color: var(--text-muted); font-size: var(--fs-xs);">Click "Run" or press Ctrl+Enter to execute.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/fsa-namespace.js"></script>
+  <script src="data/curriculum.js"></script>
+  <script src="data/search-index.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const codeEditor = document.getElementById('playgroundCode');
+      const consoleOutput = document.getElementById('playgroundConsole');
+      const runBtn = document.getElementById('runBtn');
+      const clearBtn = document.getElementById('clearConsoleBtn');
+      const snippetSelector = document.getElementById('snippetSelector');
+
+      const SNIPPETS = {
+        async: `async function fetchMockUser(id) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ id, name: 'Omar', role: 'Full-Stack Developer' });
+    }, 400);
+  });
+}
+
+console.log('Fetching user profile...');
+fetchMockUser(42).then(user => {
+  console.log('User Received:', user);
+});`,
+        closure: `function createCounter(initial = 0) {
+  let count = initial;
+  return {
+    inc: () => ++count,
+    dec: () => --count,
+    get: () => count
+  };
+}
+
+const counter = createCounter(10);
+console.log('Increment 1:', counter.inc());
+console.log('Increment 2:', counter.inc());
+console.log('Current value:', counter.get());`,
+        array: `const users = [
+  { name: 'Sarah', score: 95, track: 'React' },
+  { name: 'Amira', score: 88, track: 'Node' },
+  { name: 'Zaid', score: 72, track: 'React' },
+  { name: 'Bilal', score: 94, track: 'Postgres' }
+];
+
+const reactMasters = users
+  .filter(u => u.track === 'React')
+  .map(u => u.name.toUpperCase());
+
+console.log('React Masters:', reactMasters);`,
+        binary: `function binarySearch(arr, target) {
+  let low = 0, high = arr.length - 1;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) low = mid + 1;
+    else high = mid - 1;
+  }
+  return -1;
+}
+
+const sorted = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];
+console.log('Array:', sorted);
+console.log('Searching for 23 -> Index:', binarySearch(sorted, 23));`
+      };
+
+      snippetSelector.addEventListener('change', (e) => {
+        if (SNIPPETS[e.target.value]) {
+          codeEditor.value = SNIPPETS[e.target.value];
+        }
+      });
+
+      function appendLog(type, args) {
+        const line = document.createElement('div');
+        line.style.padding = '3px 0';
+        line.style.borderBlockEnd = '1px solid var(--border-subtle)';
+        
+        const formatted = args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ');
+        line.textContent = formatted;
+
+        if (type === 'error') {
+          line.style.color = 'var(--accent-danger)';
+        } else if (type === 'warn') {
+          line.style.color = 'var(--accent-warning)';
+        } else {
+          line.style.color = 'var(--text-primary)';
+        }
+
+        consoleOutput.appendChild(line);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      }
+
+      function executeCode() {
+        consoleOutput.innerHTML = '';
+        const userCode = codeEditor.value;
+
+        const workerScript = `
+          self.onmessage = function() {
+            const originalLog = console.log;
+            const originalError = console.error;
+            const originalWarn = console.warn;
+
+            console.log = function(...args) { self.postMessage({ type: 'log', args }); };
+            console.error = function(...args) { self.postMessage({ type: 'error', args }); };
+            console.warn = function(...args) { self.postMessage({ type: 'warn', args }); };
+
+            try {
+              ${userCode}
+            } catch (err) {
+              console.error(err.name + ': ' + err.message);
+            }
+          };
+        `;
+
+        const blob = new Blob([workerScript], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
+        const worker = new Worker(blobUrl);
+
+        const timeout = setTimeout(() => {
+          worker.terminate();
+          URL.revokeObjectURL(blobUrl);
+          appendLog('error', ['⏱ Execution Terminated: script exceeded 3-second runtime guard (possible infinite loop).']);
+        }, 3000);
+
+        worker.onmessage = function(e) {
+          appendLog(e.data.type, e.data.args);
+        };
+
+        worker.onerror = function(err) {
+          clearTimeout(timeout);
+          appendLog('error', [err.message]);
+        };
+
+        worker.postMessage('start');
+      }
+
+      runBtn.addEventListener('click', executeCode);
+      clearBtn.addEventListener('click', () => { consoleOutput.innerHTML = ''; });
+
+      codeEditor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          executeCode();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

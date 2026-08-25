@@ -648,9 +648,9 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 | 8 | Practice Layer | ✅ Completed | 6, 7 | `quiz.js` + `exercise.js` + hint ladder |
 | 9 | Progress & Dashboard | ✅ Completed | 4, 8 | progress store + dashboard + tips + export/import |
 | 10 | Search | ✅ Completed | 4 | index builder + Ctrl-K palette + `search.html` |
-| 11 | Homepage & Catalog Pages | In Progress | 3, 9 | landing, `learn/`, track homes, 404 |
-| 12 | Reference, Projects & Playground surfaces | Pending | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
-| 13 | Content Wave 1 — Foundations + React | Pending | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
+| 11 | Homepage & Catalog Pages | ✅ Completed | 3, 9 | landing, `learn/`, track homes, 404 |
+| 12 | Reference, Projects & Playground surfaces | ✅ Completed | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
+| 13 | Content Wave 1 — Foundations + React | In Progress | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
 | 14 | Content Wave 2 — Node + Express | Pending | 13 | ~26 lessons + event-loop & conveyor flagships |
 | 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | Pending | 14 | ~44 lessons + remaining flagships |
 | 16 | Hardening — A11y, Responsive, Performance | Pending | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
@@ -738,7 +738,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 4.
 **Acceptance:** labeled 30-query set hits top-3 ≥ 85% · < 150ms interaction · `P2002` routes to the Prisma errors page · fully functional offline/from `file://`.
 
-### Phase 11 — Homepage & Catalog Pages *(week 8)*
+### Phase 11 — Homepage & Catalog Pages *(Completed)*
 
 **Objective:** the front door and the map.
 **Key tasks:** `index.html` (hero with restrained motion, stats bar, path overview, personalized continue-card when progress exists) · `learn/index.html` catalog · per-track home pages (levels, outcomes, gate projects, placement-style "start here" guidance) · `404.html` with search box · print stylesheet basics.
@@ -746,7 +746,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 3, 9.
 **Acceptance:** every curriculum destination reachable in ≤ 3 clicks · Lighthouse performance/accessibility ≥ 95 on landing · continue-card resumes the exact last lesson.
 
-### Phase 12 — Reference, Projects & Playground surfaces *(weeks 8–9)*
+### Phase 12 — Reference, Projects & Playground surfaces *(Completed)*
 
 **Objective:** the recall layer and the doing-beyond-lessons layer.
 **Key tasks:** `reference/<tech>/` cheatsheet + errors + versions templates (dense, non-narrative: signature → semantics → example → pitfalls → lesson links) · `projects/<slug>.html` briefs (requirements, milestones with persisted checklists, rubric self-review, solution notes) · `tasks/` convention doc + first standalone app shell · `playground.html` free sandbox.

@@ -11,8 +11,8 @@
   <meta name="fsa-order" content="{{ORDER}}">
   <meta name="fsa-title" content="{{TITLE}}">
   <meta name="fsa-est-minutes" content="{{EST_MINUTES}}">
-  <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="Core Concept">
+  <meta name="fsa-teaches-version" content="Modern FullStack">
+  <meta name="fsa-pattern-label" content="Core Architecture">
   <meta name="fsa-root" content="../../">
 
   <title>{{TITLE}} · FullStack Academy</title>
@@ -44,7 +44,7 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Search · بحث</span>
+            <span>Quick Find · بحث سريع</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
@@ -81,11 +81,11 @@
         </nav>
       </aside>
 
-      <!-- ================= MAIN READING CONTENT ================= -->
+      <!-- ================= MAIN READING CONTENT (9-BEAT MASTERPIECE LOOP) ================= -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
-          <!-- HEADER & OBJECTIVES (#1) -->
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
               <a href="../../index.html">Home</a> &rsaquo;
@@ -94,7 +94,15 @@
               <span>{{TITLE}}</span>
             </nav>
 
-            <h1>{{TITLE}}</h1>
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL {{LEVEL}} · TRACK: {{TRACK}}</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">{{TITLE}}</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              [عنوان الدرس باللغة العربية]
+            </p>
 
             <div class="fsa-lesson-header__meta">
               <span class="fsa-chip">Teaches: {{TRACK}} · reviewed Aug 2026</span>
@@ -102,32 +110,36 @@
               <span class="fsa-badge">{{EST_MINUTES}} mins · دقيقة</span>
             </div>
 
+            <!-- Objectives Card -->
             <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
-              <div class="fsa-callout__title">Objectives · ماذا ستتعلم في هذا الدرس</div>
-              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm);">
-                <li>Understand the core mechanism and lifecycle.</li>
-                <li>Master common production patterns and avoid gotchas.</li>
-                <li>Apply the concept in runnable exercises and real-world projects.</li>
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Understand the core mechanism and lifecycle without missing edge cases.</li>
+                <li>Analyze the step-by-step state transitions with narrated visualizers.</li>
+                <li>Apply the concept directly in the interactive Try-It sandbox and test runner.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 1: LEARN ================= -->
-          <section id="learn">
-            <h2>1. Learn the Concept · الشرح النظري</h2>
+          <!-- ================= BEAT 2: LEARN (ANALOGY, DEFINITIONS & STEP-BY-STEP) ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
 
-            <!-- Mandatory Arabic Analogy (#5) -->
+            <!-- Mandatory Arabic Analogy -->
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                Real-Life Analogy · تشبيه من الواقع
+                <span>Real-Life Analogy · تشبيه من الواقع</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                [اكتب هنا التشبيه الواقعي باللغة العربية لشرح الفكرة بطريقة بسيطة وسهلة التذكر].
+                [اكتب هنا التشبيه الواقعي باللغة العربية لشرح الفكرة بطريقة بديهية لا تُنسى، مثل تشبيه القاموس أو خط الإنتاج].
               </p>
             </div>
 
-            <!-- Definitions (#2 & #3) -->
+            <!-- Plain & Formal Definitions -->
             <h3>Definition & Purpose</h3>
             <p>
               [English concise definition of the topic and where it fits in modern architecture].
@@ -136,36 +148,60 @@
               [الشرح العربي التفصيلي للمفهوم مع الحفاظ على المصطلحات التقنية باللغة الإنجليزية كما هي].
             </p>
 
-            <!-- Why it exists (#4) -->
+            <!-- Why It Exists -->
             <h3>Why It Exists · لماذا تم ابتكار هذا المفهوم؟</h3>
             <p class="fsa-ar" dir="rtl">
               [شرح المشكلة التي كانت تواجه المطورين قبل ظهور هذه الميزة أو التقنية وكيف حلتها].
             </p>
 
-            <!-- Step-by-step mechanics (#6) -->
-            <h3>Step-by-Step Mechanics · خطوات العمل خطوة بخطوة</h3>
-            <ol style="padding-inline-start: var(--space-5); line-height: 1.8;">
-              <li><strong>Step 1:</strong> Initial setup and trigger.</li>
-              <li><strong>Step 2:</strong> Internal execution and transformation.</li>
-              <li><strong>Step 3:</strong> State synchronization and DOM/network commit.</li>
-            </ol>
+            <!-- Step-by-Step Mechanics (Numbered Card Layout) -->
+            <h3>Step-by-Step Mechanics · خطوات التنفيذ</h3>
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Phase 1: Trigger & Initialization</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  [شرح المرحلة الأولى من تدفق البيانات أو استدعاء الدالة].
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Phase 2: Execution & Transformation</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  [شرح مرحلة المعالجة والتحويل داخل المحرك].
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Phase 3: State Commit & Reconciliation</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  [شرح مرحلة تثبيت التغييرات وعكسها على الواجهة أو قاعدة البيانات].
+                </p>
+              </div>
+            </div>
           </section>
 
-          <!-- ================= BEAT 2: SEE (VISUALIZER) ================= -->
+          <!-- ================= BEAT 3: SEE (VISUALIZER & SVG DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. See It in Action · الرؤية البصرية والتفاعلية</h2>
-            <p>Trace the internal state transitions step-by-step.</p>
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Trace the internal state transitions step-by-step with real-time feedback:</p>
             <p class="fsa-ar" dir="rtl">
-              شاهد حركة البيانات وتغير الحالة لحظة بلحظة مع سجل التنفيذ:
+              شاهد حركة البيانات وتغير الحالة لحظة بلحظة مع سجل التنفيذ المباشر:
             </p>
 
-            <!-- Stepper Engine Mount (#8) -->
+            <!-- Stepper Engine Mount -->
             <div class="fsa-stepper" id="lesson-stepper"></div>
 
-            <!-- Conceptual SVG Diagram (#8) -->
+            <!-- Conceptual SVG Diagram with CSS Flow Animation -->
             <div class="fsa-diagram">
               <svg viewBox="0 0 600 140" width="100%" height="140" aria-label="Conceptual diagram">
-                <title>{{TITLE}} Architecture Flow</title>
+                <title>{{TITLE}} Flow Architecture</title>
                 <desc>Visual diagram depicting request and state flows</desc>
                 <line x1="120" y1="70" x2="260" y2="70" stroke="var(--border-default)" stroke-width="3" />
                 <line x1="120" y1="70" x2="260" y2="70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
@@ -186,53 +222,90 @@
             </div>
           </section>
 
-          <!-- ================= BEAT 3: TRY (PLAYGROUND & EXPERIMENT) ================= -->
+          <!-- ================= BEAT 4: TRY (TRY-IT INTERACTIVE PRACTICE & PLAYGROUND) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة العملية</h2>
-            <p>Run and modify the code below in the sandboxed browser runner:</p>
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">Interactive Sandbox</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs 100% in-browser</span>
+              </div>
+              <p>Test the concept live. Modify the values and observe the execution result:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك الآن: عدّل القيم وشاهد النتيجة مباشرة داخل المتصفح:
+              </p>
 
-            <!-- Playground Mount (#9) -->
-            <div class="fsa-playground" id="lesson-playground"></div>
+              <!-- Playground Runner Mount -->
+              <div class="fsa-playground" id="lesson-playground"></div>
+            </div>
 
-            <!-- Experiment Block (#8.2) -->
+            <!-- Experiment Block -->
             <div class="fsa-experiment">
               <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What happens if you trigger two state updates consecutively?</p>
-              <p class="fsa-ar" dir="rtl">ماذا سيحدث إذا قمت بتحديث الحالة مرتين متتاليتين؟</p>
+              <p>What happens if you trigger two state mutations consecutively?</p>
+              <p class="fsa-ar" dir="rtl">ماذا يحدث عند استدعاء التحديث مرتين متتاليتين؟</p>
               <div class="fsa-experiment__choices">
                 <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
                 <div class="fsa-experiment__reveal">
-                  <p class="fsa-ar" dir="rtl">يتم دمج التحديثين تلقائياً في عملية إعادة رسم واحدة (Automatic Batching)!</p>
+                  <p class="fsa-ar" dir="rtl">يتم دمج التحديثات تلقائياً في دورة إعادة رسم واحدة (Automatic Batching)!</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: ANATOMY ================= -->
+          <!-- ================= BEAT 5: ANATOMY (SYNCED TWO-PANE CODE EXPLANATION) ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
             <h2>4. Code Anatomy · تشريح الكود سطراً بسطر</h2>
+            <p>Hover or click each line to see its architectural purpose:</p>
             <div class="fsa-anatomy">
               <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: const [state, setState] = useState(0);</span>
+                <span class="fsa-anatomy__line" data-line="1">1: const [value, setValue] = useState(initial);</span>
                 <span class="fsa-anatomy__line" data-line="2">2: </span>
-                <span class="fsa-anatomy__line" data-line="3">3: function handleIncrement() {</span>
-                <span class="fsa-anatomy__line" data-line="4">4:   setState(prev => prev + 1);</span>
+                <span class="fsa-anatomy__line" data-line="3">3: function handleAction() {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   setValue(prev => prev + 1);</span>
                 <span class="fsa-anatomy__line" data-line="5">5: }</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 1:</strong> تعريف المتغير ودالة التحديث مع القيمة الابتدائية.
+                  <strong>السطر 1:</strong> فك المصفوفة إلى متغير الحالة ودالة التحديث مع تمرير القيمة المبدئية.
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> استخدام دالة التحديث بالاعتماد على القيمة السابقة لضمان الدقة.
+                  <strong>السطر 4:</strong> استخدام الدالة الوظيفية (Functional updater) لتفادي مشاكل الحالات المتزامنة.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: DEEP DIVE & GOTCHAS ================= -->
+          <!-- ================= BEAT 6: DEEP DIVE & COMPLEXITY ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Edge Cases · الغوص في الأعماق</h2>
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <!-- Complexity Analysis Grid -->
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Time Complexity</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1)</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تحديث الذاكرة اللحظي يتم بزمن ثابت لا يتأثر بحجم البيانات.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>Space Complexity</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1)</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تخزين متغير الحالة يستهلك مساحة ثابتة في خلية الذاكرة المرتبطة بالـ Fiber node.
+                </p>
+              </div>
+            </div>
+
             <details class="fsa-details" open>
               <summary>Under the Hood: Internals & Gotchas</summary>
               <div class="fsa-details__body">
@@ -243,11 +316,11 @@
             </details>
           </section>
 
-          <!-- ================= BEAT 6: PRACTICE & MISTAKES ================= -->
+          <!-- ================= BEAT 7: PRACTICE & COMMON MISTAKES ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
             <h2>6. Practice & Common Mistakes · تمارين وأخطاء شائعة</h2>
 
-            <!-- Mistakes Gallery (#11) -->
+            <!-- Mistakes Gallery -->
             <h3>Common Mistakes Gallery · معرض الأخطاء الشائعة</h3>
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
@@ -264,12 +337,12 @@
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> التعديل المباشر لا يغير المرجع، وبالتالي يتجاهل المحرك إعادة الرسم.
+                  <strong>التشخيص:</strong> التعديل المباشر لا يغير المرجع (Reference)، وبالتالي يتجاهل المحرك إعادة الرسم.
                 </p>
               </div>
             </div>
 
-            <!-- Mini Glossary (#13) -->
+            <!-- Mini Glossary -->
             <h3>Mini-Glossary · قاموس المصطلحات</h3>
             <dl class="fsa-term-card">
               <dt>Immutability (عدم القابلية للتعديل المباشر)</dt>
@@ -277,9 +350,9 @@
             </dl>
           </section>
 
-          <!-- ================= BEAT 7: PROVE (CHECKPOINT) ================= -->
+          <!-- ================= BEAT 8: PROVE (INTERACTIVE CHECKPOINT) ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Checkpoint · اختبر فهمك</h2>
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
             <div class="fsa-checkpoint" id="lesson-checkpoint"></div>
             
             <!-- Question Pool Data -->
@@ -303,7 +376,7 @@
             </script>
           </section>
 
-          <!-- ================= BEAT 8: PRODUCTION NOTES & INTERVIEWS ================= -->
+          <!-- ================= BEAT 9: PRODUCTION NOTES & INTERVIEWS ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
             <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
             <details class="fsa-details">
@@ -360,6 +433,7 @@
   <script src="../../js/playground.js"></script>
   <script src="../../js/quiz.js"></script>
   <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
   <script src="../../js/app.js"></script>
 </body>
 </html>
