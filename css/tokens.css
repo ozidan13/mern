@@ -18,49 +18,51 @@
   color-scheme: dark;
 
   /* ---- surfaces & text (dark default) ---------------------- */
-  --bg-canvas: #0B0F17;
-  --bg-surface: #111726;
-  --bg-raised: #1A2236;
-  --bg-code: #0D1117;          /* code stays dark in BOTH themes */
-  --border-subtle: #222B41;
-  --border-default: #2E3A57;
+  --bg-canvas: #090D16;
+  --bg-surface: #0F1523;
+  --bg-raised: #151D30;
+  --bg-code: #0A0E1A;          /* code stays dark in BOTH themes */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.14);
+  --border-hover: rgba(255, 255, 255, 0.24);
 
-  --text-primary: #E6EAF2;     /* ≥15:1 on canvas  */
-  --text-secondary: #A8B3C7;   /* ≥7:1 on surface  */
-  --text-muted: #7D8AA3;       /* ≥4.5:1 on canvas */
+  --text-primary: #F8FAFC;     /* ≥16:1 on canvas */
+  --text-secondary: #94A3B8;   /* ≥7.5:1 on surface */
+  --text-muted: #64748B;       /* ≥4.5:1 on canvas */
   --text-on-accent: #FFFFFF;   /* high contrast on filled buttons/badges */
 
   /* ---- accents --------------------------------------------- */
-  --accent-primary: #4F8CFF;
-  --accent-success: #3FBD7C;
-  --accent-warning: #E5B454;
-  --accent-danger: #E5647A;
+  --accent-primary: #3B82F6;
+  --accent-primary-hover: #60A5FA;
+  --accent-success: #10B981;
+  --accent-warning: #F59E0B;
+  --accent-danger: #F43F5E;
 
   /* translucent accent washes for callout/badge backgrounds */
-  --tint-primary: rgba(79, 140, 255, 0.12);
-  --tint-success: rgba(63, 189, 124, 0.12);
-  --tint-warning: rgba(229, 180, 84, 0.12);
-  --tint-danger: rgba(229, 100, 122, 0.12);
-  --tint-legacy: rgba(125, 138, 163, 0.14);
+  --tint-primary: rgba(59, 130, 246, 0.12);
+  --tint-success: rgba(16, 185, 129, 0.12);
+  --tint-warning: rgba(245, 158, 11, 0.12);
+  --tint-danger: rgba(244, 63, 94, 0.12);
+  --tint-legacy: rgba(100, 116, 139, 0.14);
 
   /* ---- per-track identity ("week colors", systematized) ----- */
   --track-found: #F59E0B;
-  --track-react: #61DAFB;
-  --track-node: #8CC84B;
-  --track-express: #9CA3AF;
-  --track-mongo: #47A248;
-  --track-pg: #6FA8DC;
-  --track-prisma: #7C8CF8;
+  --track-react: #38BDF8;
+  --track-node: #84CC16;
+  --track-express: #A1A1AA;
+  --track-mongo: #22C55E;
+  --track-pg: #60A5FA;
+  --track-prisma: #818CF8;
   --track-nextjs: #FFFFFF;
-  --track-arch: #B588C7;
+  --track-arch: #C084FC;
 
   /* ---- visualization state scale ---------------------------- */
-  --viz-idle: #2A3350;
-  --viz-active: #4F8CFF;
-  --viz-comparing: #E5B454;
-  --viz-found: #3FBD7C;
-  --viz-eliminated: #3A3F52;
-  --viz-ink: #E6EAF2;          /* glyphs/labels drawn inside cells */
+  --viz-idle: #1E293B;
+  --viz-active: #3B82F6;
+  --viz-comparing: #F59E0B;
+  --viz-found: #10B981;
+  --viz-eliminated: #334155;
+  --viz-ink: #F8FAFC;
 
   /* ---- callouts (info · warn · pitfall · legacy · analogy) --- */
   --callout-info-bg: var(--tint-primary);
@@ -90,15 +92,17 @@
   /* ---- radii & shadows -------------------------------------- */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-lg: 16px;
   --radius-full: 999px;
 
-  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.40), 0 12px 32px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-1: 0 0 0 1px var(--border-subtle), 0 4px 16px -2px rgba(0, 0, 0, 0.45);
+  --shadow-2: 0 0 0 1px var(--border-default), 0 8px 32px -4px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 24px -4px rgba(59, 130, 246, 0.35);
 
   /* ---- type -------------------------------------------------- */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+    Roboto, system-ui, sans-serif;
   --font-mono: "Cascadia Code", Consolas, Menlo, "SF Mono", "Courier New",
     monospace;
   --font-arabic: "Cairo", "Tajawal", "Segoe UI", Tahoma, sans-serif;
@@ -120,7 +124,7 @@
   /* ---- motion ------------------------------------------------ */
   --dur-fast: 150ms;
   --dur-slow: 250ms;
-  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ---- layering ---------------------------------------------- */
   --z-topbar: 100;
@@ -128,66 +132,68 @@
   --z-modal: 300;
   --z-toast: 400;
 
-  /* ---- focus --------------------------------------------------
-     Visible focus is policy, not decoration: applied globally in
-     base.css via outline using this token. */
+  /* ---- focus -------------------------------------------------- */
   --focus-color: var(--accent-primary);
 
   /* ---- layout metrics ---------------------------------------- */
   --topbar-h: 56px;
   --sidebar-w: 280px;
   --toc-w: 240px;
-  --measure: 72ch;             /* prose measure 65–75ch */
+  --measure: 72ch;
   --gutter: clamp(var(--space-4), 4vw, var(--space-12));
 }
 
 /* ============================================================
-   LIGHT THEME — full parallel set; components never fork
+   LIGHT THEME
    ============================================================ */
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg-canvas: #F5F7FB;
+  --bg-canvas: #F8FAFC;
   --bg-surface: #FFFFFF;
-  --bg-raised: #EAEFF7;
-  --bg-code: #0D1117;          /* terminal stays dark — see note above */
-  --border-subtle: #DCE3EF;
-  --border-default: #C4CEE0;
+  --bg-raised: #F1F5F9;
+  --bg-code: #0A0E1A;          /* terminal stays dark */
+  --border-subtle: #E2E8F0;
+  --border-default: #CBD5E1;
+  --border-hover: #94A3B8;
 
-  --text-primary: #121828;     /* ~16:1 on white */
-  --text-secondary: #3F4A61;   /* ~8.5:1 */
-  --text-muted: #5D6980;       /* ~5.4:1 */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
   --text-on-accent: #FFFFFF;
 
-  --accent-primary: #2E63D4;
-  --accent-success: #1E7A43;
-  --accent-warning: #8F5F00;
-  --accent-danger: #BE3450;
+  --accent-primary: #2563EB;
+  --accent-primary-hover: #1D4ED8;
+  --accent-success: #059669;
+  --accent-warning: #D97706;
+  --accent-danger: #E11D48;
 
-  --tint-primary: rgba(46, 99, 212, 0.10);
-  --tint-success: rgba(30, 122, 67, 0.10);
-  --tint-warning: rgba(143, 95, 0, 0.12);
-  --tint-danger: rgba(190, 52, 80, 0.10);
-  --tint-legacy: rgba(93, 105, 128, 0.10);
+  --tint-primary: rgba(37, 99, 235, 0.08);
+  --tint-success: rgba(5, 150, 105, 0.08);
+  --tint-warning: rgba(217, 119, 6, 0.08);
+  --tint-danger: rgba(225, 29, 72, 0.08);
+  --tint-legacy: rgba(100, 116, 139, 0.08);
 
-  /* track identity: same hues except where invisible on white */
-  --track-found: #B45309;
-  --track-react: #0E7490;
-  --track-node: #4D7C0F;
-  --track-express: #6B7280;
-  --track-mongo: #15803D;
-  --track-pg: #2C5FA8;
-  --track-prisma: #5560E8;
+  --track-found: #D97706;
+  --track-react: #0284C7;
+  --track-node: #65A30D;
+  --track-express: #71717A;
+  --track-mongo: #16A34A;
+  --track-pg: #2563EB;
+  --track-prisma: #6366F1;
   --track-nextjs: #18181B;
-  --track-arch: #7C3AED;
+  --track-arch: #9333EA;
 
-  --viz-idle: #E4E9F3;
-  --viz-active: #2E63D4;
-  --viz-comparing: #8F5F00;
-  --viz-found: #1E7A43;
-  --viz-eliminated: #CBD3E1;
-  --viz-ink: #121828;
+  --viz-idle: #E2E8F0;
+  --viz-active: #2563EB;
+  --viz-comparing: #D97706;
+  --viz-found: #059669;
+  --viz-eliminated: #CBD5E1;
+  --viz-ink: #0F172A;
 
-  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.08), 0 2px 8px rgba(16, 24, 40, 0.06);
-  --shadow-2: 0 4px 12px rgba(16, 24, 40, 0.10), 0 12px 32px rgba(16, 24, 40, 0.10);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-1: 0 0 0 1px var(--border-subtle), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 0 0 1px var(--border-default), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px -2px rgba(37, 99, 235, 0.2);
 }
+
