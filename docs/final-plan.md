@@ -17,7 +17,7 @@
 - Part 4 — Information architecture & file map
 - Part 5 — Project structure
 - Part 6 — Design system
-- Part 7 — The lesson standard: standalone depth, interactivity quota, bilingual AR/EN, SVG & animations
+- Part 7 — The lesson standard: standalone interactive learning modules, interactivity quota, bilingual AR/EN, SVG, animations & visual engagement
 - Part 8 — The Interactive Kit (component contracts)
 - Part 9 — State, storage & the "no backend" compensations
 - Part 10 — Client-side search
@@ -244,22 +244,27 @@ Port of `newplan.md` §17, minus Tailwind. Positioning: **a focused developer to
 
 ---
 
-# Part 7 — The lesson standard: standalone resources (not slides)
+# Part 7 — The lesson standard: standalone interactive learning modules
 
-Every lesson follows `newplan.md` §4.1's eight-beat Learning Loop expressed as semantic HTML — but structure alone is nothing without depth. This part defines the mandatory content bar: what "fully detailed" means mechanically, how interactivity is dosed to hold attention, and exactly how Arabic and English mix.
+Every lesson follows `newplan.md` §4.1's eight-beat Learning Loop expressed as semantic HTML — but structure alone is nothing without depth, and depth alone is nothing without engagement. This part defines the mandatory content bar: what "fully detailed" means mechanically, how interactivity and visual engagement are dosed to hold attention and prevent cognitive fatigue, and exactly how Arabic and English mix. The visual and interactive benchmark is [`style-reference/style-ref-01.html`](../style-reference/style-ref-01.html) — every lesson must match or exceed its production quality.
 
-## 7.1 The standalone mandate — one page IS the whole topic
+> **The quality axiom:** Each lesson is a **standalone interactive learning module**, not a documentation page, not a slide deck, not a blog post. It is closer to a mini-course chapter that happens to live in one HTML file — a student should be able to learn, practice, and verify mastery of the topic without ever leaving the page or the platform.
 
-A lesson is a **complete mini-chapter** — closer to a book section than a blog post or a slide deck. The acceptance question for every single lesson:
+## 7.1 The standalone mandate — one page IS the complete resource
+
+A lesson is a **complete mini-chapter** — the student must **not need to leave the platform, search Google, watch external videos, or use another resource** to understand the topic. The acceptance question for every single lesson:
 
 > *"If a student who only has the listed prerequisites opens ONLY this page, can they fully understand and apply this topic — definition, mechanics, examples, edge cases, mistakes — without opening anything else?"*
 
-Consequences, binding on every author:
+**Completeness requirements, binding on every author:**
 
 - **No unexplained jargon.** Any term not taught in an earlier lesson gets a one-line inline explanation plus a glossary entry at first use.
 - **No "we'll cover that later" holes.** Everything referenced must exist behind an *internal* link to the exact lesson/anchor that teaches it.
 - **No summary bullets standing in for explanation.** Bullets may organize; only full sentences teach.
+- **No important information intentionally omitted.** Cover all essential concepts, terminology, practical details, examples, edge cases, common mistakes, and relevant context required for mastery of the topic.
+- **Structure content progressively.** Start from the fundamentals and move toward practical and advanced understanding where appropriate.
 - **External links are footnotes for the curious**, never required reading (inherited principle P1).
+- **No topic depends on external resources for basic understanding.** If you cannot teach it fully on the page, the page scope is wrong — split or merge.
 
 ## 7.2 Mandatory depth inventory — every lesson ships ALL seventeen elements
 
@@ -285,41 +290,101 @@ Consequences, binding on every author:
 
 **Sizing guidance (depth, not padding):** concept lessons land around **1,500–2,500 words-equivalent** including captions; API/syntax lessons carry similar weight with a higher code ratio. If a topic honestly fits in less, merge it into a neighboring lesson instead of thinning the bar.
 
-## 7.3 Page structure — the eight-beat Learning Loop
+## 7.3 Page structure — the consistent lesson experience
 
-Authors copy `templates/lesson-template.html` and fill it; `learning.css` styles every beat; shared JS upgrades the beats that need it.
+Authors copy `templates/lesson-template.html` and fill it; `learning.css` styles every beat; shared JS upgrades the beats that need it. The structure is inspired by the reference lesson's flow (Hero → Concept → Detailed Example → Complexity → Interactive Demo → Code Implementation) and generalized for all topics.
+
+**The canonical lesson flow** (adapt when the topic requires a different sequence, but maintain the same principles — complete coverage, practical application, interactivity, visual engagement, immediate feedback, clear mastery verification):
 
 ```text
 HEADER      breadcrumbs(auto) · track badge · est. time · version chip
             ("Teaches: React 19.2 · reviewed Aug 2026") · pattern-label badge
-1 LEARN     definition (plain AR → formal) · why-it-exists · ANALOGY callout
-            (Arabic, mandatory, comes first) · step-by-step mechanics · worked
-            example · callouts / tables / terminology cards
-2 SEE       STEPPER mount + inline SVG diagrams with CSS animation
-3 TRY       PLAYGROUND mount (editable code + Run) + EXPERIMENT blocks
-            ("predict, then flip this and re-run")
-4 ANATOMY   code-anatomy: two panes, per-line Arabic explanation, synced highlight
-5 DEEP DIVE <details> collapsible: internals, edge cases, legacy-vs-modern
-6 PRACTICE  exercise ladder Easy → Medium → Hard (+ Challenge)
+
+1 INTRO     Hero-style introduction: topic name (EN + AR), one-line hook,
+            learning objectives (3–5 concrete "after this you can…" statements),
+            visual context badge (like the reference's "WEEK 1 · خوارزميات البحث")
+
+2 LEARN     definition (plain AR → formal) · why-it-exists · ANALOGY callout
+            (Arabic, mandatory, comes first — like the reference's dictionary analogy) ·
+            step-by-step mechanics in numbered card layout (like the reference's
+            bordered-start step cards with numbered badges) · worked example ·
+            callouts / tables / terminology cards
+
+3 SEE       STEPPER mount + inline SVG diagrams with CSS animation — the visual
+            explanation of the concept (like the reference's step-by-step array
+            visualization with pointers, eliminated cells, and Arabic narration)
+
+4 TRY       **Try-It / Interactive Practice** section — the student actively applies
+            the concept: PLAYGROUND mount (editable code + Run) + EXPERIMENT blocks
+            ("predict, then flip this and re-run") + interactive exercises from §7.4
+            (like the reference's "Try It Yourself" search demo with input + step + autoplay)
+
+5 ANATOMY   code-anatomy: two panes, per-line Arabic explanation, synced highlight
+            (like the reference's side-by-side code + "شرح كل سطر" panel)
+
+6 DEEP DIVE <details> collapsible: internals, edge cases, complexity analysis
+            (like the reference's Time/Space complexity cards with tables and formulas),
+            legacy-vs-modern comparisons
+
+7 PRACTICE  exercise ladder Easy → Medium → Hard (+ Challenge)
             + common-mistakes gallery (broken → diagnose → fix)
-7 PROVE     CHECKPOINT mount: 3–6 questions, instant Arabic feedback,
-            wrong answers deep-link back to the teaching anchor
-8 PRODUCTION NOTES  <details>: real-world usage · interview Q&A · related lessons
+            — every exercise has immediate feedback explaining WHY
+
+8 PROVE     CHECKPOINT mount: 3–6 interactive questions (never static lists),
+            instant Arabic feedback, wrong answers deep-link back to the teaching
+            anchor — functions as the mastery verification gate
+
+9 PRODUCTION NOTES  <details>: real-world usage · interview Q&A · related lessons ·
+            summary of key takeaways
+
 FOOTER      prev/next(auto) · Mark complete · Bookmark · "Where you'll use this"
 ```
 
-## 7.4 The interactivity mandate — attention by design
+**The lesson experience contract:** every lesson follows this consistent high-quality structure. The student always knows where they are (intro → learning → seeing → doing → deepening → practicing → proving). The structure is designed to prevent cognitive fatigue through variety: prose is broken by visuals, visuals lead to interactivity, interactivity leads to deeper explanation, and the cycle repeats.
 
-Passive reading is the enemy of learning. Two binding rules:
+## 7.4 The interactivity mandate — interactive practice replaces static questions
+
+Passive reading is the enemy of learning. **Static question lists are banned** as the primary way to test understanding — every topic must include a meaningful interactive practice activity directly related to the lesson objective. Two binding rules:
 
 **The quota (minimum per lesson):**
 
 - 1 narrated **STEPPER** *or* **PLAYGROUND** (the SEE/TRY heart),
 - 1 **EXPERIMENT** ("predict, then reveal"),
-- 1 **CHECKPOINT quiz**,
+- 1 **CHECKPOINT quiz** (interactive, with immediate bilingual feedback — NOT a static list),
+- 1 **Try-It / Interactive Practice** section (see below),
 - ≥ 3 micro-interactions from the kit in §8.6 (flip cards, predict-output, ordering…).
 
-**The rhythm rule:** no stretch of more than **~400 words (~2 reading minutes)** without hitting an interaction, a diagram, or a visual state change. A reader should physically *do* something every couple of minutes.
+**The Try-It mandate — every topic gets hands-on practice:**
+
+Do **not** rely on traditional static question lists as the primary way to test understanding. Every topic must include a meaningful **Try It / Interactive Practice** section directly related to the lesson objective. The interactive activity must require the student to actively apply what they just learned. Accepted interaction types:
+
+| Interaction type | When to use |
+|---|---|
+| Interactive code exercises | Student writes/modifies real code and sees output |
+| Fill-in-the-blank challenges | Student completes missing parts of code or concepts |
+| Live previews | Student changes code and sees visual result immediately |
+| Drag-and-drop ordering | Student arranges steps, lifecycle phases, or priorities |
+| Predict-the-output challenges | Student commits a guess before seeing the real answer |
+| Click-to-reveal interactions | Student explores layered information by clicking |
+| Debugging tasks | Student finds and fixes broken code with immediate feedback |
+| Step-by-step simulations | Student controls a visualizer step-by-step (like the reference's binary search demo) |
+| Mini challenges | Timed or scored quick tasks within a lesson |
+| Interactive decision-making | Student makes architecture/design choices and sees consequences |
+
+Every interaction must provide **immediate feedback** and clearly explain **why** an answer is correct or incorrect. Design the interaction to verify that the student actually understands the concept rather than simply memorizing an answer. Every lesson should have a **clear mastery target** and an interactive mechanism that tests that target.
+
+**The rhythm rule — prevent boredom and cognitive fatigue:** no stretch of more than **~400 words (~2 reading minutes)** without hitting an interaction, a diagram, or a visual state change. The lesson experience should feel dynamic rather than like a long static document. Use a balanced combination of:
+
+- Short explanatory sections (never walls of text)
+- Visual examples and animated diagrams
+- Interactive demonstrations and simulations
+- Practice moments and micro-challenges
+- SVG illustrations and purposeful animations
+- Realistic code examples with live output
+- Feedback and progress indicators
+- Section transitions that reset cognitive load
+
+Break large topics into digestible learning segments while still maintaining complete coverage of the subject. A reader should physically *do* something every couple of minutes.
 
 Supporting behavior: experiments force a committed guess before revealing truth (retrieval practice beats re-reading); every interaction is keyboard-operable, screen-reader announced, and reduced-motion-safe — focus aids, never gimmicks.
 
@@ -347,17 +412,64 @@ Rules:
 5. Both languages say the same thing — Arabic is the teaching voice with personality, not a shorter summary of the English.
 6. Stepper `say:` strings and quiz explanations are authored in Arabic (they are the narrator's voice), mirroring the Algorithms execution logs.
 
-## 7.6 SVG diagrams & animations standard
+## 7.6 Visual engagement standard — animations, SVGs & anti-fatigue design
 
-- **≥ 1 hand-authored inline `<svg>` conceptual diagram per lesson** — colored via tokens (`var(--track-react)`), carrying `<title>` + `<desc>` for screen readers. Screenshots of diagrams are banned.
-- **≥ 1 purposeful CSS-only animation per lesson** (`@keyframes`/transitions applied to SVG parts): marching-dash flow along connection lines (`stroke-dashoffset`), pulsing active nodes, state-color transitions on cells, conveyor movement, growing bars/rings for complexity charts.
+The reference lesson (`style-ref-01.html`) demonstrates the target: glassmorphic cards, gradient accents, color-coded state transitions, animated array cells with glow effects, scroll-triggered reveals, and interactive visual demos that make abstract concepts tangible. Every lesson must match this production quality using our design system tokens rather than Tailwind.
+
+### 7.6.1 Mandatory visual elements per lesson
+
+- **≥ 1 hand-authored inline `<svg>` conceptual diagram** — colored via tokens (`var(--track-react)`), carrying `<title>` + `<desc>` for screen readers. Screenshots of diagrams are banned.
+- **≥ 1 purposeful CSS-only animation** (`@keyframes`/transitions applied to SVG parts): marching-dash flow along connection lines (`stroke-dashoffset`), pulsing active nodes, state-color transitions on cells, conveyor movement, growing bars/rings for complexity charts.
+- **≥ 1 interactive visual element** — hover/click/focus reveals, animated state transitions, visual feedback for student actions (like the reference's array cells changing color/scale/glow on step progression).
+- **Purposeful micro-interactions** throughout — button hover effects, card lift-on-hover, smooth section transitions, progress indicators that animate on completion.
+
+### 7.6.2 Visual design principles (benchmarked against the reference)
+
+Every lesson should intentionally use visual elements to maintain attention and reduce cognitive fatigue:
+
+| Visual technique | Purpose | Reference example |
+|---|---|---|
+| Purposeful animations | Explain concepts through motion | Array cells scaling up with glow when selected as `mid` |
+| Interactive SVG illustrations | Make abstract data structures tangible | Color-coded array with `in-range`, `eliminated`, `found` states |
+| Animated diagrams | Show processes and state changes over time | Step-by-step walkthrough with visual state transitions |
+| Visual explanations | Replace walls of text with visual reasoning | Side-by-side grid: visualization + Arabic explanation |
+| Micro-interactions | Maintain engagement and provide feedback | Hover effects on code lines, button animations |
+| Progressive reveals | Control information density | Step-by-step sections appearing via scroll-triggered animations |
+| Hover and click interactions | Encourage exploration | Code line highlighting on hover, term explanations on focus |
+| Visual feedback for actions | Confirm student input immediately | Green glow on found element, red fade on eliminated elements |
+| Motion that explains | Animation serves comprehension, not decoration | Pointers moving to show `low`/`mid`/`high` position changes |
+
+### 7.6.3 Anti-boredom visual rhythm
+
+The lesson must never feel like a long static document. Visual variety is mandatory:
+
+- **Alternate between** prose sections, visual diagrams, interactive demos, and code blocks — never three consecutive prose-only sections.
+- **Use card-based layouts** for grouped information (like the reference's glassmorphic cards for step-by-step breakdowns).
+- **Color-code related elements** consistently (e.g., `low` pointer always blue, `high` always purple, `mid` always amber — maintained across all diagrams and code in the lesson).
+- **Animate state transitions** rather than showing before/after snapshots — the student should see the change happen.
+- **Use visual hierarchy aggressively** — numbered step badges, colored sidebar borders on step cards, gradient text for key terms, accent-colored section dividers.
+
+### 7.6.4 Technical constraints
+
 - All animation gated on `prefers-reduced-motion` (static end-state shown instead).
 - Steppers remain the master animators: CSS responds to step-state changes driven by the engine — one clock, no competing timers.
 - Canvas is allowed only for optional decorative homepage particles, never for teaching content.
+- Zero external animation libraries (no AOS, no GSAP) — CSS transitions, `@keyframes`, and `IntersectionObserver`-driven class toggles only.
 
 ## 7.7 Mechanical quality gate (`check-content.mjs` enforces all of this)
 
-exactly one `h1` · objectives present · Arabic analogy block present · ≥ 1 inline SVG with `<title>`/`<desc>` · ≥ 1 animation utility class used · ≥ 1 stepper-or-playground · ≥ 1 experiment · checkpoint with resolvable anchors · ≥ 1 exercise · glossary + mistakes-gallery + production notes present · **bilingual coverage: ≥ 40% of prose paragraphs carry `fsa-ar`** · version chip present · all internal links resolve · no absolute paths · no external asset URLs.
+exactly one `h1` · objectives present · Arabic analogy block present · ≥ 1 inline SVG with `<title>`/`<desc>` · ≥ 1 animation utility class used · ≥ 1 interactive visual element · ≥ 1 stepper-or-playground · ≥ 1 experiment · ≥ 1 try-it interactive practice section · checkpoint with resolvable anchors · ≥ 1 exercise · glossary + mistakes-gallery + production notes present · **bilingual coverage: ≥ 40% of prose paragraphs carry `fsa-ar`** · version chip present · all internal links resolve · no absolute paths · no external asset URLs.
+
+**Additional quality rules (not automatable — enforced by author review):**
+
+- No important information intentionally omitted for the topic scope.
+- No topic depends on external resources for basic understanding.
+- No topic is tested only through static questions — every topic has an interactive mastery check.
+- Every topic contains an interactive way to apply the concept.
+- Every topic uses appropriate visual elements, animations, and/or SVGs.
+- Every interaction has a learning purpose — no decorative-only interactivity.
+- Every lesson is designed to keep students engaged while helping them genuinely master the subject.
+- The lesson passes the "train test": a student on a train with no internet, working from downloaded files, can complete the entire lesson journey.
 
 ---
 
@@ -505,7 +617,7 @@ Version truth (inherited Part 10 of the blueprint): `data/technologies.js` holds
 
 | Layer | Tool | When |
 |---|---|---|
-| **Content CI-lite** | `scripts/check-content.mjs` (zero-dep Node): exactly one h1 · objectives present · Arabic analogy block · **≥ 1 inline SVG carrying `<title>`/`<desc>`** · **≥ 1 animation class used** · **interactivity quota: ≥ 1 stepper/playground + ≥ 1 experiment + checkpoint with resolvable anchors** · ≥ 1 exercise · glossary + mistakes gallery + production notes present · **bilingual coverage ≥ 40% `fsa-ar` paragraphs** · version chip · all internal links/images resolve · no absolute paths · no external asset URLs | Before every push (optional pre-commit hook; never required to browse) |
+| **Content CI-lite** | `scripts/check-content.mjs` (zero-dep Node): exactly one h1 · objectives present · Arabic analogy block · **≥ 1 inline SVG carrying `<title>`/`<desc>`** · **≥ 1 animation class used** · **≥ 1 interactive visual element** · **interactivity quota: ≥ 1 stepper/playground + ≥ 1 experiment + ≥ 1 try-it interactive practice section + checkpoint with resolvable anchors** · ≥ 1 exercise · glossary + mistakes gallery + production notes present · **bilingual coverage ≥ 40% `fsa-ar` paragraphs** · version chip · all internal links/images resolve · no absolute paths · no external asset URLs | Before every push (optional pre-commit hook; never required to browse) |
 | **Data validation** | `gen-curriculum.mjs` validates tree integrity: unique slugs, ordered levels, prev/next chain closes | On generation |
 | **Exercise self-test** | check-content runs each exercise's reference solution through the same Worker harness students use; a planted broken variant must fail (**runner self-check invariant**) | Before every push |
 | **Component fixtures** | `styleguide.html` doubles as the test page: every component × both themes × keyboard-only walkthrough × 320px width | Per release |
@@ -524,29 +636,29 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 
 ### Overview table
 
-| # | Phase | Depends on | Headline deliverable |
-|---|---|---|---|
-| 1 | Foundation & Conventions | — | Repo skeleton + the authoring law of the land |
-| 2 | Design System | 1 | Tokens + components + `styleguide.html`, both themes |
-| 3 | Shell & Navigation | 2 | Topbar/sidebar/drawer/prev-next/theme working on any page |
-| 4 | Data Layer & Generators | 3 | `curriculum.js` pipeline + scaffold/check scripts |
-| 5 | Lesson Template | 2, 4 | `templates/lesson-template.html` + learning.css beats |
-| 6 | Stepper Engine | 5 | `stepper.js` validated on two pilot visualizations |
-| 7 | Code Experience | 5 | CodeBlock + CodeAnatomy + Worker playground |
-| 8 | Practice Layer | 6, 7 | `quiz.js` + `exercise.js` + hint ladder |
-| 9 | Progress & Dashboard | 4, 8 | progress store + dashboard + tips + export/import |
-| 10 | Search | 4 | index builder + Ctrl-K palette + `search.html` |
-| 11 | Homepage & Catalog Pages | 3, 9 | landing, `learn/`, track homes, 404 |
-| 12 | Reference, Projects & Playground surfaces | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
-| 13 | Content Wave 1 — Foundations + React | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
-| 14 | Content Wave 2 — Node + Express | 13 | ~26 lessons + event-loop & conveyor flagships |
-| 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | 14 | ~44 lessons + remaining flagships |
-| 16 | Hardening — A11y, Responsive, Performance | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
-| 17 | QA & Launch | 16 | Smoke protocol passed; live on GitHub Pages |
+| # | Phase | Status | Depends on | Headline deliverable |
+|---|---|---|---|---|
+| 1 | Foundation & Conventions | ✅ Completed | — | Repo skeleton + the authoring law of the land |
+| 2 | Design System | ✅ Completed | 1 | Tokens + components + `styleguide.html`, both themes |
+| 3 | Shell & Navigation | ✅ Completed | 2 | Topbar/sidebar/drawer/prev-next/theme working on any page |
+| 4 | Data Layer & Generators | ✅ Completed | 3 | `curriculum.js` pipeline + scaffold/check scripts |
+| 5 | Lesson Template | ✅ Completed | 2, 4 | `templates/lesson-template.html` + learning.css beats |
+| 6 | Stepper Engine | ✅ Completed | 5 | `stepper.js` validated on two pilot visualizations |
+| 7 | Code Experience | ✅ Completed | 5 | CodeBlock + CodeAnatomy + Worker playground |
+| 8 | Practice Layer | ✅ Completed | 6, 7 | `quiz.js` + `exercise.js` + hint ladder |
+| 9 | Progress & Dashboard | ✅ Completed | 4, 8 | progress store + dashboard + tips + export/import |
+| 10 | Search | ✅ Completed | 4 | index builder + Ctrl-K palette + `search.html` |
+| 11 | Homepage & Catalog Pages | In Progress | 3, 9 | landing, `learn/`, track homes, 404 |
+| 12 | Reference, Projects & Playground surfaces | Pending | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
+| 13 | Content Wave 1 — Foundations + React | Pending | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
+| 14 | Content Wave 2 — Node + Express | Pending | 13 | ~26 lessons + event-loop & conveyor flagships |
+| 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | Pending | 14 | ~44 lessons + remaining flagships |
+| 16 | Hardening — A11y, Responsive, Performance | Pending | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
+| 17 | QA & Launch | Pending | 16 | Smoke protocol passed; live on GitHub Pages |
 
 ---
 
-### Phase 1 — Foundation & Conventions *(week 1)*
+### Phase 1 — Foundation & Conventions *(Completed)*
 
 **Objective:** make every later decision pre-made.
 **Key tasks:** create the Part 5 tree · write `README.md` (what / how to run / deploy) · write `docs/AUTHORING.md` (naming conventions, class prefix, storage keys, the ten zero-build rules, lesson anatomy summary) · start `docs/DECISIONS.md` (running ADR log) · empty `css/` + `js/` scaffolds whose header comments state their contract · `.editorconfig`.
@@ -554,7 +666,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** —
 **Acceptance:** a stranger could clone the repo and add a page correctly using only README + AUTHORING.md; opening any file via double-click produces zero console errors.
 
-### Phase 2 — Design System *(weeks 1–2)*
+### Phase 2 — Design System *(Completed)*
 
 **Objective:** build the visual language exactly once.
 **Key tasks:** `tokens.css` (dark + light sets per Part 6) · `base.css` (reset, fluid type scale, prose styling, utilities, focus-visible policy) · **vendor Cairo WOFF2 into `assets/fonts/` + `.fsa-ar` typography rules + RTL/logical-property base styles** · `components.css` (buttons, cards, callouts info/warn/pitfall/legacy/version, badges & chips, tables, terminology cards, terminal code frame, details/accordion, tabs) · `layout.css` skeletons · SVG icon sprite (~20 icons) · `styleguide.html` rendering everything including Arabic samples in both directions.
@@ -562,7 +674,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 1.
 **Acceptance:** zero raw hex outside `tokens.css` (grep-verified) · all text pairs ≥ 4.5:1 in both themes · every component keyboard-operable with visible focus · styleguide flawless at 320px width · **Arabic samples render in Cairo, correctly RTL, embedded cleanly inside LTR pages.**
 
-### Phase 3 — Shell & Navigation *(week 2)*
+### Phase 3 — Shell & Navigation *(Completed)*
 
 **Objective:** never lose the learner's place.
 **Key tasks:** `theme.js` (persisted preference + inline boot snippet, no flash) · `app.js`: renders topbar + curriculum sidebar + breadcrumbs + prev/next + TOC scroll-spy from declarative page metadata (`<meta name="fsa-*">` / data attributes) · mobile drawer + persistent lesson bottom bar · skip-links · active-section highlighting.
@@ -570,7 +682,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 2.
 **Acceptance:** any page gets full chrome from three lines of metadata · keyboard-complete (roving sidebar tabindex, `[` / `]` prev-next shortcuts) · drawer + bottom bar on phones · works from `file://`.
 
-### Phase 4 — Data Layer & Generators *(weeks 2–3)*
+### Phase 4 — Data Layer & Generators *(Completed)*
 
 **Objective:** pages stop being islands (fixing the references' flat IA structurally).
 **Key tasks:** define lesson header metadata spec (title, track, level, order, estMinutes, teaches-version, pattern label, objectives) · `gen-curriculum.mjs` scans `learn/**` headers → emits `data/curriculum.js` (tree + flattened order + prereq edges + integrity checks) · `new-lesson.mjs` scaffolder · seed `data/technologies.js` registry + `data/tips.js`.
@@ -578,15 +690,15 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 3.
 **Acceptance:** adding a lesson = create file + run generator → sidebar, prev/next, breadcrumbs, position indicator all update with zero manual edits · duplicate slugs fail loudly.
 
-### Phase 5 — Lesson Template *(week 3)*
+### Phase 5 — Lesson Template *(Completed)*
 
 **Objective:** one copy-paste shape for all 106 lessons — pre-loaded with the full Part 7 bar.
-**Key tasks:** `templates/lesson-template.html` implementing the eight-beat Loop with placeholder mounts and a **pre-filled bilingual skeleton (EN headings + AR explanation placeholders per §7.5) plus commented slots for every one of the 17 depth-inventory elements** · `learning.css` (stepper frame, log panel, quiz, exercise, playground, viz state classes, mistakes gallery, diagram-frame + keyframes) · AUTHORING.md updated with a fill-in walkthrough **and one complete worked example lesson** authors can pattern-match.
+**Key tasks:** `templates/lesson-template.html` implementing the nine-beat consistent lesson experience with placeholder mounts and a **pre-filled bilingual skeleton (EN headings + AR explanation placeholders per §7.5) plus commented slots for every one of the 17 depth-inventory elements, including a Try-It / Interactive Practice section placeholder and interactive visual element slots** · `learning.css` (stepper frame, log panel, quiz, exercise, playground, viz state classes, mistakes gallery, diagram-frame + keyframes, try-it section styles, card-based step layouts) · AUTHORING.md updated with a fill-in walkthrough **and one complete worked example lesson (benchmarked against `style-ref-01.html`)** authors can pattern-match.
 **Deliverables:** template + learning.css.
 **Depends on:** 2, 4.
-**Acceptance:** a demo lesson built purely from the template passes keyboard walkthrough, looks correct in both themes and at 320px, and passes check-content's structural rules.
+**Acceptance:** a demo lesson built purely from the template passes keyboard walkthrough, looks correct in both themes and at 320px, passes check-content's structural rules, and includes all mandatory visual and interactive elements.
 
-### Phase 6 — Stepper Engine *(week 4)*
+### Phase 6 — Stepper Engine *(Completed)*
 
 **Objective:** the flagship interaction, generalized once.
 **Key tasks:** implement `FSA.stepper.mount()` contract per Part 8.1 (play/step/reset/new-example, scrubber, capped log, aria-live narration, keyboard, reduced-motion) · validate by porting **two** pilot visualizations from the Algorithms project (binary search + a second) onto the engine with zero engine changes.
@@ -594,7 +706,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 5.
 **Acceptance:** engine contains zero algorithm-specific code · autoplay honors reduced-motion · screen reader announces steps · log capped and colored · both pilots indistinguishable in feel from the originals.
 
-### Phase 7 — Code Experience *(weeks 4–5)*
+### Phase 7 — Code Experience *(Completed)*
 
 **Objective:** make code first-class: readable, copyable, runnable, safe.
 **Key tasks:** `codeblock.js` (copy button, language chip, line numbers, highlighted-line anchors) · code-anatomy component (two panes, synced hover/click highlight) · `playground.js`: textarea-over-pre editor, Run via Blob Worker with console proxying + 3s terminate guard, Reset, autosaved drafts · vendored React UMD iframe preview for React examples · Tier-0 static fallback verified with JS disabled.
@@ -602,7 +714,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 5.
 **Acceptance:** infinite loop cannot freeze the page · console output captured faithfully · copy strips prompts · drafts survive reload · everything still readable with JS off.
 
-### Phase 8 — Practice Layer *(weeks 5–6)*
+### Phase 8 — Practice Layer *(Completed)*
 
 **Objective:** reading becomes doing.
 **Key tasks:** `quiz.js` per Part 8.4 (pool sampling, instant feedback, anchor deep-links, progress reporting, review-queue feed) · `exercise.js` per Part 8.5 (tests-in-worker, hint ladder, gated solution) · common-mistakes gallery pattern · experiment block component.
@@ -618,7 +730,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 4, 8.
 **Acceptance:** state survives reload/browser restart/export-import round-trip · corrupt storage degrades to defaults without data loss of other keys · review queue surfaces missed skills within the same session.
 
-### Phase 10 — Search *(week 7)*
+### Phase 10 — Search *(Completed)*
 
 **Objective:** find concepts, not just pages.
 **Key tasks:** `build-search-index.mjs` per Part 10 · `search.js` scoring/grouping/highlighting + error-code shortcuts · Ctrl-K palette component + `search.html` page · recent searches (local).
@@ -645,26 +757,26 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 ### Phase 13 — Content Wave 1: Foundations + React *(weeks 9–15)*
 
 **Objective:** prove the whole pedagogy end-to-end on the most important path.
-**Key tasks:** author 16 Foundations lessons (flagships: request-lifecycle stepper, event-loop teaser stepper, fetch playground) + task-app *product_search_interface*-style exercise · author 20 React lessons (flagships: hooks call-order stepper, reconciliation visualizer, batching experiments; Actions covered conceptually) · Task Manager task-app · reference stubs for both tracks · **every lesson authored to the FULL Part 7 bar: standalone depth inventory, Arabic explanations around English terms, ≥ 1 animated SVG diagram, complete interactivity quota** — this wave sets the template for all future content.
+**Key tasks:** author 16 Foundations lessons (flagships: request-lifecycle stepper, event-loop teaser stepper, fetch playground) + task-app *product_search_interface*-style exercise · author 20 React lessons (flagships: hooks call-order stepper, reconciliation visualizer, batching experiments; Actions covered conceptually) · Task Manager task-app · reference stubs for both tracks · **every lesson authored to the FULL Part 7 bar: standalone depth inventory, Arabic explanations around English terms, ≥ 1 animated SVG diagram, complete interactivity quota, interactive Try-It section (no static question lists), visual engagement matching the `style-ref-01.html` benchmark** — this wave sets the template for all future content.
 **Deliverables:** ~36 lessons + 2 task-apps + 8 reference pages.
 **Depends on:** 5–9.
-**Acceptance:** check-content green across the wave · smoke journey completable start-to-finish by a test user who knows no React · quiz first-attempt pass rates 60–80% in calibration testing.
+**Acceptance:** check-content green across the wave · smoke journey completable start-to-finish by a test user who knows no React · quiz first-attempt pass rates 60–80% in calibration testing · every lesson has at least one interactive practice activity that tests the mastery target · no lesson relies on static questions as primary assessment · every lesson uses visual elements and animations to explain concepts.
 
 ### Phase 14 — Content Wave 2: Node + Express *(weeks 15–19)*
 
 **Objective:** the backend spine.
-**Key tasks:** 14 Node lessons (flagship: six-phase event-loop stepper validated against real runtime ordering; streams visualizer) · 12 Express lessons (flagships: middleware conveyor, request lifecycle) · URL-shortener and blogs-API project briefs · Node/Express reference + error pages (`EADDRINUSE` et al.) · all at the full Part 7 bar.
+**Key tasks:** 14 Node lessons (flagship: six-phase event-loop stepper validated against real runtime ordering; streams visualizer) · 12 Express lessons (flagships: middleware conveyor, request lifecycle) · URL-shortener and blogs-API project briefs · Node/Express reference + error pages (`EADDRINUSE` et al.) · all at the full Part 7 bar with interactive Try-It sections and visual engagement matching the reference benchmark.
 **Deliverables:** ~26 lessons + 2 briefs + 8 reference pages.
 **Depends on:** 13.
-**Acceptance:** event-loop step ordering reproduced identically by a scratch Node script · all predict-output exercises have verified expected outputs · check-content green.
+**Acceptance:** event-loop step ordering reproduced identically by a scratch Node script · all predict-output exercises have verified expected outputs · check-content green · every lesson has interactive practice and visual engagement.
 
 ### Phase 15 — Content Wave 3: Mongo + Postgres + Prisma + Architecture *(weeks 19–26)*
 
 **Objective:** the data story and the connective conclusion.
-**Key tasks:** 12 MongoDB lessons (aggregation pipeline stepper, embed-vs-reference simulator) · 12 PostgreSQL lessons (join animator, isolation-anomaly stepper, EXPLAIN reader) · 10 Prisma lessons (layer tracer, N+1 detector) · 10 Architecture/Next-concepts lessons (four condensed request-lifecycle steppers) · comparison content (the honest middle path: Postgres jsonb) · remaining reference/error pages · final project briefs · all at the full Part 7 bar.
+**Key tasks:** 12 MongoDB lessons (aggregation pipeline stepper, embed-vs-reference simulator) · 12 PostgreSQL lessons (join animator, isolation-anomaly stepper, EXPLAIN reader) · 10 Prisma lessons (layer tracer, N+1 detector) · 10 Architecture/Next-concepts lessons (four condensed request-lifecycle steppers) · comparison content (the honest middle path: Postgres jsonb) · remaining reference/error pages · final project briefs · all at the full Part 7 bar with interactive Try-It sections and visual engagement matching the reference benchmark.
 **Deliverables:** ~44 lessons + briefs + 8 reference pages; full catalog complete.
 **Depends on:** 14.
-**Acceptance:** every flagship interactive built on the untouched Phase-6 engine · SQL/Mongo exercises ship as steppers + expected-output panels with the honesty note · full-corpus check-content green.
+**Acceptance:** every flagship interactive built on the untouched Phase-6 engine · SQL/Mongo exercises ship as steppers + expected-output panels with the honesty note · full-corpus check-content green · every lesson has interactive practice and visual engagement.
 
 ### Phase 16 — Hardening: Accessibility, Responsive, Performance *(weeks 26–28)*
 
@@ -697,7 +809,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 
 ## 14.2 MVP definition
 
-**The MVP proves the promise end-to-end:** a student lands, follows Foundations into React, reads fully self-contained lessons with narrated visualizers, runs real code in-browser, passes checkpoints, watches progress accumulate locally, and finds anything via search — never opening another tab, never installing anything.
+**The MVP proves the promise end-to-end:** a student lands, follows Foundations into React, reads fully self-contained lessons with narrated visualizers, runs real code in-browser, passes interactive checkpoints (never static question lists), watches progress accumulate locally, and finds anything via search — never opening another tab, never installing anything. Every lesson is a **standalone interactive learning module** with visual engagement matching the `style-ref-01.html` benchmark.
 
 Scope: Phases 1–12 in full + Wave 1 content (~36 lessons). Explicitly deferred: all other tracks, projects system depth, reference completeness. Duration estimate: **~20 weeks solo** (the full-depth bilingual bar is the cost — and the point).
 
@@ -732,9 +844,18 @@ Scope: Phases 1–12 in full + Wave 1 content (~36 lessons). Explicitly deferred
 
 # Part 16 — Definition of done
 
-The Static Edition is done when it is: **simple** (clone → open → learn, zero installs), **standalone** (each lesson is the complete resource for its topic — the 17-element inventory filled, no external tabs, no unexplained terms), **bilingual** (Arabic explanation carrying understanding + English carrying the technical skeleton, in every lesson), **interactive** (the full quota: stepper/playground, experiment, checkpoint, and micro-interactions every ~2 minutes), **visual** (hand-authored animated SVG diagrams in every lesson), **honest** (every limitation stated in-product), **accessible** (WCAG 2.2 AA), **responsive** (320px phones to wide desktops), **fast** (≤ 90KB per lesson, zero third-party requests), **durable** (version chips + quarterly ritual against drift) — in short: the warmth and depth of the Algorithms course surviving inside a far more disciplined system.
+The Static Edition is done when it is: **simple** (clone → open → learn, zero installs), **standalone** (each lesson is the complete resource for its topic — the 17-element inventory filled, no external tabs, no unexplained terms, no important information omitted), **bilingual** (Arabic explanation carrying understanding + English carrying the technical skeleton, in every lesson), **interactive** (the full quota: stepper/playground, experiment, try-it interactive practice section, checkpoint, and micro-interactions every ~2 minutes — **no static question lists as the primary assessment method**), **visually engaging** (hand-authored animated SVG diagrams, purposeful CSS animations, interactive visual elements, color-coded state transitions, card-based layouts, and anti-fatigue visual rhythm — benchmarked against `style-ref-01.html`), **honest** (every limitation stated in-product), **accessible** (WCAG 2.2 AA), **responsive** (320px phones to wide desktops), **fast** (≤ 90KB per lesson, zero third-party requests), **durable** (version chips + quarterly ritual against drift) — in short: the warmth, depth, and visual polish of the Algorithms reference lesson surviving inside a far more disciplined system.
 
-> Final test, restated: *could a student finish this lesson's journey on a train with no internet, from files they downloaded last week?* If yes — it ships.
+**The six non-negotiable quality rules for every lesson:**
+
+1. No important information is intentionally omitted.
+2. No topic depends on external resources for basic understanding.
+3. No topic is tested only through static questions.
+4. Every topic contains an interactive way to apply the concept.
+5. Every topic uses appropriate visual elements, animations, and/or SVGs.
+6. Every interaction has a learning purpose, and every lesson keeps students engaged while helping them genuinely master the subject.
+
+> Final test, restated: *could a student finish this lesson's journey on a train with no internet, from files they downloaded last week — and arrive at genuine understanding through interacting with the material, not just reading it?* If yes — it ships.
 
 *End of plan.*
 

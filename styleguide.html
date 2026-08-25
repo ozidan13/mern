@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FSA Design System Styleguide · دليل التصميم</title>
+  
+  <!-- CSS Bundle -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/learning.css">
+
+  <style>
+    .sg-section {
+      margin-block-end: var(--space-12);
+      padding-block-end: var(--space-8);
+      border-block-end: 1px solid var(--border-subtle);
+    }
+    .sg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4);
+      margin-block-start: var(--space-4);
+    }
+    .sg-swatch {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-surface);
+    }
+    .sg-swatch__color {
+      height: 60px;
+      width: 100%;
+    }
+    .sg-swatch__info {
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--fs-xs);
+      font-family: var(--font-mono);
+    }
+    .sg-swatch__name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .sg-swatch__var {
+      color: var(--text-muted);
+    }
+    .sg-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: center;
+      margin-block-start: var(--space-3);
+    }
+    .sg-icons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--space-3);
+      margin-block-start: var(--space-4);
+    }
+    .sg-icon-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-size: var(--fs-xs);
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+    }
+    .sg-icon-card svg {
+      width: 24px;
+      height: 24px;
+      color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG Icon Sprite Include -->
+  <div id="fsa-icons-sprite" style="display:none;"></div>
+  <script>
+    // Fetch and inject sprite for demonstration if run over HTTP or inline fallback
+    fetch('assets/icons.svg')
+      .then(r => r.text())
+      .then(svgText => {
+        const div = document.getElementById('fsa-icons-sprite');
+        if (div) div.innerHTML = svgText;
+      })
+      .catch(() => console.log('Sprite fetched via inline or relative path'));
+  </script>
+
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <!-- Topbar -->
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Styleguide</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <span class="fsa-chip">Zero-Build Design System</span>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" aria-label="Toggle Theme" title="Toggle Theme">
+          <svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <!-- Sidebar Navigation for Styleguide Sections -->
+      <aside class="fsa-sidebar">
+        <nav class="fsa-sidebar__nav">
+          <div>
+            <div class="fsa-sidebar__section-title">Design System</div>
+            <ul class="fsa-sidebar__list">
+              <li><a href="#tokens" class="fsa-sidebar__link">Tokens & Colors</a></li>
+              <li><a href="#typography" class="fsa-sidebar__link">Typography & Arabic</a></li>
+              <li><a href="#buttons" class="fsa-sidebar__link">Buttons</a></li>
+              <li><a href="#badges" class="fsa-sidebar__link">Badges & Chips</a></li>
+              <li><a href="#callouts" class="fsa-sidebar__link">Callouts & Analogies</a></li>
+              <li><a href="#code" class="fsa-sidebar__link">Code Frames & Anatomy</a></li>
+              <li><a href="#cards" class="fsa-sidebar__link">Cards & Rings</a></li>
+              <li><a href="#tables" class="fsa-sidebar__link">Tables & Terminology</a></li>
+              <li><a href="#accordion" class="fsa-sidebar__link">Details & Tabs</a></li>
+              <li><a href="#diagrams" class="fsa-sidebar__link">Diagrams & Animation</a></li>
+              <li><a href="#icons" class="fsa-sidebar__link">Icon Sprite</a></li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main id="main-content" class="fsa-main">
+        <div class="fsa-article">
+          
+          <div class="fsa-lesson-header">
+            <div class="fsa-breadcrumbs">
+              <a href="index.html">Home</a> &rsaquo;
+              <span>Styleguide</span>
+            </div>
+            <h1>Living Design System & Component Spec</h1>
+            <p class="fsa-lead">
+              The single visual source of truth for the FullStack Academy static edition. 
+              Grep-tested for zero raw hex codes, WCAG AA contrast, and native bilingual Arabic/English rendering.
+            </p>
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">WCAG 2.2 AA</span>
+              <span class="fsa-badge">Cairo WOFF2</span>
+              <span class="fsa-badge">Pure CSS</span>
+            </div>
+          </div>
+
+          <!-- Section: Tokens -->
+          <section id="tokens" class="sg-section">
+            <h2>1. Design Tokens & Surface Hierarchy</h2>
+            <p>Every surface and text color is defined in <code>tokens.css</code> and seamlessly inverts under light theme.</p>
+            
+            <h3>Surfaces & Borders</h3>
+            <div class="sg-grid">
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--bg-canvas);"></div>
+                <div class="sg-swatch__info">
+                  <div class="sg-swatch__name">Canvas</div>
+                  <div class="sg-swatch__var">--bg-canvas</div>
+                </div>
+              </div>
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--bg-surface);"></div>
+                <div class="sg-swatch__info">
+                  <div class="sg-swatch__name">Surface</div>
+                  <div class="sg-swatch__var">--bg-surface</div>
+                </div>
+              </div>
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--bg-raised);"></div>
+                <div class="sg-swatch__info">
+                  <div class="sg-swatch__name">Raised</div>
+                  <div class="sg-swatch__var">--bg-raised</div>
+                </div>
+              </div>
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--bg-code);"></div>
+                <div class="sg-swatch__info">
+                  <div class="sg-swatch__name">Code (Fixed)</div>
+                  <div class="sg-swatch__var">--bg-code</div>
+                </div>
+              </div>
+            </div>
+
+            <h3 style="margin-block-start: var(--space-6);">Accents & States</h3>
+            <div class="sg-grid">
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--accent-primary);"></div>
+                <div class="sg-swatch__info"><div class="sg-swatch__name">Primary</div><div class="sg-swatch__var">--accent-primary</div></div>
+              </div>
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--accent-success);"></div>
+                <div class="sg-swatch__info"><div class="sg-swatch__name">Success</div><div class="sg-swatch__var">--accent-success</div></div>
+              </div>
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--accent-warning);"></div>
+                <div class="sg-swatch__info"><div class="sg-swatch__name">Warning</div><div class="sg-swatch__var">--accent-warning</div></div>
+              </div>
+              <div class="sg-swatch">
+                <div class="sg-swatch__color" style="background: var(--accent-danger);"></div>
+                <div class="sg-swatch__info"><div class="sg-swatch__name">Danger</div><div class="sg-swatch__var">--accent-danger</div></div>
+              </div>
+            </div>
+
+            <h3 style="margin-block-start: var(--space-6);">Track Accent Scale</h3>
+            <div class="sg-grid">
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-found);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">Foundations</div><div class="sg-swatch__var">--track-found</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-react);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">React</div><div class="sg-swatch__var">--track-react</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-node);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">Node.js</div><div class="sg-swatch__var">--track-node</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-express);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">Express</div><div class="sg-swatch__var">--track-express</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-mongo);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">MongoDB</div><div class="sg-swatch__var">--track-mongo</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-pg);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">PostgreSQL</div><div class="sg-swatch__var">--track-pg</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-prisma);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">Prisma</div><div class="sg-swatch__var">--track-prisma</div></div></div>
+              <div class="sg-swatch"><div class="sg-swatch__color" style="background: var(--track-arch);"></div><div class="sg-swatch__info"><div class="sg-swatch__name">Architecture</div><div class="sg-swatch__var">--track-arch</div></div></div>
+            </div>
+          </section>
+
+          <!-- Section: Typography & Arabic -->
+          <section id="typography" class="sg-section">
+            <h2>2. Typography & Arabic Standard</h2>
+            <p>English headings and technical terms paired with self-hosted Cairo Arabic typography.</p>
+            
+            <h1>Heading 1 (30px scale)</h1>
+            <h2>Heading 2 (24px scale)</h2>
+            <h3>Heading 3 (18px scale)</h3>
+            <p>Standard paragraph text in Latin system font stack with optimal line height and reading measure (65–75ch).</p>
+            
+            <div class="fsa-callout" data-kind="info" style="margin-block: var(--space-4);">
+              <div class="fsa-callout__title">Bilingual Integration Sample</div>
+              <p>English context sentence introducing the concept.</p>
+              <p class="fsa-ar" dir="rtl">
+                الـ <strong>Event Loop</strong> هو المحرك الأساسي في <code>Node.js</code> اللي بيسمح بتنفيذ العمليات غير المتزامنة بدون توقف الـ Main Thread. 
+                تخيّل إنك في مطعم وطلبك بيتجهز في المطبخ بينما الويتر بياخد طلبات الزباين التانيين!
+              </p>
+            </div>
+          </section>
+
+          <!-- Section: Buttons -->
+          <section id="buttons" class="sg-section">
+            <h2>3. Buttons & Interactive States</h2>
+            <div class="sg-row">
+              <button class="fsa-btn fsa-btn--primary">Primary Action</button>
+              <button class="fsa-btn">Standard Raised</button>
+              <button class="fsa-btn fsa-btn--ghost">Ghost Button</button>
+              <button class="fsa-btn fsa-btn--danger">Danger Action</button>
+              <button class="fsa-btn fsa-btn--sm">Small Button</button>
+              <button class="fsa-btn fsa-btn--icon" title="Search"><svg><use href="assets/icons.svg#fsa-icon-search"></use></svg></button>
+              <button class="fsa-btn" disabled>Disabled State</button>
+            </div>
+          </section>
+
+          <!-- Section: Badges & Chips -->
+          <section id="badges" class="sg-section">
+            <h2>4. Badges, Chips & Track Indicators</h2>
+            <div class="sg-row">
+              <span class="fsa-badge">Badge</span>
+              <span class="fsa-chip">Teaches: React 19.2 · reviewed Aug 2026</span>
+              <span class="fsa-track-chip">
+                <span class="fsa-track-dot" style="--chip-color: var(--track-react);"></span>
+                React Track
+              </span>
+              <span class="fsa-track-chip">
+                <span class="fsa-track-dot" style="--chip-color: var(--track-node);"></span>
+                Node.js Track
+              </span>
+              <span class="fsa-track-chip">
+                <span class="fsa-track-dot" style="--chip-color: var(--track-pg);"></span>
+                PostgreSQL Track
+              </span>
+            </div>
+          </section>
+
+          <!-- Section: Callouts -->
+          <section id="callouts" class="sg-section">
+            <h2>5. Callout System</h2>
+            
+            <div class="fsa-callout" data-kind="analogy" style="margin-block-end: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                Real-Life Analogy · تشبيه من الواقع
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                تخيّل إن الـ <strong>Database Indexes</strong> زي الفهرس اللي في آخر الكتاب: بدل ما تقرأ الكتاب صفحة صفحة عشان تدور على كلمة، بتبص في الفهرس وتفتح الصفحة المطلوبة فوراً!
+              </p>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-end: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="assets/icons.svg#fsa-icon-info"></use></svg>
+                Information
+              </div>
+              <p>State updates in React 19 are automatically batched across all asynchronous boundaries.</p>
+            </div>
+
+            <div class="fsa-callout" data-kind="warn" style="margin-block-end: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="assets/icons.svg#fsa-icon-alert"></use></svg>
+                Warning · تحذير
+              </div>
+              <p>Mutating state directly will bypass the reconciliation algorithm and break UI synchronization.</p>
+            </div>
+
+            <div class="fsa-callout" data-kind="pitfall" style="margin-block-end: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="assets/icons.svg#fsa-icon-alert"></use></svg>
+                Common Pitfall · فخ شائع
+              </div>
+              <p>Calling <code>useState</code> inside an <code>if</code> condition violates the Rules of Hooks.</p>
+            </div>
+
+            <div class="fsa-callout" data-kind="legacy">
+              <div class="fsa-callout__title">
+                <svg><use href="assets/icons.svg#fsa-icon-book"></use></svg>
+                Legacy Note · ملاحظة للأنظمة القديمة
+              </div>
+              <p>In React 17 and earlier, promises and timeouts were not automatically batched.</p>
+            </div>
+          </section>
+
+          <!-- Section: Code Frame -->
+          <section id="code" class="sg-section">
+            <h2>6. Terminal Code Frame</h2>
+            <div class="fsa-code">
+              <div class="fsa-code__bar">
+                <div class="fsa-code__dots"><div class="fsa-code__dot"></div></div>
+                <span class="fsa-code__file">src/App.jsx</span>
+                <button class="fsa-code__copy" onclick="navigator.clipboard.writeText('function Counter() { return null; }'); this.innerText='Copied!';">
+                  <svg><use href="assets/icons.svg#fsa-icon-copy"></use></svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <pre><code>import { useState } from 'react';
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;
+      Count: {count}
+    &lt;/button&gt;
+  );
+}</code></pre>
+            </div>
+          </section>
+
+          <!-- Section: Cards & Rings -->
+          <section id="cards" class="sg-section">
+            <h2>7. Cards & Progress Rings</h2>
+            <div class="sg-grid">
+              <div class="fsa-card">
+                <div class="fsa-card__title">React Fundamentals</div>
+                <p class="fsa-card__meta">Level 1 · 4 Lessons</p>
+                <div style="margin-block-start: var(--space-4); display: flex; align-items: center; gap: var(--space-3);">
+                  <svg class="fsa-ring" width="36" height="36" viewBox="0 0 36 36" style="--ring-value: 75;">
+                    <circle class="fsa-ring__track" cx="18" cy="18" r="14"></circle>
+                    <circle class="fsa-ring__value" cx="18" cy="18" r="14"></circle>
+                  </svg>
+                  <span style="font-size: var(--fs-sm); font-weight: 600;">75% Complete</span>
+                </div>
+              </div>
+
+              <div class="fsa-card">
+                <div class="fsa-card__title">Node.js Event Loop</div>
+                <p class="fsa-card__meta">Level 2 · 6 Lessons</p>
+                <div style="margin-block-start: var(--space-4); display: flex; align-items: center; gap: var(--space-3);">
+                  <svg class="fsa-ring" width="36" height="36" viewBox="0 0 36 36" style="--ring-value: 30;">
+                    <circle class="fsa-ring__track" cx="18" cy="18" r="14"></circle>
+                    <circle class="fsa-ring__value" cx="18" cy="18" r="14"></circle>
+                  </svg>
+                  <span style="font-size: var(--fs-sm); font-weight: 600;">30% Complete</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section: Tables & Terminology -->
+          <section id="tables" class="sg-section">
+            <h2>8. Tables & Terminology Cards</h2>
+            <div class="fsa-table-wrap" style="margin-block-end: var(--space-6);">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Hook</th>
+                    <th>Purpose</th>
+                    <th>Execution Timing</th>
+                    <th>Arabic Gloss · المعنى</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>useState</code></td>
+                    <td>Local component state</td>
+                    <td>Synchronous during render</td>
+                    <td class="fsa-ar" dir="rtl">حفظ حالة محلية للمكوّن</td>
+                  </tr>
+                  <tr>
+                    <td><code>useEffect</code></td>
+                    <td>Side effects synchronization</td>
+                    <td>Asynchronous after paint</td>
+                    <td class="fsa-ar" dir="rtl">تأثيرات جانبية بعد رسم الشاشة</td>
+                  </tr>
+                  <tr>
+                    <td><code>useRef</code></td>
+                    <td>Mutable persistent reference</td>
+                    <td>Instant across renders</td>
+                    <td class="fsa-ar" dir="rtl">مرجع دائم لا يسبب إعادة رسم</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <dl class="fsa-term-card">
+              <dt>Reconciliation (المطابقة)</dt>
+              <dd class="fsa-ar" dir="rtl">
+                الخوارزمية التي يستخدمها React لمقارنة شجرة الـ Virtual DOM القديمة مع الشجرة الجديدة لتحديد أقل عدد ممكن من التعديلات على الـ Real DOM.
+              </dd>
+            </dl>
+          </section>
+
+          <!-- Section: Details & Tabs -->
+          <section id="accordion" class="sg-section">
+            <h2>9. Collapsible Details & Tabs</h2>
+            <details class="fsa-details" open>
+              <summary>Deep Dive: How Virtual DOM Diffing Works</summary>
+              <div class="fsa-details__body">
+                <p>React compares element types first. If type changes, the whole sub-tree is destroyed and remounted.</p>
+              </div>
+            </details>
+
+            <details class="fsa-details">
+              <summary>Interview Q&A: Why is mutating state directly bad?</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">
+                  لأن React يعتمد على مقارنة المراجع (Shallow Comparison) لمعرفة ما إذا كانت الحالة قد تغيرت أم لا. عند التعديل المباشر، يظل المرجع كما هو فلا يشعر React بأي تغيير.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- Section: Diagrams & Steppers -->
+          <section id="diagrams" class="sg-section">
+            <h2>10. Stepper Engine & Animated Visualizations</h2>
+            <p>The flagship interaction engine: precomputed steps, transport controls, scrubber, and live execution logs.</p>
+            
+            <h3>Pilot 1: Binary Search Halving Visualizer</h3>
+            <div class="fsa-stepper" id="pilot-bs-stepper"></div>
+
+            <h3 style="margin-block-start: var(--space-8);">Pilot 2: React Hooks Call-Order Visualizer</h3>
+            <div class="fsa-stepper" id="pilot-hooks-stepper"></div>
+
+            <h3 style="margin-block-start: var(--space-8);">Conceptual SVG Diagrams & Flow Animation</h3>
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 600 160" width="100%" height="160" aria-label="Request Lifecycle Diagram">
+                <title>HTTP Request Flow</title>
+                <desc>Browser sends request through Express Middleware to Database and returns response</desc>
+                
+                <!-- Marching Flow Path -->
+                <line x1="110" y1="80" x2="250" y2="80" stroke="var(--border-default)" stroke-width="3" />
+                <line x1="110" y1="80" x2="250" y2="80" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                
+                <line x1="330" y1="80" x2="470" y2="80" stroke="var(--border-default)" stroke-width="3" />
+                <line x1="330" y1="80" x2="470" y2="80" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <!-- Nodes -->
+                <g transform="translate(40, 50)">
+                  <rect width="80" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                  <text x="40" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Browser</text>
+                </g>
+
+                <g transform="translate(250, 50)" class="fsa-anim-pulse">
+                  <rect width="90" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--track-express)" stroke-width="2" />
+                  <text x="45" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Express</text>
+                </g>
+
+                <g transform="translate(470, 50)">
+                  <rect width="90" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--track-pg)" stroke-width="2" />
+                  <text x="45" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">PostgreSQL</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- Section: Icon Sprite -->
+          <section id="icons" class="sg-section">
+            <h2>11. Built-in SVG Icon Sprite</h2>
+            <div class="sg-icons-grid">
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-search"></use></svg><span>search</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg><span>sun</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-moon"></use></svg><span>moon</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-chevron-right"></use></svg><span>chevron-right</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg><span>check</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-check-circle"></use></svg><span>check-circle</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-bookmark"></use></svg><span>bookmark</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-copy"></use></svg><span>copy</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-play"></use></svg><span>play</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-pause"></use></svg><span>pause</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-step"></use></svg><span>step</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-reset"></use></svg><span>reset</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-terminal"></use></svg><span>terminal</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-book"></use></svg><span>book</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-code"></use></svg><span>code</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg><span>flame</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg><span>lightbulb</span></div>
+              <div class="sg-icon-card"><svg><use href="assets/icons.svg#fsa-icon-menu"></use></svg><span>menu</span></div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/fsa-namespace.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/stepper.js"></script>
+  <script>
+    // Theme toggle button setup
+    const btn = document.getElementById('themeToggleBtn');
+    btn.addEventListener('click', () => {
+      window.FSA.theme.toggle();
+    });
+
+    // Pilot 1: Binary Search Halving Stepper
+    FSA.stepper.mount({
+      el: 'pilot-bs-stepper',
+      title: 'Binary Search — Watch the search range halve in O(log n) time',
+      labels: {
+        idle: 'Unchecked',
+        comparing: 'Midpoint (Checking)',
+        found: 'Found Target!',
+        eliminated: 'Eliminated Half'
+      },
+      init: () => {
+        const arr = [4, 7, 12, 18, 23, 29, 35, 42, 49, 56, 63, 71, 80, 88, 95];
+        const target = arr[Math.floor(Math.random() * arr.length)];
+        return { arr, target };
+      },
+      steps: (state) => {
+        const steps = [];
+        const { arr, target } = state;
+        let l = 0, h = arr.length - 1;
+        
+        steps.push({
+          l, h, m: -1, found: false,
+          say: `Starting binary search for target ${target} across range [0..${h}].`,
+          sayAr: `بدء البحث الثنائي عن الرقم ${target} داخل النطاق من [0 إلى ${h}].`
+        });
+
+        while (l <= h) {
+          const m = Math.floor((l + h) / 2);
+          if (arr[m] === target) {
+            steps.push({
+              l, h, m, found: true,
+              say: `Found target ${target} at index ${m}!`,
+              sayAr: `تم العثور على الرقم ${target} في الفهرس رقم ${m} بنجاح!`
+            });
+            break;
+          } else if (arr[m] < target) {
+            steps.push({
+              l, h, m, found: false,
+              say: `Index ${m} value (${arr[m]}) is smaller than ${target}. Eliminating left half.`,
+              sayAr: `القيمة في الفهرس ${m} (${arr[m]}) أصغر من ${target}. تم استبعاد النصف الأيسر بالكامل.`
+            });
+            l = m + 1;
+          } else {
+            steps.push({
+              l, h, m, found: false,
+              say: `Index ${m} value (${arr[m]}) is larger than ${target}. Eliminating right half.`,
+              sayAr: `القيمة في الفهرس ${m} (${arr[m]}) أكبر من ${target}. تم استبعاد النصف الأيمن بالكامل.`
+            });
+            h = m - 1;
+          }
+        }
+        return steps;
+      },
+      render: (state, step, els) => {
+        const { arr } = state;
+        const html = `
+          <ul class="fsa-viz-cells">
+            ${arr.map((val, idx) => {
+              let stateClass = 'is-idle';
+              let pointer = '';
+              if (idx === step.m) {
+                stateClass = step.found ? 'is-found' : 'is-comparing';
+                pointer = '<span class="fsa-viz-cell__pointer">MID</span>';
+              } else if (idx < step.l || idx > step.h) {
+                stateClass = 'is-eliminated';
+              }
+              if (idx === step.l && idx !== step.m) pointer = '<span class="fsa-viz-cell__pointer">L</span>';
+              if (idx === step.h && idx !== step.m) pointer = '<span class="fsa-viz-cell__pointer">H</span>';
+
+              return `
+                <li class="fsa-viz-cell ${stateClass}">
+                  ${pointer}
+                  <span>${val}</span>
+                  <span class="fsa-viz-cell__index">${idx}</span>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        `;
+        els.viz.innerHTML = html;
+      }
+    });
+
+    // Pilot 2: React Hooks Call-Order Stepper
+    FSA.stepper.mount({
+      el: 'pilot-hooks-stepper',
+      title: 'React Hooks Call-Order — The LinkedList Index Pointer',
+      labels: {
+        idle: 'Pending Hook',
+        comparing: 'Active Hook executing',
+        found: 'State Returned to Component'
+      },
+      init: () => ({
+        hooks: [
+          { name: 'useState(0)', type: 'State: count', val: '0' },
+          { name: 'useState("")', type: 'State: text', val: '""' },
+          { name: 'useEffect(fn)', type: 'Effect: sync', val: 'fx' },
+          { name: 'useRef(null)', type: 'Ref: inputEl', val: 'DOM' }
+        ]
+      }),
+      steps: (state) => [
+        { hookIdx: -1, say: 'Component render starts. Hook pointer initialized to head (index 0).', sayAr: 'بداية رسم المكوّن. مؤشر الـ Hooks يشير إلى أول خلية (الفهرس 0).' },
+        { hookIdx: 0, say: 'Hook 1 executed: useState(0). Pointer reads value and advances to next node.', sayAr: 'تنفيذ Hook 1: قراءة قيمة count ثم تقدم المؤشر للعقدة التالية.' },
+        { hookIdx: 1, say: 'Hook 2 executed: useState(""). Pointer reads text state and advances.', sayAr: 'تنفيذ Hook 2: قراءة قيمة text ثم تقدم المؤشر.' },
+        { hookIdx: 2, say: 'Hook 3 executed: useEffect scheduled for after-paint commit.', sayAr: 'تنفيذ Hook 3: تسجيل الـ Effect للتنفيذ بعد رسم الشاشة.' },
+        { hookIdx: 3, say: 'Hook 4 executed: useRef returns persistent reference object.', sayAr: 'تنفيذ Hook 4: إرجاع كائن الـ Ref الدائم عبر مرات الرسم.' }
+      ],
+      render: (state, step, els) => {
+        const html = `
+          <ul class="fsa-viz-cells">
+            ${state.hooks.map((h, idx) => {
+              let stateClass = 'is-idle';
+              let pointer = '';
+              if (idx === step.hookIdx) {
+                stateClass = 'is-comparing';
+                pointer = '<span class="fsa-viz-cell__pointer">CUR</span>';
+              } else if (idx < step.hookIdx) {
+                stateClass = 'is-found';
+              }
+              return `
+                <li class="fsa-viz-cell ${stateClass}" style="width: 100px; height: 60px;">
+                  ${pointer}
+                  <span style="font-size: 11px;">${h.name}</span>
+                  <span class="fsa-viz-cell__index">${h.val}</span>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        `;
+        els.viz.innerHTML = html;
+      }
+    });
+  </script>
+</body>
+</html>

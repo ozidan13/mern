@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Search · البحث الشامل — FullStack Academy</title>
+  
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span>Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main-content" class="fsa-main" style="max-width: 900px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <div class="fsa-card">
+        <h1 style="font-size: var(--fs-2xl); margin-block-end: var(--space-3);">Search FullStack Academy</h1>
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-md); margin-block-end: var(--space-6);">
+          ابحث في جميع المسارات، الدروس، المصطلحات، ورسائل الأخطاء باللغتين العربية والإنجليزية.
+        </p>
+
+        <div style="display: flex; gap: var(--space-3); margin-block-end: var(--space-6);">
+          <input type="text" id="pageSearchInput" placeholder="Type a concept, term, or error code (e.g. useEffect, event loop, P2002)..." style="
+            flex: 1; padding: var(--space-3) var(--space-4); background: var(--bg-raised); border: 1px solid var(--border-default);
+            border-radius: var(--radius-md); font-size: var(--fs-md); color: var(--text-primary);
+          ">
+        </div>
+
+        <div id="pageSearchResults" style="display: flex; flex-direction: column; gap: var(--space-3);">
+          <div style="text-align: center; color: var(--text-muted); padding: var(--space-6);">
+            Start typing above to see search results.
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/fsa-namespace.js"></script>
+  <script src="data/search-index.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('pageSearchInput');
+      const resultsContainer = document.getElementById('pageSearchResults');
+
+      input.addEventListener('input', (e) => {
+        const query = e.target.value;
+        if (!query.trim()) {
+          resultsContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: var(--space-6);">Start typing above to see search results.</div>';
+          return;
+        }
+
+        const results = window.FSA.search.search(query);
+        if (!results.length) {
+          resultsContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: var(--space-6);">No matching lessons found.</div>';
+          return;
+        }
+
+        resultsContainer.innerHTML = results.map(r => `
+          <a href="${r.url}" class="fsa-card" style="text-decoration: none;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <div class="fsa-card__title">${r.t}</div>
+                <div style="font-size: var(--fs-xs); color: var(--text-muted); margin-block-start: 4px;">${r.h || ''}</div>
+              </div>
+              <span class="fsa-badge">${r.track || r.kind}</span>
+            </div>
+          </a>
+        `).join('');
+      });
+
+      input.focus();
+    });
+  </script>
+</body>
+</html>

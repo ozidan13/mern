@@ -1,0 +1,480 @@
+/* ============================================================
+   components.css — buttons, cards, callouts, badges, chips,
+   tables, terminology cards, terminal code frame, details, tabs
+   ------------------------------------------------------------
+   Contract:
+   - Consumes tokens.css ONLY (zero raw values).
+   - Every component is keyboard-operable with visible focus.
+   - Direction-safe: logical properties only (inline-start/end,
+     block-start/end) so RTL never breaks.
+   ============================================================ */
+
+/* ================= BUTTONS ================= */
+.fsa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  font-size: var(--fs-md);
+  font-weight: 550;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.fsa-btn:hover {
+  border-color: var(--text-muted);
+}
+
+.fsa-btn:active {
+  transform: translateY(1px);
+}
+
+.fsa-btn[disabled],
+.fsa-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.fsa-btn--primary {
+  background: var(--accent-primary);
+  border-color: transparent;
+  color: var(--text-on-accent); /* on-brand contrast; guaranteed by token choice */
+}
+
+[data-theme="light"] .fsa-btn--primary:hover {
+  filter: brightness(1.08);
+}
+
+.fsa-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+
+.fsa-btn--ghost:hover {
+  background: var(--bg-raised);
+  color: var(--text-primary);
+}
+
+.fsa-btn--danger {
+  background: transparent;
+  border-color: var(--accent-danger);
+  color: var(--accent-danger);
+}
+
+.fsa-btn--sm {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--fs-sm);
+}
+
+.fsa-btn--icon {
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+}
+
+.fsa-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ================= BADGES & CHIPS ================= */
+.fsa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* version chip: "Teaches: React 19.2 · reviewed Aug 2026" */
+.fsa-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--tint-legacy);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+}
+
+/* track chip: identity via dot colored with the track token */
+.fsa-track-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fsa-track-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--chip-color, var(--accent-primary));
+  flex-shrink: 0;
+}
+
+/* usage: <span class="fsa-track-dot" style="--chip-color:var(--track-react)"> */
+
+/* ================= CARDS ================= */
+.fsa-card {
+  display: block;
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+a.fsa-card {
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    translate var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+a.fsa-card:hover {
+  border-color: var(--accent-primary);
+  translate: 0 -2px;
+  box-shadow: var(--shadow-2);
+}
+
+.fsa-card__title {
+  font-size: var(--fs-lg);
+  font-weight: 650;
+}
+
+.fsa-card__meta {
+  margin-block-start: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* progress ring inside cards/checkpoints */
+.fsa-ring {
+  --ring-value: 0; /* 0..100 set inline via style attr */
+  transform: rotate(-90deg);
+}
+
+.fsa-ring circle {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.fsa-ring .fsa-ring__track {
+  stroke: var(--viz-idle);
+}
+
+.fsa-ring .fsa-ring__value {
+  stroke: var(--accent-success);
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--ring-value));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fsa-ring .fsa-ring__value {
+    transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
+  }
+}
+
+/* ================= CALLOUTS ================= */
+.fsa-callout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 3px solid var(--callout-border, var(--accent-primary));
+  border-radius: var(--radius-md);
+  background: var(--callout-bg, var(--tint-primary));
+}
+
+.fsa-callout[data-kind="info"] {
+  --callout-bg: var(--callout-info-bg);
+  --callout-border: var(--callout-info-border);
+}
+
+.fsa-callout[data-kind="warn"] {
+  --callout-bg: var(--callout-warn-bg);
+  --callout-border: var(--callout-warn-border);
+}
+
+.fsa-callout[data-kind="pitfall"] {
+  --callout-bg: var(--callout-pitfall-bg);
+  --callout-border: var(--callout-pitfall-border);
+}
+
+.fsa-callout[data-kind="legacy"] {
+  --callout-bg: var(--callout-legacy-bg);
+  --callout-border: var(--callout-legacy-border);
+}
+
+/* THE signature callout — Arabic analogy opens every lesson */
+.fsa-callout[data-kind="analogy"] {
+  --callout-bg: var(--callout-analogy-bg);
+  --callout-border: var(--callout-analogy-border);
+}
+
+.fsa-callout__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.fsa-callout__title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--callout-border);
+}
+
+/* ================= TABLES ================= */
+.fsa-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.fsa-table-wrap table {
+  min-width: 480px; /* forces tidy scroll instead of squish at 320px */
+}
+
+tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--bg-raised) 55%, transparent);
+}
+
+/* ================= TERMINOLOGY CARDS ================= */
+.fsa-term-card {
+  padding: var(--space-4) var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.fsa-term-card dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  font-weight: 650;
+  color: var(--accent-primary);
+}
+
+.fsa-term-card dd {
+  margin-block-start: var(--space-1);
+  color: var(--text-secondary);
+}
+
+/* ================= TERMINAL CODE FRAME ================= */
+.fsa-code {
+  direction: ltr;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-code);
+  box-shadow: var(--shadow-1);
+}
+
+.fsa-code__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-raised);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-code__dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.fsa-code__dots::before,
+.fsa-code__dots::after,
+.fsa-code__dot {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.fsa-code__dots::before {
+  background: var(--accent-danger);
+}
+.fsa-code__dot {
+  background: var(--accent-warning);
+}
+.fsa-code__dots::after {
+  background: var(--accent-success);
+}
+
+.fsa-code__file {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fsa-code__copy {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+.fsa-code__copy:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.fsa-code__copy svg {
+  width: 14px;
+  height: 14px;
+}
+
+.fsa-code > pre {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+}
+
+/* ================= DETAILS / ACCORDION ================= */
+.fsa-details {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+
+.fsa-details + .fsa-details {
+  margin-block-start: var(--space-3);
+}
+
+.fsa-details > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+  user-select: none;
+}
+
+.fsa-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.fsa-details > summary::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-inline-end: 2px solid var(--text-muted);
+  border-block-end: 2px solid var(--text-muted);
+  rotate: 45deg; /* points down when closed… */
+  transition: rotate var(--dur-fast) var(--ease-out);
+}
+
+.fsa-details[open] > summary::before {
+  rotate: 225deg; /* …up when open */
+}
+
+.fsa-details > summary:hover {
+  background: var(--bg-raised);
+}
+
+.fsa-details__body {
+  padding: 0 var(--space-5) var(--space-5);
+  border-block-start: 1px solid var(--border-subtle);
+  padding-block-start: var(--space-4);
+}
+
+/* ================= TABS ================= */
+.fsa-tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-tab {
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  border-block-end: 2px solid transparent;
+  background: none;
+  color: var(--text-secondary);
+  font-size: var(--fs-md);
+  font-weight: 550;
+  cursor: pointer;
+  margin-block-end: -1px;
+}
+
+.fsa-tab:hover {
+  color: var(--text-primary);
+}
+
+.fsa-tab[aria-selected="true"] {
+  color: var(--accent-primary);
+  border-block-end-color: var(--accent-primary);
+}
+
+.fsa-tabpanel {
+  padding-block-start: var(--space-4);
+}
+
+.fsa-tabpanel[hidden] {
+  display: none;
+}
+
+/* ================= DIAGRAM FRAME ================= */
+.fsa-diagram {
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.fsa-diagram > svg {
+  margin-inline: auto;
+  max-width: 720px;
+  height: auto;
+}

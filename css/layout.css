@@ -1,0 +1,395 @@
+/* ============================================================
+   layout.css — topbar, sidebar, drawers, shell, bottom bar
+   ------------------------------------------------------------
+   Contract:
+   - Three-pane lesson shell: topbar · curriculum sidebar ·
+     content · on-this-page TOC. Panes become drawers + a
+     persistent bottom bar (Prev · TOC · Next) under 768px.
+   - Breakpoints: 640 / 768 / 1024 / 1280.
+   - Logical properties used for full RTL support.
+   - Works at 320px minimum width.
+   ============================================================ */
+
+/* ---- Skip Link for Accessibility --------------------------- */
+.fsa-skip-link {
+  position: absolute;
+  inset-block-start: -999px;
+  inset-inline-start: var(--space-4);
+  z-index: var(--z-modal);
+  padding: var(--space-2) var(--space-4);
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+}
+
+.fsa-skip-link:focus-visible {
+  inset-block-start: var(--space-4);
+}
+
+/* ---- Shell (Overall Layout Container) ---------------------- */
+.fsa-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+}
+
+/* ---- Topbar ------------------------------------------------ */
+.fsa-topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-sticky);
+  height: var(--topbar-h);
+  background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-block-end: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--space-4);
+  gap: var(--space-3);
+}
+
+.fsa-topbar__start,
+.fsa-topbar__center,
+.fsa-topbar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.fsa-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: var(--fs-md);
+  letter-spacing: -0.01em;
+}
+
+.fsa-topbar__brand-badge {
+  font-size: var(--fs-xs);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--tint-primary);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.fsa-topbar__search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  min-width: 180px;
+  justify-content: space-between;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.fsa-topbar__search-btn:hover {
+  border-color: var(--border-default);
+  color: var(--text-secondary);
+}
+
+.fsa-topbar__search-kbd {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  padding: 2px 5px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+}
+
+/* ---- Three-Pane Body Container ----------------------------- */
+.fsa-layout {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+/* ---- Sidebar (Curriculum Tree) ----------------------------- */
+.fsa-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  height: calc(100vh - var(--topbar-h));
+  position: sticky;
+  inset-block-start: var(--topbar-h);
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-4);
+  border-inline-end: 1px solid var(--border-subtle);
+  background: var(--bg-canvas);
+}
+
+.fsa-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fsa-sidebar__section-title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-block-end: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.fsa-sidebar__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fsa-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.fsa-sidebar__link:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.fsa-sidebar__link[aria-current="page"],
+.fsa-sidebar__link.is-active {
+  background: var(--tint-primary);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.fsa-sidebar__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border-default);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.fsa-sidebar__status-dot.is-completed {
+  background: var(--accent-success);
+  border-color: var(--accent-success);
+}
+
+/* ---- Main Content Pane ------------------------------------- */
+.fsa-main {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-6) var(--space-8);
+}
+
+.fsa-article {
+  max-width: var(--measure-prose);
+  margin-inline: auto;
+}
+
+/* Lesson Header */
+.fsa-lesson-header {
+  margin-block-end: var(--space-8);
+  padding-block-end: var(--space-6);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-block-end: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.fsa-breadcrumbs a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.fsa-breadcrumbs a:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.fsa-lesson-header__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Lesson Navigation Footer */
+.fsa-lesson-footer {
+  margin-block-start: var(--space-10);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---- TOC Pane (On this page) ------------------------------- */
+.fsa-toc {
+  width: var(--toc-w);
+  flex-shrink: 0;
+  height: calc(100vh - var(--topbar-h));
+  position: sticky;
+  inset-block-start: var(--topbar-h);
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-4);
+  border-inline-start: 1px solid var(--border-subtle);
+}
+
+.fsa-toc__title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-block-end: var(--space-3);
+}
+
+.fsa-toc__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fsa-toc__link {
+  display: block;
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: var(--fs-xs);
+  border-inline-start: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.fsa-toc__link:hover {
+  color: var(--text-primary);
+}
+
+.fsa-toc__link.is-active {
+  color: var(--accent-primary);
+  border-inline-start-color: var(--accent-primary);
+  font-weight: 600;
+}
+
+/* ---- Bottom Bar (Mobile Navigation) ------------------------ */
+.fsa-bottombar {
+  display: none;
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  height: 54px;
+  background: var(--bg-surface);
+  border-block-start: 1px solid var(--border-subtle);
+  z-index: var(--z-sticky);
+  padding-inline: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ---- Drawers & Backdrops (Mobile Overlay) ------------------- */
+.fsa-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-overlay);
+}
+
+.fsa-backdrop.is-open {
+  display: block;
+}
+
+.fsa-drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: min(85vw, 320px);
+  background: var(--bg-surface);
+  border-inline-end: 1px solid var(--border-subtle);
+  z-index: var(--z-modal);
+  transform: translateX(-100%);
+  transition: transform var(--dur-normal) var(--ease-out);
+  overflow-y: auto;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+[dir="rtl"] .fsa-drawer {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  transform: translateX(100%);
+}
+
+.fsa-drawer.is-open {
+  transform: translateX(0);
+}
+
+/* ---- Responsive Breakpoints -------------------------------- */
+@media (max-width: 1280px) {
+  .fsa-toc {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .fsa-sidebar {
+    display: none;
+  }
+  .fsa-main {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (max-width: 768px) {
+  .fsa-topbar__search-btn {
+    min-width: auto;
+  }
+  .fsa-topbar__search-kbd {
+    display: none;
+  }
+  .fsa-bottombar {
+    display: flex;
+  }
+  .fsa-shell {
+    padding-block-end: 54px; /* clearance for bottombar */
+  }
+}

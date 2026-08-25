@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="{{TRACK}}">
+  <meta name="fsa-lesson" content="{{SLUG}}">
+  <meta name="fsa-level" content="{{LEVEL}}">
+  <meta name="fsa-order" content="{{ORDER}}">
+  <meta name="fsa-title" content="{{TITLE}}">
+  <meta name="fsa-est-minutes" content="{{EST_MINUTES}}">
+  <meta name="fsa-teaches-version" content="React 19.2">
+  <meta name="fsa-pattern-label" content="Core Concept">
+  <meta name="fsa-root" content="../../">
+
+  <title>{{TITLE}} · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <!-- ================= TOPBAR ================= -->
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Search · بحث</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="Dashboard · لوحة المتابعة">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <!-- ================= SIDEBAR (CURRICULUM TREE) ================= -->
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-{{TRACK}})"></span>
+            <span style="text-transform: capitalize;">{{TRACK}} Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <!-- Rendered dynamically from data/curriculum.js -->
+            <li>
+              <a href="#" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>{{TITLE}}</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- ================= MAIN READING CONTENT ================= -->
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- HEADER & OBJECTIVES (#1) -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html" style="text-transform: capitalize;">{{TRACK}}</a> &rsaquo;
+              <span>{{TITLE}}</span>
+            </nav>
+
+            <h1>{{TITLE}}</h1>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: {{TRACK}} · reviewed Aug 2026</span>
+              <span class="fsa-badge">Level {{LEVEL}}</span>
+              <span class="fsa-badge">{{EST_MINUTES}} mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">Objectives · ماذا ستتعلم في هذا الدرس</div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm);">
+                <li>Understand the core mechanism and lifecycle.</li>
+                <li>Master common production patterns and avoid gotchas.</li>
+                <li>Apply the concept in runnable exercises and real-world projects.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 1: LEARN ================= -->
+          <section id="learn">
+            <h2>1. Learn the Concept · الشرح النظري</h2>
+
+            <!-- Mandatory Arabic Analogy (#5) -->
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                Real-Life Analogy · تشبيه من الواقع
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                [اكتب هنا التشبيه الواقعي باللغة العربية لشرح الفكرة بطريقة بسيطة وسهلة التذكر].
+              </p>
+            </div>
+
+            <!-- Definitions (#2 & #3) -->
+            <h3>Definition & Purpose</h3>
+            <p>
+              [English concise definition of the topic and where it fits in modern architecture].
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              [الشرح العربي التفصيلي للمفهوم مع الحفاظ على المصطلحات التقنية باللغة الإنجليزية كما هي].
+            </p>
+
+            <!-- Why it exists (#4) -->
+            <h3>Why It Exists · لماذا تم ابتكار هذا المفهوم؟</h3>
+            <p class="fsa-ar" dir="rtl">
+              [شرح المشكلة التي كانت تواجه المطورين قبل ظهور هذه الميزة أو التقنية وكيف حلتها].
+            </p>
+
+            <!-- Step-by-step mechanics (#6) -->
+            <h3>Step-by-Step Mechanics · خطوات العمل خطوة بخطوة</h3>
+            <ol style="padding-inline-start: var(--space-5); line-height: 1.8;">
+              <li><strong>Step 1:</strong> Initial setup and trigger.</li>
+              <li><strong>Step 2:</strong> Internal execution and transformation.</li>
+              <li><strong>Step 3:</strong> State synchronization and DOM/network commit.</li>
+            </ol>
+          </section>
+
+          <!-- ================= BEAT 2: SEE (VISUALIZER) ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. See It in Action · الرؤية البصرية والتفاعلية</h2>
+            <p>Trace the internal state transitions step-by-step.</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد حركة البيانات وتغير الحالة لحظة بلحظة مع سجل التنفيذ:
+            </p>
+
+            <!-- Stepper Engine Mount (#8) -->
+            <div class="fsa-stepper" id="lesson-stepper"></div>
+
+            <!-- Conceptual SVG Diagram (#8) -->
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 600 140" width="100%" height="140" aria-label="Conceptual diagram">
+                <title>{{TITLE}} Architecture Flow</title>
+                <desc>Visual diagram depicting request and state flows</desc>
+                <line x1="120" y1="70" x2="260" y2="70" stroke="var(--border-default)" stroke-width="3" />
+                <line x1="120" y1="70" x2="260" y2="70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <g transform="translate(30, 40)">
+                  <rect width="90" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="45" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Input</text>
+                </g>
+                <g transform="translate(260, 40)" class="fsa-anim-pulse">
+                  <rect width="100" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                  <text x="50" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Processing</text>
+                </g>
+                <line x1="360" y1="70" x2="480" y2="70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <g transform="translate(480, 40)">
+                  <rect width="90" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="45" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Output</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: TRY (PLAYGROUND & EXPERIMENT) ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة العملية</h2>
+            <p>Run and modify the code below in the sandboxed browser runner:</p>
+
+            <!-- Playground Mount (#9) -->
+            <div class="fsa-playground" id="lesson-playground"></div>
+
+            <!-- Experiment Block (#8.2) -->
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>What happens if you trigger two state updates consecutively?</p>
+              <p class="fsa-ar" dir="rtl">ماذا سيحدث إذا قمت بتحديث الحالة مرتين متتاليتين؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">يتم دمج التحديثين تلقائياً في عملية إعادة رسم واحدة (Automatic Batching)!</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود سطراً بسطر</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: const [state, setState] = useState(0);</span>
+                <span class="fsa-anatomy__line" data-line="2">2: </span>
+                <span class="fsa-anatomy__line" data-line="3">3: function handleIncrement() {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   setState(prev => prev + 1);</span>
+                <span class="fsa-anatomy__line" data-line="5">5: }</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 1:</strong> تعريف المتغير ودالة التحديث مع القيمة الابتدائية.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 4:</strong> استخدام دالة التحديث بالاعتماد على القيمة السابقة لضمان الدقة.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: DEEP DIVE & GOTCHAS ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Edge Cases · الغوص في الأعماق</h2>
+            <details class="fsa-details" open>
+              <summary>Under the Hood: Internals & Gotchas</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">
+                  [شرح التفاصيل الدقيقة لكيفية عمل الميزة تحت الغطاء والحالات الخاصة التي يجب الانتباه لها].
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 6: PRACTICE & MISTAKES ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · تمارين وأخطاء شائعة</h2>
+
+            <!-- Mistakes Gallery (#11) -->
+            <h3>Common Mistakes Gallery · معرض الأخطاء الشائعة</h3>
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Direct State Mutation · تعديل الحالة مباشرة</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ BROKEN<br>state.count += 1;</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ FIXED<br>setState(c => c + 1);</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> التعديل المباشر لا يغير المرجع، وبالتالي يتجاهل المحرك إعادة الرسم.
+                </p>
+              </div>
+            </div>
+
+            <!-- Mini Glossary (#13) -->
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>Immutability (عدم القابلية للتعديل المباشر)</dt>
+              <dd class="fsa-ar" dir="rtl">المبدأ القائم على إنشاء نسخة جديدة من البيانات عند الرغبة في التعديل بدلاً من تغيير الكائن الأصلي.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 7: PROVE (CHECKPOINT) ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Checkpoint · اختبر فهمك</h2>
+            <div class="fsa-checkpoint" id="lesson-checkpoint"></div>
+            
+            <!-- Question Pool Data -->
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "Why is direct state mutation discouraged?",
+                  "options": [
+                    "It causes syntax errors in JavaScript",
+                    "It bypasses change detection and breaks UI sync",
+                    "It makes the network slower"
+                  ],
+                  "answer": 1,
+                  "why": "React uses reference equality checks to schedule re-renders. Modifying in-place skips this trigger.",
+                  "whyAr": "لأن React يعتمد على مقارنة المراجع لاكتشاف التغييرات وإعادة رسم الواجهة.",
+                  "anchor": "practice"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 8: PRODUCTION NOTES & INTERVIEWS ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details">
+              <summary>Typical Interview Questions & Answers</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: How do you handle complex state transformations?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> استخدام الـ Functional updates أو الاستعانة بـ <code>useReducer</code> لإدارة الحالات المعقدة بطريقة مركزية وقابلة للاختبار.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER NAVIGATION ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="#" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="#" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <!-- ================= RIGHT TOC PANE ================= -->
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list">
+          <!-- Auto-populated by app.js -->
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ================= ZERO-BUILD SCRIPTS ================= -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

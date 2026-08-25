@@ -1,0 +1,193 @@
+/* ============================================================
+   tokens.css — design tokens: THE ONLY PLACE RAW VALUES EXIST
+   ------------------------------------------------------------
+   Contract:
+   - Every color, radius, shadow, spacing unit, z-index, and
+     duration used anywhere in this project is defined here.
+   - Dark theme is the :root default; [data-theme="light"]
+     provides the full parallel set. Components never fork.
+   - Per-track accents: --track-* (identity dots/borders; badge
+     TEXT stays on --text-secondary so contrast never depends
+     on brand colors).
+   - Visualization state scale: --viz-* (cells must ALSO change
+     shape/glyph/label — state is never color-only).
+   - No component may hardcode a hex value. Ever.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- surfaces & text (dark default) ---------------------- */
+  --bg-canvas: #0B0F17;
+  --bg-surface: #111726;
+  --bg-raised: #1A2236;
+  --bg-code: #0D1117;          /* code stays dark in BOTH themes */
+  --border-subtle: #222B41;
+  --border-default: #2E3A57;
+
+  --text-primary: #E6EAF2;     /* ≥15:1 on canvas  */
+  --text-secondary: #A8B3C7;   /* ≥7:1 on surface  */
+  --text-muted: #7D8AA3;       /* ≥4.5:1 on canvas */
+  --text-on-accent: #FFFFFF;   /* high contrast on filled buttons/badges */
+
+  /* ---- accents --------------------------------------------- */
+  --accent-primary: #4F8CFF;
+  --accent-success: #3FBD7C;
+  --accent-warning: #E5B454;
+  --accent-danger: #E5647A;
+
+  /* translucent accent washes for callout/badge backgrounds */
+  --tint-primary: rgba(79, 140, 255, 0.12);
+  --tint-success: rgba(63, 189, 124, 0.12);
+  --tint-warning: rgba(229, 180, 84, 0.12);
+  --tint-danger: rgba(229, 100, 122, 0.12);
+  --tint-legacy: rgba(125, 138, 163, 0.14);
+
+  /* ---- per-track identity ("week colors", systematized) ----- */
+  --track-found: #F59E0B;
+  --track-react: #61DAFB;
+  --track-node: #8CC84B;
+  --track-express: #9CA3AF;
+  --track-mongo: #47A248;
+  --track-pg: #6FA8DC;
+  --track-prisma: #7C8CF8;
+  --track-nextjs: #FFFFFF;
+  --track-arch: #B588C7;
+
+  /* ---- visualization state scale ---------------------------- */
+  --viz-idle: #2A3350;
+  --viz-active: #4F8CFF;
+  --viz-comparing: #E5B454;
+  --viz-found: #3FBD7C;
+  --viz-eliminated: #3A3F52;
+  --viz-ink: #E6EAF2;          /* glyphs/labels drawn inside cells */
+
+  /* ---- callouts (info · warn · pitfall · legacy · analogy) --- */
+  --callout-info-bg: var(--tint-primary);
+  --callout-info-border: var(--accent-primary);
+  --callout-warn-bg: var(--tint-warning);
+  --callout-warn-border: var(--accent-warning);
+  --callout-pitfall-bg: var(--tint-danger);
+  --callout-pitfall-border: var(--accent-danger);
+  --callout-legacy-bg: var(--tint-legacy);
+  --callout-legacy-border: var(--text-muted);
+  --callout-analogy-bg: var(--tint-success);
+  --callout-analogy-border: var(--accent-success);
+
+  /* ---- spacing: 4pt grid ------------------------------------ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ---- radii & shadows -------------------------------------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.40), 0 12px 32px rgba(0, 0, 0, 0.35);
+
+  /* ---- type -------------------------------------------------- */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Cascadia Code", Consolas, Menlo, "SF Mono", "Courier New",
+    monospace;
+  --font-arabic: "Cairo", "Tajawal", "Segoe UI", Tahoma, sans-serif;
+
+  --fs-xs: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);   /* 12→13 */
+  --fs-sm: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem); /* 13→14 */
+  --fs-md: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem); /* 14→15 */
+  --fs-body: clamp(0.9375rem, 0.91rem + 0.18vw, 1rem);   /* 15→16 */
+  --fs-lg: clamp(1.0625rem, 1.02rem + 0.22vw, 1.125rem); /* 17→18 */
+  --fs-xl: clamp(1.1875rem, 1.12rem + 0.3vw, 1.25rem);   /* 19→20 */
+  --fs-2xl: clamp(1.375rem, 1.27rem + 0.45vw, 1.5rem);   /* 22→24 */
+  --fs-h1: clamp(1.625rem, 1.45rem + 0.75vw, 1.875rem);  /* lesson h1 = 30 max */
+  --fs-display: clamp(1.75rem, 1.5rem + 1.1vw, 2.125rem);/* 28→34 hero only */
+
+  --lh-tight: 1.25;
+  --lh-body: 1.7;   /* Latin prose */
+  --lh-ar: 1.95;    /* Arabic prose — comfortable reading */
+
+  /* ---- motion ------------------------------------------------ */
+  --dur-fast: 150ms;
+  --dur-slow: 250ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* ---- layering ---------------------------------------------- */
+  --z-topbar: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* ---- focus --------------------------------------------------
+     Visible focus is policy, not decoration: applied globally in
+     base.css via outline using this token. */
+  --focus-color: var(--accent-primary);
+
+  /* ---- layout metrics ---------------------------------------- */
+  --topbar-h: 56px;
+  --sidebar-w: 280px;
+  --toc-w: 240px;
+  --measure: 72ch;             /* prose measure 65–75ch */
+  --gutter: clamp(var(--space-4), 4vw, var(--space-12));
+}
+
+/* ============================================================
+   LIGHT THEME — full parallel set; components never fork
+   ============================================================ */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-canvas: #F5F7FB;
+  --bg-surface: #FFFFFF;
+  --bg-raised: #EAEFF7;
+  --bg-code: #0D1117;          /* terminal stays dark — see note above */
+  --border-subtle: #DCE3EF;
+  --border-default: #C4CEE0;
+
+  --text-primary: #121828;     /* ~16:1 on white */
+  --text-secondary: #3F4A61;   /* ~8.5:1 */
+  --text-muted: #5D6980;       /* ~5.4:1 */
+  --text-on-accent: #FFFFFF;
+
+  --accent-primary: #2E63D4;
+  --accent-success: #1E7A43;
+  --accent-warning: #8F5F00;
+  --accent-danger: #BE3450;
+
+  --tint-primary: rgba(46, 99, 212, 0.10);
+  --tint-success: rgba(30, 122, 67, 0.10);
+  --tint-warning: rgba(143, 95, 0, 0.12);
+  --tint-danger: rgba(190, 52, 80, 0.10);
+  --tint-legacy: rgba(93, 105, 128, 0.10);
+
+  /* track identity: same hues except where invisible on white */
+  --track-found: #B45309;
+  --track-react: #0E7490;
+  --track-node: #4D7C0F;
+  --track-express: #6B7280;
+  --track-mongo: #15803D;
+  --track-pg: #2C5FA8;
+  --track-prisma: #5560E8;
+  --track-nextjs: #18181B;
+  --track-arch: #7C3AED;
+
+  --viz-idle: #E4E9F3;
+  --viz-active: #2E63D4;
+  --viz-comparing: #8F5F00;
+  --viz-found: #1E7A43;
+  --viz-eliminated: #CBD3E1;
+  --viz-ink: #121828;
+
+  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.08), 0 2px 8px rgba(16, 24, 40, 0.06);
+  --shadow-2: 0 4px 12px rgba(16, 24, 40, 0.10), 0 12px 32px rgba(16, 24, 40, 0.10);
+}

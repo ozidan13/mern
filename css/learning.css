@@ -1,0 +1,537 @@
+/* ============================================================
+   learning.css — stepper, log, quiz, exercise, playground, viz
+   ------------------------------------------------------------
+   Contract:
+   - Styles every beat of the eight-beat Learning Loop.
+   - Stepper frame + transport controls + scrubber + execution log.
+   - Playground editor + console output panel.
+   - Checkpoint quiz with instant bilingual feedback.
+   - Exercise test runner UI + hint ladder.
+   - Visualization state classes (--viz-* scale with shape/glyph/label).
+   - Mistakes gallery & Experiment blocks.
+   - Gated on prefers-reduced-motion.
+   ============================================================ */
+
+/* ================= STEPPER ENGINE UI ================= */
+.fsa-stepper {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+  margin-block: var(--space-6);
+}
+
+.fsa-stepper__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-5);
+  background: var(--bg-raised);
+  border-block-end: 1px solid var(--border-subtle);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.fsa-stepper__title {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.fsa-stepper__stage {
+  padding: var(--space-6);
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  background: var(--bg-canvas);
+}
+
+/* Visualization Array / Grid Cells */
+.fsa-viz-cells {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-end;
+  padding: var(--space-4);
+  list-style: none;
+}
+
+.fsa-viz-cell {
+  width: 44px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--viz-idle);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-md);
+  color: var(--viz-ink);
+  position: relative;
+  transition:
+    background var(--dur-normal) var(--ease-out),
+    border-color var(--dur-normal) var(--ease-out),
+    transform var(--dur-normal) var(--ease-out);
+}
+
+.fsa-viz-cell.is-active {
+  background: var(--viz-active);
+  border-color: var(--accent-primary);
+  transform: translateY(-6px);
+}
+
+.fsa-viz-cell.is-comparing {
+  background: var(--viz-comparing);
+  border-color: var(--accent-warning);
+  transform: scale(1.08);
+}
+
+.fsa-viz-cell.is-found {
+  background: var(--viz-found);
+  border-color: var(--accent-success);
+  transform: translateY(-8px) scale(1.1);
+}
+
+.fsa-viz-cell.is-eliminated {
+  background: var(--viz-eliminated);
+  border-color: transparent;
+  opacity: 0.45;
+  transform: scale(0.92);
+}
+
+.fsa-viz-cell__index {
+  position: absolute;
+  inset-block-end: -22px;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.fsa-viz-cell__pointer {
+  position: absolute;
+  inset-block-start: -24px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+/* Stepper Scrubber & Transport Bar */
+.fsa-stepper__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border-block-start: 1px solid var(--border-subtle);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.fsa-stepper__transport {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.fsa-stepper__scrubber {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 140px;
+}
+
+.fsa-stepper__range {
+  flex: 1;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.fsa-stepper__step-count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Stepper Execution Log Panel (The Algorithms soul) */
+.fsa-stepper__log {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-raised);
+  border-block-start: 1px solid var(--border-subtle);
+  font-size: var(--fs-sm);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+.fsa-stepper__log-msg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.fsa-stepper__log-msg.fsa-ar {
+  font-family: var(--font-arabic);
+  line-height: var(--lh-arabic);
+}
+
+/* ================= PLAYGROUND & CODE RUNNER ================= */
+.fsa-playground {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-code);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+  margin-block: var(--space-6);
+}
+
+.fsa-playground__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-raised);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-playground__editor-wrap {
+  position: relative;
+  min-height: 140px;
+}
+
+.fsa-playground__editor {
+  width: 100%;
+  min-height: 140px;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  padding: var(--space-4);
+  border: none;
+  resize: vertical;
+  outline: none;
+  tab-size: 2;
+}
+
+.fsa-playground__output {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border-block-start: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.fsa-playground__output-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-block-end: var(--space-1);
+}
+
+.fsa-playground__output-log {
+  color: var(--text-primary);
+}
+
+.fsa-playground__output-error {
+  color: var(--accent-danger);
+}
+
+/* ================= CHECKPOINT QUIZ ================= */
+.fsa-checkpoint {
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  margin-block: var(--space-8);
+}
+
+.fsa-checkpoint__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--space-4);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-checkpoint__badge {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-primary);
+}
+
+.fsa-checkpoint__q {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  margin-block-end: var(--space-4);
+}
+
+.fsa-checkpoint__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-block-end: var(--space-4);
+}
+
+.fsa-checkpoint__opt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  transition: border-color var(--dur-fast) var(--ease-out);
+  user-select: none;
+}
+
+.fsa-checkpoint__opt:hover {
+  border-color: var(--border-default);
+}
+
+.fsa-checkpoint__opt input[type="radio"] {
+  accent-color: var(--accent-primary);
+}
+
+.fsa-checkpoint__opt.is-correct {
+  border-color: var(--accent-success);
+  background: var(--tint-success);
+}
+
+.fsa-checkpoint__opt.is-wrong {
+  border-color: var(--accent-danger);
+  background: var(--tint-danger);
+}
+
+.fsa-checkpoint__feedback {
+  margin-block-start: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  display: none;
+}
+
+.fsa-checkpoint__feedback.is-visible {
+  display: block;
+}
+
+.fsa-checkpoint__feedback.is-correct {
+  background: var(--tint-success);
+  border: 1px solid var(--accent-success);
+  color: var(--text-primary);
+}
+
+.fsa-checkpoint__feedback.is-wrong {
+  background: var(--tint-danger);
+  border: 1px solid var(--accent-danger);
+  color: var(--text-primary);
+}
+
+/* ================= EXPERIMENT BLOCK ================= */
+.fsa-experiment {
+  padding: var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 4px solid var(--accent-warning);
+  border-radius: var(--radius-md);
+  margin-block: var(--space-6);
+}
+
+.fsa-experiment__title {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-warning);
+  margin-block-end: var(--space-2);
+}
+
+.fsa-experiment__choices {
+  display: flex;
+  gap: var(--space-3);
+  margin-block: var(--space-3);
+}
+
+.fsa-experiment__reveal {
+  margin-block-start: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-raised);
+  border-radius: var(--radius-sm);
+  display: none;
+}
+
+.fsa-experiment__reveal.is-open {
+  display: block;
+}
+
+/* ================= COMMON MISTAKES GALLERY ================= */
+.fsa-mistakes-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-block: var(--space-6);
+}
+
+.fsa-mistake-card {
+  padding: var(--space-4) var(--space-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.fsa-mistake-card__header {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--accent-danger);
+  margin-block-end: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.fsa-mistake-card__diff {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-block: var(--space-3);
+}
+
+@media (max-width: 640px) {
+  .fsa-mistake-card__diff {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fsa-mistake-card__col {
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+}
+
+.fsa-mistake-card__col--bad {
+  background: var(--tint-danger);
+  border: 1px solid var(--accent-danger);
+}
+
+.fsa-mistake-card__col--good {
+  background: var(--tint-success);
+  border: 1px solid var(--accent-success);
+}
+
+/* ================= CODE ANATOMY (TWO PANE) ================= */
+.fsa-anatomy {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-block: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .fsa-anatomy {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fsa-anatomy__code {
+  background: var(--bg-code);
+  padding: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  overflow-x: auto;
+}
+
+.fsa-anatomy__line {
+  display: block;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.fsa-anatomy__line:hover,
+.fsa-anatomy__line.is-active {
+  background: var(--tint-primary);
+}
+
+.fsa-anatomy__notes {
+  padding: var(--space-4);
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+}
+
+/* ================= MICRO-INTERACTIONS ================= */
+/* FlipCard */
+.fsa-flipcard {
+  perspective: 1000px;
+  min-height: 120px;
+  cursor: pointer;
+}
+
+.fsa-flipcard__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  transition: transform var(--dur-normal);
+  transform-style: preserve-3d;
+}
+
+.fsa-flipcard.is-flipped .fsa-flipcard__inner {
+  transform: rotateY(180deg);
+}
+
+.fsa-flipcard__front,
+.fsa-flipcard__back {
+  position: absolute;
+  inset: 0;
+  padding: var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.fsa-flipcard__back {
+  background: var(--bg-raised);
+  border-color: var(--accent-primary);
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsa-flipcard__inner {
+    transition: none;
+  }
+}

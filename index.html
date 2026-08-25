@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FullStack Academy — Zero-Build Full-Stack Interactive Platform</title>
+  <meta name="description" content="Master modern JavaScript full-stack engineering with bilingual (AR/EN) lessons, narrated visualizers, and in-browser execution. Zero build, zero servers, 100% offline.">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/learning.css">
+
+  <style>
+    /* Viewport-locked Masterpiece Cockpit */
+    @media (min-height: 700px) and (min-width: 1024px) {
+      body {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .fsa-home-layout {
+        height: calc(100vh - var(--topbar-h));
+        overflow: hidden;
+      }
+    }
+
+    .fsa-home-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 1.85fr;
+      gap: var(--space-5);
+      padding: var(--space-4) var(--space-6);
+      max-width: 1680px;
+      margin-inline: auto;
+      width: 100%;
+      align-items: stretch;
+    }
+
+    @media (max-width: 1024px) {
+      .fsa-home-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
+        padding: var(--space-4);
+      }
+    }
+
+    /* Left Hero Launchpad */
+    .fsa-home-hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: var(--space-6);
+      background: linear-gradient(145deg, var(--bg-surface), var(--bg-raised));
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fsa-home-hero::before {
+      content: "";
+      position: absolute;
+      inset-block-start: -60px;
+      inset-inline-start: -60px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, var(--tint-primary) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .fsa-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: var(--tint-primary);
+      color: var(--accent-primary);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-block-end: var(--space-3);
+      width: fit-content;
+    }
+
+    .fsa-hero-title {
+      font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-block-end: var(--space-2);
+    }
+
+    .fsa-hero-title span {
+      background: linear-gradient(135deg, var(--accent-primary), #93C5FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .fsa-hero-desc-en {
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-block-end: var(--space-2);
+    }
+
+    .fsa-hero-desc-ar {
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-arabic);
+      margin-block-end: var(--space-4);
+    }
+
+    .fsa-hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      padding: var(--space-3);
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-block: var(--space-3);
+    }
+
+    .fsa-stat-pill {
+      text-align: center;
+    }
+
+    .fsa-stat-pill__num {
+      font-size: var(--fs-lg);
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      line-height: 1.2;
+    }
+
+    .fsa-stat-pill__lbl {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-block-start: 2px;
+    }
+
+    .fsa-hero-actions {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-block-start: var(--space-3);
+    }
+
+    .fsa-feature-pills {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-block-start: var(--space-3);
+    }
+
+    .fsa-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .fsa-pill svg {
+      width: 12px;
+      height: 12px;
+      color: var(--accent-success);
+    }
+
+    /* Right Track Grid */
+    .fsa-home-matrix {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .fsa-matrix-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-block-end: var(--space-3);
+    }
+
+    .fsa-matrix-title {
+      font-size: var(--fs-md);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .fsa-tracks-8grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+      flex: 1;
+    }
+
+    @media (max-width: 640px) {
+      .fsa-tracks-8grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .fsa-track-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition:
+        border-color var(--dur-fast) var(--ease-out),
+        transform var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out);
+    }
+
+    .fsa-track-card:hover {
+      border-color: var(--track-color, var(--accent-primary));
+      transform: translateY(-2px);
+      background: var(--bg-raised);
+    }
+
+    .fsa-track-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .fsa-track-card__title {
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .fsa-track-card__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--track-color);
+      box-shadow: 0 0 8px var(--track-color);
+      flex-shrink: 0;
+    }
+
+    .fsa-track-card__version {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: var(--bg-canvas);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .fsa-track-card__pattern {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-block: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fsa-track-card__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-block-start: 1px solid var(--border-subtle);
+      padding-block-start: 4px;
+      margin-block-start: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <!-- Topbar Navigation -->
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Static Edition</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <a href="dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="Dashboard · لوحة المتابعة">
+          <svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+
+        <a href="styleguide.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm fsa-hide-mobile" title="Design System">
+          <svg><use href="assets/icons.svg#fsa-icon-code"></use></svg>
+          <span>Styleguide</span>
+        </a>
+
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Masterpiece Cockpit Main -->
+    <main id="main-content" class="fsa-home-layout">
+      
+      <!-- Left Column: Hero & Launchpad -->
+      <section class="fsa-home-hero">
+        <div>
+          <div class="fsa-hero-badge">
+            <svg style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+            <span>Pure HTML/CSS/JS · Zero Dependencies</span>
+          </div>
+
+          <h1 class="fsa-hero-title">
+            The Modern <span>Full-Stack</span> Javascript Platform
+          </h1>
+
+          <p class="fsa-hero-desc-en">
+            From JavaScript foundations to production-grade React, Node.js, Express, databases, and Prisma. Zero build steps, zero servers, 100% runnable offline.
+          </p>
+
+          <p class="fsa-ar fsa-hero-desc-ar" dir="rtl">
+            منصة تعليمية متكاملة لـ <strong>Full-Stack JavaScript</strong> بالعربي مع محاكيات تفاعلية، تشريح الكود سطراً بسطر، وتمارين حقيقية داخل المتصفح بدون أي تثبيت.
+          </p>
+
+          <!-- Core Stat Metrics -->
+          <div class="fsa-hero-stats">
+            <div class="fsa-stat-pill">
+              <div class="fsa-stat-pill__num">8</div>
+              <div class="fsa-stat-pill__lbl">Tracks · مسارات</div>
+            </div>
+            <div class="fsa-stat-pill">
+              <div class="fsa-stat-pill__num">106+</div>
+              <div class="fsa-stat-pill__lbl">Lessons · دروس</div>
+            </div>
+            <div class="fsa-stat-pill">
+              <div class="fsa-stat-pill__num">100%</div>
+              <div class="fsa-stat-pill__lbl">Offline · بدون نت</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- CTA Action Buttons -->
+          <div class="fsa-hero-actions">
+            <a href="learn/react/use-state.html" class="fsa-btn fsa-btn--primary" id="homePrimaryCta">
+              <svg><use href="assets/icons.svg#fsa-icon-play"></use></svg>
+              <span>Start Learning · ابدأ الآن</span>
+            </a>
+
+            <a href="dashboard.html" class="fsa-btn fsa-btn--ghost">
+              <svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+              <span>My Progress · تقدّمي</span>
+            </a>
+          </div>
+
+          <!-- Feature Trust Badges -->
+          <div class="fsa-feature-pills">
+            <span class="fsa-pill"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Narrated Visualizers</span>
+            <span class="fsa-pill"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Worker Sandboxes</span>
+            <span class="fsa-pill"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Bilingual AR/EN</span>
+            <span class="fsa-pill"><svg><use href="assets/icons.svg#fsa-icon-check"></use></svg> Export/Import JSON</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: 8-Track Interactive Grid -->
+      <section class="fsa-home-matrix">
+        <div class="fsa-matrix-header">
+          <div class="fsa-matrix-title">
+            <svg style="width: 16px; height: 16px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-book"></use></svg>
+            <span>Curriculum Tracks · مسارات التعلم</span>
+          </div>
+          <span style="font-size: var(--fs-xs); color: var(--text-muted); font-family: var(--font-mono);">
+            8 Core Disciplines
+          </span>
+        </div>
+
+        <div class="fsa-tracks-8grid">
+          
+          <!-- 0. Foundations -->
+          <a href="learn/foundations/how-web-works.html" class="fsa-track-card" style="--track-color: var(--track-found);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>Web & JS Foundations</span>
+                </div>
+                <span class="fsa-track-card__version">ES2026</span>
+              </div>
+              <div class="fsa-track-card__pattern">HTTP/3, Event Loop, Async/Await</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–2 · 16 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 1. React -->
+          <a href="learn/react/use-state.html" class="fsa-track-card" style="--track-color: var(--track-react);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>React.js</span>
+                </div>
+                <span class="fsa-track-card__version">19.2</span>
+              </div>
+              <div class="fsa-track-card__pattern">Component Lifecycle, Hooks & Reconciliation</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–4 · 20 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 2. Node.js -->
+          <a href="learn/nodejs/what-node-is.html" class="fsa-track-card" style="--track-color: var(--track-node);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>Node.js</span>
+                </div>
+                <span class="fsa-track-card__version">24 LTS</span>
+              </div>
+              <div class="fsa-track-card__pattern">6-Phase Event Loop, Streams & Buffer</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–3 · 14 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 3. Express.js -->
+          <a href="learn/express/hello-express.html" class="fsa-track-card" style="--track-color: var(--track-express);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>Express.js</span>
+                </div>
+                <span class="fsa-track-card__version">5.2</span>
+              </div>
+              <div class="fsa-track-card__pattern">Middleware Pipeline & REST CRUD API</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–3 · 12 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 4. MongoDB -->
+          <a href="learn/mongodb/document-model.html" class="fsa-track-card" style="--track-color: var(--track-mongo);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>MongoDB</span>
+                </div>
+                <span class="fsa-track-card__version">8.0</span>
+              </div>
+              <div class="fsa-track-card__pattern">Document Model & Aggregation Pipeline</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–3 · 12 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 5. PostgreSQL -->
+          <a href="learn/postgresql/relational-model.html" class="fsa-track-card" style="--track-color: var(--track-pg);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>PostgreSQL</span>
+                </div>
+                <span class="fsa-track-card__version">18.x</span>
+              </div>
+              <div class="fsa-track-card__pattern">Relational Joins, Indexing & ACID Isolation</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–3 · 12 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 6. Prisma -->
+          <a href="learn/prisma/what-is-an-orm.html" class="fsa-track-card" style="--track-color: var(--track-prisma);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>Prisma ORM</span>
+                </div>
+                <span class="fsa-track-card__version">7.x</span>
+              </div>
+              <div class="fsa-track-card__pattern">Schema Definition & Type-Safe Queries</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Levels 1–2 · 10 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+          <!-- 7. Architecture -->
+          <a href="learn/architecture/separation-of-concerns.html" class="fsa-track-card" style="--track-color: var(--track-arch);">
+            <div>
+              <div class="fsa-track-card__top">
+                <div class="fsa-track-card__title">
+                  <span class="fsa-track-card__dot"></span>
+                  <span>Architecture & Next.js</span>
+                </div>
+                <span class="fsa-track-card__version">Modern</span>
+              </div>
+              <div class="fsa-track-card__pattern">Request Lifecycles, Boundaries & Caching</div>
+            </div>
+            <div class="fsa-track-card__bottom">
+              <span>Level 1 · 10 Lessons</span>
+              <span>Explore &rsaquo;</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Zero-Build Shared Scripts -->
+  <script src="js/fsa-namespace.js"></script>
+  <script src="data/curriculum.js"></script>
+  <script src="data/technologies.js"></script>
+  <script src="data/tips.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Personalize primary CTA button if student has existing progress
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.progress && window.FSA.curriculum) {
+        const store = window.FSA.progress.getStore();
+        const curriculum = window.FSA.curriculum;
+        
+        // Find first non-completed lesson
+        const nextLesson = curriculum.flatList.find(l => !store.lessons[l.slug] || store.lessons[l.slug].status !== 'completed');
+        if (nextLesson) {
+          const btn = document.getElementById('homePrimaryCta');
+          if (btn) {
+            btn.href = nextLesson.url;
+            btn.querySelector('span').textContent = `Resume: ${nextLesson.title} · متابعة`;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# OS junk
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor droppings
+*.swp
+*~
+.vscode/
+.idea/
+
+# Dev-script scratch output (generated files that ARE shipped live in data/)
+scripts/.tmp/
+
+# Never commit local experiments
+*.local.*
