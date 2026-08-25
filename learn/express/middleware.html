@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="middleware">
   <meta name="fsa-level" content="2">
   <meta name="fsa-order" content="2">
-  <meta name="fsa-title" content="The Middleware Conveyor Pipeline & next()">
+  <meta name="fsa-title" content="Middleware Conveyor Pipeline & Error Guards">
   <meta name="fsa-est-minutes" content="30">
-  <meta name="fsa-teaches-version" content="Express 5.2 Middleware">
-  <meta name="fsa-pattern-label" content="Pipeline Architecture">
+  <meta name="fsa-teaches-version" content="Express 5.2 Middlewares">
+  <meta name="fsa-pattern-label" content="Middleware Pipeline">
   <meta name="fsa-root" content="../../">
 
-  <title>The Middleware Conveyor Pipeline & next() · FullStack Academy</title>
+  <title>Middleware Conveyor Pipeline & Error Guards · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,29 +44,30 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-express)"></span>
-            <span>Express.js Track</span>
+            <span>مسار إكسبريس · Express.js 5.2</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
@@ -77,91 +80,93 @@
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">Express.js</a> &rsaquo;
               <span>Middleware Pipeline</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 2 · EXPRESS 5.2</span>
+              <span>المستوى 2 · خط سير المعالجات وحراس الأخطاء</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">The Middleware Conveyor Pipeline & next()</h1>
+            <h1 style="margin-block-start: var(--space-2);">Middleware Conveyor Pipeline &amp; Error Guards</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              خط سير الوسائط (Middleware Pipeline): معالجة الطلبات بالتسلسل، وظيفة دالة next()، والـ Error Handling Middleware
+              إزاي تبني خط إنتاج أمني متكامل لمعالجة الطلبات، وكيف تنشئ حارس أخطاء مركزي مانع للثغرات؟
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: Middleware Chain</span>
-              <span class="fsa-badge">Level 2</span>
-              <span class="fsa-badge">30 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: Express Pipeline · next() · Auth Guards · Central Error Handler</span>
+              <span class="fsa-badge">المستوى 2</span>
+              <span class="fsa-badge">30 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Outcomes</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Understand the Middleware pattern as a linear conveyor pipeline.</li>
-                <li>Master execution flow with <code>next()</code>, <code>next('route')</code>, and <code>next(err)</code>.</li>
-                <li>Implement custom logging, authentication guard, and rate-limiting middlewares.</li>
-                <li>Design centralized 4-parameter Error Handling Middlewares (<code>(err, req, res, next)</code>).</li>
+                <li>فهم معمارية سلسلة المعالجات (Middleware Chain) وكيف تمرر دالة <code dir="ltr">next()</code> سياق الطلب.</li>
+                <li>بناء معالجات وسيطة مخصصة للمصادقة (JWT Auth) وتسجيل الأداء (Logging) وفحص المدخلات.</li>
+                <li>إتقان كتابة حارس الأخطاء المركزي ذو المعاملات الأربعة <code dir="ltr">(err, req, res, next)</code> وحماية تفاصيل السيرفر الداخلية في الإنتاج.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه خط التفتيش في المطار (Security Checkpoint)</span>
+                <span>تشبيه بوابات التفتيش الأمني في المطار · Airport Security Gates</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                كل طلب HTTP يدخل السيرفر يشبه مسافراً يدخل المطار ويمر عبر <strong>بوابات تفتيش متتالية (Middlewares)</strong>:
-                1. البوابة الأولى تسجل وقت الدخول (<strong>Logger Middleware</strong>).<br>
-                2. البوابة الثانية تفحص الحقائب وتحلل محتوياتها (<strong>express.json Body Parser</strong>).<br>
-                3. البوابة الثالثة تفحص جواز السفر والتأشيرة (<strong>Auth Middleware</strong>) — إذا كان سليماً يقول الحارس <code>next()</code> ليمر للمرحلة التالية، وإذا كان مزوراً يوقفه فوراً ويرسله لغرفة الطوارئ (<strong>Error Handler</strong>)!
+                تخيل إنك مسافر في مطار دولي..
+                قبل ما توصل لبوابة الطيارة (<strong>Route Handler</strong>)، لازم تعدي على سلسلة بوابات تفتيش ورا بعضها (<strong>Middleware Pipeline</strong>):<br>
+                - البوابة 1: تفتيش الجوازات والتأشيرة (<strong>Auth Middleware</strong>).. لو تمام، الضابط يختم ويقولك: "اتفضل على البوابة اللي بعدها" (<strong>استدعاء دالة next()</strong>)!<br>
+                - البوابة 2: جهاز فحص الحقائب بالأشعة (<strong>Body Parser &amp; Validation</strong>).. لو شنطتك تمام، تطلع للبوابة اللي بعدها.<br>
+                - لكن لو في أي بوابة تم اكتشاف مخالفة أو تزوير (<strong>throw new Error</strong>): الضابط فوراً بيستدعي شرطة المطار (<strong>Error Handling Guard</strong>) اللي بتاخد المخالف على غرفة التحقيق دون أن يلمس الطيارة إطلاقاً!
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              A <strong>Middleware</strong> function in Express is a function that has access to the Request object (<code>req</code>), the Response object (<code>res</code>), and the <code>next</code> middleware function in the application's request-response cycle.
-            </p>
+            <h3>المشكلة التي حلتها الـ Middlewares</h3>
             <p class="fsa-ar" dir="rtl">
-              دوال الـ <strong>Middleware</strong> هي حجر الأساس لمعمارية Express. تعمل كسلسلة من المعالجات الوسيطة التي يمكنها فحص الطلب، تعديله، إضافة بيانات له (مثل <code>req.user</code>)، أو إنهاء الطلب فورياً في حالة عدم استيفاء الشروط.
+              زمان، كان المطور بيضطر ينسخ كود فحص التوكن وتسجيل السجلات (Logging) وفك الـ JSON في كل مسار من مسارات الـ 50 صفحة في موقعه!
+              مع معمارية الـ Pipeline في Express، بتكتب المنطق في دالة واحدة مركزية، وتطبقها على كل المسارات بكلمة واحدة: <code dir="ltr">app.use(authGuard)</code>!
             </p>
+          </section>
 
-            <h3>The Three Possible Actions of a Middleware · الخيارات الثلاثة لأي وسيط</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. كواليس تدفق الطلب عبر البوابات · Step-by-Step Mechanics</h2>
             
-            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-express);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. Call next() (المرور للوسيط التالي)</div>
+                <div class="fsa-step-card__title">1. استلام الطلب وتعديل كائن الـ Request</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  إكمال المعالجة بنجاح وتسليم التحكم للدالة الوسيطة التالية في مكدس السيرفر.
+                  الـ Middleware يقرأ ترويسة <code dir="ltr">req.headers.authorization</code> ويفك التوكن ويحقن بيانات المستخدم في <code dir="ltr">req.user = decoded</code> لتستفيد منها كل الدوال التالية.
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
               <div class="fsa-step-card__badge">2</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. End the Request (إنهاء الرد فوراً)</div>
+                <div class="fsa-step-card__title">2. تمرير التحكم عبر دالة next()</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  إرسال رد للعميل (مثل <code>res.status(401).json(...)</code>) لمنع وصول الطلب للمسارات المحمية.
+                  استدعاء <code dir="ltr">next()</code> ينقل مؤشر التنفيذ للـ Middleware التالي في المصفوفة، بينما استدعاء <code dir="ltr">next(err)</code> يقفز فوراً لحارس الأخطاء المركزي متجاهلاً باقي المسار.
                 </p>
               </div>
             </div>
@@ -169,231 +174,216 @@
             <div class="fsa-step-card" style="--step-accent: var(--accent-danger);">
               <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">3. Call next(err) (تخطي الجميع والذهاب لمعالج الأخطاء)</div>
+                <div class="fsa-step-card__title">3. الالتقاط المركزي للأخطاء (Error Boundary)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  تمرير كائن خطأ إلى <code>next(err)</code> يجبر Express على تخطي كل الـ Middlewares العادية والقفز فوراً إلى معالج الأخطاء المركزي.
+                  حارس الأخطاء ذو الـ 4 معاملات يستقبل الاستثناء ويسجل الـ Stack Trace داخلياً ويرجع للعميل رسالة مهذبة وآمنة <code dir="ltr">500 Internal Server Error</code> دون تسريب أسرار قاعدة البيانات.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through the Middleware pipeline execution chain:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف ينتقل الطلب عبر خط سير الوسائط من المصادقة إلى المعالج النهائي:
+              شاهد كيف يسافر الطلب عبر خط سير الـ Middlewares خطوة بخطوة:
             </p>
 
             <div class="fsa-stepper" id="middlewareStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Express Middleware Conveyor Diagram">
-                <title>Express Middleware Pipeline Flow</title>
-                <desc>Request passes through Logger, JSON Parser, Auth Guard, then Route Handler</desc>
-                <rect x="20" y="30" width="100" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="70" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="11" font-weight="700">1. Logger</text>
-                <text x="70" y="85" fill="var(--accent-primary)" text-anchor="middle" font-size="9">next()</text>
-
-                <path d="M 130 70 L 180 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-
-                <g transform="translate(190, 30)">
-                  <rect width="110" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                  <text x="55" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="11" font-weight="700">2. json() Parser</text>
-                  <text x="55" y="85" fill="var(--accent-primary)" text-anchor="middle" font-size="9">next()</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Express Middleware Pipeline Flow">
+                <title>Express Middleware Conveyor</title>
+                <desc>Request passes Logger then Auth Guard then Route Handler and finally Error Guard</desc>
+                <g transform="translate(15, 25)">
+                  <rect width="120" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="60" y="45" fill="var(--track-express)" text-anchor="middle" font-size="11" font-weight="700">1. Logger</text>
+                  <text x="60" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9">req.startTime</text>
                 </g>
 
-                <path d="M 310 70 L 360 70" stroke="var(--accent-warning)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 140 70 L 175 70" stroke="var(--track-express)" stroke-width="3" stroke-dasharray="4 4" class="fsa-anim-flow" />
 
-                <g transform="translate(370, 30)">
-                  <rect width="110" height="80" rx="8" fill="var(--tint-primary)" stroke="var(--track-express)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="55" y="65" fill="var(--track-express)" text-anchor="middle" font-size="11" font-weight="700">3. Auth Guard</text>
-                  <text x="55" y="85" fill="var(--accent-success)" text-anchor="middle" font-size="9">Verified</text>
+                <g transform="translate(180, 20)">
+                  <rect width="130" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-express)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="65" y="40" fill="var(--track-express)" text-anchor="middle" font-size="11" font-weight="700">2. Auth Guard</text>
+                  <text x="65" y="65" fill="var(--text-secondary)" text-anchor="middle" font-size="9">Verify JWT Token</text>
+                  <text x="65" y="85" fill="var(--accent-success)" text-anchor="middle" font-size="9">&check; next()</text>
                 </g>
 
-                <path d="M 490 70 L 530 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 315 70 L 350 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="4 4" class="fsa-anim-flow" />
 
-                <g transform="translate(540, 30)">
-                  <rect width="70" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="35" y="65" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">Route</text>
+                <g transform="translate(355, 25)">
+                  <rect width="120" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="60" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">3. Route</text>
+                  <text x="60" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9">res.json(data)</text>
+                </g>
+
+                <path d="M 480 70 L 515 70" stroke="var(--accent-danger)" stroke-width="3" stroke-dasharray="4 4" class="fsa-anim-flow" />
+
+                <g transform="translate(520, 25)">
+                  <rect width="90" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--accent-danger)" stroke-width="2" />
+                  <text x="45" y="45" fill="var(--accent-danger)" text-anchor="middle" font-size="10" font-weight="700">Error 500</text>
+                  <text x="45" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="8">Central Guard</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Middleware Pipeline Sandbox</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي تنفيذ سلسلة الـ Middlewares</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Simulate middleware chaining and next() pipeline execution live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: قم بتعديل وسيط التحقق وشاهد كيف يمرر الطلب أو يوقفه:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد كيف يمر الطلب عبر المعالجات بالترتيب وكيف يوقف الـ Auth Guard الطلب إذا كان التوكن مفقوداً:
               </p>
-
               <div class="fsa-playground" id="middlewarePlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What happens if a middleware function neither sends a response (<code>res.send</code>) nor calls <code>next()</code>?</p>
-              <p class="fsa-ar" dir="rtl">ماذا يحدث إذا لم يقم الوسيط باستدعاء next() ولم يرسل رداً للعميل؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو كتبت Middleware فيه منطق فحص معين ونسيت تكتب <code dir="ltr">next()</code> وما كتبتش <code dir="ltr">res.send()</code>.. إيه اللي هيحصل للعميل؟
+              </p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    <strong>يتجمد طلب العميل حتى ينتهي وقت الاتصال (Hangs and Timeouts)!</strong> لأن Express يظل معلقاً في انتظار إشارة الانتقال للخطوة التالية.
+                    <strong>الطلب هيتعلق في الهواء لحد ما يخلص وقت الـ Timeout (Hanging Request)!</strong><br>
+                    لأن Express مش هيعرف ينقل الطلب للبوابة التالية طالما لم يتم استدعاء <code dir="ltr">next()</code> ولم يتم إنهاء الرد.
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح حارس الأخطاء المركزي الاحترافي · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: function requireAuth(req, res, next) {</span>
-                <span class="fsa-anatomy__line" data-line="2">2:   const token = req.headers.authorization;</span>
-                <span class="fsa-anatomy__line" data-line="3">3:   if (!token) {</span>
-                <span class="fsa-anatomy__line" data-line="4">4:     return res.status(401).json({ error: 'Unauthorized' });</span>
-                <span class="fsa-anatomy__line" data-line="5">5:   }</span>
-                <span class="fsa-anatomy__line" data-line="6">6:   req.user = { id: 42, role: 'admin' };</span>
-                <span class="fsa-anatomy__line" data-line="7">7:   next();</span>
-                <span class="fsa-anatomy__line" data-line="8">8: }</span>
+              <div class="fsa-anatomy__code" dir="ltr">
+                <span class="fsa-anatomy__line" data-line="1">1: // Must have exactly 4 arguments to be recognized as Error Handler!</span>
+                <span class="fsa-anatomy__line" data-line="2">2: app.use((err, req, res, next) => {</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   console.error(`[${req.method}] ${req.url} Error:`, err.stack);</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   const status = err.statusCode || 500;</span>
+                <span class="fsa-anatomy__line" data-line="5">5:   res.status(status).json({</span>
+                <span class="fsa-anatomy__line" data-line="6">6:     error: true,</span>
+                <span class="fsa-anatomy__line" data-line="7">7:     message: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message</span>
+                <span class="fsa-anatomy__line" data-line="8">8:   });</span>
+                <span class="fsa-anatomy__line" data-line="9">9: });</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> إنهاء الطلب بإرجاع 401 فوراً إذا لم يتوفر رمز المصادقة لمنع استدعاء <code>next()</code>.
+                  <strong>السطر 2:</strong> وجود المعاملات الأربعة <code dir="ltr">(err, req, res, next)</code> شرط إجباري لكي يفهم Express أن هذه الدالة هي حارس أخطاء.
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 6:</strong> إرفاق بيانات المستخدم المصرح له داخل كائن <code>req.user</code> لتكون متاحة لجميع المسارات اللاحقة.
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 7:</strong> استدعاء <code>next()</code> للسماح للطلب بالعبور إلى المعالج النهائي.
+                  <strong>السطر 7:</strong> إخفاء تفاصيل الاستثناء في بيئة الإنتاج لمنع كشف بنية الجداول ومسارات السيرفر للمخترقين.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-express);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>Pipeline Execution Cost</span>
+                  <span>ترتيب الـ Middlewares في الذاكرة</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(M) Middleware Stack</div>
+                <div class="fsa-complexity-card__big">FIFO Execution Order</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  ينفذ Express كل وسيط بالترتيب المحدد خطياً حتى اكتمال السلسلة أو قطعها.
+                  المعالجات الوسيطة تنفذ بترتيب كتابتها بالضبط: <code dir="ltr">express.json()</code> يجب أن يسبق معالجات المسارات دائماً لقراءة المدخلات.
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-danger);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Error Handler Arity</span>
+                  <span>حزم الأمان القياسية (Security Stack)</span>
                 </div>
-                <div class="fsa-complexity-card__big">4 Parameters (err, req, res, next)</div>
+                <div class="fsa-complexity-card__big">Helmet + CORS</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  يتعرف Express على معالج الأخطاء فقط إذا كان عدد معاملاته 4 تماماً (<code>fn.length === 4</code>).
+                  استخدام <code dir="ltr">helmet()</code> يضبط 15 ترويسة أمان قياسية ويحمي من هجمات XSS و Clickjacking في سطر واحد.
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>Centralized Error Handling in Express 5.2</summary>
-              <div class="fsa-details__body">
-                <pre style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm);"><code>// Centralized Error Handling Middleware (Always defined LAST)
-app.use((err, req, res, next) => {
-  console.error('[SERVER ERROR]', err.stack);
-  const status = err.statusCode || 500;
-  res.status(status).json({
-    error: {
-      message: err.message || 'Internal Server Error',
-      code: err.code || 'INTERNAL_ERROR'
-    }
-  });
-});</code></pre>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Forgetting to return when sending a response in Middleware</span>
+                  <span>استدعاء next() بعد إرسال الرد للعميل</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ BROKEN (Sends response AND calls next)<br>if (!isAdmin) res.status(403).send('Forbidden');<br>next();</code>
+                    <code>// ❌ خطأ: يرسل الرد ثم يحاول استدعاء الـ Middleware التالي فينهار الخادم!<br>if (blocked) res.status(403).send('Forbidden');<br>next(); // ينفذ أيضاً!</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ FIXED (Returns early to prevent next)<br>if (!isAdmin) return res.status(403).send('Forbidden');<br>next();</code>
+                    <code>// ✅ سليم: استخدام return لإنهاء الدالة فور إرسال الرد<br>if (blocked) return res.status(403).send('Forbidden');<br>next();</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> عدم استخدام <code>return</code> يجعل الكود يواصل التنفيذ ويستدعي <code>next()</code>، مما يؤدي إلى تنفيذ المسار التالي ومحاولة إرسال رد ثانٍ ورمي خطأ <code>ERR_HTTP_HEADERS_SENT</code>.
+                  <strong>التشخيص الهندسي:</strong> استدعاء <code dir="ltr">next()</code> يوجه الطلب لمعالج آخر سيحاول إرسال رد ثانٍ لنفس الـ Socket المفتوح.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>next()</dt>
-              <dd class="fsa-ar" dir="rtl">دالة استدعاء يمررها Express للوسيط الحالي لنقل التحكم إلى الوسيط التالي في السلسلة.</dd>
-              <dt>Error Middleware</dt>
-              <dd class="fsa-ar" dir="rtl">دالة وسيطة خاصة تستقبل 4 معاملات <code>(err, req, res, next)</code> لمعالجة جميع أخطاء السيرفر في مكان موحد.</dd>
+              <dt dir="ltr">Middleware</dt>
+              <dd class="fsa-ar" dir="rtl">دالة وسيطة تمتلك حق الوصول لكائن الطلب req والرد res ودالة الانتقال next في خط سير Express.</dd>
+              <dt dir="ltr">Central Error Handler</dt>
+              <dd class="fsa-ar" dir="rtl">معالج أخطاء يوضع في نهاية التطبيق بأربعة معاملات لالتقاط جميع الاستثناءات وإرجاع ردود موحدة وآمنة.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="middlewareCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "How does Express differentiate between a standard middleware and an Error-Handling middleware?",
+                  "q": "How does Express distinguish a standard middleware function from a central error-handling middleware function?",
                   "options": [
-                    "Error middlewares must be named 'errorHandler'",
-                    "Error middlewares declare exactly 4 arguments: (err, req, res, next)",
-                    "Error middlewares must return a Promise"
+                    "By inspecting the function name (must start with 'error')",
+                    "By checking the function arity: error handlers must declare exactly 4 parameters (err, req, res, next)",
+                    "By registering it with app.error() instead of app.use()"
                   ],
                   "answer": 1,
-                  "why": "Express inspects the function's arity (fn.length). A 4-parameter function signature marks it as an error handler.",
-                  "whyAr": "يفحص Express عدد معاملات الدالة، فإذا كانت تحتوي على 4 معاملات صراحة يتعامل معها كمعالج أخطاء مركزي.",
-                  "anchor": "deep-dive"
+                  "why": "Express inspects fn.length. If a middleware defines exactly 4 arguments, it is treated as an error handler.",
+                  "whyAr": "يفحص محرك Express عدد معاملات الدالة (fn.length)، فإذا كانت تحتوي على 4 معاملات تماماً يعاملها كحارس أخطاء مركزي.",
+                  "anchor": "anatomy"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Interview Question: Middleware Ordering Pitfalls</summary>
+              <summary>سؤال مقابلات شهير: إزاي بتعالج الـ CORS في Express في الإنتاج بأمان؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: Why must body parsers (express.json) be mounted BEFORE route handlers, and Error handlers AFTER?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> لأن Express ينفذ السلسلة بالتسلسل من الأعلى للأسفل: إذا وُضع <code>express.json()</code> بعد المسار، سيصل <code>req.body</code> كـ <code>undefined</code> إلى معالج المسار. وإذا وُضع معالج الأخطاء في البداية، فلن يستقبل أخطاء المسارات المعرفة بعده.
+                  <strong>الإجابة الهندسية:</strong><br>
+                  في الإنتاج، نمنع استخدام <code dir="ltr">cors()</code> الشاملة التي تسمح لأي نطاق (`*`) بالوصول، وبدلاً من ذلك نحدد قائمة نطاقات بيضاء (Whitelist):
+                  <code dir="ltr">cors({ origin: ['https://myapp.com'], credentials: true })</code> لمنع هجمات سرقة الكوكيز والـ CSRF عبر المواقع الخبيثة.
                 </p>
               </div>
             </details>
@@ -402,18 +392,18 @@ app.use((err, req, res, next) => {
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="hello-express.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous: Express Setup · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: إنشاء الخادم والتوجيه</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
             <a href="rest-crud.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next: REST CRUD API · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس التالي: بناء REST CRUD API</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -421,7 +411,7 @@ app.use((err, req, res, next) => {
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -446,30 +436,28 @@ app.use((err, req, res, next) => {
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
           el: 'middlewareStepper',
-          title: 'Express Linear Middleware Conveyor Walkthrough',
+          title: 'تدفق الطلب عبر بوابات الـ Middleware Pipeline',
           init: () => ({
-            chain: [
-              { name: '1. Request Logger', status: 'Logging method and URL' },
-              { name: '2. express.json()', status: 'Parsing payload to req.body' },
-              { name: '3. authGuard()', status: 'Verifying JWT token in headers' },
-              { name: '4. GET /profile', status: 'Returning user data' }
+            gates: [
+              { name: '1. Request Logger', role: 'تسجيل زمن وتفاصيل الطلب' },
+              { name: '2. JWT Auth Guard', role: 'التحقق من صحة التوكن' },
+              { name: '3. Route Handler', role: 'معالجة البيانات وإرسال الرد' }
             ]
           }),
           steps: (state) => [
-            { activeIdx: 0, say: 'الخطوة 1: تسجيل وقت ونوع الطلب في الـ Logger ثم استدعاء next()' },
-            { activeIdx: 1, say: 'الخطوة 2: تحليل الـ JSON ووضعه في req.body ثم استدعاء next()' },
-            { activeIdx: 2, say: 'الخطوة 3: فحص صلاحيات المستخدم في authGuard ثم استدعاء next()' },
-            { activeIdx: 3, say: 'الخطوة 4: الوصول لمعالج المسار النهائي وإرجاع الرد 200 OK' }
+            { activeIdx: 0, say: 'البوابة 1: تسجيل الطلب الوارد وتمريره للبوابة التالية عبر next()' },
+            { activeIdx: 1, say: 'البوابة 2: فحص التوكن وتمريره بنجاح إلى معالج المسار' },
+            { activeIdx: 2, say: 'البوابة 3: معالجة الطلب وإرجاع الرد 200 OK للعميل' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
-              <div class="fsa-viz-cells" style="gap: 8px;">
-                ${state.chain.map((m, i) => {
+              <div class="fsa-viz-cells" style="gap: 10px;">
+                ${state.gates.map((g, i) => {
                   const isActive = step.activeIdx === i;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 125px; height: 65px; font-size: 10px; padding: 2px; text-align: center;">
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${m.name}</span>
-                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${m.status}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-express)' : 'var(--text-primary)'};">${g.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${g.role}</span>
                     </div>
                   `;
                 }).join('')}
@@ -482,31 +470,27 @@ app.use((err, req, res, next) => {
       if (window.FSA.playground) {
         window.FSA.playground.mount({
           el: 'middlewarePlayground',
-          starterCode: `// Middleware Pipeline Execution Simulator
-function createPipeline() {
-  const stack = [];
-  return {
-    use: (fn) => stack.push(fn),
-    run: (req, res) => {
-      let idx = 0;
-      function next(err) {
-        if (err) return console.error('[Error Pipeline Triggered]:', err);
-        if (idx < stack.length) {
-          const fn = stack[idx++];
-          fn(req, res, next);
-        }
-      }
-      next();
-    }
-  };
+          starterCode: `// محاكاة خط سير الـ Middlewares
+const pipeline = [
+  (req, next) => { console.log('1. Logger: Request to', req.url); next(); },
+  (req, next) => {
+    if (!req.token) return { status: 401, error: 'Unauthorized' };
+    req.user = { id: 42, role: 'admin' };
+    next();
+  },
+  (req) => ({ status: 200, data: 'Welcome User ' + req.user.id })
+];
+
+function runPipeline(req) {
+  let idx = 0;
+  function next() {
+    idx++;
+    return pipeline[idx](req, next);
+  }
+  return pipeline[0](req, next);
 }
 
-const app = createPipeline();
-app.use((req, res, next) => { console.log('1. Logger ->', req.method, req.url); next(); });
-app.use((req, res, next) => { req.auth = true; console.log('2. Auth -> Passed'); next(); });
-app.use((req, res, next) => { console.log('3. Route Handler -> Dispatched response 200 OK'); });
-
-app.run({ method: 'GET', url: '/api/v1/profile' }, {});`
+console.log('Valid Req:', runPipeline({ url: '/dashboard', token: 'valid-jwt' }));`
         });
       }
     });

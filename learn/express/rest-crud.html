@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="rest-crud">
   <meta name="fsa-level" content="3">
   <meta name="fsa-order" content="3">
-  <meta name="fsa-title" content="Building a Production REST CRUD API">
+  <meta name="fsa-title" content="Production REST CRUD API & Validation">
   <meta name="fsa-est-minutes" content="35">
-  <meta name="fsa-teaches-version" content="Express 5.2 CRUD">
-  <meta name="fsa-pattern-label" content="API Architecture">
+  <meta name="fsa-teaches-version" content="Express 5.2 REST">
+  <meta name="fsa-pattern-label" content="REST Architecture">
   <meta name="fsa-root" content="../../">
 
-  <title>Building a Production REST CRUD API · FullStack Academy</title>
+  <title>Production REST CRUD API & Validation · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,137 +44,130 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-express)"></span>
-            <span>Express.js Track</span>
+            <span>مسار إكسبريس · Express.js 5.2</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="rest-crud.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>REST CRUD API</span>
+                <span>Production REST CRUD</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">Express.js</a> &rsaquo;
               <span>REST CRUD API</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 3 · EXPRESS 5.2</span>
+              <span>المستوى 3 · معايير بناء الـ APIs الإنتاجية</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">Building a Production REST CRUD API</h1>
+            <h1 style="margin-block-start: var(--space-2);">Production REST CRUD API &amp; Validation</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              بناء واجهة REST CRUD إنتاجية: معالجة المدخلات (Params &amp; Query)، التحقق من البيانات، وتوحيد هيكل الردود
+              قواعد الـ REST الحقيقية: أكواد الردود القياسية، فحص المدخلات، والفرق بين PUT و PATCH
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: RESTful Architecture</span>
-              <span class="fsa-badge">Level 3</span>
-              <span class="fsa-badge">35 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: RESTful Architecture · Status Codes · Validation · Idempotency</span>
+              <span class="fsa-badge">المستوى 3</span>
+              <span class="fsa-badge">35 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Outcomes</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Implement complete CRUD endpoints: Create (POST), Read (GET), Update (PUT/PATCH), Delete (DELETE).</li>
-                <li>Extract and validate Route Parameters (<code>req.params</code>) and Query Strings (<code>req.query</code>).</li>
-                <li>Enforce HTTP Status Code semantics: 200, 201, 204 No Content, 400, 404, 422.</li>
-                <li>Simulate an in-memory database CRUD workflow inside the interactive sandbox.</li>
+                <li>فهم المبادئ الستة لمعمارية REST وتجنب تسمية المسارات بأفعال مثل <code dir="ltr">/getUser</code> أو <code dir="ltr">/deletePost</code>.</li>
+                <li>إتقان استخدام أكواد الردود القياسية (201 Created, 204 No Content, 400 Bad Request, 404 Not Found, 409 Conflict).</li>
+                <li>التحقق من صحة المدخلات (Schema Validation مع Zod) لمنع حقن البيانات الخبيثة وتأمين الخادم.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه أمين السجل المدني والملفات</span>
+                <span>تشبيه مصلحة السجل المدني واستخراج الشهادات · The Civil Registry Office</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                بناء REST API يشبه نظام <strong>أمين السجلات والملفات الحكومية</strong>:
-                إذا أردت إنشاء سجل جديد، تقدم استمارة كاملة (<strong>POST &rarr; 201 Created</strong>).<br>
-                إذا أردت الاستعلام عن ملف برقم هويته، تطلبه بالرقم (<strong>GET /records/:id &rarr; 200 OK</strong>).<br>
-                إذا أردت تعديل حقل العنوان فقط دون تغيير باقي الملف، تقدم تعديلاً جزئياً (<strong>PATCH &rarr; 200 OK</strong>).<br>
-                وإذا أردت إتلاف الملف تماماً، يحذفه الأمين ويعطيك إشعار نجاح فارغ (<strong>DELETE &rarr; 204 No Content</strong>)!
+                تخيل إنك بتتعامل مع <strong>مصلحة السجل المدني</strong>..
+                المصلحة منظمة بنظام أسماء الموارد (<code dir="ltr">/citizens</code> أو <code dir="ltr">/passports</code>)، ومبتخترعش أسامي من دماغها!<br>
+                - لما تقدم طلب تسجيل مواطن جديد: بتبعت استمارة ببياناته (<strong>POST /citizens</strong>)، والموظف بيختم بـ "تم التسجيل بنجاح" ويديك رقم القومي (<strong>201 Created</strong>).<br>
+                - لما تستعلم عن بياناتك: بتطلب بالرقم القومي (<strong>GET /citizens/42</strong>) فيرد بـ (<strong>200 OK</strong>).<br>
+                - لو حبيت تعدل رقم تليفونك بس: بتبعت تعديل جزئي (<strong>PATCH /citizens/42</strong>).. بينما لو غيرت كل بياناتك بالكامل بتبعت استبدال شامل (<strong>PUT /citizens/42</strong>).<br>
+                - ولو قدمت استمارة ناقصة بيانات: الموظف بيرفضها فوراً في وشك بـ (<strong>400 Bad Request</strong>) قبل ما تدخل على السيستم أصلاً!
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              A <strong>RESTful CRUD API</strong> (Create, Read, Update, Delete) structures server endpoints around nouns (resources) rather than verbs. Clients manipulate resources using standard HTTP verbs, predictable URI patterns, and standardized JSON payloads.
-            </p>
+            <h3>المشكلة التي حلتها معايير الـ RESTful API</h3>
             <p class="fsa-ar" dir="rtl">
-              واجهات <strong>REST CRUD</strong> هي النمط القياسي العالمي لبناء واجهات الـ Backend. تعتمد على جعل عناوين الـ URL تعبر عن موارد وأسماء جمع (مثل <code>/api/v1/courses</code>)، واستخدام أفعال الـ HTTP للتعبير عن العملية المطلوبة.
+              زمان، كان كل مبرمج بيكتب روابط من دماغه: واحد يكتب <code dir="ltr">POST /delete_user_by_id?id=5</code> وواحد يكتب <code dir="ltr">GET /doCreateItem</code> وكلهم يرجعوا كود 200 حتى لو حصل خطأ فادح!
+              معايير <strong>REST</strong> وحدت العالم كله: المسارات دايماً أسماء جمع (<code dir="ltr">/api/v1/users</code>)، ونوع العملية يتحدد بـ <strong>HTTP Method</strong>، ونتيجة العملية تتحدد برمز الحالة <strong>HTTP Status Code</strong>.
             </p>
+          </section>
 
-            <h3>The Standard REST CRUD Matrix · جدول معايير العمليات الأربع</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. مصفوفة الـ CRUD القياسية · Step-by-Step Mechanics</h2>
             
             <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
               <div class="fsa-step-card__badge">POST</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Create: POST /api/courses &rarr; 201 Created</div>
+                <div class="fsa-step-card__title">1. إنشاء مورد جديد (Create &rarr; 201 Created)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  إنشاء عنصر جديد في قاعدة البيانات وإرجاع الكائن المنشأ حديثاً متضمناً معرّفه الفريد (id).
+                  المسار: <code dir="ltr">POST /api/v1/articles</code> &larr; يتحقق من الـ Body وينشئ المعرف الفريد ويرجع الكائن الجديد مع كود <code dir="ltr">201 Created</code> وترويسة <code dir="ltr">Location</code>.
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-express);">
               <div class="fsa-step-card__badge">GET</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Read: GET /api/courses/:id &rarr; 200 OK</div>
+                <div class="fsa-step-card__title">2. القراءة والاستعلام (Read &rarr; 200 OK)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  استرجاع بيانات عنصر محدد بواسطة معرّفه، أو إرجاع 404 Not Found إذا لم يكن موجوداً.
-                </p>
-              </div>
-            </div>
-
-            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
-              <div class="fsa-step-card__badge">PATCH</div>
-              <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Update: PATCH /api/courses/:id &rarr; 200 OK</div>
-                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  تعديل جزئي للحقول المرسلة فقط دون إلزام العميل بإعادة إرسال الكائن بالكامل (عكس PUT).
+                  المسار: <code dir="ltr">GET /api/v1/articles/:id</code> &larr; إذا كان المورد موجوداً يرجع بـ <code dir="ltr">200 OK</code>، وإذا لم يوجد يرجع <code dir="ltr">404 Not Found</code>.
                 </p>
               </div>
             </div>
@@ -180,228 +175,206 @@
             <div class="fsa-step-card" style="--step-accent: var(--accent-danger);">
               <div class="fsa-step-card__badge">DEL</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Delete: DELETE /api/courses/:id &rarr; 204 No Content</div>
+                <div class="fsa-step-card__title">3. الحذف النهائي (Delete &rarr; 204 No Content)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  حذف العنصر نهائياً وإرجاع استجابة فارغة مع كود 204 No Content لتأكيد الإزالة.
+                  المسار: <code dir="ltr">DELETE /api/v1/articles/:id</code> &larr; يحذف السجل ويرجع كود <code dir="ltr">204 No Content</code> بدون جسم (Empty Body) لتوفير الباندويث.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through complete CRUD database state mutations:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف تتغير مصفوفة البيانات في الذاكرة مع كل عملية CRUD:
+              تتبع عمليات الـ CRUD الأربعة وأكواد الردود القياسية المرتبطة بها:
             </p>
 
-            <div class="fsa-stepper" id="crudStepper"></div>
+            <div class="fsa-stepper" id="restCrudStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="REST CRUD State Operations Flow">
-                <title>REST CRUD Operations Diagram</title>
-                <desc>Client dispatches CRUD requests to update Database items and receive standard responses</desc>
-                <rect x="20" y="20" width="130" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="85" y="45" fill="var(--text-muted)" text-anchor="middle" font-size="11">Client HTTP</text>
-                <text x="85" y="70" fill="var(--accent-primary)" text-anchor="middle" font-size="12" font-weight="700">POST /items</text>
-                <text x="85" y="90" fill="var(--accent-success)" text-anchor="middle" font-size="11">{ name: "React" }</text>
-
-                <path d="M 160 70 L 240 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-
-                <g transform="translate(250, 20)">
-                  <rect width="180" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-express)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="90" y="45" fill="var(--track-express)" text-anchor="middle" font-size="12" font-weight="700">Express API Layer</text>
-                  <text x="90" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10">Validate Body &amp; ID</text>
-                  <text x="90" y="90" fill="var(--accent-success)" text-anchor="middle" font-size="10">db.items.push(newObj)</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="RESTful CRUD Mapping Diagram">
+                <title>RESTful CRUD Operations</title>
+                <desc>Maps HTTP Verbs POST, GET, PUT/PATCH, DELETE to database operations and status codes</desc>
+                <g transform="translate(15, 25)">
+                  <rect width="130" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="65" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">POST /users</text>
+                  <text x="65" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9" font-family="var(--font-mono)">&rarr; 201 Created</text>
                 </g>
 
-                <path d="M 440 70 L 500 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 150 70 L 195 70" stroke="var(--track-express)" stroke-width="2" stroke-dasharray="4 4" class="fsa-anim-flow" />
 
-                <g transform="translate(500, 20)">
-                  <rect width="100" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="50" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">Response</text>
-                  <text x="50" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">201 Created</text>
+                <g transform="translate(205, 25)">
+                  <rect width="130" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-express)" stroke-width="2" />
+                  <text x="65" y="45" fill="var(--track-express)" text-anchor="middle" font-size="11" font-weight="700">GET /users/:id</text>
+                  <text x="65" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9" font-family="var(--font-mono)">&rarr; 200 OK</text>
+                </g>
+
+                <path d="M 340 70 L 385 70" stroke="var(--accent-primary)" stroke-width="2" stroke-dasharray="4 4" class="fsa-anim-flow" />
+
+                <g transform="translate(395, 25)">
+                  <rect width="130" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                  <text x="65" y="45" fill="var(--accent-primary)" text-anchor="middle" font-size="11" font-weight="700">PATCH /users/:id</text>
+                  <text x="65" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9" font-family="var(--font-mono)">&rarr; 200 Modified</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">REST CRUD API Sandbox</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي عمليات REST CRUD في الذاكرة</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Simulate an in-memory CRUD database API endpoints execution live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: قم بتنفيذ عمليات الإضافة والقراءة والتعديل والحذف وشاهد النتيجة:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد كيف يتم التحقق من صحة المدخلات وإرجاع كود 201 عند النجاح و 400 عند وجود خطأ:
               </p>
-
               <div class="fsa-playground" id="crudPlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What is the semantic difference between HTTP <code>PUT</code> and HTTP <code>PATCH</code>?</p>
-              <p class="fsa-ar" dir="rtl">ما هو الفرق الدلالي الدقيق بين أسلوب PUT وأسلوب PATCH في معايير REST؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو قمت بإرسال طلب <code dir="ltr">DELETE /api/v1/posts/99</code> لمقال غير موجود في قاعدة البيانات.. إيه كود الحالة السليم اللي لازم يرجعه السيرفر؟
+              </p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    <strong>PUT</strong> يستبدل الكائن بالكامل (Full Replacement)، بينما <strong>PATCH</strong> يعدل الحقول المحددة فقط ويحتفظ بباقي الحقول (Partial Update).
+                    <strong>كود <code dir="ltr">404 Not Found</code>!</strong><br>
+                    لأن المورد المطلوب حذفه غير موجود أصلاً في النظام. أما إذا تم حذفه بنجاح فنرجع <code dir="ltr">204 No Content</code>.
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح مسار إنشاء مورد مع التحقق الشامل · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: app.delete('/api/courses/:id', (req, res) => {</span>
-                <span class="fsa-anatomy__line" data-line="2">2:   const courseId = Number(req.params.id);</span>
-                <span class="fsa-anatomy__line" data-line="3">3:   const index = courses.findIndex(c => c.id === courseId);</span>
-                <span class="fsa-anatomy__line" data-line="4">4:   if (index === -1) return res.status(404).json({ error: 'Course not found' });</span>
-                <span class="fsa-anatomy__line" data-line="5">5:   courses.splice(index, 1);</span>
-                <span class="fsa-anatomy__line" data-line="6">6:   res.status(204).send();</span>
-                <span class="fsa-anatomy__line" data-line="7">7: });</span>
+              <div class="fsa-anatomy__code" dir="ltr">
+                <span class="fsa-anatomy__line" data-line="1">1: app.post('/api/v1/users', async (req, res) => {</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   const { email, name } = req.body;</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   if (!email || !email.includes('@')) {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:     return res.status(400).json({ error: 'Valid email is required' });</span>
+                <span class="fsa-anatomy__line" data-line="5">5:   }</span>
+                <span class="fsa-anatomy__line" data-line="6">6:   const newUser = await db.user.create({ data: { email, name } });</span>
+                <span class="fsa-anatomy__line" data-line="7">7:   return res.status(201).json(newUser);</span>
+                <span class="fsa-anatomy__line" data-line="8">8: });</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 2:</strong> استخراج المعامل الديناميكي من <code>req.params.id</code> وتحويله لرقم (Number) للمطابقة.
+                  <strong>السطر 4:</strong> إرجاع كود <code dir="ltr">400 Bad Request</code> مع رسالة خطأ واضحة عند فشل التحقق.
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> فحص وجود السجل أولاً وإرجاع رمز <code>404 Not Found</code> المناسب إذا لم يوجد.
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 6:</strong> إرجاع <code>204 No Content</code> بعد نجاح الحذف بدون إرسال جسم استجابة.
+                  <strong>السطر 7:</strong> إرجاع كود <code dir="ltr">201 Created</code> مع كائن المستخدم الجديد المولد في قاعدة البيانات.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-express);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>CRUD Lookup Complexity</span>
+                  <span>مبدأ الـ Idempotency في HTTP</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(1) with Index / Map</div>
+                <div class="fsa-complexity-card__big">GET, PUT, DELETE</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  البحث بمعرف الـ ID في قواعد البيانات المفهرسة (Indexed Primary Key) يتم بزمن فوري O(1) أو O(log N).
+                  العملية الـ Idempotent تعني أن تكرار إرسال الطلب 100 مرة يترك الخادم في نفس الحالة تماماً، على عكس <code dir="ltr">POST</code> التي تنشئ 100 سجل جديد!
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Payload Validation</span>
+                  <span>مكتبات التحقق الحديثة (Zod Schema)</span>
                 </div>
-                <div class="fsa-complexity-card__big">Schema Guard (Zod)</div>
+                <div class="fsa-complexity-card__big">Schema Validation</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  يجب دائماً تمرير <code>req.body</code> عبر مكتبة فحص مخططات (مثل Zod) قبل لمس قاعدة البيانات لمنع أخطاء الـ Type Injection.
+                  استخدام مكتبة مثل <code dir="ltr">zod</code> يوفر فحصاً صارماً لنوع الحقول وحجمها ويولد أنواع TypeScript تلقائياً.
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>Standard Error Response Schema in Production</summary>
-              <div class="fsa-details__body">
-                <pre style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm);"><code>// Recommended Production Error JSON Contract
-{
-  "success": false,
-  "error": {
-    "code": "RESOURCE_NOT_FOUND",
-    "message": "Course with ID 99 does not exist",
-    "details": []
-  },
-  "meta": {
-    "timestamp": "2026-08-25T08:45:00.000Z"
-  }
-}</code></pre>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Returning 200 OK on Resource Creation</span>
+                  <span>إرجاع كود 200 OK عند حدوث أخطاء داخل الـ JSON</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ NON-STANDARD (200 for POST creation)<br>res.json(newRecord);</code>
+                    <code>// ❌ كارثة: تضليل العميل ومكتبات الكاش بـ 200 OK<br>res.json({ success: false, error: 'User not found' });</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ REST STANDARD (201 Created)<br>res.status(201).json(newRecord);</code>
+                    <code>// ✅ سليم: استخدام كود HTTP Status 404 القياسي<br>res.status(404).json({ error: 'User not found' });</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> معايير REST توجب إرجاع رمز <code>201 Created</code> عند نجاح إنشاء مورد جديد، وليس 200 OK العامة.
+                  <strong>التشخيص الهندسي:</strong> إرجاع 200 مع أخطاء يمنع المتصفحات ومكتبات الـ Fetch والـ Proxies من اكتشاف الأخطاء ويفسد منطق الـ Retry.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Route Parameters (req.params)</dt>
-              <dd class="fsa-ar" dir="rtl">المتغيرات المضمنة في مسار الـ URL (مثل <code>:id</code> في <code>/users/:id</code>) لتحديد مورد فريد.</dd>
-              <dt>Query String (req.query)</dt>
-              <dd class="fsa-ar" dir="rtl">المعاملات الاختيارية المضافة في نهاية العنوان بعد علامة <code>?</code> لفلترة وترتيب البيانات (مثل <code>?sort=asc&amp;limit=10</code>).</dd>
+              <dt dir="ltr">REST (Representational State Transfer)</dt>
+              <dd class="fsa-ar" dir="rtl">نمط معماري قياسي لتصميم واجهات برمجة التطبيقات يعتمد على موارد محددة وأفعال HTTP القياسية.</dd>
+              <dt dir="ltr">Idempotency</dt>
+              <dd class="fsa-ar" dir="rtl">خاصية في بروتوكول HTTP تضمن أن تنفيذ الطلب عدة مرات متتالية يؤدي لنفس النتيجة على السيرفر كأنه نفذ مرة واحدة.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
-            <div class="fsa-checkpoint" id="crudCheckpoint"></div>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
+            <div class="fsa-checkpoint" id="restCrudCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "What is the standard HTTP status code returned upon a successful DELETE operation that returns no response body?",
+                  "q": "What is the primary architectural difference between HTTP PUT and HTTP PATCH methods?",
                   "options": [
-                    "200 OK",
-                    "204 No Content",
-                    "201 Created"
+                    "PUT is for deleting records, PATCH is for creating records",
+                    "PUT replaces the entire resource completely, whereas PATCH modifies only specified partial fields",
+                    "PUT is asynchronous while PATCH is synchronous"
                   ],
                   "answer": 1,
-                  "why": "HTTP 204 No Content indicates that the action was successfully applied with no additional message body to return.",
-                  "whyAr": "رمز 204 No Content يشير إلى نجاح العملية بالكامل دون الحاجة لإرجاع أي جسم استجابة في الرد.",
-                  "anchor": "learn"
+                  "why": "PUT is an idempotent full resource replacement. PATCH applies partial delta modifications to specific fields.",
+                  "whyAr": "فعل PUT يقوم باستبدال المورد كاملاً، بينما فعل PATCH يقوم بتعديل جزئي للحقول المحددة فقط.",
+                  "anchor": "story"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Interview Question: Idempotency in REST APIs</summary>
+              <summary>سؤال مقابلات شهير: إزاي بتعمل Pagination في REST API ضخم بملايين السجلات؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: What does Idempotency mean, and which HTTP verbs are Idempotent?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> الخاصية اللاإرادية (Idempotency) تعني أن تكرار إرسال نفس الطلب عدة مرات متتالية يؤدي إلى نفس النتيجة بالضبط على الخادم.<br>
-                  - أفعال حيادية: <code>GET</code>, <code>PUT</code>, <code>DELETE</code>.<br>
-                  - أفعال غير حيادية (Non-idempotent): <code>POST</code> (لأن تكراره ينشئ سجلات مكررة جديدة).
+                  <strong>الإجابة الهندسية:</strong><br>
+                  في الأنظمة الضخمة، نتجنب <code dir="ltr">Offset-based Pagination (OFFSET 1000000)</code> لأنه يجبر قاعدة البيانات على قراءة كل السجلات السابقة في الذاكرة.<br>
+                  وبدلاً من ذلك نستخدم <strong>Cursor-based Pagination (Keyset Pagination)</strong> عبر تمرير معرف آخر عنصر معروض (<code dir="ltr">WHERE id &gt; last_seen_id ORDER BY id ASC LIMIT 20</code>) مما يجعل الاستعلام ينفذ في زمن فوري O(1) باستخدام الـ Index!
                 </p>
               </div>
             </details>
@@ -410,18 +383,18 @@
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="middleware.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous: Middleware · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: خط سير الـ Middlewares</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
-            <a href="../mongodb/document-model.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next Track: MongoDB · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            <a href="../mongodb/index.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>المسار التالي: مونجو دي بي 8</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -429,7 +402,7 @@
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -453,29 +426,31 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
-          el: 'crudStepper',
-          title: 'Full REST CRUD In-Memory Database Mutations',
+          el: 'restCrudStepper',
+          title: 'مصفوفة عمليات REST وأكواد الردود القياسية',
           init: () => ({
-            items: [
-              { id: 1, name: 'React Course' },
-              { id: 2, name: 'Node.js Course' }
+            verbs: [
+              { name: 'POST /articles', status: '201 Created' },
+              { name: 'GET /articles/42', status: '200 OK' },
+              { name: 'PATCH /articles/42', status: '200 OK' },
+              { name: 'DELETE /articles/42', status: '204 No Content' }
             ]
           }),
           steps: (state) => [
-            { activeIdx: 0, say: 'الحالة الأصلية: 2 عناصر في قاعدة البيانات' },
-            { activeIdx: 1, say: 'عملية POST: إضافة كائن جديد (id: 3, name: Express Course) &rarr; كود 201' },
-            { activeIdx: 0, say: 'عملية PATCH: تعديل اسم العنصر 1 إلى "Advanced React" &rarr; كود 200' },
-            { activeIdx: 1, say: 'عملية DELETE: حذف العنصر 2 &rarr; كود 204 No Content' }
+            { activeIdx: 0, say: 'POST: إنشاء مورد جديد وإرجاع كود 201 Created' },
+            { activeIdx: 1, say: 'GET: قراءة المورد وإرجاع كود 200 OK مع بيانات JSON' },
+            { activeIdx: 2, say: 'PATCH: تعديل جزئي للمورد وإرجاع الكائن المحدث' },
+            { activeIdx: 3, say: 'DELETE: حذف المورد وإرجاع كود 204 No Content بدون جسم' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
               <div class="fsa-viz-cells" style="gap: 10px;">
-                ${state.items.map((it, i) => {
+                ${state.verbs.map((v, i) => {
                   const isActive = step.activeIdx === i;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 60px; font-size: 11px; padding: 4px; text-align: center;">
-                      <span style="font-size: 9px; color: var(--text-muted);">ID: ${it.id}</span>
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'}; display: block; margin-top: 2px;">${it.name}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-express)' : 'var(--text-primary)'};">${v.name}</span>
+                      <span style="font-size: 8px; color: var(--accent-success); display: block; margin-top: 2px;">${v.status}</span>
                     </div>
                   `;
                 }).join('')}
@@ -488,27 +463,20 @@
       if (window.FSA.playground) {
         window.FSA.playground.mount({
           el: 'crudPlayground',
-          starterCode: `// In-Memory REST CRUD Controller Simulation
-const db = [
-  { id: 1, title: 'Learn Modern JavaScript' },
-  { id: 2, title: 'Master Node.js Streams' }
-];
+          starterCode: `// محاكاة معالج إنشاء مستخدم REST
+const database = [];
 
-function createItem(title) {
-  const newItem = { id: db.length + 1, title };
-  db.push(newItem);
-  return { status: 201, data: newItem };
+function createUser(payload) {
+  if (!payload.email || !payload.email.includes('@')) {
+    return { status: 400, error: 'Invalid email address' };
+  }
+  const user = { id: database.length + 1, ...payload, createdAt: new Date().toISOString() };
+  database.push(user);
+  return { status: 201, data: user };
 }
 
-function getItem(id) {
-  const item = db.find(i => i.id === id);
-  if (!item) return { status: 404, error: 'Not Found' };
-  return { status: 200, data: item };
-}
-
-console.log('1. Read ID 1:', getItem(1));
-console.log('2. Create Item:', createItem('Master Express 5.2 CRUD'));
-console.log('3. Full DB State:', db);`
+console.log('1. Invalid Request:', createUser({ name: 'Ahmed' }));
+console.log('2. Valid Request:', createUser({ name: 'Ahmed', email: 'ahmed@fullstack.academy' }));`
         });
       }
     });

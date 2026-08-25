@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="hello-express">
   <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="1">
-  <meta name="fsa-title" content="Express Fundamentals & Server Setup">
-  <meta name="fsa-est-minutes" content="20">
-  <meta name="fsa-teaches-version" content="Express 5.2">
-  <meta name="fsa-pattern-label" content="Server Fundamentals">
+  <meta name="fsa-title" content="Hello Express: Server Architecture & Routing">
+  <meta name="fsa-est-minutes" content="25">
+  <meta name="fsa-teaches-version" content="Express 5.2 Server">
+  <meta name="fsa-pattern-label" content="Server Architecture">
   <meta name="fsa-root" content="../../">
 
-  <title>Express Fundamentals & Server Setup · FullStack Academy</title>
+  <title>Hello Express: Server Architecture & Routing · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,124 +44,128 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-express)"></span>
-            <span>Express.js Track</span>
+            <span>مسار إكسبريس · Express.js 5.2</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="hello-express.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>Express Fundamentals</span>
+                <span>Hello Express &amp; Routing</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">Express.js</a> &rsaquo;
-              <span>Server Fundamentals</span>
+              <span>Hello Express</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 1 · EXPRESS 5.2</span>
+              <span>المستوى 1 · معمارية خادم الويب والتوجيه</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">Express Fundamentals & Server Setup</h1>
+            <h1 style="margin-block-start: var(--space-2);">Hello Express: Server Architecture &amp; Routing</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              أساسيات إكسبريس 5.2: إنشاء الخادم، التوجيه الأساسي (Routing)، والتعامل مع كائني req و res
+              ليه محتاجين Express فوق Node.js؟ وكيف تنشئ خادماً احترافياً وتعالج خطأ تصادم المنافذ EADDRINUSE؟
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: Express 5.2 Routing</span>
-              <span class="fsa-badge">Level 1</span>
-              <span class="fsa-badge">20 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: Express 5.2 · HTTP Router · Port Binding · EADDRINUSE</span>
+              <span class="fsa-badge">المستوى 1</span>
+              <span class="fsa-badge">25 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Understand why Express is used over raw <code>node:http</code> (Routing, Middleware, Simplicity).</li>
-                <li>Master the HTTP method handlers: <code>app.get()</code>, <code>app.post()</code>, etc.</li>
-                <li>Explore Request and Response helper methods (<code>res.json()</code>, <code>res.status()</code>).</li>
-                <li>Handle port collisions (<code>EADDRINUSE</code>) and environment configuration.</li>
+                <li>فهم المعاناة في استخدام وحدة <code dir="ltr">node:http</code> الخام ولماذا يعتبر Express المعيار القياسي لبناء السيرفرات.</li>
+                <li>إنشاء تطبيق Express 5.2 وربط المسارات بالأفعال (<code dir="ltr">app.get</code>, <code dir="ltr">app.post</code>).</li>
+                <li>فهم عملية حجز المنفذ (Port Binding) وكيفية التعامل مع خطأ تصادم المنافذ <code dir="ltr">EADDRINUSE</code> برمجياً.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه مأمور البريد وموجه الطرود</span>
+                <span>تشبيه مأمور البريد الذكي وفرز الخطابات · The Smart Postal Officer</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                إذا كان خادم Node.js الخام (<code>node:http</code>) هو بمثابة مبنى البريد الأساسي حيث تستلم الطرود كقطع خام وتحتاج لتحليل النصوص والمسارات يدوياً بـ <code>if...else</code> معقدة،
-                فإن <strong>Express.js</strong> هو مأمور البريد الذكي (Router): بمجرد وصول الطرد، يقرأ العنوان ونوع الخدمة (GET / POST) ويوجهه فوراً إلى المكتب المخصص له دون أي تعقيد يدوي!
+                تخيل إنك استلمت وظيفة <strong>مأمور بريد في مبنى ضخم</strong>..
+                زمان في وحدة <code dir="ltr">node:http</code> الخام، كان كل ما يجيلك جواب، بتضطر تفتحه بنفسك وتبص على العنوان وتكتب 50 شرط <code dir="ltr">if (req.url === '/users' && req.method === 'GET')</code>.. كود مكرر وممل ويسحب عصب أي مهندس!<br>
+                هنا بقى جه دور <strong>Express.js</strong> عشان يديك <strong>نظام فرز آلي فائق الذكاء (HTTP Router)</strong>:<br>
+                أول ما الجواب يوصل، النظام بيبص على الختم (<code dir="ltr">GET /api/v1/courses</code>) ويحوله للمكتب المخصص في كسر من الميلي ثانية عبر دالة بسيطة ومباشرة: <code dir="ltr">app.get('/api/v1/courses', handler)</code>!
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              <strong>Express.js</strong> is a fast, unopinionated, minimalist web framework for Node.js. It wraps the raw HTTP server with powerful routing mechanisms, middleware support, and intuitive response formatting utilities.
-            </p>
+            <h3>الميزة الثورية في Express 5.2</h3>
             <p class="fsa-ar" dir="rtl">
-              إطار عمل <strong>Express.js</strong> هو الإطار الأكثر انتشاراً لبناء خوادم الويب والـ REST APIs في بيئة Node.js. يوفر بنية مرنة وخفيفة لتنظيم المسارات ومعالجة الطلبات وإرجاع الردود بتنسيق JSON بطريقة مقروءة وقياسية.
+              في الإصدارات القديمة (Express 4)، لو حصل خطأ أو Rejected Promise جوه دالة مسار غير متزامنة (<code dir="ltr">async/await</code>)، كان السيرفر بيعلق ومبيعرفش يمسك الخطأ إلا لو كتبت <code dir="ltr">try...catch</code> يدوي في كل مسار وناديت <code dir="ltr">next(err)</code>!
+              في <strong>Express 5</strong>، أصبح السيرفر يدعم الوعود تلقائياً (Native Async Error Catching)، فأي استثناء يرمى في أي مسار async يتم توجيهه أوتوماتيكياً لحارس الأخطاء المركزي دون أن يسقط السيرفر!
             </p>
+          </section>
 
-            <h3>Step-by-Step Mechanics · دورة حياة طلب Express</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. كواليس إنشاء الخادم خطوة بخطوة · Step-by-Step Mechanics</h2>
             
-            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-express);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. App Instantiation (إنشاء التطبيق)</div>
+                <div class="fsa-step-card__title">1. استيراد وإنشاء مثيل التطبيق (Application Instance)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  استدعاء <code>express()</code> ينشئ كائن التطبيق الذي يحتوي على جدول المسارات ومكدس الـ Middlewares.
+                  استدعاء <code dir="ltr">const app = express()</code> ينشئ كائن التوجيه وسلسلة المعالجات الوسيطة في الذاكرة.
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
               <div class="fsa-step-card__badge">2</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. Route Matching (مطابقة المسار)</div>
+                <div class="fsa-step-card__title">2. تسجيل جداول التوجيه (Routing Table Registration)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  عند وصول طلب، يطابق Express نوع الفعل (HTTP Method) والمسار (URL Path) وينفذ الدالة المحددة.
+                  يتم ربط كل مسار بالدالة المناسبة، حيث يوفر Express كائنين سحريين: <code dir="ltr">req</code> (بيانات الطلب) و <code dir="ltr">res</code> (أدوات الرد).
                 </p>
               </div>
             </div>
@@ -167,199 +173,191 @@
             <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
               <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">3. Response Serialization (إرسال الرد)</div>
+                <div class="fsa-step-card__title">3. الاستماع على المنفذ (Binding to Network Port)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  تحديد رمز الحالة المناسب وإرسال البيانات كـ JSON عبر <code>res.status(200).json(data)</code>.
+                  استدعاء <code dir="ltr">app.listen(PORT)</code> يطلب من نظام التشغيل توجيه جميع حزم الـ TCP القادمة على هذا المنفذ إلى عملية نود جي إس.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through incoming HTTP requests routing in Express 5.2:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف يطابق موجه Express المسار الوارد وينفذ المعالج المناسب:
+              شاهد كيف يستقبل موجه Express الطلب ويفرزه للمسار المطابق:
             </p>
 
             <div class="fsa-stepper" id="expressRouterStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Express Router Dispatching Flow">
-                <title>Express Router Flow Diagram</title>
-                <desc>Incoming request matches route table and executes route handler</desc>
-                <rect x="20" y="30" width="130" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="85" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">GET /users</text>
-
-                <path d="M 160 70 L 240 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-
-                <g transform="translate(250, 20)">
-                  <rect width="160" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-express)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="80" y="45" fill="var(--track-express)" text-anchor="middle" font-size="12" font-weight="700">Express Router</text>
-                  <text x="80" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">app.get('/users')</text>
-                  <text x="80" y="90" fill="var(--accent-success)" text-anchor="middle" font-size="10">&check; Match Found</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Express HTTP Routing Architecture">
+                <title>Express Router Lifecycle</title>
+                <desc>Client sends GET /api/users request which matches the Express Route Table</desc>
+                <g transform="translate(15, 25)">
+                  <rect width="130" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="65" y="45" fill="var(--text-primary)" text-anchor="middle" font-size="11" font-weight="700">Client Request</text>
+                  <text x="65" y="70" fill="var(--track-express)" text-anchor="middle" font-size="9" font-family="var(--font-mono)">GET /users</text>
                 </g>
 
-                <path d="M 420 70 L 490 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 150 70 L 195 70" stroke="var(--track-express)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
 
-                <g transform="translate(500, 30)">
-                  <rect width="100" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="50" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">res.json()</text>
-                  <text x="50" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">200 OK</text>
+                <g transform="translate(205, 20)">
+                  <rect width="170" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-express)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="85" y="40" fill="var(--track-express)" text-anchor="middle" font-size="12" font-weight="700">Express Router</text>
+                  <text x="85" y="65" fill="var(--text-secondary)" text-anchor="middle" font-size="10">Match Method + Path</text>
+                  <text x="85" y="85" fill="var(--accent-success)" text-anchor="middle" font-size="9">&check; Handler Executed</text>
+                </g>
+
+                <path d="M 380 70 L 425 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(435, 25)">
+                  <rect width="130" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="65" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">200 JSON</text>
+                  <text x="65" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9" font-family="var(--font-mono)">res.json(data)</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Express Route Simulator</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي جدول توجيه Express 5.2</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Simulate Express route dispatching and JSON response formatting live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: قم بتعديل مسارات الخادم واستقبل الاستجابة بتنسيق JSON:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد كيف يتم مطابقة مسارات الطلبات وإرجاع الردود بصيغة JSON:
               </p>
-
               <div class="fsa-playground" id="expressPlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What happens if you attempt to call <code>app.listen(3000)</code> when port 3000 is already in use by another server?</p>
-              <p class="fsa-ar" dir="rtl">ماذا يحدث عند محاولة تشغيل السيرفر على منفذ (Port) مستخدم مسبقاً؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو قمت بتشغيل سيرفرك على المنفذ 3000، وكان هناك تطبيق آخر شغال على نفس المنفذ.. إيه اسم الخطأ الشهير اللي هيرميه نظام التشغيل؟
+              </p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    يرمي النظام خطأ <strong>Error: listen EADDRINUSE: address already in use :::3000</strong> ويغلق العملية تلقائياً.
+                    <strong>خطأ: <code dir="ltr">Error: listen EADDRINUSE: address already in use :::3000</code></strong><br>
+                    نظام التشغيل يمنع أكثر من عملية من الاستماع على نفس المنفذ والـ Protocol في نفس الوقت لحماية مسار البيانات.
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح كود خادم Express 5.2 الإنتاجي · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
+              <div class="fsa-anatomy__code" dir="ltr">
                 <span class="fsa-anatomy__line" data-line="1">1: import express from 'express';</span>
                 <span class="fsa-anatomy__line" data-line="2">2: const app = express();</span>
-                <span class="fsa-anatomy__line" data-line="3">3: </span>
-                <span class="fsa-anatomy__line" data-line="4">4: app.get('/api/health', (req, res) => {</span>
-                <span class="fsa-anatomy__line" data-line="5">5:   res.status(200).json({ status: 'healthy', timestamp: Date.now() });</span>
-                <span class="fsa-anatomy__line" data-line="6">6: });</span>
-                <span class="fsa-anatomy__line" data-line="7">7: </span>
-                <span class="fsa-anatomy__line" data-line="8">8: app.listen(3000, () => console.log('Server live on port 3000'));</span>
+                <span class="fsa-anatomy__line" data-line="3">3: const PORT = process.env.PORT || 3000;</span>
+                <span class="fsa-anatomy__line" data-line="4">4: </span>
+                <span class="fsa-anatomy__line" data-line="5">5: app.get('/health', (req, res) => {</span>
+                <span class="fsa-anatomy__line" data-line="6">6:   res.status(200).json({ status: 'ok', uptime: process.uptime() });</span>
+                <span class="fsa-anatomy__line" data-line="7">7: });</span>
+                <span class="fsa-anatomy__line" data-line="8">8: </span>
+                <span class="fsa-anatomy__line" data-line="9">9: app.listen(PORT, () => console.log(`🚀 Server on port ${PORT}`));</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> دالة <code>app.get</code> تحدد المسار ونوع الفعل المطلوب لاستقبال الطلبات.
+                  <strong>السطر 3:</strong> قراءة المنفذ من متغيرات البيئة <code dir="ltr">process.env.PORT</code> إجباري عند النشر على السحابة (AWS / Render / Railway).
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 5:</strong> دالة <code>res.json()</code> تضبط ترويسة <code>Content-Type: application/json</code> وترسل البيانات المشفرة تلقائياً.
+                  <strong>السطر 6:</strong> دالة <code dir="ltr">res.json()</code> تقوم تلقائياً بضبط ترويسة <code dir="ltr">Content-Type: application/json</code> وتحويل الكائن لنص مشفر.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-express);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>Route Matching Speed</span>
+                  <span>سرعة مطابقة المسارات</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(R) Route Stack</div>
+                <div class="fsa-complexity-card__big">Radix Tree / Regex</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  يطابق Express المسارات بالتسلسل بترتيب تعريفها في الكود من الأعلى إلى الأسفل.
+                  يقوم Express بتحويل مسارات الـ Routes إلى تعابير نمطية محسنة في الذاكرة لمطابقة الـ URL في أجزاء من الميكروثانية.
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Express 5.2 Async Errors</span>
+                  <span>الإغلاق الهادئ (Graceful Shutdown)</span>
                 </div>
-                <div class="fsa-complexity-card__big">Auto-Catch Async</div>
+                <div class="fsa-complexity-card__big">SIGTERM Handling</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  في Express 5 الحديث، أخطاء الـ Async المرفوضة يتم التقاطها تلقائياً وتمريرها لـ Error Middleware دون الحاجة لـ try/catch يدوي.
+                  في السيرفرات الحقيقية، نلتقط إشارة <code dir="ltr">process.on('SIGTERM')</code> لإنهاء الطلبات المفتوحة قبل إيقاف الخادم دون قطع اتصالات المستخدمين.
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>Key Improvements in Express 5.2</summary>
-              <div class="fsa-details__body">
-                <ul style="padding-inline-start: var(--space-5); line-height: 1.8;">
-                  <li>التقاط أخطاء الـ Async/Await والوعود المرفوضة تلقائياً وتمريرها لـ <code>next(err)</code>.</li>
-                  <li>تحديث محرك مطابقة المسارات <code>path-to-regexp</code> للأمان ومنع هجمات الـ ReDoS.</li>
-                  <li>إلغاء الطرق القديمة المهملة واستقرار معايير الـ HTTP الحديثة.</li>
-                </ul>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Calling res.send() multiple times (Headers already sent error)</span>
+                  <span>إرسال الرد مرتين (Cannot set headers after they are sent)</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ CRASHES (Cannot set headers after they are sent)<br>if (!user) res.status(404).send('Not found');<br>res.json(user);</code>
+                    <code>// ❌ خطأ: محاولة إرسال ردين في نفس الطلب يرمي استثناء قاتلاً<br>if (!user) res.status(404).send('Not Found');<br>res.json(user); // ينفذ أيضاً!</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ FIXED (Use return to exit handler)<br>if (!user) return res.status(404).send('Not found');<br>res.json(user);</code>
+                    <code>// ✅ سليم: استخدام return لإنهاء تنفيذ الدالة فور إرسال الرد<br>if (!user) return res.status(404).send('Not Found');<br>return res.json(user);</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> دالة <code>res.json()</code> ترسل الرد للعميل وتغلق الاتصال، ومحاولة إرسال رد ثانٍ تسبب استثناء <code>ERR_HTTP_HEADERS_SENT</code>.
+                  <strong>التشخيص الهندسي:</strong> بروتوكول HTTP يسمح برد واحد فقط لكل طلب، ومحاولة إرسال ترويسات بعد إغلاق الـ Socket تؤدي لانهيار المعالج.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Routing</dt>
-              <dd class="fsa-ar" dir="rtl">آلية تحديد كيفية استجابة تطبيق السيرفر لطلب العميل بناءً على مسار الـ URI ونوع الـ HTTP Method.</dd>
-              <dt>req (Request Object)</dt>
-              <dd class="fsa-ar" dir="rtl">الكائن الممثل لطلب العميل الوارد ويحتوي على الـ Headers، الـ Query params، وجسم الطلب (Body).</dd>
+              <dt dir="ltr">Route Handler</dt>
+              <dd class="fsa-ar" dir="rtl">الدالة المسؤولة عن معالجة طلب HTTP معين وإرجاع الرد للعميل عبر كائن res.</dd>
+              <dt dir="ltr">EADDRINUSE</dt>
+              <dd class="fsa-ar" dir="rtl">رمز خطأ نظام التشغيل الذي يشير إلى أن المنفذ الشبكي المطلوب محجوز ومستخدم بالفعل بواسطة تطبيق آخر.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="helloExpressCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "What happens if you execute two response methods like res.json() consecutively in a single route handler?",
+                  "q": "What happens in Node.js if your Express route handler attempts to call res.json() a second time after already sending a response?",
                   "options": [
-                    "Express merges both JSON objects into one payload",
-                    "Node.js throws an ERR_HTTP_HEADERS_SENT exception",
-                    "The second response overwrites the first one silently"
+                    "Express concatenates the two JSON objects automatically",
+                    "Node.js throws 'ERR_HTTP_HEADERS_SENT: Cannot set headers after they are sent to the client'",
+                    "The browser silently reloads the webpage"
                   ],
                   "answer": 1,
-                  "why": "Once HTTP headers are flushed to the client, sending a second response on the same socket triggers an ERR_HTTP_HEADERS_SENT error.",
-                  "whyAr": "بمجرد إرسال الترويسة للعميل، فإن محاولة إرسال رد ثانٍ في نفس الطلب تؤدي لرمي خطأ ERR_HTTP_HEADERS_SENT.",
+                  "why": "HTTP enforces a single response per request. Attempting to write headers on a closed socket throws ERR_HTTP_HEADERS_SENT.",
+                  "whyAr": "بروتوكول HTTP يسمح برد واحد فقط لكل طلب، ومحاولة كتابة ترويسات جديدة بعد إرسال الرد ترمي خطأ ERR_HTTP_HEADERS_SENT.",
                   "anchor": "practice"
                 }
               ]
@@ -367,15 +365,15 @@
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Interview Question: Dynamic Port Binding</summary>
+              <summary>سؤال مقابلات شهير: إزاي بتفصل المسارات في التطبيقات الكبيرة (Express Router Modularization)؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: Why should you always use process.env.PORT instead of hardcoding port 3000?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> منصات الاستضافة السحابية (مثل AWS، Railway، Render) تعين منافذ متغيرة ديناميكياً لكل حاوية (Container). لذا يجب كتابة: <code>const PORT = process.env.PORT || 3000;</code> لضمان استقرار التشغيل محلياً وسحابياً.
+                  <strong>الإجابة الهندسية:</strong><br>
+                  نستخدم <code dir="ltr">express.Router()</code> لإنشاء ملفات توجيه فرعية مستقلة (مثل <code dir="ltr">routes/users.js</code> و <code dir="ltr">routes/products.js</code>)، ثم نقوم بتثبيتها في الملف الرئيسي عبر <code dir="ltr">app.use('/api/v1/users', usersRouter)</code>، مما يحافظ على نظافة الكود وفصل المسؤوليات.
                 </p>
               </div>
             </details>
@@ -383,19 +381,19 @@
 
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
-            <a href="../nodejs/streams-buffers.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous Track: Node.js · السابق</span>
+            <a href="index.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>دليل مسار Express</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
             <a href="middleware.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next: Middleware Conveyor · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس التالي: خط سير الـ Middlewares</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -403,7 +401,7 @@
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -428,28 +426,30 @@
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
           el: 'expressRouterStepper',
-          title: 'Express Route Table Dispatch Flow',
+          title: 'دورة مطابقة المسار وإرجاع الرد في Express',
           init: () => ({
-            routes: [
-              { method: 'GET', path: '/api/v1/users', match: true },
-              { method: 'POST', path: '/api/v1/users', match: false },
-              { method: 'GET', path: '/api/v1/posts', match: false }
+            steps: [
+              { name: '1. Incoming TCP Request', desc: 'استلام حزمة الـ HTTP' },
+              { name: '2. Route Matching', desc: 'فحص المسار GET /api/health' },
+              { name: '3. Handler Execution', desc: 'تنفيذ دالة المسار' },
+              { name: '4. JSON Serialization', desc: 'إرسال الرد 200 OK' }
             ]
           }),
           steps: (state) => [
-            { activeIdx: 0, say: 'الخطوة 1: وصول طلب HTTP GET /api/v1/users' },
-            { activeIdx: 0, say: 'الخطوة 2: فحص أول مسار في جدول التوجيه: تطابق كامل!' },
-            { activeIdx: 0, say: 'الخطوة 3: استدعاء معالج الطلب وتجهيز رد الـ JSON' },
-            { activeIdx: 0, say: 'الخطوة 4: إرسال 200 OK وإنهاء دورة الطلب بنجاح' }
+            { activeIdx: 0, say: 'الخطوة 1: الخادم يستقبل طلب GET /api/health القادم من العميل' },
+            { activeIdx: 1, say: 'الخطوة 2: موجه Express يطابق المسار بنجاح في جدول التوجيه' },
+            { activeIdx: 2, say: 'الخطوة 3: تنفيذ دالة المسار واستخراج بيانات الحالة' },
+            { activeIdx: 3, say: 'الخطوة 4: إرسال الرد بصيغة JSON وإغلاق تدفق البيانات' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
               <div class="fsa-viz-cells" style="gap: 10px;">
-                ${state.routes.map((r, i) => {
+                ${state.steps.map((s, i) => {
                   const isActive = step.activeIdx === i;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 150px; height: 60px; font-size: 11px; padding: 4px; text-align: center;">
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${r.method} ${r.path}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-express)' : 'var(--text-primary)'};">${s.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${s.desc}</span>
                     </div>
                   `;
                 }).join('')}
@@ -462,34 +462,21 @@
       if (window.FSA.playground) {
         window.FSA.playground.mount({
           el: 'expressPlayground',
-          starterCode: `// Express Route Handler Simulator
-function createRouter() {
-  const routes = {};
-  return {
-    get: (path, handler) => { routes['GET ' + path] = handler; },
-    dispatch: (method, path) => {
-      const key = method + ' ' + path;
-      if (routes[key]) {
-        console.log(\`Matched [\${key}]\`);
-        routes[key]({ path }, {
-          json: (data) => console.log('Response JSON:', data)
-        });
-      } else {
-        console.log(\`404 Not Found: \${key}\`);
-      }
-    }
-  };
+          starterCode: `// محاكاة مطابقة المسارات في Express
+const routes = {
+  'GET /api/v1/health': () => ({ status: 'UP', timestamp: Date.now() }),
+  'GET /api/v1/users': () => ([{ id: 1, name: 'Osama' }])
+};
+
+function handleRequest(method, path) {
+  const key = \`\${method} \${path}\`;
+  const handler = routes[key];
+  if (!handler) return { status: 404, body: 'Not Found' };
+  return { status: 200, body: handler() };
 }
 
-const router = createRouter();
-router.get('/courses', (req, res) => {
-  res.json([
-    { id: 1, name: 'Node.js Internals' },
-    { id: 2, name: 'Express APIs' }
-  ]);
-});
-
-router.dispatch('GET', '/courses');`
+console.log('Test 1:', handleRequest('GET', '/api/v1/health'));
+console.log('Test 2:', handleRequest('POST', '/api/v1/users')); // 404`
         });
       }
     });

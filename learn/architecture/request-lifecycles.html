@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="request-lifecycles">
   <meta name="fsa-level" content="3">
   <meta name="fsa-order" content="1">
-  <meta name="fsa-title" content="The Full-Stack End-to-End Request Lifecycle">
+  <meta name="fsa-title" content="End-to-End Full-Stack Request Lifecycle">
   <meta name="fsa-est-minutes" content="40">
-  <meta name="fsa-teaches-version" content="MERN & PERN Stack">
+  <meta name="fsa-teaches-version" content="FullStack Architecture 2026">
   <meta name="fsa-pattern-label" content="System Architecture">
   <meta name="fsa-root" content="../../">
 
-  <title>The Full-Stack End-to-End Request Lifecycle · FullStack Academy</title>
+  <title>End-to-End Full-Stack Request Lifecycle · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,370 +44,348 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-arch)"></span>
-            <span>Architecture Track</span>
+            <span>مسار المعمارية · Architecture</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="request-lifecycles.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>End-to-End Request Lifecycle</span>
+                <span>Request Lifecycles</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">Architecture</a> &rsaquo;
-              <span>Request Lifecycle</span>
+              <span>Request Lifecycles</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 3 · ARCHITECTURE</span>
+              <span>المستوى 3 · الرؤية المعمارية الشاملة من البداية للنهاية</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">The Full-Stack End-to-End Request Lifecycle</h1>
+            <h1 style="margin-block-start: var(--space-2);">End-to-End Full-Stack Request Lifecycle</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              رحلة الطلب المتكاملة: من نقرة زر في React إلى Express، ثم Prisma، ثم PostgreSQL، والعودة إلى الشاشة
+              رحلة الـ 50 ميلي ثانية: من نقرة زر المستخدم في React حتى استقرار البيانات في القرص الصلب والعودة للشاشة!
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: Full-Stack Request Flow</span>
-              <span class="fsa-badge">Level 3</span>
-              <span class="fsa-badge">40 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: React 19 &rarr; Express 5 &rarr; Prisma 7 &rarr; PostgreSQL 18</span>
+              <span class="fsa-badge">المستوى 3</span>
+              <span class="fsa-badge">40 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Trace every micro-step of a user interaction across the entire 4-tier stack.</li>
-                <li>Analyze the boundary contracts: JSX State &rarr; Fetch Network &rarr; Express Routing &rarr; Prisma ORM &rarr; SQL.</li>
-                <li>Understand latency bottlenecks and where caching layers fit (Browser, CDN, Redis, DB Index).</li>
-                <li>Simulate an end-to-end full-stack flight recorder trace in the interactive sandbox.</li>
+                <li>ربط جميع طبقات الـ Full-Stack Stack في صورة ذهنية معمارية واحدة متماسكة.</li>
+                <li>تتبع حركة البيانات خلال الـ 7 محطات: تفاعل الواجهة &larr; طلب الشبكة &larr; موجه السيرفر &larr; خط السير الأمني &larr; استعلام الـ ORM &larr; معاملة قاعدة البيانات &larr; تحديث الـ DOM.</li>
+                <li>فهم المعمارية ثلاثية الطبقات (Controller - Service - Repository) وكيف تجعل المشاريع قابلة للتوسع والصيانة لعشرات السنين.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه خط الإنتاج المتكامل والمصرف الآلي</span>
+                <span>تشبيه خط الإنتاج الصناعي المتكامل والمطعم الراقي · The Assembly Line &amp; Fine Dining</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                عندما تضغط زراً لشراء دورة تدريبية، أنت تطلق <strong>سباق تتابع عالي الدقة يمر بأربع محطات رئيسية</strong>:
-                1. <strong>المتصفح (React):</strong> يجهز الطلب ويطلق <code>fetch('/api/buy')</code>.<br>
-                2. <strong>الخادم (Express):</strong> يستقبل الطلب، يوثق الهوية عبر الـ Middleware، ويوجهه لدالة الشراء.<br>
-                3. <strong>طبقة البيانات (Prisma ORM):</strong> تحول كائن الشراء إلى استعلام SQL ذري آمن.<br>
-                4. <strong>قاعدة البيانات (PostgreSQL):</strong> تخصم الرصيد وتثبت الفاتورة في سجل الـ WAL.<br>
-                ثم تعود النتيجة بنفس الترتيب العكسي لتحديث واجهة المستخدم بلحظة واحدة!
+                تخيل إنك دخلت مطعم فاخر جداً وطلبت وجبة مخصصة (<strong>نقرة زر المستخدم في React</strong>)..
+                - الجرسون الذكي بيسجل طلبك في شاشة اللمس ويبعته في ثانية للمطبخ (<strong>Fetch API عبر HTTP/3</strong>).<br>
+                - في باب المطبخ، مأمور الصالة بيتأكد إنك دافع الفاتورة ومفيش أي تلاعب في الطلب (<strong>Express Auth &amp; Validation Middleware</strong>).<br>
+                - مدير المطبخ بياخد الطلب ويوجهه للطاهي المتخصص (<strong>Express Controller &rarr; Business Service</strong>).<br>
+                - الطاهي بيبعت مساعده للمخزن الذكي يجيب المكونات الدقيقة بنظام صارم (<strong>Prisma ORM &rarr; PostgreSQL Transaction</strong>).<br>
+                - الوجبة بتتسلم للجرسون في ثوانٍ، فيرجع بيها لترابيزتك، وتشوفها جاهزة وساخنة قدام عينك بدون أي ارتباك في الصالة (<strong>VDOM Diffing &amp; UI Commit</strong>)!<br>
+                كل الرحلة دي بتحصل في <strong>أقل من 50 ميلي ثانية</strong>!
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              The <strong>End-to-End Request Lifecycle</strong> encompasses all state transitions, network protocols, middleware pipelines, and database transactions that occur from a user gesture in the client interface to persistent storage and back.
-            </p>
+            <h3>المعمارية ثلاثية الطبقات (Controller - Service - Repository)</h3>
             <p class="fsa-ar" dir="rtl">
-              فهم <strong>مسار حياة الطلب الشامل</strong> هو الفارق الأساسي بين المطور المبتدئ والمهندس المعماري (Senior Full-Stack Engineer). يتيح لك تشخيص مشاكل الأداء واختناقات الشبكة وتحديد مكان حدوث الأخطاء بدقة متناهية.
+              أكبر فخ يقع فيه المطور المبتدئ هو كتابة استعلامات قاعدة البيانات ومنطق التشفير وفحص الصلاحيات كلها معاً داخل دالة <code dir="ltr">app.post('/buy')</code>!
+              المهندس المحترف يفصل النظام لـ 3 طبقات:<br>
+              1. <strong>Controller Layer</strong>: مسؤولة فقط عن استلام طلب الـ HTTP والتحقق من المدخلات وإرجاع كود الحالة.<br>
+              2. <strong>Service Layer (Business Logic)</strong>: العقل المفكر (حساب الخصومات، إرسال إشعارات الإيميل، ومنطق الأعمال النقي).<br>
+              3. <strong>Repository / Data Access Layer</strong>: المسؤولة عن التحدث مع Prisma وقاعدة البيانات.
             </p>
+          </section>
 
-            <h3>The 4 Architectural Layers · الطبقات الأربع للمعمارية</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. المحطات السبع لرحلة الطلب · Step-by-Step Mechanics</h2>
             
             <div class="fsa-step-card" style="--step-accent: var(--track-react);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Tier 1: Client UI Layer (React 19)</div>
+                <div class="fsa-step-card__title">1. انطلاق الحدث من واجهة المستخدم (React Event Handler)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  التقاط حدث المستخدم (onClick)، إدارة الـ Loading State، واستدعاء دالة الـ Fetch.
+                  المستخدم ينقر على زر "شراء"، فيطلق المكون دالة <code dir="ltr">handleSubmit</code> ويغير حالة الزر لـ <code dir="ltr">isLoading: true</code>.
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--track-express);">
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
               <div class="fsa-step-card__badge">2</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Tier 2: API Gateway &amp; Server Layer (Node + Express)</div>
+                <div class="fsa-step-card__title">2. السفر عبر الشبكة وأمان الـ TLS (Network &amp; Middlewares)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  تسجيل الـ Logs، التحقق من التوكن (JWT)، فحص صحة البيانات (Validation)، وتنفيذ منطق الأعمال (Controller &amp; Service).
+                  تسافر حزم البيانات المشفرة إلى خادم Express، وتمر عبر بوابات الـ CORS و Helmet والـ JWT Auth Guard.
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--track-prisma);">
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
               <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Tier 3: ORM &amp; Data Access Layer (Prisma)</div>
+                <div class="fsa-step-card__title">3. المعاملة الذرية وتحديث الواجهة (DB ACID &amp; VDOM Commit)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  ترجمة المعاملة إلى استعلام SQL آمن ومنسق وإدارة اتصالات قاعدة البيانات (Connection Pool).
-                </p>
-              </div>
-            </div>
-
-            <div class="fsa-step-card" style="--step-accent: var(--track-pg);">
-              <div class="fsa-step-card__badge">4</div>
-              <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">Tier 4: Storage &amp; ACID Engine (PostgreSQL / MongoDB)</div>
-                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  تطبيق المعاملة الذرية على القرص (WAL Commit) وتحديث فهارس الجداول وإرجاع النتيجة.
+                  تنفذ المعاملة في PostgreSQL، ويرجع السيرفر رد <code dir="ltr">201 Created</code> لتقوم ريآكت بتحديث شجرة الـ Virtual DOM وعرض رسالة النجاح في 0ms.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Trace the complete roundtrip across all 4 architectural tiers:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد المسار الدائري الكامل لرحلة البيانات من المتصفح إلى السيرفر ثم قاعدة البيانات والعودة:
+              شاهد المحاكي الشامل لرحلة الطلب عبر طبقات الـ Full-Stack الأربعة:
             </p>
 
-            <div class="fsa-stepper" id="fullStackLifecycleStepper"></div>
+            <div class="fsa-stepper" id="fullstackLifecycleStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="End-to-End Full-Stack Lifecycle Diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="End-to-End Full-Stack Request Flow">
                 <title>Full-Stack Request Lifecycle</title>
-                <desc>React UI -> Express Middleware -> Prisma ORM -> Postgres DB</desc>
-                <rect x="15" y="25" width="120" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-react)" stroke-width="2" />
-                <text x="75" y="55" fill="var(--track-react)" text-anchor="middle" font-size="12" font-weight="700">1. React</text>
-                <text x="75" y="80" fill="var(--text-muted)" text-anchor="middle" font-size="10">fetch() POST</text>
-
-                <path d="M 140 70 L 180 70" stroke="var(--accent-primary)" stroke-width="2" stroke-dasharray="4 4" class="fsa-anim-flow" />
-
-                <g transform="translate(185, 25)">
-                  <rect width="120" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-express)" stroke-width="2" />
-                  <text x="60" y="55" fill="var(--track-express)" text-anchor="middle" font-size="12" font-weight="700">2. Express</text>
-                  <text x="60" y="80" fill="var(--text-muted)" text-anchor="middle" font-size="10">Middleware</text>
+                <desc>React UI sends fetch request to Express Server which queries PostgreSQL via Prisma ORM</desc>
+                <g transform="translate(10, 25)">
+                  <rect width="115" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-react)" stroke-width="2" />
+                  <text x="57" y="45" fill="var(--track-react)" text-anchor="middle" font-size="11" font-weight="700">1. React 19</text>
+                  <text x="57" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9">fetch('/api')</text>
                 </g>
 
-                <path d="M 310 70 L 350 70" stroke="var(--accent-warning)" stroke-width="2" stroke-dasharray="4 4" class="fsa-anim-flow" />
+                <path d="M 130 70 L 165 70" stroke="var(--track-react)" stroke-width="3" stroke-dasharray="4 4" class="fsa-anim-flow" />
 
-                <g transform="translate(355, 25)">
-                  <rect width="115" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-prisma)" stroke-width="2" />
-                  <text x="57" y="55" fill="var(--track-prisma)" text-anchor="middle" font-size="12" font-weight="700">3. Prisma</text>
-                  <text x="57" y="80" fill="var(--text-muted)" text-anchor="middle" font-size="10">Rust Engine</text>
+                <g transform="translate(170, 20)">
+                  <rect width="125" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-express)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="62" y="40" fill="var(--track-express)" text-anchor="middle" font-size="11" font-weight="700">2. Express 5</text>
+                  <text x="62" y="65" fill="var(--text-secondary)" text-anchor="middle" font-size="9">Router + Auth</text>
+                  <text x="62" y="85" fill="var(--accent-success)" text-anchor="middle" font-size="8">&check; Validated</text>
                 </g>
 
-                <path d="M 475 70 L 505 70" stroke="var(--accent-success)" stroke-width="2" stroke-dasharray="4 4" class="fsa-anim-flow" />
+                <path d="M 300 70 L 335 70" stroke="var(--track-prisma)" stroke-width="3" stroke-dasharray="4 4" class="fsa-anim-flow" />
 
-                <g transform="translate(510, 25)">
-                  <rect width="95" height="90" rx="8" fill="var(--tint-primary)" stroke="var(--track-pg)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="47" y="55" fill="var(--track-pg)" text-anchor="middle" font-size="11" font-weight="700">4. Postgres</text>
-                  <text x="47" y="80" fill="var(--accent-success)" text-anchor="middle" font-size="10">WAL Commit</text>
+                <g transform="translate(340, 25)">
+                  <rect width="120" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-prisma)" stroke-width="2" />
+                  <text x="60" y="45" fill="var(--track-prisma)" text-anchor="middle" font-size="11" font-weight="700">3. Prisma 7</text>
+                  <text x="60" y="70" fill="var(--text-muted)" text-anchor="middle" font-size="9">Rust Engine</text>
+                </g>
+
+                <path d="M 465 70 L 500 70" stroke="var(--track-postgres)" stroke-width="3" stroke-dasharray="4 4" class="fsa-anim-flow" />
+
+                <g transform="translate(505, 25)">
+                  <rect width="105" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--track-postgres)" stroke-width="2" />
+                  <text x="52" y="45" fill="var(--track-postgres)" text-anchor="middle" font-size="10" font-weight="700">4. PostgreSQL</text>
+                  <text x="52" y="70" fill="var(--accent-success)" text-anchor="middle" font-size="8">ACID WAL</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Full-Stack Flight Recorder</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي شلال زمن الاستجابة (Waterfall Latency Profiler)</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Simulate an end-to-end user purchase request through all 4 layers live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: شاهد سجل التتبع الدقيق لكل خطوة وتوقيت التنفيذ بالميلي ثانية:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد زمن استغراق كل طبقة من طبقات النظام لحساب زمن الاستجابة الكلي (Total Roundtrip Time):
               </p>
-
-              <div class="fsa-playground" id="fullStackPlayground"></div>
+              <div class="fsa-playground" id="architecturePlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>Which tier in the 4-tier stack is typically the primary latency bottleneck in high-load production applications?</p>
-              <p class="fsa-ar" dir="rtl">ما هي الطبقة التي تمثل عادة عنق الزجاجة الرئيسي لزمن التأخير (Latency) تحت الحمل المرتفع؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو قمت بعمل تحقق كامل للمدخلات في الواجهة الأمامية (React Form Validation)، هل يصح هندسياً الاستغناء عن التحقق في السيرفر (Express Validation) لتوفير الوقت؟
+              </p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    <strong>طبقة قاعدة البيانات (Tier 4)!</strong> عمليات قراءة القرص والـ Unindexed Queries والـ Lock Contention تستهلك 80% من زمن المعاملة، ويتم التخفيف منها بإضافة فهارس وفهارس كاش (Redis).
+                    <strong>مستحيل وكارثة أمنية فادحة! (Never Trust the Client)</strong><br>
+                    تحقق الواجهة الأمامية هو مجرد تجربة مستخدم (UX) لتحسين الراحة، لكن أي مخترق يستطيع إرسال طلبات HTTP مباشرة عبر Postman أو cURL وتجاوز الواجهة بالكامل. التحقق في الباك إند إجباري 100%!
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح هيكل المشروع الإنتاجي المتماسك · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">// 1. React Frontend</span>
-                <span class="fsa-anatomy__line" data-line="2">const res = await fetch('/api/orders', { method: 'POST', body: JSON.stringify(cart) });</span>
-                <span class="fsa-anatomy__line" data-line="3">// 2. Express Controller</span>
-                <span class="fsa-anatomy__line" data-line="4">app.post('/api/orders', authGuard, validateBody, async (req, res) => {</span>
-                <span class="fsa-anatomy__line" data-line="5">// 3. Prisma & PostgreSQL Transaction</span>
-                <span class="fsa-anatomy__line" data-line="6">  const order = await prisma.order.create({ data: { userId: req.user.id, items: req.body } });</span>
-                <span class="fsa-anatomy__line" data-line="7">  res.status(201).json(order);</span>
-                <span class="fsa-anatomy__line" data-line="8">});</span>
+              <div class="fsa-anatomy__code" dir="ltr">
+                <span class="fsa-anatomy__line" data-line="1">1: src/</span>
+                <span class="fsa-anatomy__line" data-line="2">2: ├── controllers/  # HTTP request parsing & status code mapping</span>
+                <span class="fsa-anatomy__line" data-line="3">3: ├── services/     # Pure business logic & payment integrations</span>
+                <span class="fsa-anatomy__line" data-line="4">4: ├── repositories/ # Prisma data queries & schema abstractions</span>
+                <span class="fsa-anatomy__line" data-line="5">5: ├── middlewares/  # Auth guards, CORS, rate limits & error guards</span>
+                <span class="fsa-anatomy__line" data-line="6">6: └── lib/          # Singleton instances (prisma client, redis)</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 2:</strong> طلب العميل ينطلق عبر بروتوكول HTTP/3 المشفر.
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> خط سير Express يفحص الصلاحيات وينظف المدخلات قبل الوصول لقاعدة البيانات.
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 6:</strong> Prisma يكتب المعاملة بأمان نوعي في PostgreSQL ويرجع النتيجة كـ 201 Created.
+                  <strong>الأسطر 2-4:</strong> الفصل الصارم بين الـ Controllers والـ Services والـ Repositories يتيح لك اختبار منطق الأعمال (Unit Testing) بسهولة دون تشغيل سيرفر HTTP أو قاعدة بيانات حية.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-arch);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>End-to-End Latency Target</span>
+                  <span>موازنة الأحمال والـ Caching</span>
                 </div>
-                <div class="fsa-complexity-card__big">&lt; 100 ms Roundtrip</div>
+                <div class="fsa-complexity-card__big">Redis &amp; CDN Edge</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  الهدف المعماري للأنظمة الحديثة هو إتمام الدورة الكاملة من نقرة الزر حتى تحديث الـ DOM في أقل من 100ms.
+                  تخزين البيانات الأكثر طلباً في Redis يقلل زمن الاستجابة من 50ms إلى 2ms ويحمي قاعدة البيانات من الاختناق.
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Layer Decoupling</span>
+                  <span>الاتصال المستمر (Connection Pooling)</span>
                 </div>
-                <div class="fsa-complexity-card__big">Independent Scalability</div>
+                <div class="fsa-complexity-card__big">PgBouncer Pool</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  فصل الواجهة عن الخادم وعن قاعدة البيانات يتيح توسيع (Scale) كل طبقة بشكل مستقل حسب الحمل.
+                  استخدام وسيط اتصالات يتيح خدمة 50 ألف طلب متزامن عبر 50 اتصال قاعدة بيانات فعلي فقط.
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>The 4-Layer Caching Strategy</summary>
-              <div class="fsa-details__body">
-                <ol style="padding-inline-start: var(--space-5); line-height: 1.8;">
-                  <li><strong>Layer 1 (Browser Cache / Service Worker):</strong> تخزين الملفات الثابتة محلياً (0ms).</li>
-                  <li><strong>Layer 2 (Edge CDN):</strong> كاش الاستجابات العامة بالقرب من المستخدم (10–20ms).</li>
-                  <li><strong>Layer 3 (Server In-Memory Redis):</strong> كاش الجلسات والاستعلامات المكررة (1–2ms).</li>
-                  <li><strong>Layer 4 (Database Buffer Pool):</strong> كاش صفحات الجداول في ذاكرة PostgreSQL RAM.</li>
-                </ol>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Leaking Database Logic into React Components</span>
+                  <span>خلط منطق الأعمال في متحكمات الـ Express (God Controller Antipattern)</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ TIGHTLY COUPLED (Client knows raw DB fields)<br>fetch('/api/users', { body: { db_raw_query: true } })</code>
+                    <code>// ❌ فوضى: 300 سطر يخلط الـ SQL والفيزا والإيميل في دالة الـ Route!<br>app.post('/checkout', async (req, res) => { /* 300 lines */ });</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ CLEAN API CONTRACT (Decoupled REST endpoint)<br>fetch('/api/v1/profile', { method: 'GET' })</code>
+                    <code>// ✅ سليم: تفويض المهمة لـ OrderService النقي<br>app.post('/checkout', async (req, res) => {<br>&nbsp;&nbsp;const order = await orderService.checkout(req.body, req.user);<br>&nbsp;&nbsp;res.status(201).json(order);<br>});</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> ربط كود الواجهة بتفاصيل قاعدة البيانات يكسر مبدأ فصل المسؤوليات (Separation of Concerns) ويهدد أمان النظام.
+                  <strong>التشخيص الهندسي:</strong> خلط المسؤوليات يجعل الكود مستحيل الاختبار (Untestable) ومصدراً للكوارث عند إجراء أي تعديل مستقبلي.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Layered Architecture</dt>
-              <dd class="fsa-ar" dir="rtl">نمط تصميم يقسم التطبيق إلى طبقات وظيفية منفصلة (عرض، منطق أعمال، وصول للبيانات) لتسهيل الصيانة والتطوير.</dd>
-              <dt>Roundtrip Time (RTT)</dt>
-              <dd class="fsa-ar" dir="rtl">الزمن الكلي الذي تستغرقه الإشارة للانتقال من المتصفح إلى السيرفر والعودة بتأكيد الاستجابة.</dd>
+              <dt dir="ltr">End-to-End Lifecycle</dt>
+              <dd class="fsa-ar" dir="rtl">المسار الكامل لرحلة البيانات من واجهة المستخدم عبر الشبكة إلى الخادم وقاعدة البيانات والعودة للواجهة.</dd>
+              <dt dir="ltr">Service Layer</dt>
+              <dd class="fsa-ar" dir="rtl">الطبقة البرمجية المخصصة لتنفيذ قواعد الأعمال والعمليات الحسابية بعيداً عن بروتوكولات الشبكة وقواعد البيانات.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
-            <div class="fsa-checkpoint" id="fullStackArchCheckpoint"></div>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
+            <div class="fsa-checkpoint" id="architectureLifecycleCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "In a clean 4-tier Full-Stack architecture, which layer is responsible for authenticating JWT tokens and validating request payloads?",
+                  "q": "Why is client-side validation in React alone fundamentally insufficient for application security?",
                   "options": [
-                    "React UI Components",
-                    "Express Middleware Layer",
-                    "PostgreSQL Storage Engine"
+                    "Because React cannot serialize numbers",
+                    "Because attackers can bypass the frontend entirely and send arbitrary raw HTTP payloads directly to backend endpoints",
+                    "Because browsers disable JavaScript after 100 requests"
                   ],
                   "answer": 1,
-                  "why": "Express Middleware intercept incoming HTTP requests to verify authentication and schema compliance before invoking business logic.",
-                  "whyAr": "طبقة الـ Middleware في Express هي المسؤولة عن فحص رموز المصادقة والتحقق من صحة البيانات قبل وصولها لمنطق الأعمال.",
-                  "anchor": "learn"
+                  "why": "Client-side validation is purely a user convenience layer. The backend must always re-validate and sanitize all untrusted incoming data.",
+                  "whyAr": "تحقق الواجهة هو لتحسين تجربة المستخدم فقط، بينما يمكن لأي شخص إرسال طلبات HTTP مخصصة مباشرة للباك إند، مما يفرض التحقق في السيرفر دائماً.",
+                  "anchor": "try"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Senior Full-Stack System Design Question</summary>
+              <summary>سؤال مقابلات شهير: إزاي بتصمم معمارية تطبيق تجارة إلكترونية يتحمل مليون مستخدم متزامن؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: How do you design a Full-Stack application to remain fully responsive during high-traffic flash sales?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة المتكاملة:</strong><br>
-                  1. <strong>Frontend (React):</strong> تطبيق التحديثات المتفائلة (Optimistic UI) وإلغاء تكرار الضغط (Debouncing).<br>
-                  2. <strong>API (Express):</strong> وضع محدد المعدل (Rate Limiter) وتوزيع الأحمال عبر Nginx Load Balancer.<br>
-                  3. <strong>Queue (Redis / BullMQ):</strong> تحويل طلبات الشراء إلى طابور رسائل خلفي غير متزامن لتخفيف الضغط على قاعدة البيانات.<br>
-                  4. <strong>Database (PostgreSQL):</strong> استخدام Read Replicas للاستعلامات، وتأمين معاملات الشراء عبر Transaction Isolation الصارم.
+                  <strong>الإجابة الهندسية المتكاملة:</strong><br>
+                  1. <strong>الواجهة و Edge CDN</strong>: نشر ملفات الـ Static على Cloudflare CDN مع كاش للمحتوى الثابت.<br>
+                  2. <strong>طبقة الخوادم (Stateless Backend)</strong>: تشغيل حاويات Express في Kubernetes مع Auto-scaling و Load Balancer أمامي.<br>
+                  3. <strong>طبقة الكاش والتخفيف (Redis Layer)</strong>: تخزين بيانات الجلسات والمنتجات الأكثر تصفحاً في Redis Cluster.<br>
+                  4. <strong>طبقة قواعد البيانات</strong>: استخدام PostgreSQL مع مجمع اتصالات PgBouncer، وقراءة البيانات من Read Replicas وحصر الكتابة في Master DB.<br>
+                  5. <strong>العمليات الثقيلة غير المتزامنة</strong>: إرسال الإيميلات وتوليد الفواتير عبر Message Queues (BullMQ / RabbitMQ).
                 </p>
               </div>
             </details>
@@ -414,18 +394,18 @@
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="../prisma/what-is-an-orm.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous Track: Prisma · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: مسار Prisma</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت المسار بالكامل</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
-            <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>View Dashboard · لوحة المتابعة</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            <a href="../../projects/rest-api.html" class="fsa-btn fsa-btn--primary" data-fsa-nav="next">
+              <span>مشروع التخرج: بناء Full-Stack Auth API</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -433,7 +413,7 @@
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -457,33 +437,31 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
-          el: 'fullStackLifecycleStepper',
-          title: 'Full-Stack 4-Tier Request Roundtrip Trace',
+          el: 'fullstackLifecycleStepper',
+          title: 'المحطات الأربعة لرحلة الطلب المتكاملة',
           init: () => ({
-            steps: [
-              { name: '1. React Trigger', desc: 'User clicks [Enroll Now] button' },
-              { name: '2. Express Auth', desc: 'JWT verified & body validated' },
-              { name: '3. Prisma Engine', desc: 'Generated SQL with parameter bindings' },
-              { name: '4. Postgres ACID', desc: 'WAL Commit & table row inserted' },
-              { name: '5. UI Update', desc: 'React optimistic state confirmed' }
+            layers: [
+              { name: '1. React 19 Client', latency: '2ms' },
+              { name: '2. Express 5 Gateway', latency: '8ms' },
+              { name: '3. Prisma 7 Engine', latency: '5ms' },
+              { name: '4. PostgreSQL ACID', latency: '15ms' }
             ]
           }),
           steps: (state) => [
-            { activeIdx: 0, say: 'الخطوة 1 (React): إطلاق طلب fetch POST /api/enroll' },
-            { activeIdx: 1, say: 'الخطوة 2 (Express): التحقق من هوية المستخدم وصلاحياته في الـ Middleware' },
-            { activeIdx: 2, say: 'الخطوة 3 (Prisma): تحويل المعاملة إلى استعلام SQL محمي' },
-            { activeIdx: 3, say: 'الخطوة 4 (Postgres): حفظ السجل في القرص وتأكيد المعاملة الذرية' },
-            { activeIdx: 4, say: 'الخطوة 5 (العودة): استلام كود 201 وتحديث واجهة React بنجاح!' }
+            { activeIdx: 0, say: 'الطبقة 1: إطلاق الطلب من الواجهة وتغيير الحالة لـ Pending' },
+            { activeIdx: 1, say: 'الطبقة 2: فحص الأمان والمصادقة وتوجيه الطلب للـ Service' },
+            { activeIdx: 2, say: 'الطبقة 3: تحسين الاستعلام ومنع N+1 عبر محرك Rust' },
+            { activeIdx: 3, say: 'الطبقة 4: تنفيذ المعاملة الذرية وإرجاع 201 Created للواجهة' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
-              <div class="fsa-viz-cells" style="gap: 8px;">
-                ${state.steps.map((s, i) => {
+              <div class="fsa-viz-cells" style="gap: 10px;">
+                ${state.layers.map((l, i) => {
                   const isActive = step.activeIdx === i;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 110px; height: 65px; font-size: 10px; padding: 2px; text-align: center;">
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${s.name}</span>
-                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${s.desc}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-arch)' : 'var(--text-primary)'};">${l.name}</span>
+                      <span style="font-size: 8px; color: var(--accent-success); display: block; margin-top: 2px;">Latency: ${l.latency}</span>
                     </div>
                   `;
                 }).join('')}
@@ -495,30 +473,19 @@
 
       if (window.FSA.playground) {
         window.FSA.playground.mount({
-          el: 'fullStackPlayground',
-          starterCode: `// End-to-End Request Pipeline Simulator
-async function simulateFullStackRoundtrip(userId, courseId) {
-  const log = [];
-  const start = performance.now();
+          el: 'architecturePlayground',
+          starterCode: `// محاكاة شلال زمن استجابة الـ Full-Stack Waterfall
+const waterfall = [
+  { step: '1. React Form & Network', ms: 12 },
+  { step: '2. Express Auth Middleware', ms: 4 },
+  { step: '3. Prisma & PostgreSQL TX', ms: 18 },
+  { step: '4. VDOM Reconciliation', ms: 2 }
+];
 
-  log.push('[1. Client (React)] Initiated fetch(/api/enroll)...');
-  
-  // Express tier
-  log.push('[2. Express Server] AuthGuard passed, routing to enrollController');
-  
-  // Prisma tier
-  log.push(\`[3. Prisma ORM] prisma.enrollment.create({ data: { user: \${userId}, course: \${courseId} } })\`);
-  
-  // Postgres tier
-  log.push('[4. PostgreSQL Database] BEGIN -> INSERT INTO "Enrollment" -> COMMIT (0.4ms)');
-  
-  const elapsed = (performance.now() - start).toFixed(2);
-  log.push(\`[5. Response 201 Created] Roundtrip completed in \${elapsed}ms\`);
-
-  console.log(log.join('\\n'));
-}
-
-simulateFullStackRoundtrip(42, 101);`
+const total = waterfall.reduce((sum, item) => sum + item.ms, 0);
+console.log('--- Full-Stack Request Latency ---');
+waterfall.forEach(w => console.log(\`\${w.step}: \${w.ms}ms\`));
+console.log('✅ Total Roundtrip Time:', total, 'ms (Sub-50ms Ultra Fast!)');`
         });
       }
     });

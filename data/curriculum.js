@@ -9,7 +9,7 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-25T09:23:33.768Z",
+  "generatedAt": "2026-08-25T09:27:25.014Z",
   "totalLessons": 18,
   "tracks": [
     {
@@ -222,7 +222,7 @@
               },
               "next": {
                 "slug": "nodejs/what-node-is",
-                "title": "Node.js Architecture & V8 Runtime",
+                "title": "What Node.js Is: V8 & libuv Architecture",
                 "url": "learn/nodejs/what-node-is.html"
               }
             }
@@ -243,12 +243,12 @@
             {
               "track": "nodejs",
               "lesson": "what-node-is",
-              "title": "Node.js Architecture & V8 Runtime",
+              "title": "What Node.js Is: V8 & libuv Architecture",
               "level": 1,
               "order": 1,
-              "estMinutes": 20,
-              "teachesVersion": "Node 24 LTS",
-              "patternLabel": "Runtime Internals",
+              "estMinutes": 25,
+              "teachesVersion": "Node.js 24 LTS",
+              "patternLabel": "Runtime Architecture",
               "prereqs": [],
               "url": "learn/nodejs/what-node-is.html",
               "slug": "nodejs/what-node-is",
@@ -259,7 +259,7 @@
               },
               "next": {
                 "slug": "nodejs/event-loop",
-                "title": "The 6-Phase Event Loop Deep Dive",
+                "title": "The 6-Phase Node.js Event Loop",
                 "url": "learn/nodejs/event-loop.html"
               }
             }
@@ -271,23 +271,23 @@
             {
               "track": "nodejs",
               "lesson": "event-loop",
-              "title": "The 6-Phase Event Loop Deep Dive",
+              "title": "The 6-Phase Node.js Event Loop",
               "level": 2,
               "order": 2,
-              "estMinutes": 35,
-              "teachesVersion": "Node 24 LTS",
+              "estMinutes": 30,
+              "teachesVersion": "Node.js 24 Event Loop",
               "patternLabel": "Event Loop Architecture",
               "prereqs": [],
               "url": "learn/nodejs/event-loop.html",
               "slug": "nodejs/event-loop",
               "prev": {
                 "slug": "nodejs/what-node-is",
-                "title": "Node.js Architecture & V8 Runtime",
+                "title": "What Node.js Is: V8 & libuv Architecture",
                 "url": "learn/nodejs/what-node-is.html"
               },
               "next": {
                 "slug": "nodejs/streams-buffers",
-                "title": "Streams, Buffers & Backpressure Handling",
+                "title": "Streams, Buffers & Backpressure Management",
                 "url": "learn/nodejs/streams-buffers.html"
               }
             }
@@ -299,23 +299,23 @@
             {
               "track": "nodejs",
               "lesson": "streams-buffers",
-              "title": "Streams, Buffers & Backpressure Handling",
+              "title": "Streams, Buffers & Backpressure Management",
               "level": 3,
               "order": 3,
-              "estMinutes": 30,
-              "teachesVersion": "Node 24 Streams",
-              "patternLabel": "Data Streaming",
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 Streams",
+              "patternLabel": "Streaming Architecture",
               "prereqs": [],
               "url": "learn/nodejs/streams-buffers.html",
               "slug": "nodejs/streams-buffers",
               "prev": {
                 "slug": "nodejs/event-loop",
-                "title": "The 6-Phase Event Loop Deep Dive",
+                "title": "The 6-Phase Node.js Event Loop",
                 "url": "learn/nodejs/event-loop.html"
               },
               "next": {
                 "slug": "express/hello-express",
-                "title": "Express Fundamentals & Server Setup",
+                "title": "Hello Express: Server Architecture & Routing",
                 "url": "learn/express/hello-express.html"
               }
             }
@@ -336,23 +336,23 @@
             {
               "track": "express",
               "lesson": "hello-express",
-              "title": "Express Fundamentals & Server Setup",
+              "title": "Hello Express: Server Architecture & Routing",
               "level": 1,
               "order": 1,
-              "estMinutes": 20,
-              "teachesVersion": "Express 5.2",
-              "patternLabel": "Server Fundamentals",
+              "estMinutes": 25,
+              "teachesVersion": "Express 5.2 Server",
+              "patternLabel": "Server Architecture",
               "prereqs": [],
               "url": "learn/express/hello-express.html",
               "slug": "express/hello-express",
               "prev": {
                 "slug": "nodejs/streams-buffers",
-                "title": "Streams, Buffers & Backpressure Handling",
+                "title": "Streams, Buffers & Backpressure Management",
                 "url": "learn/nodejs/streams-buffers.html"
               },
               "next": {
                 "slug": "express/middleware",
-                "title": "The Middleware Conveyor Pipeline & next()",
+                "title": "Middleware Conveyor Pipeline & Error Guards",
                 "url": "learn/express/middleware.html"
               }
             }
@@ -364,23 +364,23 @@
             {
               "track": "express",
               "lesson": "middleware",
-              "title": "The Middleware Conveyor Pipeline & next()",
+              "title": "Middleware Conveyor Pipeline & Error Guards",
               "level": 2,
               "order": 2,
               "estMinutes": 30,
-              "teachesVersion": "Express 5.2 Middleware",
-              "patternLabel": "Pipeline Architecture",
+              "teachesVersion": "Express 5.2 Middlewares",
+              "patternLabel": "Middleware Pipeline",
               "prereqs": [],
               "url": "learn/express/middleware.html",
               "slug": "express/middleware",
               "prev": {
                 "slug": "express/hello-express",
-                "title": "Express Fundamentals & Server Setup",
+                "title": "Hello Express: Server Architecture & Routing",
                 "url": "learn/express/hello-express.html"
               },
               "next": {
                 "slug": "express/rest-crud",
-                "title": "Building a Production REST CRUD API",
+                "title": "Production REST CRUD API & Validation",
                 "url": "learn/express/rest-crud.html"
               }
             }
@@ -392,23 +392,23 @@
             {
               "track": "express",
               "lesson": "rest-crud",
-              "title": "Building a Production REST CRUD API",
+              "title": "Production REST CRUD API & Validation",
               "level": 3,
               "order": 3,
               "estMinutes": 35,
-              "teachesVersion": "Express 5.2 CRUD",
-              "patternLabel": "API Architecture",
+              "teachesVersion": "Express 5.2 REST",
+              "patternLabel": "REST Architecture",
               "prereqs": [],
               "url": "learn/express/rest-crud.html",
               "slug": "express/rest-crud",
               "prev": {
                 "slug": "express/middleware",
-                "title": "The Middleware Conveyor Pipeline & next()",
+                "title": "Middleware Conveyor Pipeline & Error Guards",
                 "url": "learn/express/middleware.html"
               },
               "next": {
                 "slug": "mongodb/document-model",
-                "title": "BSON Document Model vs Tables",
+                "title": "MongoDB Document Model: BSON & Embedding",
                 "url": "learn/mongodb/document-model.html"
               }
             }
@@ -429,23 +429,23 @@
             {
               "track": "mongodb",
               "lesson": "document-model",
-              "title": "BSON Document Model vs Tables",
+              "title": "MongoDB Document Model: BSON & Embedding",
               "level": 1,
               "order": 1,
-              "estMinutes": 25,
-              "teachesVersion": "MongoDB 8.x",
-              "patternLabel": "Document Database",
+              "estMinutes": 30,
+              "teachesVersion": "MongoDB 8.0 NoSQL",
+              "patternLabel": "Document Store",
               "prereqs": [],
               "url": "learn/mongodb/document-model.html",
               "slug": "mongodb/document-model",
               "prev": {
                 "slug": "express/rest-crud",
-                "title": "Building a Production REST CRUD API",
+                "title": "Production REST CRUD API & Validation",
                 "url": "learn/express/rest-crud.html"
               },
               "next": {
                 "slug": "postgresql/relational-model",
-                "title": "Relational Model & ACID Guarantees",
+                "title": "PostgreSQL Relational Model & ACID Guarantees",
                 "url": "learn/postgresql/relational-model.html"
               }
             }
@@ -466,23 +466,23 @@
             {
               "track": "postgresql",
               "lesson": "relational-model",
-              "title": "Relational Model & ACID Guarantees",
+              "title": "PostgreSQL Relational Model & ACID Guarantees",
               "level": 1,
               "order": 1,
-              "estMinutes": 25,
+              "estMinutes": 30,
               "teachesVersion": "PostgreSQL 18.x",
-              "patternLabel": "Relational Core",
+              "patternLabel": "Relational Architecture",
               "prereqs": [],
               "url": "learn/postgresql/relational-model.html",
               "slug": "postgresql/relational-model",
               "prev": {
                 "slug": "mongodb/document-model",
-                "title": "BSON Document Model vs Tables",
+                "title": "MongoDB Document Model: BSON & Embedding",
                 "url": "learn/mongodb/document-model.html"
               },
               "next": {
                 "slug": "prisma/what-is-an-orm",
-                "title": "What is an ORM & The Prisma Architecture",
+                "title": "What is an ORM: Prisma Architecture & Type Safety",
                 "url": "learn/prisma/what-is-an-orm.html"
               }
             }
@@ -503,23 +503,23 @@
             {
               "track": "prisma",
               "lesson": "what-is-an-orm",
-              "title": "What is an ORM & The Prisma Architecture",
+              "title": "What is an ORM: Prisma Architecture & Type Safety",
               "level": 1,
               "order": 1,
-              "estMinutes": 25,
+              "estMinutes": 30,
               "teachesVersion": "Prisma 7.x",
-              "patternLabel": "Data Layer",
+              "patternLabel": "ORM Architecture",
               "prereqs": [],
               "url": "learn/prisma/what-is-an-orm.html",
               "slug": "prisma/what-is-an-orm",
               "prev": {
                 "slug": "postgresql/relational-model",
-                "title": "Relational Model & ACID Guarantees",
+                "title": "PostgreSQL Relational Model & ACID Guarantees",
                 "url": "learn/postgresql/relational-model.html"
               },
               "next": {
                 "slug": "architecture/request-lifecycles",
-                "title": "The Full-Stack End-to-End Request Lifecycle",
+                "title": "End-to-End Full-Stack Request Lifecycle",
                 "url": "learn/architecture/request-lifecycles.html"
               }
             }
@@ -540,18 +540,18 @@
             {
               "track": "architecture",
               "lesson": "request-lifecycles",
-              "title": "The Full-Stack End-to-End Request Lifecycle",
+              "title": "End-to-End Full-Stack Request Lifecycle",
               "level": 3,
               "order": 1,
               "estMinutes": 40,
-              "teachesVersion": "MERN & PERN Stack",
+              "teachesVersion": "FullStack Architecture 2026",
               "patternLabel": "System Architecture",
               "prereqs": [],
               "url": "learn/architecture/request-lifecycles.html",
               "slug": "architecture/request-lifecycles",
               "prev": {
                 "slug": "prisma/what-is-an-orm",
-                "title": "What is an ORM & The Prisma Architecture",
+                "title": "What is an ORM: Prisma Architecture & Type Safety",
                 "url": "learn/prisma/what-is-an-orm.html"
               },
               "next": null
@@ -706,7 +706,7 @@
       },
       "next": {
         "slug": "nodejs/what-node-is",
-        "title": "Node.js Architecture & V8 Runtime",
+        "title": "What Node.js Is: V8 & libuv Architecture",
         "url": "learn/nodejs/what-node-is.html"
       }
     },
@@ -714,7 +714,7 @@
       "slug": "nodejs/what-node-is",
       "track": "nodejs",
       "lesson": "what-node-is",
-      "title": "Node.js Architecture & V8 Runtime",
+      "title": "What Node.js Is: V8 & libuv Architecture",
       "level": 1,
       "order": 1,
       "url": "learn/nodejs/what-node-is.html",
@@ -725,7 +725,7 @@
       },
       "next": {
         "slug": "nodejs/event-loop",
-        "title": "The 6-Phase Event Loop Deep Dive",
+        "title": "The 6-Phase Node.js Event Loop",
         "url": "learn/nodejs/event-loop.html"
       }
     },
@@ -733,18 +733,18 @@
       "slug": "nodejs/event-loop",
       "track": "nodejs",
       "lesson": "event-loop",
-      "title": "The 6-Phase Event Loop Deep Dive",
+      "title": "The 6-Phase Node.js Event Loop",
       "level": 2,
       "order": 2,
       "url": "learn/nodejs/event-loop.html",
       "prev": {
         "slug": "nodejs/what-node-is",
-        "title": "Node.js Architecture & V8 Runtime",
+        "title": "What Node.js Is: V8 & libuv Architecture",
         "url": "learn/nodejs/what-node-is.html"
       },
       "next": {
         "slug": "nodejs/streams-buffers",
-        "title": "Streams, Buffers & Backpressure Handling",
+        "title": "Streams, Buffers & Backpressure Management",
         "url": "learn/nodejs/streams-buffers.html"
       }
     },
@@ -752,18 +752,18 @@
       "slug": "nodejs/streams-buffers",
       "track": "nodejs",
       "lesson": "streams-buffers",
-      "title": "Streams, Buffers & Backpressure Handling",
+      "title": "Streams, Buffers & Backpressure Management",
       "level": 3,
       "order": 3,
       "url": "learn/nodejs/streams-buffers.html",
       "prev": {
         "slug": "nodejs/event-loop",
-        "title": "The 6-Phase Event Loop Deep Dive",
+        "title": "The 6-Phase Node.js Event Loop",
         "url": "learn/nodejs/event-loop.html"
       },
       "next": {
         "slug": "express/hello-express",
-        "title": "Express Fundamentals & Server Setup",
+        "title": "Hello Express: Server Architecture & Routing",
         "url": "learn/express/hello-express.html"
       }
     },
@@ -771,18 +771,18 @@
       "slug": "express/hello-express",
       "track": "express",
       "lesson": "hello-express",
-      "title": "Express Fundamentals & Server Setup",
+      "title": "Hello Express: Server Architecture & Routing",
       "level": 1,
       "order": 1,
       "url": "learn/express/hello-express.html",
       "prev": {
         "slug": "nodejs/streams-buffers",
-        "title": "Streams, Buffers & Backpressure Handling",
+        "title": "Streams, Buffers & Backpressure Management",
         "url": "learn/nodejs/streams-buffers.html"
       },
       "next": {
         "slug": "express/middleware",
-        "title": "The Middleware Conveyor Pipeline & next()",
+        "title": "Middleware Conveyor Pipeline & Error Guards",
         "url": "learn/express/middleware.html"
       }
     },
@@ -790,18 +790,18 @@
       "slug": "express/middleware",
       "track": "express",
       "lesson": "middleware",
-      "title": "The Middleware Conveyor Pipeline & next()",
+      "title": "Middleware Conveyor Pipeline & Error Guards",
       "level": 2,
       "order": 2,
       "url": "learn/express/middleware.html",
       "prev": {
         "slug": "express/hello-express",
-        "title": "Express Fundamentals & Server Setup",
+        "title": "Hello Express: Server Architecture & Routing",
         "url": "learn/express/hello-express.html"
       },
       "next": {
         "slug": "express/rest-crud",
-        "title": "Building a Production REST CRUD API",
+        "title": "Production REST CRUD API & Validation",
         "url": "learn/express/rest-crud.html"
       }
     },
@@ -809,18 +809,18 @@
       "slug": "express/rest-crud",
       "track": "express",
       "lesson": "rest-crud",
-      "title": "Building a Production REST CRUD API",
+      "title": "Production REST CRUD API & Validation",
       "level": 3,
       "order": 3,
       "url": "learn/express/rest-crud.html",
       "prev": {
         "slug": "express/middleware",
-        "title": "The Middleware Conveyor Pipeline & next()",
+        "title": "Middleware Conveyor Pipeline & Error Guards",
         "url": "learn/express/middleware.html"
       },
       "next": {
         "slug": "mongodb/document-model",
-        "title": "BSON Document Model vs Tables",
+        "title": "MongoDB Document Model: BSON & Embedding",
         "url": "learn/mongodb/document-model.html"
       }
     },
@@ -828,18 +828,18 @@
       "slug": "mongodb/document-model",
       "track": "mongodb",
       "lesson": "document-model",
-      "title": "BSON Document Model vs Tables",
+      "title": "MongoDB Document Model: BSON & Embedding",
       "level": 1,
       "order": 1,
       "url": "learn/mongodb/document-model.html",
       "prev": {
         "slug": "express/rest-crud",
-        "title": "Building a Production REST CRUD API",
+        "title": "Production REST CRUD API & Validation",
         "url": "learn/express/rest-crud.html"
       },
       "next": {
         "slug": "postgresql/relational-model",
-        "title": "Relational Model & ACID Guarantees",
+        "title": "PostgreSQL Relational Model & ACID Guarantees",
         "url": "learn/postgresql/relational-model.html"
       }
     },
@@ -847,18 +847,18 @@
       "slug": "postgresql/relational-model",
       "track": "postgresql",
       "lesson": "relational-model",
-      "title": "Relational Model & ACID Guarantees",
+      "title": "PostgreSQL Relational Model & ACID Guarantees",
       "level": 1,
       "order": 1,
       "url": "learn/postgresql/relational-model.html",
       "prev": {
         "slug": "mongodb/document-model",
-        "title": "BSON Document Model vs Tables",
+        "title": "MongoDB Document Model: BSON & Embedding",
         "url": "learn/mongodb/document-model.html"
       },
       "next": {
         "slug": "prisma/what-is-an-orm",
-        "title": "What is an ORM & The Prisma Architecture",
+        "title": "What is an ORM: Prisma Architecture & Type Safety",
         "url": "learn/prisma/what-is-an-orm.html"
       }
     },
@@ -866,18 +866,18 @@
       "slug": "prisma/what-is-an-orm",
       "track": "prisma",
       "lesson": "what-is-an-orm",
-      "title": "What is an ORM & The Prisma Architecture",
+      "title": "What is an ORM: Prisma Architecture & Type Safety",
       "level": 1,
       "order": 1,
       "url": "learn/prisma/what-is-an-orm.html",
       "prev": {
         "slug": "postgresql/relational-model",
-        "title": "Relational Model & ACID Guarantees",
+        "title": "PostgreSQL Relational Model & ACID Guarantees",
         "url": "learn/postgresql/relational-model.html"
       },
       "next": {
         "slug": "architecture/request-lifecycles",
-        "title": "The Full-Stack End-to-End Request Lifecycle",
+        "title": "End-to-End Full-Stack Request Lifecycle",
         "url": "learn/architecture/request-lifecycles.html"
       }
     },
@@ -885,13 +885,13 @@
       "slug": "architecture/request-lifecycles",
       "track": "architecture",
       "lesson": "request-lifecycles",
-      "title": "The Full-Stack End-to-End Request Lifecycle",
+      "title": "End-to-End Full-Stack Request Lifecycle",
       "level": 3,
       "order": 1,
       "url": "learn/architecture/request-lifecycles.html",
       "prev": {
         "slug": "prisma/what-is-an-orm",
-        "title": "What is an ORM & The Prisma Architecture",
+        "title": "What is an ORM: Prisma Architecture & Type Safety",
         "url": "learn/prisma/what-is-an-orm.html"
       },
       "next": null
