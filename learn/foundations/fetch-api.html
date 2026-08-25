@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="foundations">
+  <meta name="fsa-lesson" content="fetch-api">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="4">
+  <meta name="fsa-title" content="Fetch API & REST Communication">
+  <meta name="fsa-est-minutes" content="25">
+  <meta name="fsa-teaches-version" content="Modern Fetch Standard">
+  <meta name="fsa-pattern-label" content="Client-Server I/O">
+  <meta name="fsa-root" content="../../">
+
+  <title>Fetch API & REST Communication · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-found)"></span>
+            <span>Foundations Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="fetch-api.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>Fetch API & REST</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">Foundations</a> &rsaquo;
+              <span>Fetch API & REST</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 2 · FOUNDATIONS</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">Fetch API & REST Communication</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              بروتوكول Fetch: الاتصال بخوادم الـ REST APIs، معالجة الـ Headers، وإدارة أخطاء الشبكة
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: Fetch API & AbortController</span>
+              <span class="fsa-badge">Level 2</span>
+              <span class="fsa-badge">25 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Understand the two-step Fetch stream resolution: headers received vs body parsed.</li>
+                <li>Master REST verbs: GET, POST, PUT, PATCH, DELETE and standard status codes.</li>
+                <li>Handle HTTP error statuses properly (why <code>fetch()</code> does NOT reject on 404/500).</li>
+                <li>Cancel in-flight requests safely using <code>AbortController</code> and timeouts.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه فتح الطرد البريدي على مرحلتين</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                عندما يصلك طرد بريدي عبر الشحن السريع، أنت أولاً تستلم <strong>الصندوق الخارجي وبطاقة الشحن</strong> (استلام الـ Headers والـ Status Code) — هنا يكتمل الوعد الأول لـ <code>fetch()</code>.
+                لكن لكي تستخدم المنتج الذي بداخل الصندوق، عليك <strong>فتحه وتفريغ محتوياته</strong> (عملية <code>res.json()</code> أو <code>res.text()</code>) — وهي خطوة غير متزامنة ثانية لأن قراءة البيانات الضخمة تأتي كتدفق (Stream)!
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              The <code>fetch()</code> method provides a modern, Promise-based interface for fetching resources asynchronously across the network. It replaced legacy <code>XMLHttpRequest</code> and natively integrates with Request/Response streams and modern Web Standards.
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              واجهة <code>fetch()</code> هي المعيار القياسي المدمج في المتصفحات وبيئات Node.js الحديثة لإجراء طلبات الشبكة. تعتمد بالكامل على الوعود (Promises) وتتعامل مع البيانات كتدفق بايتات مستمر (ReadableStream).
+            </p>
+
+            <h3>Step-by-Step Mechanics · رحلة طلب الـ Fetch</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">1. Dispatch & Header Resolution</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  يرسل المتصفح الطلب، ويكتمل وعد <code>fetch()</code> بمجرد وصول أول بايتات الترويسة (Headers) وحالة الرد (مثل <code>200 OK</code>).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. Status Verification (res.ok)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  يجب فحص <code>res.ok</code> للتأكد أن رمز الحالة يقع في النطاق 200–299، لأن Fetch لا يرمي خطأً في حالات 404 أو 500!
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">3. Stream Body Parsing (res.json())</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  قراءة جسم الاستجابة وتحويل النص إلى كائن JavaScript عبر <code>await res.json()</code>.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through HTTP REST request headers, methods, and stream parsing:</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد كيف ينتقل الطلب عبر مراحل الترويسة والجسم وإلغاء الطلب:
+            </p>
+
+            <div class="fsa-stepper" id="fetchStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Fetch Two-Step Stream Resolution Flow">
+                <title>Fetch API Stream Resolution</title>
+                <desc>Fetch resolves Response Headers first, then reads Body Stream</desc>
+                <rect x="20" y="30" width="140" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="90" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">fetch(url)</text>
+                <text x="90" y="85" fill="var(--accent-primary)" text-anchor="middle" font-size="10">Step 1: Network</text>
+
+                <path d="M 170 70 L 250 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(260, 30)">
+                  <rect width="150" height="80" rx="8" fill="var(--tint-primary)" stroke="var(--accent-warning)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="75" y="55" fill="var(--accent-warning)" text-anchor="middle" font-size="12" font-weight="700">Response (Headers)</text>
+                  <text x="75" y="75" fill="var(--text-muted)" text-anchor="middle" font-size="10">res.ok / res.status</text>
+                </g>
+
+                <path d="M 420 70 L 480 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(490, 30)">
+                  <rect width="110" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="55" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">res.json()</text>
+                  <text x="55" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">Step 2: Body</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">REST Client Sandbox</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate REST API POST requests and header validations live:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: قم بتعديل دالة الإرسال وشاهد كيف يتم إرسال واستقبال البيانات:
+              </p>
+
+              <div class="fsa-playground" id="fetchPlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>Does <code>fetch('https://api.com/not-found')</code> (HTTP 404) trigger the <code>.catch()</code> block?</p>
+              <p class="fsa-ar" dir="rtl">هل يتسبب استلام كود HTTP 404 في الدخول إلى كتلة الـ catch؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    <strong>كلا، لا يدخل catch!</strong> يرفض <code>fetch()</code> فقط عند حدوث عطل شبكة كامل (Network Failure). للتعامل مع 404 يجب فحص <code>if (!res.ok)</code> يدوياً.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: const controller = new AbortController();</span>
+                <span class="fsa-anatomy__line" data-line="2">2: const res = await fetch('/api/data', {</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   method: 'POST',</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   headers: { 'Content-Type': 'application/json' },</span>
+                <span class="fsa-anatomy__line" data-line="5">5:   body: JSON.stringify({ title: 'New Course' }),</span>
+                <span class="fsa-anatomy__line" data-line="6">6:   signal: controller.signal</span>
+                <span class="fsa-anatomy__line" data-line="7">7: });</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 1 &amp; 6:</strong> استخدام <code>AbortController</code> لإلغاء طلب الشبكة إذا قام المستخدم بمغادرة الصفحة قبل اكتماله.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 4:</strong> ترويسة <code>Content-Type: application/json</code> تخبر الخادم بأن جسم الطلب بتنسيق JSON ليقوم بتحليله.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>JSON Parsing Time</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(Size)</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تحليل استجابات الـ JSON الضخمة يحظر الخيط الرئيسي زمنياً بالتناسب مع حجم النص، لذا يفضل تقسيم البيانات (Pagination).
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>Network Payload</span>
+                </div>
+                <div class="fsa-complexity-card__big">Gzip / Brotli</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  يقوم المتصفح تلقائياً بفك ضغط البيانات المضغوطة بالـ Brotli أو Gzip عبر ترويسة <code>Accept-Encoding</code>.
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>HTTP REST Verbs & Status Code Reference</summary>
+              <div class="fsa-details__body">
+                <table class="fsa-table">
+                  <thead>
+                    <tr>
+                      <th>Status Code</th>
+                      <th>Category</th>
+                      <th>Typical Meaning</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>200 OK</code></td>
+                      <td>2xx Success</td>
+                      <td>Request fulfilled successfully</td>
+                    </tr>
+                    <tr>
+                      <td><code>201 Created</code></td>
+                      <td>2xx Success</td>
+                      <td>New resource created (e.g. after POST)</td>
+                    </tr>
+                    <tr>
+                      <td><code>400 Bad Request</code></td>
+                      <td>4xx Client Error</td>
+                      <td>Invalid payload or validation failed</td>
+                    </tr>
+                    <tr>
+                      <td><code>401 / 403</code></td>
+                      <td>4xx Client Error</td>
+                      <td>Unauthorized (missing token) / Forbidden (insufficient rights)</td>
+                    </tr>
+                    <tr>
+                      <td><code>500 Server Error</code></td>
+                      <td>5xx Server Error</td>
+                      <td>Unhandled exception on the backend</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Missing Content-Type Header on POST Requests</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ BROKEN (Server sees empty body)<br>fetch('/api/user', {<br>&nbsp;&nbsp;method: 'POST',<br>&nbsp;&nbsp;body: JSON.stringify({ name: 'Zaid' })<br>});</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ FIXED (Server parses JSON body)<br>fetch('/api/user', {<br>&nbsp;&nbsp;method: 'POST',<br>&nbsp;&nbsp;headers: { 'Content-Type': 'application/json' },<br>&nbsp;&nbsp;body: JSON.stringify({ name: 'Zaid' })<br>});</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> بدون <code>Content-Type: application/json</code>، يتجاهل الـ Middleware في Express أو السيرفر قراءة الجسم ويعتبره فارغاً (<code>req.body === undefined</code>).
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>AbortController</dt>
+              <dd class="fsa-ar" dir="rtl">واجهة قياسية في JavaScript تتيح إلغاء عمليات الـ Fetch الجارية عند الحاجة لتوفير البيانات والذاكرة.</dd>
+              <dt>CORS (Cross-Origin Resource Sharing)</dt>
+              <dd class="fsa-ar" dir="rtl">آلية أمان تمنع المتصفح من قراءة بيانات خادم يختلف نطاقه عن نطاق الصفحة ما لم يسمح السيرفر بذلك صراحة.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="fetchCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "Why does a 404 or 500 HTTP response NOT cause the fetch() Promise to reject?",
+                  "options": [
+                    "Because Fetch considers any valid HTTP response from the server as a successful network roundtrip",
+                    "It is a bug in the JavaScript standard",
+                    "Because 404 responses contain no headers"
+                  ],
+                  "answer": 0,
+                  "why": "Fetch only rejects on actual network connection failures. HTTP status codes are delivered as valid responses requiring res.ok inspection.",
+                  "whyAr": "يعتبر Fetch أن وصول الرد من الخادم بنجاح هو تسوية مقبولة للوعد، وتترك معالجة رموز 400/500 للمطور عبر فحص res.ok.",
+                  "anchor": "learn"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Interview Question: Handling Network Timeouts</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: How do you enforce a strict 5-second timeout on a Fetch call?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> عبر استخدام <code>AbortSignal.timeout(5000)</code> وتمريرها في خاصية <code>signal</code> داخل خيارات الـ <code>fetch()</code>، أو ربط <code>setTimeout</code> بـ <code>controller.abort()</code>.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="async-js.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous: Async JS · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="../react/thinking-in-react.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next Track: Thinking in React · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'fetchStepper',
+          title: 'Fetch API Two-Stage Resolution Lifecycle',
+          init: () => ({
+            stages: [
+              { name: '1. Network Request', desc: 'Sending HTTP headers & body' },
+              { name: '2. Headers Received', desc: 'res.ok checked (status: 200)' },
+              { name: '3. Stream Consumed', desc: 'res.json() parsed payload' }
+            ]
+          }),
+          steps: (state) => [
+            {
+              activeIdx: 0,
+              say: 'الخطوة 1: إرسال الطلب عبر الشبكة بالترويسة المحددة'
+            },
+            {
+              activeIdx: 1,
+              say: 'الخطوة 2: استلام الترويسة واكتمال الوعد الأول، ثم فحص res.ok'
+            },
+            {
+              activeIdx: 2,
+              say: 'الخطوة 3: قراءة دفق البيانات وتحليله إلى كائن JSON جاهز للاستخدام'
+            }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 12px;">
+                ${state.stages.map((s, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 150px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${s.name}</span>
+                      <span style="font-size: 9px; color: var(--text-muted); display: block; margin-top: 2px;">${s.desc}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'fetchPlayground',
+          starterCode: `// Mocking REST API Request Simulation
+async function mockFetch(url, options = {}) {
+  console.log(\`[HTTP \${options.method || 'GET'}] -> \${url}\`);
+  console.log('Headers Sent:', options.headers || {});
+  
+  return {
+    ok: true,
+    status: 201,
+    json: async () => ({ id: 101, title: 'Learn Modern Full-Stack', status: 'published' })
+  };
+}
+
+async function createPost() {
+  const res = await mockFetch('https://api.fullstack.academy/posts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: 'Learn Modern Full-Stack' })
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    console.log('Created Resource Response:', data);
+  }
+}
+
+createPost();`
+        });
+      }
+    });
+  </script>
+</body>
+</html>

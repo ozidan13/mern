@@ -650,8 +650,8 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 | 10 | Search | ✅ Completed | 4 | index builder + Ctrl-K palette + `search.html` |
 | 11 | Homepage & Catalog Pages | ✅ Completed | 3, 9 | landing, `learn/`, track homes, 404 |
 | 12 | Reference, Projects & Playground surfaces | ✅ Completed | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
-| 13 | Content Wave 1 — Foundations + React | In Progress | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
-| 14 | Content Wave 2 — Node + Express | Pending | 13 | ~26 lessons + event-loop & conveyor flagships |
+| 13 | Content Wave 1 — Foundations + React | ✅ Completed | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
+| 14 | Content Wave 2 — Node + Express | In Progress | 13 | ~26 lessons + event-loop & conveyor flagships |
 | 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | Pending | 14 | ~44 lessons + remaining flagships |
 | 16 | Hardening — A11y, Responsive, Performance | Pending | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
 | 17 | QA & Launch | Pending | 16 | Smoke protocol passed; live on GitHub Pages |
@@ -754,7 +754,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 5, 9.
 **Acceptance:** milestone checkboxes persist across sessions · every MVP lesson links ≥ 1 reference page · error-page template covers meaning/causes/fixes/prevention/lesson-links.
 
-### Phase 13 — Content Wave 1: Foundations + React *(weeks 9–15)*
+### Phase 13 — Content Wave 1: Foundations + React *(Completed)*
 
 **Objective:** prove the whole pedagogy end-to-end on the most important path.
 **Key tasks:** author 16 Foundations lessons (flagships: request-lifecycle stepper, event-loop teaser stepper, fetch playground) + task-app *product_search_interface*-style exercise · author 20 React lessons (flagships: hooks call-order stepper, reconciliation visualizer, batching experiments; Actions covered conceptually) · Task Manager task-app · reference stubs for both tracks · **every lesson authored to the FULL Part 7 bar: standalone depth inventory, Arabic explanations around English terms, ≥ 1 animated SVG diagram, complete interactivity quota, interactive Try-It section (no static question lists), visual engagement matching the `style-ref-01.html` benchmark** — this wave sets the template for all future content.

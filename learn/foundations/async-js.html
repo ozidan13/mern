@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="foundations">
+  <meta name="fsa-lesson" content="async-js">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="3">
+  <meta name="fsa-title" content="Asynchronous JavaScript & Promises">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="ES2026 Async/Await">
+  <meta name="fsa-pattern-label" content="Asynchronous Core">
+  <meta name="fsa-root" content="../../">
+
+  <title>Asynchronous JavaScript & Promises · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-found)"></span>
+            <span>Foundations Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="async-js.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>Asynchronous JavaScript</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">Foundations</a> &rsaquo;
+              <span>Async JS & Promises</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 2 · FOUNDATIONS</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">Asynchronous JavaScript & Promises</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              البرمجة غير المتزامنة: الوعود (Promises)، الـ Microtasks، و Async/Await
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: Promises & Event Loop</span>
+              <span class="fsa-badge">Level 2</span>
+              <span class="fsa-badge">30 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Master Promise states: <code>pending</code>, <code>fulfilled</code>, and <code>rejected</code>.</li>
+                <li>Understand the Microtask Queue priority over the Callback/Macrotask Queue.</li>
+                <li>Write clean asynchronous code with <code>async/await</code> and <code>try...catch</code>.</li>
+                <li>Avoid unhandled rejections and race conditions in concurrent requests.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه جهاز الإنذار في المطعم (Buzzer)</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                عندما تطلب وجبة في مطعم مزدحم، لا يقف الكاشير متجمداً في انتظار طهي طعامك، بل يسلمك <strong>جهاز إنذار صغير (Buzzer)</strong> ويخدم الزبون التالي فوراً!
+                هذا الجهاز هو الـ <strong>Promise</strong>: يبدأ في حالة انتظار (<code>pending</code>). عندما ينتهي الطهي، يهتز الجهاز وتستلم وجبتك (<code>fulfilled</code>)، أو يعتذر المطعم لعدم توفر المكونات (<code>rejected</code>).
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              A <code>Promise</code> is an object representing the eventual completion or failure of an asynchronous operation. Rather than blocking the main thread, asynchronous tasks delegate I/O to system APIs and resolve callbacks via the Microtask queue.
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              الـ <code>Promise</code> هو كائن برمجي يمثل نتيجة عملية ستكتمل في المستقبل. يتيح لجافاسكربت تنفيذ العمليات الثقيلة (مثل استدعاءات الشبكة وقراءة الملفات) في الخلفية دون تجميد واجهة المستخدم (Non-blocking I/O).
+            </p>
+
+            <h3>Step-by-Step Mechanics · المراحل الثلاث لدورة حياة الـ Promise</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">1. Pending (قيد الانتظار)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  الحالة المبدئية عند إنشاء الوعد، وتستمر طوال فترة تنفيذ العملية في الخلفية.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. Fulfilled / Resolved (نجاح العملية)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  اكتملت العملية بنجاح ويتم تمرير القيمة الناتجة إلى دوال <code>.then()</code> أو استئناف <code>await</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-danger);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">3. Rejected (فشل العملية)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  حدث خطأ أو استثناء أثناء التنفيذ ويتم التقاط سبب الفشل عبر <code>.catch()</code> أو كتلة <code>try...catch</code>.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through Microtask vs Macrotask event loop scheduling order:</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد كيف يقدم المحرك طابور الـ Microtasks (الوعود) على طابور الـ Macrotasks (مثل setTimeout):
+            </p>
+
+            <div class="fsa-stepper" id="asyncStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Microtask vs Macrotask Event Loop Diagram">
+                <title>Microtask Queue Priority Flow</title>
+                <desc>Microtasks execute immediately after the Call Stack empties before Macrotasks</desc>
+                <rect x="20" y="30" width="150" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                <text x="95" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">Call Stack (Empty)</text>
+
+                <path d="M 180 70 L 250 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(260, 20)">
+                  <rect width="180" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--accent-success)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="90" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">Microtask Queue</text>
+                  <text x="90" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">Promise.then()</text>
+                  <text x="90" y="88" fill="var(--accent-primary)" text-anchor="middle" font-size="10">⚡ High Priority</text>
+                </g>
+
+                <g transform="translate(460, 20)">
+                  <rect width="140" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="70" y="45" fill="var(--text-muted)" text-anchor="middle" font-size="11" font-weight="600">Macrotask Queue</text>
+                  <text x="70" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">setTimeout()</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">Async/Await Sandbox</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate async chaining and error handling live:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: قم بتعديل دالة الـ Async وشاهد كيف يتم إيقاف واستئناف التنفيذ:
+              </p>
+
+              <div class="fsa-playground" id="asyncPlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>In what order will these log: <code>1 (sync)</code>, <code>2 (setTimeout)</code>, <code>3 (Promise.then)</code>?</p>
+              <p class="fsa-ar" dir="rtl">ما هو الترتيب الدقيق لطباعة الأرقام بين الكود المتزامن، والـ Promise، والـ setTimeout؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    الترتيب هو: <strong>1 ثم 3 ثم 2</strong>! الكود المتزامن ينفذ أولاً، ثم طابور الـ Microtasks فوراً، وأخيراً الـ setTimeout في الدورة القادمة.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: async function loadUserProfile(userId) {</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   try {</span>
+                <span class="fsa-anatomy__line" data-line="3">3:     const res = await fetch(`/api/users/${userId}`);</span>
+                <span class="fsa-anatomy__line" data-line="4">4:     if (!res.ok) throw new Error('User not found');</span>
+                <span class="fsa-anatomy__line" data-line="5">5:     return await res.json();</span>
+                <span class="fsa-anatomy__line" data-line="6">6:   } catch (err) {</span>
+                <span class="fsa-anatomy__line" data-line="7">7:     console.error('Fetch failed:', err.message);</span>
+                <span class="fsa-anatomy__line" data-line="8">8:   }</span>
+                <span class="fsa-anatomy__line" data-line="9">9: }</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 1:</strong> كلمة <code>async</code> تجعل الدالة تعيد Promise تلقائياً وتتيح استخدام <code>await</code> بداخلها.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 3:</strong> كلمة <code>await</code> توقف تنفيذ الدالة مؤقتاً حتى يكتمل الوعد دون حظر الخيط الرئيسي.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Promise.all Concurrent Time</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(max(T1, T2...))</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تشغيل الوعود بالتوازي عبر <code>Promise.all</code> يستغرق زمن أطول طلب فقط بدلاً من جمع أزمنة الطلبات المتتالية.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>Memory Overhead</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(N) Pending Promises</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  كل وعد معلق يحتفظ بذاكرة الدالة والـ Callbacks المرتبطة به في الـ Heap حتى تتم تسويته.
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>Promise Combinators: all vs allSettled vs race vs any</summary>
+              <div class="fsa-details__body">
+                <table class="fsa-table">
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th>Resolves When</th>
+                      <th>Rejects When</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>Promise.all</code></td>
+                      <td>All promises fulfill</td>
+                      <td>Any single promise rejects (Fail-fast)</td>
+                    </tr>
+                    <tr>
+                      <td><code>Promise.allSettled</code></td>
+                      <td>All promises settle (never rejects)</td>
+                      <td>Never</td>
+                    </tr>
+                    <tr>
+                      <td><code>Promise.race</code></td>
+                      <td>First promise settles (win or lose)</td>
+                      <td>First promise rejects</td>
+                    </tr>
+                    <tr>
+                      <td><code>Promise.any</code></td>
+                      <td>First promise fulfills</td>
+                      <td>All promises reject (AggregateError)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Sequential Await Waterfall (إبطاء الطلبات المستقلة)</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ SLOW (Sequential waterfall)<br>const user = await fetchUser();<br>const posts = await fetchPosts();</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ FAST (Parallel execution)<br>const [user, posts] = await Promise.all([<br>&nbsp;&nbsp;fetchUser(), fetchPosts()<br>]);</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> انتظار طلبات غير معتمدة على بعضها بشكل متسلسل يضاعف زمن الانتظار بدون داعٍ.
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>Microtask Queue</dt>
+              <dd class="fsa-ar" dir="rtl">طابور مهام عالي الأولوية ينفذ فور فراغ الـ Call Stack ويشمل معالجات الـ Promises.</dd>
+              <dt>Async/Await</dt>
+              <dd class="fsa-ar" dir="rtl">بناء لغوي تجميلي (Syntactic Sugar) يجعل الكود غير المتزامن يقرأ كأنه متزامن وأسهل في التتبع.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="asyncCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "Which queue has higher execution priority when the Call Stack empties?",
+                  "options": [
+                    "Macrotask Queue (setTimeout, setInterval)",
+                    "Microtask Queue (Promise.then, queueMicrotask)",
+                    "Rendering requestAnimationFrame only"
+                  ],
+                  "answer": 1,
+                  "why": "Microtasks are always drained completely before the event loop picks the next macrotask.",
+                  "whyAr": "يتم تفريغ طابور الـ Microtasks بالكامل فور فراغ الـ Call Stack وقبل الانتقال للـ Macrotask التالي.",
+                  "anchor": "see"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Interview Question: Unhandled Promise Rejections</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: Why does Node.js terminate processes on unhandled promise rejections?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> لأن الخطأ غير المعالج يترك التطبيق في حالة غير محددة (Unclean state)، مما قد يسبب تسريبات ذاكرة أو تعطل المنطق، لذا تفرض البيئات الحديثة إنهاء العملية بأمان ما لم يتم التقاط الخطأ.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="js-essentials.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous: Execution & Scope · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="fetch-api.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next: Fetch API · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'asyncStepper',
+          title: 'Event Loop: Sync Code vs Microtask vs Macrotask',
+          init: () => ({
+            steps: [
+              { name: '1. console.log("A")', type: 'sync', status: 'pending' },
+              { name: '2. setTimeout("C")', type: 'macrotask', status: 'pending' },
+              { name: '3. Promise.then("B")', type: 'microtask', status: 'pending' }
+            ]
+          }),
+          steps: (state) => [
+            {
+              activeIdx: 0,
+              say: 'الخطوة 1: تنفيذ الكود المتزامن فوراً وطباعة "A"'
+            },
+            {
+              activeIdx: 1,
+              say: 'الخطوة 2: تسجيل دالة setTimeout وإرسالها لطابور الـ Macrotask'
+            },
+            {
+              activeIdx: 2,
+              say: 'الخطوة 3: تسوية الـ Promise ووضع الدالة في طابور الـ Microtask عالي الأولوية'
+            },
+            {
+              activeIdx: 2,
+              say: 'الخطوة 4: تفريغ الـ Microtask أولاً وطباعة "B"'
+            },
+            {
+              activeIdx: 1,
+              say: 'الخطوة 5: أخيراً، استلام الـ Macrotask في الدورة التالية وطباعة "C"'
+            }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 12px;">
+                ${state.steps.map((s, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 60px; font-size: 11px;">
+                      <span>${s.name}</span>
+                      <span style="font-size: 9px; color: var(--text-muted);">${s.type}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'asyncPlayground',
+          starterCode: `// Async Execution and Promise Simulation
+async function fetchScore(playerName) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ player: playerName, score: Math.floor(Math.random() * 50) + 50 });
+    }, 200);
+  });
+}
+
+async function runTournament() {
+  console.log('Starting parallel tournament...');
+  const [p1, p2] = await Promise.all([
+    fetchScore('Amira'),
+    fetchScore('Zaid')
+  ]);
+  
+  console.log('Player 1 Result:', p1);
+  console.log('Player 2 Result:', p2);
+  console.log('Winner:', p1.score > p2.score ? p1.player : p2.player);
+}
+
+runTournament();`
+        });
+      }
+    });
+  </script>
+</body>
+</html>
