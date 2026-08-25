@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="use-effect">
   <meta name="fsa-level" content="2">
   <meta name="fsa-order" content="3">
-  <meta name="fsa-title" content="Effects with useEffect & Synchronization">
-  <meta name="fsa-est-minutes" content="30">
-  <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="Side Effects">
+  <meta name="fsa-title" content="useEffect Hook: Synchronization & Cleanup">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="React 19.2 Effects">
+  <meta name="fsa-pattern-label" content="Lifecycle Synchronization">
   <meta name="fsa-root" content="../../">
 
-  <title>Effects with useEffect & Synchronization · FullStack Academy</title>
+  <title>useEffect Hook: Synchronization & Cleanup · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,343 +44,338 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-react)"></span>
-            <span>React.js Track</span>
+            <span>مسار ريآكت · React.js 19.2</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="use-effect.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>useEffect & Synchronization</span>
+                <span>useEffect &amp; Lifecycle Sync</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">React.js</a> &rsaquo;
               <span>useEffect Hook</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 2 · REACT 19.2</span>
+              <span>المستوى 2 · التزامن مع الأنظمة الخارجية</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">Effects with useEffect & Lifecycle Synchronization</h1>
+            <h1 style="margin-block-start: var(--space-2);">useEffect Hook: Synchronization &amp; Cleanup</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              الآثار الجانبية (Side Effects) مع useEffect: المزامنة، مصفوفة الاعتماديات، ودالة التنظيف Cleanup
+              ليه الـ useEffect مش بديل لـ Lifecycle Methods؟ وكيف تحمي تطبيقك من تسريب الذاكرة والـ Race Conditions؟
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: Synchronization & Cleanup</span>
-              <span class="fsa-badge">Level 2</span>
-              <span class="fsa-badge">30 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: React 19.2 · Synchronization · Cleanup · Race Conditions</span>
+              <span class="fsa-badge">المستوى 2</span>
+              <span class="fsa-badge">35 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Understand the mental model of Synchronization vs traditional lifecycle methods.</li>
-                <li>Master the Dependency Array: <code>no deps</code> vs <code>[]</code> vs <code>[dep1, dep2]</code>.</li>
-                <li>Prevent memory leaks and race conditions using the Cleanup function.</li>
-                <li>Learn when NOT to use useEffect in modern React 19 architecture.</li>
+                <li>فهم الغرض الأساسي لهوك <code dir="ltr">useEffect</code>: المزامنة مع نظام خارج ريآكت (External System).</li>
+                <li>إتقان كتابة دوال التنظيف (Cleanup Functions) لإلغاء الاشتراكات والـ WebSockets والتايمرز.</li>
+                <li>منع تضارب السباق (Race Conditions) عند جلب البيانات في مربعات البحث التفاعلية.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه جهاز التكييف الذكي والمستشعر</span>
+                <span>تشبيه نزيل الفندق وجهاز التكييف الذكي · The Hotel Guest &amp; AC</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                تخيّل جهاز تكييف ذكي في غرفتك مزوداً بمستشعر حرارة (الـ Dependency).
-                أنت لا تخبر التكييف كل ثانية بأن يغير سرعته، بل تضبط المستشعر: كلما تغيرت درجة حرارة الغرفة إلى قيمة جديدة، يبدأ التكييف في <strong>مزامنة نفسه تلقائياً (Synchronize)</strong> مع الحالة الخارجية.
-                وعندما تغلق الغرفة وتغادر، يقوم التكييف بإطفاء نفسه وفصل الكهرباء (<strong>Cleanup Function</strong>) لتوفير الطاقة ومنع الحوادث!
+                تخيل إن المكون في ريآكت زي <strong>نزيل دخل غرفة في فندق</strong>:
+                أول ما يدخل الغرفة ويثبت رجله (<strong>Component Mounts</strong>)، بيفتح التكييف ويشغل الراديو (<strong>Effect Runs</strong>).<br>
+                لكن الأهم بقى هو لما يقرر يسيب الغرفة ويمشي (<strong>Component Unmounts</strong>):<br>
+                لو مشي وساب التكييف والأنوار شغالة، الفندق هيدفع فاتورة كهرباء فلكية (<strong>Memory Leak</strong>)!<br>
+                عشان كده لازم يسيب وراه تعليمات التنظيف (<strong>Cleanup Function</strong>): "أول ما أخرج، اقفل الراديو وافصل كابل التكييف فوراً!"
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              In React, <code>useEffect</code> allows you to synchronize a component with an external system (such as browser APIs, timers, websockets, or network requests). It runs <strong>after</strong> rendering and painting have completed.
-            </p>
+            <h3>المفهوم الخاطئ الأشهر عن useEffect</h3>
             <p class="fsa-ar" dir="rtl">
-              الـ <code>useEffect</code> هو أداة لمزامنة المكون مع <strong>أنظمة خارجية</strong> لا تخضع لتحكم ريآكت المباشر (مثل الـ DOM APIs المباشرة، اشتراكات الـ WebSockets، والمؤقتات). ينفذ الـ Effect دائماً <strong>بعد اكتمال الرسم على الشاشة</strong> لضمان عدم حظر تجربة المستخدم.
+              أكبر غلطة بيقع فيها المطور هو التعامل مع <code dir="ltr">useEffect</code> كأنها مجرد مكان لرمي أي كود بعد الـ Render!
+              فريق ريآكت أكد: إذا كنت بتستخدم الـ Effect عشان تحدث State تانية معتمدة على State أولى، فده <strong>تصميم خاطئ</strong> ويبطئ التطبيق.
+              الـ Effect اتعملت فقط للمزامنة مع عالم خارجي: زي الاشتراك في WebSocket، أو التعامل مع الـ DOM الأصلي (HTML5 Canvas)، أو تشغيل Timer، أو جلب بيانات عبر الشبكة مع إلغاء الطلبات السابقة.
             </p>
+          </section>
 
-            <h3>The Three Dependency Modes · الأوضاع الثلاثة لمصفوفة الاعتماديات</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. دورة حياة الـ Effect خطوة بخطوة · Step-by-Step Mechanics</h2>
             
-            <div class="fsa-step-card" style="--step-accent: var(--accent-danger);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-react);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. No Dependency Array: <code>useEffect(fn)</code></div>
+                <div class="fsa-step-card__title">1. مرحلة الرسم والالتزام في الـ DOM (Commit &amp; Paint)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  ينفذ التأثير بعد <strong>كل عملية إعادة رسم (Every Render)</strong> بدون استثناء. نادراً ما يُستخدم ويجب الحذر منه لتجنب الحلقات اللانهائية.
+                  ريآكت ترسم الـ JSX على الشاشة أولاً حتى يرى المستخدم الواجهة بسرعة 60fps دون أي تعطيل.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. فحص مصفوفة الاعتماديات (Dependencies Array Check)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تقارن ريآكت قيم الـ Dependencies السابقة مع الحالية عبر <code dir="ltr">Object.is</code>، فإذا تغيرت قيمة واحدة على الأقل، يتم تشغيل الـ Effect.
                 </p>
               </div>
             </div>
 
             <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
-              <div class="fsa-step-card__badge">2</div>
-              <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. Empty Array: <code>useEffect(fn, [])</code></div>
-                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  ينفذ التأثير <strong>مرة واحدة فقط</strong> عند ظهور المكون لأول مرة على الشاشة (Mount).
-                </p>
-              </div>
-            </div>
-
-            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
               <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">3. With Dependencies: <code>useEffect(fn, [roomId])</code></div>
+                <div class="fsa-step-card__title">3. تشغيل الـ Cleanup السابق أولاً ثم بدء الـ Effect الجديد</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  ينفذ التأثير عند أول ظهور، ثم يُعاد تنفيذه <strong>فقط إذا تغيرت قيمة أي متغير</strong> موجود داخل المصفوفة (عبر <code>Object.is</code>).
+                  قبل تشغيل الـ Effect الجديد، تشغل ريآكت دالة التنظيف المتبقية من الـ Render السابق لغلق الاتصالات القديمة، ثم تشغل الكود الجديد بأمان.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through the Effect Execution and Cleanup Lifecycle:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف تنفذ دالة التنظيف (Cleanup) قبل إعادة تشغيل التأثير الجديد وعند إلغاء المكون:
+              شاهد بالعين المجردة كيف تعمل دالة الـ Cleanup قبل كل تحديث وعند إزالة المكون:
             </p>
 
             <div class="fsa-stepper" id="useEffectStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="useEffect Synchronization Flow">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="useEffect Lifecycle and Cleanup Timeline">
                 <title>useEffect Lifecycle Flow</title>
-                <desc>Render phase commits to DOM, then Effect runs, cleaning up previous effects first</desc>
-                <rect x="20" y="30" width="130" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="85" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">1. DOM Paint</text>
+                <desc>Render occurs, paint completes, previous cleanup runs, then new effect executes</desc>
+                <rect x="20" y="25" width="140" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="90" y="55" fill="var(--text-primary)" text-anchor="middle" font-size="11" font-weight="700">1. Paint Screen</text>
+                <text x="90" y="80" fill="var(--text-muted)" text-anchor="middle" font-size="10">DOM is visible</text>
 
-                <path d="M 160 70 L 230 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 170 70 L 220 70" stroke="var(--accent-warning)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
 
-                <g transform="translate(240, 30)">
-                  <rect width="160" height="80" rx="8" fill="var(--tint-primary)" stroke="var(--accent-warning)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="80" y="55" fill="var(--accent-warning)" text-anchor="middle" font-size="12" font-weight="700">2. Run Cleanup</text>
-                  <text x="80" y="75" fill="var(--text-muted)" text-anchor="middle" font-size="10">(from previous effect)</text>
+                <g transform="translate(230, 20)">
+                  <rect width="170" height="100" rx="8" fill="var(--tint-warning)" stroke="var(--accent-warning)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="85" y="45" fill="var(--accent-warning)" text-anchor="middle" font-size="11" font-weight="700">2. Run Old Cleanup</text>
+                  <text x="85" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">socket.disconnect()</text>
                 </g>
 
-                <path d="M 410 70 L 480 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 410 70 L 460 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
 
-                <g transform="translate(490, 30)">
-                  <rect width="110" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="55" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">3. Run Effect</text>
-                  <text x="55" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">setup()</text>
+                <g transform="translate(470, 20)">
+                  <rect width="130" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="65" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">3. Run New Effect</text>
+                  <text x="65" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10">socket.connect()</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Effect & Cleanup Sandbox</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي اشتراك الـ Chat Room مع Cleanup</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Simulate subscription cleanup and dependency changes live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: شاهد تسلسل تشغيل الـ Cleanup عند تغيير الغرفة أو فصل الاتصال:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد كيف يتم فصل الاتصال القديم عند تغيير الغرفة قبل فتح الاتصال الجديد:
               </p>
-
               <div class="fsa-playground" id="effectPlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What happens if you update a state variable inside a <code>useEffect</code> that has no dependency array?</p>
-              <p class="fsa-ar" dir="rtl">ماذا يحدث عند تحديث State داخل useEffect بدون تمرير مصفوفة اعتماديات؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو كتبت <code dir="ltr">useEffect(() =&gt; { ... }, [])</code> بمصفوفة اعتماديات فارغة، الـ Effect ده هيشتغل كام مرة في الإنتاج؟
+              </p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    ستحدث <strong>حلقة إعادة رسم لا نهائية (Infinite Loop)</strong>! لأن تحديث الـ State يعيد رسم المكون، مما يشغل الـ Effect من جديد، فيحدث الـ State مجدداً بلا توقف.
+                    <strong>مرة واحدة فقط عند تركيب المكون (Mounting)!</strong><br>
+                    لأن المصفوفة الفارغة لا تحتوي على أي متغيرات تتغير، فلن يعيد تشغيله أبداً عند أي Re-render لاحق، وسيشغل الـ Cleanup فقط عند مغادرة الصفحة أو إزالة المكون (Unmount).
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح نمط جلب البيانات الآمن ضد الـ Race Conditions · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
+              <div class="fsa-anatomy__code" dir="ltr">
                 <span class="fsa-anatomy__line" data-line="1">1: useEffect(() => {</span>
-                <span class="fsa-anatomy__line" data-line="2">2:   const connection = createSocket(roomId);</span>
-                <span class="fsa-anatomy__line" data-line="3">3:   connection.connect();</span>
-                <span class="fsa-anatomy__line" data-line="4">4: </span>
-                <span class="fsa-anatomy__line" data-line="5">5:   return () => {</span>
-                <span class="fsa-anatomy__line" data-line="6">6:     connection.disconnect();</span>
-                <span class="fsa-anatomy__line" data-line="7">7:   };</span>
-                <span class="fsa-anatomy__line" data-line="8">8: }, [roomId]);</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   let ignore = false; // Flag to ignore stale results</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   async function fetchData() {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:     const res = await fetch(`/api/user/${userId}`);</span>
+                <span class="fsa-anatomy__line" data-line="5">5:     const json = await res.json();</span>
+                <span class="fsa-anatomy__line" data-line="6">6:     if (!ignore) setUserData(json); // Only update if still active</span>
+                <span class="fsa-anatomy__line" data-line="7">7:   }</span>
+                <span class="fsa-anatomy__line" data-line="8">8:   fetchData();</span>
+                <span class="fsa-anatomy__line" data-line="9">9:   return () => { ignore = true; }; // Cleanup flag</span>
+                <span class="fsa-anatomy__line" data-line="10">10: }, [userId]);</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 2 &amp; 3:</strong> كود الإعداد (Setup) الذي يربط المكون بالنظام الخارجي عند التغيير.
+                  <strong>السطر 2 &amp; 9:</strong> متغير <code dir="ltr">ignore</code> يتحول لـ <code dir="ltr">true</code> فور تغير الـ <code dir="ltr">userId</code>، مما يمنع الطلب البطيء القديم من الكتابة فوق الطلب الأحدث!
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 5 &amp; 6:</strong> دالة التنظيف (Cleanup) التي تفصل الاتصال القديم قبل إعادة الاتصال بالغرفة الجديدة.
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 8:</strong> مصفوفة الاعتماديات تحدد لـ React متى يعيد تشغيل التأثير فقط (عند تغير <code>roomId</code>).
+                  <strong>السطر 10:</strong> مصفوفة الاعتماديات تحدد بدقة متى يعاد المزامنة.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-react);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>Dependency Diffing Cost</span>
+                  <span>التشغيل المزدوج في وضع التطوير</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(D) Dependencies</div>
+                <div class="fsa-complexity-card__big">Strict Mode Double Invoke</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  يقوم React بمقارنة كل عنصر في مصفوفة الاعتماديات بقيمته السابقة عبر <code>Object.is</code>.
+                  في وضع React Strict Mode، تقوم ريآكت بتشغيل الـ Effect ثم الـ Cleanup ثم الـ Effect عمداً للتأكد من أنك لم تنسَ كتابة دالة التنظيف!
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-danger);">
                 <div class="fsa-complexity-card__title">
-                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Unmount Cleanup</span>
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>كابوس الحلقة اللانهائية (Infinite Render Loop)</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(1) Garbage Collect</div>
+                <div class="fsa-complexity-card__big">State Mutation in Effect</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  تضمن دالة الـ Cleanup إلغاء المؤقتات والاشتراكات، مما يسمح لجامع القمامة بتحرير الذاكرة فوراً.
+                  تحديث State داخل Effect بدون مصفوفة اعتماديات يسبب Render جديد، الذي يشغل الـ Effect، الذي يحدث الـ State.. فينهار المتصفح!
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>You Might Not Need an Effect: Modern React 19 Guidelines</summary>
-              <div class="fsa-details__body">
-                <ul style="padding-inline-start: var(--space-5); line-height: 1.8;">
-                  <li><strong>حساب البيانات من Props:</strong> لا تستخدم Effect، احسبها لحظياً في جسم الدالة (Render time).</li>
-                  <li><strong>الاستجابة لضغطة زر:</strong> ضع الكود في معالج الحدث (Event Handler)، وليس في Effect.</li>
-                  <li><strong>معالجة النماذج:</strong> استخدم React 19 Form Actions بدلاً من مزامنة الـ Effects.</li>
-                </ul>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Race Condition in Async Data Fetching</span>
+                  <span>نسيان دالة التنظيف مع التايمرز (Dangling Interval)</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ BUGGY (Fast tab switch shows wrong data)<br>useEffect(() => {<br>&nbsp;&nbsp;fetchUser(id).then(u => setUser(u));<br>}, [id]);</code>
+                    <code>// ❌ كارثة: التايمر يفضل شغال للأبد ويسرب الذاكرة<br>useEffect(() => {<br>&nbsp;&nbsp;setInterval(() => tick(), 1000);<br>}, []);</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ FIXED (Ignored stale responses)<br>useEffect(() => {<br>&nbsp;&nbsp;let ignore = false;<br>&nbsp;&nbsp;fetchUser(id).then(u => { if (!ignore) setUser(u); });<br>&nbsp;&nbsp;return () => { ignore = true; };<br>}, [id]);</code>
+                    <code>// ✅ مسح التايمر في دالة الـ Cleanup<br>useEffect(() => {<br>&nbsp;&nbsp;const id = setInterval(() => tick(), 1000);<br>&nbsp;&nbsp;return () => clearInterval(id);<br>}, []);</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> إذا تنقل المستخدم بسرعة بين المستخدمين، قد تصل استجابة الطلب القديم متأخرة وتستبدل بيانات المستخدم الحديث!
+                  <strong>التشخيص الهندسي:</strong> إذا لم تقم بمسح الـ Interval، سيظل يعمل في خلفية المتصفح ويستدعي دالة التحديث على مكون ميت.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Side Effect</dt>
-              <dd class="fsa-ar" dir="rtl">أي عملية تؤثر على العالم الخارجي خارج نطاق الدالة النقية، مثل تعديل الـ DOM أو جلب بيانات الشبكة.</dd>
-              <dt>Cleanup Function</dt>
-              <dd class="fsa-ar" dir="rtl">دالة اختيارية تعيدها دالة الـ Effect لتنظيف الموارد والاشتراكات القديمة قبل تشغيل التأثير الجديد.</dd>
+              <dt dir="ltr">Cleanup Function</dt>
+              <dd class="fsa-ar" dir="rtl">الدالة التي تعيدها من داخل useEffect وتنفذها ريآكت لتنظيف الموارد قبل إعادة التشغيل أو عند إزالة المكون.</dd>
+              <dt dir="ltr">Race Condition</dt>
+              <dd class="fsa-ar" dir="rtl">خلل يحدث عندما تصل نتيجة طلب شبكة قديم بعد نتيجة طلب شبكة أحدث فيعرض التطبيق بيانات خاطئة.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="useEffectCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "When does the cleanup function returned by useEffect execute?",
+                  "q": "When does the cleanup function returned inside a useEffect execute?",
                   "options": [
-                    "Only when the browser window closes",
-                    "Before re-running the effect with new dependencies, and when the component unmounts",
-                    "Synchronously before the component renders"
+                    "Only when the browser window closes completely",
+                    "Before the effect re-runs on dependency changes, and when the component unmounts",
+                    "Synchronously before the initial render starts"
                   ],
                   "answer": 1,
-                  "why": "React runs the cleanup function to tear down the previous effect before applying the next one, as well as on final unmount.",
-                  "whyAr": "ينفذ React دالة التنظيف لإلغاء التأثير السابق قبل تطبيق التأثير الجديد، وأيضاً عند حذف المكون نهائياً.",
-                  "anchor": "see"
+                  "why": "React runs the previous cleanup before executing the next effect, and runs it one last time when the component unmounts.",
+                  "whyAr": "تشغل ريآكت دالة التنظيف السابقة قبل إعادة تشغيل الـ Effect عند تغير الاعتماديات، وتشغلها لآخر مرة عند إزالة المكون من الشاشة.",
+                  "anchor": "mechanics"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Interview Question: React StrictMode Double Invocation</summary>
+              <summary>سؤال مقابلات شهير: إمتى منستخدمش useEffect في React؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: Why does useEffect run twice on mount in development under React StrictMode?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> يتعمد React في بيئة التطوير تشغيل <code>Setup &rarr; Cleanup &rarr; Setup</code> للتأكد من أن المطور قد كتب دالة تنظيف صحيحة وأن التأثير مرن وقابل لإعادة التركيب دون التسبب في تسريبات ذاكرة.
+                  <strong>الإجابة الهندسية:</strong><br>
+                  1. <strong>تحويل وحساب البيانات</strong>: احسبها مباشرة في جسم الدالة (<code dir="ltr">const filtered = items.filter(...)</code>).<br>
+                  2. <strong>معالجة أحداث المستخدم</strong>: ضع المنطق في معالج الحدث مباشرة (<code dir="ltr">onClick</code> أو <code dir="ltr">onSubmit</code>) بدلاً من وضع State ثم مراقبتها بـ Effect.<br>
+                  3. <strong>جلب البيانات الإنتاجي</strong>: استخدم مكتبات متخصصة مثل <strong>TanStack Query (React Query)</strong> للتعامل مع الـ Caching والـ Deduplication وإعادة المحاولة التلقائية.
                 </p>
               </div>
             </details>
@@ -387,18 +384,18 @@
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="use-state.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous: useState · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: هوك useState</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
             <a href="reconciliation.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next: Reconciliation Diffing · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس التالي: خوارزمية Reconciliation</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -406,7 +403,7 @@
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -431,32 +428,28 @@
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
           el: 'useEffectStepper',
-          title: 'useEffect Execution and Cleanup Order',
+          title: 'دورة حياة المزامنة ودوال التنظيف Cleanup',
           init: () => ({
             steps: [
-              { name: '1. Initial Render', desc: 'Component mounts to DOM' },
-              { name: '2. Setup Effect', desc: 'Connecting to Room #A' },
-              { name: '3. Props Change', desc: 'User switches to Room #B' },
-              { name: '4. Run Cleanup', desc: 'Disconnecting Room #A first' },
-              { name: '5. New Setup', desc: 'Connecting to Room #B' }
+              { name: '1. Render JSX', action: 'رسم الواجهة في الـ DOM' },
+              { name: '2. Run Cleanup', action: 'إغلاق الاتصال السابق' },
+              { name: '3. Run Effect', action: 'بدء الاتصال الجديد' }
             ]
           }),
           steps: (state) => [
-            { activeIdx: 0, say: 'الخطوة 1: يكتمل رسم المكون على شاشة المتصفح' },
-            { activeIdx: 1, say: 'الخطوة 2: تشغيل دالة التأثير والاتصال بالغرفة A' },
-            { activeIdx: 2, say: 'الخطوة 3: تغير الـ roomId إلى الغرفة B وإعادة الرسم' },
-            { activeIdx: 3, say: 'الخطوة 4: تشغيل دالة التنظيف (Cleanup) لفصل الغرفة A' },
-            { activeIdx: 4, say: 'الخطوة 5: تشغيل التأثير الجديد والاتصال بالغرفة B بنجاح' }
+            { activeIdx: 0, say: 'الخطوة 1: ريآكت تنتهي من رسم المكون في الـ DOM أولاً' },
+            { activeIdx: 1, say: 'الخطوة 2: تشغيل دالة الـ Cleanup الخاصة بالـ Render السابق لمنع تسريب الموارد' },
+            { activeIdx: 2, say: 'الخطوة 3: تشغيل الـ Effect الجديد وتحديث المتغيرات الخارجية' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
-              <div class="fsa-viz-cells" style="gap: 8px;">
+              <div class="fsa-viz-cells" style="gap: 10px;">
                 ${state.steps.map((s, i) => {
                   const isActive = step.activeIdx === i;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 110px; height: 60px; font-size: 10px; padding: 2px; text-align: center;">
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${s.name}</span>
-                      <span style="font-size: 8px; color: var(--text-muted); display: block;">${s.desc}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 150px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-react)' : 'var(--text-primary)'};">${s.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${s.action}</span>
                     </div>
                   `;
                 }).join('')}
@@ -469,23 +462,22 @@
       if (window.FSA.playground) {
         window.FSA.playground.mount({
           el: 'effectPlayground',
-          starterCode: `// Simulation of React useEffect Subscription & Cleanup
-function simulateComponent(roomId) {
-  console.log(\`[RENDER] Component painted for Room: \${roomId}\`);
+          starterCode: `// محاكاة دورة حياة useEffect والـ Cleanup
+function simulateChatRoom(roomId) {
+  console.log('✅ تم فتح اتصال الغرفة:', roomId);
   
-  // Setup Effect
-  console.log(\`[SETUP] Connected to WebSocket for Room: \${roomId}\`);
-  
-  // Return Cleanup
+  // دالة الـ Cleanup
   return () => {
-    console.log(\`[CLEANUP] Disconnected from Room: \${roomId}\`);
+    console.log('🔌 تم فصل اتصال الغرفة القديمة:', roomId);
   };
 }
 
-let cleanupFn = simulateComponent('General');
-console.log('--- User switches room to "Engineering" ---');
-if (cleanupFn) cleanupFn(); // Cleanup runs before new effect
-cleanupFn = simulateComponent('Engineering');`
+let cleanup = simulateChatRoom('General');
+
+// عند تغير الغرفة:
+console.log('--- تبديل الغرفة إلى React 19 ---');
+if (cleanup) cleanup(); // تشغيل التنظيف السابق أولاً
+cleanup = simulateChatRoom('React 19');`
         });
       }
     });

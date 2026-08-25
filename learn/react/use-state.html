@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="use-state">
   <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="2">
-  <meta name="fsa-title" content="State with useState & Immutability">
-  <meta name="fsa-est-minutes" content="25">
-  <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="Core Hooks">
+  <meta name="fsa-title" content="useState Hook: Fiber Linked Lists & Immutability">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="React 19.2 State">
+  <meta name="fsa-pattern-label" content="State Architecture">
   <meta name="fsa-root" content="../../">
 
-  <title>State with useState & Immutability · FullStack Academy</title>
+  <title>useState Hook: Fiber Linked Lists & Immutability · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,17 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <!-- Accessible Skip Link -->
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
-    <!-- ================= TOPBAR ================= -->
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -44,136 +44,131 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="Dashboard · لوحة المتابعة">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
-      <!-- ================= SIDEBAR (CURRICULUM TREE) ================= -->
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-react)"></span>
-            <span>React.js Track</span>
+            <span>مسار ريآكت · React.js 19.2</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="use-state.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>State with useState</span>
+                <span>useState Hook &amp; Fiber</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
-      <!-- ================= MAIN READING CONTENT (9-BEAT MASTERPIECE LOOP) ================= -->
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">React.js</a> &rsaquo;
-              <span>useState & Immutability</span>
+              <span>useState Hook</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 1 · REACT 19.2</span>
+              <span>المستوى 1 · كواليس Fiber Linked List</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">State with useState & Immutability</h1>
+            <h1 style="margin-block-start: var(--space-2);">useState Hook: Fiber Linked Lists &amp; Immutability</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              إدارة الحالة مع useState ومبدأ عدم القابلية للتعديل المباشر
+              إزاي ريآكت بتفتكر قيمة الـ State بين كل Render والتاني؟ وليه ترتيب استدعاء الـ Hooks مقدس؟
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: React 19.2 · reviewed Aug 2026</span>
-              <span class="fsa-badge">Level 1</span>
-              <span class="fsa-badge">25 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: Fiber Node · memoizedState · Immutability · Batching</span>
+              <span class="fsa-badge">المستوى 1</span>
+              <span class="fsa-badge">30 دقيقة</span>
             </div>
 
-            <!-- Objectives Card -->
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Understand component memory and how React preserves state across re-renders.</li>
-                <li>Master the functional updater pattern: <code>setCount(c =&gt; c + 1)</code>.</li>
-                <li>Avoid stale closures, direct mutations, and infinite rendering loops.</li>
-                <li>Explore React 19 automatic batching mechanics inside the interactive sandbox.</li>
+                <li>فهم الهيكل الداخلي لكائن الـ Fiber وقائمة الـ Hooks المتصلة (Linked List).</li>
+                <li>إتقان مبدأ عدم التعديل المباشر (Immutability) ولماذا لا تفهم ريآكت تعديل <code dir="ltr">arr.push()</code>.</li>
+                <li>فهم التجميع التلقائي للتحديثات (Automatic Batching) ودوال التحديث (Updater Functions).</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN (ANALOGY, DEFINITIONS & STEP-BY-STEP) ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
-            <!-- Mandatory Arabic Analogy -->
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه السبورة والنسخة الجديدة</span>
+                <span>تشبيه كراسة التدريبات وصناديق الأمانات المتسلسلة · The Linked Lockers</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                تخيّل أن لديك سبورة بيضاء يكتب عليها الرسام لوحة. المتغيرات العادية داخل الدالة هي مثل <strong>الملاحظات المكتوبة بالطبشور السريع الزوال</strong> — بمجرد انتهاء تنفيذ الدالة، تُمسح السبورة تماماً وتبدأ من الصفر في كل مرة!
-                أما <code>useState</code> فهو بمثابة <strong>خزنة خاصة بالمكون</strong> خارج السبورة: عندما تطلب تغيير قيمة، فإنك لا تعدل الورقة القديمة بقلم حبر، بل تعطي الرسام ورقة جديدة كلياً ليضعها على السبورة في الرسمة القادمة. هذا هو جوهر الـ <strong>Immutability</strong>.
+                تخيل إن المكون في ريآكت عبارة عن <strong>شخص بيفقد الذاكرة تماماً كل ما يرمش (كل Render جديد)</strong>!
+                كل ما المكون يشتغل من الأول للآخر، بينسى كل المتغيرات العادية المكتوبة بـ <code dir="ltr">let</code> أو <code dir="ltr">const</code>.<br>
+                ريآكت عشان تحل المشكلة دي، عملت له في الكواليس <strong>صف من صناديق الأمانات المرقمة والمتسلسلة ورا بعضها (Fiber memoizedState Linked List)</strong>:<br>
+                أول استدعاء لـ <code dir="ltr">useState</code> بيفتح الصندوق رقم 1.. الاستدعاء التاني بيفتح الصندوق رقم 2.. وهكذا!<br>
+                عشان كده: <strong>ممنوع تحط useState جوه if أو loop</strong>، لأنك لو غيرت الترتيب، المكون هيفتح الصندوق الغلط ويلبس بيانات الاسم في صندوق العمر ويدخل في حالة فوضى عارمة!
               </p>
             </div>
 
-            <!-- Definitions -->
-            <h3>Definition & Purpose</h3>
-            <p>
-              In React, <code>useState</code> is the fundamental hook that declares a state variable preserved across re-renders. It returns a tuple containing the current state value and a setter function that schedules a reconciliation pass.
-            </p>
+            <h3>سر مبدأ الـ Immutability (عدم التعديل المباشر)</h3>
             <p class="fsa-ar" dir="rtl">
-              دالة <code>useState</code> هي الـ Hook الأساسي الذي يمنح المكون ذاكرة خاصة. تعيد الدالة مصفوفة ثنائية (Tuple): العنصر الأول هو <strong>القيمة الحالية للحالة</strong>، والعنصر الثاني هو <strong>دالة التحديث</strong> التي تخبر React بجدولة إعادة رسم المكون.
+              ريآكت عشان تعرف إن الحالة اتغيرت وتعمل Re-render، مش بتدخل تقارن كل عنصر في المصفوفة أو الكائن (وده هيكلف وقت هائل O(N)).
+              ريآكت بس بتعمل فحص سريع للمرجع في الذاكرة: <code dir="ltr">Object.is(oldState, newState)</code>.
+              لو كتبت <code dir="ltr">items.push(newItem)</code>، المرجع في الذاكرة هيفضل هو هو، وريآكت هتقول: "مفيش حاجة اتغيرت" ومش هتعمل Render!
+              عشان كده دايماً بنعمل نسخة جديدة تماماً باستخدام الـ Spread Operator: <code dir="ltr">setItems([...items, newItem])</code>.
             </p>
+          </section>
 
-            <!-- Why It Exists -->
-            <h3>Why It Exists · لماذا لا نستخدم متغيرات JavaScript العادية؟</h3>
-            <p class="fsa-ar" dir="rtl">
-              المتغيرات العادية (مثل <code>let count = 0</code>) تفقد قيمتها عند انتهاء تنفيذ الدالة، كما أن تغيير قيمتها <strong>لا يعطي أي إشارة لـ React</strong> ليقوم بتحديث شجرة الـ DOM. يحل <code>useState</code> هاتين المشكلتين معاً: الاحتفاظ بالذاكرة وإطلاق دورة إعادة الرسم (Re-render).
-            </p>
-
-            <!-- Step-by-Step Mechanics (Numbered Step Cards) -->
-            <h3>Step-by-Step Mechanics · مسار حياة تحديث الحالة</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. كواليس التحديث ودمج العمليات · Step-by-Step Mechanics</h2>
             
-            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-react);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. Initial Render & Fiber Allocation</div>
+                <div class="fsa-step-card__title">1. استدعاء هوك useState وربط العقدة في الـ Fiber</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  عند أول ظهور للمكون، يقوم React بإنشاء خلية ذاكرة داخل شجرة الـ Fiber ويسجل القيمة الابتدائية (Initial State).
+                  في أول Render (Mounting)، تنشئ ريآكت Hook Object يحتوي على <code dir="ltr">memoizedState</code> وتوصله عبر مؤشر <code dir="ltr">next</code> في السلسلة.
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
               <div class="fsa-step-card__badge">2</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. State Dispatch & Action Queue</div>
+                <div class="fsa-step-card__title">2. جدولة التحديث في طابور Update Queue</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  عند استدعاء <code>setCount(...)</code>، يضع React التحديث في طابور التحديثات (Action Queue) ويجدول معالجة الشجرة.
+                  عند استدعاء <code dir="ltr">setCount(prev =&gt; prev + 1)</code>، تضيف ريآكت دالة التحديث في طابور المعالجة ولا تعيد الرسم فوراً في نفس الميكروثانية.
                 </p>
               </div>
             </div>
@@ -181,267 +176,247 @@
             <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
               <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">3. Reconciliation & DOM Commit</div>
+                <div class="fsa-step-card__title">3. التجميع التلقائي والتحديث النهائي (Automatic Batching)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  يُعاد استدعاء دالة المكون بالقيمة الجديدة، وتتم مقارنة شجرة الـ Virtual DOM لعكس الفروقات فقط على الـ DOM الحقيقي.
+                  في React 19، حتى لو استدعيت 3 تحديثات ورا بعض جوه Promises أو SetTimeout، ريآكت بتجمعهم في Render واحد بس عشان تحافظ على أداء وسرعة 60fps!
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE (STEPPER VISUALIZER & SVG DIAGRAM) ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through React's internal Fiber Hook linked list order:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف يحفظ React ترتيب الـ Hooks داخل القائمة المترابطة (Linked List):
+              شاهد كيف ترتبط الـ Hooks كسلسلة عقد متصلة (Linked List) داخل الـ Fiber Node:
             </p>
 
-            <!-- Stepper Engine Mount -->
             <div class="fsa-stepper" id="useStateStepper"></div>
 
-            <!-- Conceptual SVG Diagram with Flow Animation -->
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="State to DOM Reconciliation Flow">
-                <title>React State to DOM Commit Flow</title>
-                <desc>State mutation triggers reconciliation and DOM patch</desc>
-                <line x1="130" y1="70" x2="240" y2="70" stroke="var(--border-default)" stroke-width="3" />
-                <line x1="130" y1="70" x2="240" y2="70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-                <g transform="translate(20, 40)">
-                  <rect width="110" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                  <text x="55" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">setState(val)</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Fiber Node Hooks Linked List Architecture">
+                <title>Fiber Hooks Linked List</title>
+                <desc>Fiber node holds a pointer to hook 1 which links to hook 2 and hook 3 in strict order</desc>
+                <g transform="translate(20, 25)">
+                  <rect width="140" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="70" y="50" fill="var(--text-primary)" text-anchor="middle" font-size="11" font-weight="700">Fiber Node</text>
+                  <text x="70" y="75" fill="var(--track-react)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">memoizedState &rarr;</text>
                 </g>
-                <g transform="translate(240, 40)" class="fsa-anim-pulse">
-                  <rect width="140" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
-                  <text x="70" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">Reconciliation Diff</text>
+
+                <path d="M 165 70 L 215 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(225, 20)">
+                  <rect width="160" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-react)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="80" y="45" fill="var(--track-react)" text-anchor="middle" font-size="11" font-weight="700">Hook 1: useState(0)</text>
+                  <text x="80" y="68" fill="var(--text-secondary)" text-anchor="middle" font-size="10">value: 0</text>
+                  <text x="80" y="88" fill="var(--accent-primary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">next: Hook 2 &rarr;</text>
                 </g>
-                <line x1="380" y1="70" x2="490" y2="70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-                <g transform="translate(490, 40)">
-                  <rect width="110" height="60" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="55" y="35" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="600">DOM Commit</text>
+
+                <path d="M 390 70 L 440 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(450, 20)">
+                  <rect width="150" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="75" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">Hook 2: useState('')</text>
+                  <text x="75" y="68" fill="var(--text-secondary)" text-anchor="middle" font-size="10">value: "Ahmed"</text>
+                  <text x="75" y="88" fill="var(--text-muted)" text-anchor="middle" font-size="10">next: null</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY (INTERACTIVE TRY-IT & PLAYGROUND) ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Interactive Sandbox</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs 100% in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي الـ Updater Functions والتحديث المتعدد</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Run and modify the code below in the sandboxed browser runner:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك الآن: عدل الكود وشاهد مخرجات الـ Console فورياً:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد الفرق الحاسم بين تمرير القيمة المباشرة <code dir="ltr">setCount(count + 1)</code> مقابل دالة التحديث <code dir="ltr">setCount(prev =&gt; prev + 1)</code>:
               </p>
-
-              <!-- Playground Mount -->
-              <div class="fsa-playground" id="useStatePlayground"></div>
+              <div class="fsa-playground" id="statePlayground"></div>
             </div>
 
-            <!-- Experiment Block -->
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>If you call <code>setCount(count + 1)</code> three times in one event handler, what is the final value?</p>
-              <p class="fsa-ar" dir="rtl">إذا استدعيت <code>setCount(count + 1)</code> ثلاث مرات متتالية، ما هي القيمة النهائية؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو كانت قيمة <code dir="ltr">count = 0</code> وضغطت على زر ينفذ هذا الكود:
+              </p>
+              <pre style="background: var(--bg-code); padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; margin-block: 8px;" dir="ltr"><code>setCount(count + 1);
+setCount(count + 1);
+setCount(count + 1);</code></pre>
+              <p class="fsa-ar" dir="rtl">النتيجة النهائية في الـ Render التالي هتكون كام؟</p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    القيمة ستزيد <strong>بمقدار 1 فقط</strong>! لأن كل استدعاء يقرأ نفس قيمة <code>count</code> المغلقة في دالة الحدث (Stale Closure). لحل ذلك استخدم: <code>setCount(c =&gt; c + 1)</code>.
+                    <strong>النتيجة هتكون 1 فقط! (مش 3)!</strong><br>
+                    لأن قيمة <code dir="ltr">count</code> في سياق الـ Render الحالي هي <code dir="ltr">0</code>، فالثلاث أسطر بينفذوا: <code dir="ltr">setCount(0 + 1)</code>.<br>
+                    عشان تخليها 3 لازم تستخدم الـ Updater Function: <code dir="ltr">setCount(prev =&gt; prev + 1)</code> في كل سطر.
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY (TWO-PANE SYNCED HIGHLIGHT) ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود سطراً بسطر</h2>
-            <p>Hover over each line to see its architectural purpose in React 19:</p>
+            <h2>5. تشريح تحديث الكائنات والمصفوفات بشكل نقي · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: import { useState } from 'react';</span>
+              <div class="fsa-anatomy__code" dir="ltr">
+                <span class="fsa-anatomy__line" data-line="1">1: const [user, setUser] = useState({ name: 'Omar', role: 'admin' });</span>
                 <span class="fsa-anatomy__line" data-line="2">2: </span>
-                <span class="fsa-anatomy__line" data-line="3">3: export function Counter() {</span>
-                <span class="fsa-anatomy__line" data-line="4">4:   const [count, setCount] = useState(0);</span>
-                <span class="fsa-anatomy__line" data-line="5">5: </span>
-                <span class="fsa-anatomy__line" data-line="6">6:   function handleIncrement() {</span>
-                <span class="fsa-anatomy__line" data-line="7">7:     setCount(prev =&gt; prev + 1);</span>
-                <span class="fsa-anatomy__line" data-line="8">8:   }</span>
-                <span class="fsa-anatomy__line" data-line="9">9: }</span>
+                <span class="fsa-anatomy__line" data-line="3">3: function handleRoleChange(newRole) {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   setUser(prevUser => ({</span>
+                <span class="fsa-anatomy__line" data-line="5">5:     ...prevUser,      // 1. Copy old fields</span>
+                <span class="fsa-anatomy__line" data-line="6">6:     role: newRole     // 2. Override target field</span>
+                <span class="fsa-anatomy__line" data-line="7">7:   }));</span>
+                <span class="fsa-anatomy__line" data-line="8">8: }</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 4:</strong> تفكيك مصفوفة الـ Hook إلى القيمة الحالية <code>count</code> ودالة التحديث <code>setCount</code>.
+                  <strong>السطر 4:</strong> استخدام <code dir="ltr">prevUser</code> يضمن القراءة من أحدث حالة مسجلة في الـ Fiber.
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 7:</strong> استخدام دالة التحديث الوظيفية <code>prev =&gt; prev + 1</code> يضمن الحصول على أحدث حالة دائماً.
+                  <strong>السطر 5:</strong> الـ Spread Operator <code dir="ltr">...prevUser</code> ينشئ كائناً جديداً تماماً في الذاكرة فيتغير المرجع وتفهم ريآكت التحديث فوراً.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE & COMPLEXITY ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-react);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>Time Complexity</span>
+                  <span>التهيئة الكسولة (Lazy Initial State)</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(1)</div>
+                <div class="fsa-complexity-card__big">useState(() =&gt; calc())</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  تحديث قيمة الحالة في الذاكرة عملية فورية بزمن ثابت O(1).
+                  إذا كانت القيمة المبدئية تتطلب عملية حسابية ثقيلة (مثل قراءة localStorage)، مرر دالة لـ useState لتعمل في أول Render فقط وتوفر الـ CPU في باقي الـ Renders.
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Space Complexity</span>
+                  <span>التجميع التلقائي (Automatic Batching)</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(1)</div>
+                <div class="fsa-complexity-card__big">1 Render per Task</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  كل استدعاء لـ useState يستهلك خلية ثابتة داخل الـ Fiber Node للمكون.
+                  ريآكت 19 تدمج جميع تحديثات الحالة داخل معالجات الأحداث والـ Microtasks في دورة رسم واحدة لمنع الـ Layout Thrashing.
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>Under the Hood: The Fiber Hook Linked List</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">
-                  كيف يعرف React أي حالة تنتمي لأي متغير؟ السر يكمن في <strong>قواعد الـ Hooks</strong>: لا تضع Hook داخل <code>if</code> أو <code>loop</code>. يقرأ React الـ Hooks بترتيب استدعائها الثابت عبر مؤشر <code>workInProgressHook.next</code>.
-                </p>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE & COMMON MISTAKES ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · تمارين وأخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
-            <!-- Mistakes Gallery -->
-            <h3>Common Mistakes Gallery · معرض الأخطاء الشائعة</h3>
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Direct State Mutation · تعديل الحالة مباشرة</span>
+                  <span>تعديل المصفوفة المباشر (Direct State Mutation)</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ BROKEN<br>user.name = 'Omar';<br>setUser(user);</code>
+                    <code>// ❌ خطأ: تعديل مباشر للمصفوفة لن يسبب Re-render<br>todos.push(newTodo);<br>setTodos(todos);</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ FIXED<br>setUser({ ...user, name: 'Omar' });</code>
+                    <code>// ✅ إنشاء مصفوفة جديدة بالكامل عبر Spread<br>setTodos([...todos, newTodo]);</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> لأن المرجع <code>user === user</code> لم يتغير، يعتبر React أنه لا يوجد أي تعديل ويتجاهل إعادة الرسم.
+                  <strong>التشخيص الهندسي:</strong> دالة <code dir="ltr">Object.is(todos, todos)</code> تعيد <code dir="ltr">true</code> لأن المرجع متطابق، فتتجاهل ريآكت طلب الـ Render.
                 </p>
               </div>
             </div>
 
-            <!-- Mini Glossary -->
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Immutability (عدم القابلية للتعديل المباشر)</dt>
-              <dd class="fsa-ar" dir="rtl">المبدأ القائم على إنشاء نسخة جديدة من البيانات عند الرغبة في التعديل بدلاً من تغيير الكائن الأصلي.</dd>
-              <dt>Automatic Batching (دمج التحديثات التلقائي)</dt>
-              <dd class="fsa-ar" dir="rtl">ميزة في React تدمج عدة استدعاءات لتحديث الحالة في دورة رسم واحدة لتعزيز الأداء.</dd>
+              <dt dir="ltr">Fiber Node</dt>
+              <dd class="fsa-ar" dir="rtl">وحدة العمل الأساسية في محرك ريآكت الداخلي التي تمثل المكون وتحتفظ بحالته وخصائصه في شجرة الذاكرة.</dd>
+              <dt dir="ltr">Automatic Batching</dt>
+              <dd class="fsa-ar" dir="rtl">آلية ذكية تقوم بدمج عدة استدعاءات لتحديث الحالة في دورة رسم واحدة لتحسين الأداء وسرعة الاستجابة.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE (INTERACTIVE CHECKPOINT) ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="useStateCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "Why does React require state to be updated immutably?",
+                  "q": "Why are React Hooks not allowed inside loops, conditions, or nested functions?",
                   "options": [
-                    "Because mutable objects cause JavaScript syntax errors",
-                    "React relies on shallow reference equality (Object.is) to detect changes",
-                    "To prevent CSS layout thrashing"
+                    "Because JavaScript prohibits function calls inside conditionals",
+                    "Because React relies strictly on the sequential call order of hooks in the Fiber linked list to identify state",
+                    "To prevent high CPU usage in modern browsers"
                   ],
                   "answer": 1,
-                  "why": "React checks if the new state reference is different from the old one before triggering a re-render. Mutating the existing object retains the same memory address.",
-                  "whyAr": "لأن React يقارن مرجع الكائن الجديد بالقديم لاكتشاف التغييرات. التعديل المباشر يحتفظ بنفس عنوان الذاكرة فيتجاهل التحديث.",
-                  "anchor": "practice"
-                },
-                {
-                  "q": "What is the primary benefit of the functional updater: setCount(prev => prev + 1)?",
-                  "options": [
-                    "It runs synchronously on the main thread",
-                    "It ensures access to the latest state value even inside async callbacks or multiple batched updates",
-                    "It bypasses the React reconciliation phase"
-                  ],
-                  "answer": 1,
-                  "why": "Functional updates read directly from the pending update queue rather than stale closure variables.",
-                  "whyAr": "تضمن قراءة القيمة الأحدث مباشرة من طابور التحديثات وتتفادى مشاكل الـ Stale Closures.",
-                  "anchor": "learn"
+                  "why": "React tracks hooks strictly as a sequential linked list on the Fiber node. Any dynamic shift in call order breaks state association.",
+                  "whyAr": "لأن ريآكت تتبع الـ Hooks كسلسلة متصلة مرتبة داخل كائن الـ Fiber، وأي تغيير في الترتيب يخل بربط الحالة بالصندوق الصحيح.",
+                  "anchor": "story"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES & INTERVIEWS ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Senior Interview Questions & Production Insights</summary>
+              <summary>سؤال مقابلات شهير: إمتى تستخدم useReducer بدل useState؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: What happens under the hood when you call setState with the exact same primitive value?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة (Bailing Out):</strong> يقوم React بمقارنة القيمة عبر <code>Object.is</code>. إذا كانت متطابقة تماماً، يقوم React بعمل <strong>Bailout</strong> ويتجاوز إعادة رسم المكون وأبنائه بالكامل لتوفير الموارد.
+                  <strong>الإجابة الهندسية:</strong><br>
+                  نفضل <code dir="ltr">useReducer</code> عندما:<br>
+                  1. تكون الحالة معقدة وتحتوي على عدة كائنات ومصفوفات مترابطة وتتغير بناءً على أحداث متعددة.<br>
+                  2. عندما تعتمد الحالة القادمة على حسابات معقدة من الحالة السابقة وتريد فصل منطق الأعمال (Business Logic) خارج المكون لاختباره بسهولة (Unit Testing).
                 </p>
               </div>
             </details>
           </section>
 
-          <!-- ================= FOOTER NAVIGATION ================= -->
+          <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="thinking-in-react.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: التفكير بعقلية ريآكت</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
             <a href="use-effect.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس التالي: هوك useEffect والتزامن</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
         </article>
       </main>
 
-      <!-- ================= RIGHT TOC PANE ================= -->
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
-        <ul class="fsa-toc__list">
-          <!-- Auto-populated by app.js -->
-        </ul>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
+        <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
   </div>
 
-  <!-- ================= ZERO-BUILD SCRIPTS ================= -->
   <script src="../../js/fsa-namespace.js"></script>
   <script src="../../data/curriculum.js"></script>
   <script src="../../data/technologies.js"></script>
@@ -456,54 +431,33 @@
   <script src="../../js/search.js"></script>
   <script src="../../js/app.js"></script>
 
-  <!-- Interactive Mount Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Mount Stepper
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
           el: 'useStateStepper',
-          title: 'React Fiber Hook Call Order & State Updates',
+          title: 'سلسلة الـ Hooks المرتبطة في كائن الـ Fiber',
           init: () => ({
             hooks: [
-              { name: 'count', val: 0, active: false },
-              { name: 'text', val: 'Hello', active: false },
-              { name: 'isOpen', val: true, active: false }
+              { name: 'Hook 1: useState(0)', val: 'count = 0' },
+              { name: 'Hook 2: useState("")', val: 'name = "Omar"' },
+              { name: 'Hook 3: useEffect()', val: 'timer sub' }
             ]
           }),
           steps: (state) => [
-            {
-              activeIdx: 0,
-              msgEn: 'Hook #1 (count) requested. Fiber reads value: 0',
-              say: 'الـ Hook الأول (count) يُقرأ من العقدة: القيمة 0'
-            },
-            {
-              activeIdx: 1,
-              msgEn: 'Hook #2 (text) requested. Fiber reads value: "Hello"',
-              say: 'الـ Hook الثاني (text) يُقرأ بالتسلسل: القيمة "Hello"'
-            },
-            {
-              activeIdx: 2,
-              msgEn: 'Hook #3 (isOpen) requested. Fiber reads value: true',
-              say: 'الـ Hook الثالث (isOpen) يُقرأ بالتسلسل: القيمة true'
-            },
-            {
-              activeIdx: 0,
-              updatedVal: 1,
-              msgEn: 'setCount(c => c + 1) triggered! New state scheduled: 1',
-              say: 'تم استدعاء setCount! تم تحديث قيمة count إلى 1 وإعادة تشغيل الدورة'
-            }
+            { activeIdx: 0, say: 'الخطوة 1: فحص العقدة الأولى وقراءة قيمة count = 0' },
+            { activeIdx: 1, say: 'الخطوة 2: الانتقال عبر مؤشر next للعقدة الثانية وقراءة name' },
+            { activeIdx: 2, say: 'الخطوة 3: الانتقال للعقدة الثالثة وتنفيذ دالة التأثير الجانبي' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
-              <div class="fsa-viz-cells">
+              <div class="fsa-viz-cells" style="gap: 10px;">
                 ${state.hooks.map((h, i) => {
                   const isActive = step.activeIdx === i;
-                  const val = (i === 0 && step.updatedVal !== undefined) ? step.updatedVal : h.val;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 100px; height: 60px;">
-                      <span style="font-size: 10px; color: var(--text-muted);">${h.name}</span>
-                      <span style="font-size: 14px; font-weight: bold; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${val}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 150px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-react)' : 'var(--text-primary)'};">${h.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${h.val}</span>
                     </div>
                   `;
                 }).join('')}
@@ -513,29 +467,26 @@
         });
       }
 
-      // Mount Playground
       if (window.FSA.playground) {
         window.FSA.playground.mount({
-          el: 'useStatePlayground',
-          starterCode: `// Simulation of React useState mechanics
-function createComponent() {
-  let state = 0;
-  
-  function setState(updater) {
-    state = typeof updater === 'function' ? updater(state) : updater;
-    console.log('State updated to:', state);
-  }
-  
-  return {
-    getState: () => state,
-    increment: () => setState(prev => prev + 1)
-  };
+          el: 'statePlayground',
+          starterCode: `// محاكاة آلية دالة التحديث Updater Function
+let state = 0;
+const updateQueue = [];
+
+function setCount(updater) {
+  updateQueue.push(updater);
 }
 
-const component = createComponent();
-component.increment();
-component.increment();
-console.log('Final state in component:', component.getState());`
+// إضافة 3 تحديثات متتالية في الطابور
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+
+// ريآكت تنفذ الطابور في دورة التجميع Batching
+updateQueue.forEach(fn => { state = fn(state); });
+
+console.log('Final State after Batching:', state); // 3 🎉`
         });
       }
     });

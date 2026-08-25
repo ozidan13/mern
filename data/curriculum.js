@@ -9,7 +9,7 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-25T09:10:50.710Z",
+  "generatedAt": "2026-08-25T09:23:33.768Z",
   "totalLessons": 18,
   "tracks": [
     {
@@ -25,42 +25,42 @@
             {
               "track": "foundations",
               "lesson": "how-web-works",
-              "title": "How the Web & HTTP/3 Work",
+              "title": "How the Web Works: HTTP/3 & DNS Lifecycle",
               "level": 1,
               "order": 1,
-              "estMinutes": 20,
-              "teachesVersion": "HTTP/3 & ES2026",
-              "patternLabel": "Core Protocols",
+              "estMinutes": 25,
+              "teachesVersion": "HTTP/3 & DNS",
+              "patternLabel": "Network Lifecycle",
               "prereqs": [],
               "url": "learn/foundations/how-web-works.html",
               "slug": "foundations/how-web-works",
               "prev": null,
               "next": {
                 "slug": "foundations/js-essentials",
-                "title": "JavaScript Execution & Scope",
+                "title": "JS Execution Context, Scope & Closures",
                 "url": "learn/foundations/js-essentials.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-essentials",
-              "title": "JavaScript Execution & Scope",
+              "title": "JS Execution Context, Scope & Closures",
               "level": 1,
               "order": 2,
-              "estMinutes": 25,
-              "teachesVersion": "ES2026 Engine",
-              "patternLabel": "Language Runtime",
+              "estMinutes": 30,
+              "teachesVersion": "ES2026 Core",
+              "patternLabel": "V8 Execution Model",
               "prereqs": [],
               "url": "learn/foundations/js-essentials.html",
               "slug": "foundations/js-essentials",
               "prev": {
                 "slug": "foundations/how-web-works",
-                "title": "How the Web & HTTP/3 Work",
+                "title": "How the Web Works: HTTP/3 & DNS Lifecycle",
                 "url": "learn/foundations/how-web-works.html"
               },
               "next": {
                 "slug": "foundations/async-js",
-                "title": "Asynchronous JavaScript & Promises",
+                "title": "Asynchronous JS: Event Loop & Promises",
                 "url": "learn/foundations/async-js.html"
               }
             }
@@ -72,46 +72,46 @@
             {
               "track": "foundations",
               "lesson": "async-js",
-              "title": "Asynchronous JavaScript & Promises",
+              "title": "Asynchronous JS: Event Loop & Promises",
               "level": 2,
               "order": 3,
-              "estMinutes": 30,
-              "teachesVersion": "ES2026 Async/Await",
-              "patternLabel": "Asynchronous Core",
+              "estMinutes": 35,
+              "teachesVersion": "ES2026 Async",
+              "patternLabel": "Concurrency Model",
               "prereqs": [],
               "url": "learn/foundations/async-js.html",
               "slug": "foundations/async-js",
               "prev": {
                 "slug": "foundations/js-essentials",
-                "title": "JavaScript Execution & Scope",
+                "title": "JS Execution Context, Scope & Closures",
                 "url": "learn/foundations/js-essentials.html"
               },
               "next": {
                 "slug": "foundations/fetch-api",
-                "title": "Fetch API & REST Communication",
+                "title": "Fetch API, Streams & AbortController",
                 "url": "learn/foundations/fetch-api.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "fetch-api",
-              "title": "Fetch API & REST Communication",
+              "title": "Fetch API, Streams & AbortController",
               "level": 2,
               "order": 4,
-              "estMinutes": 25,
-              "teachesVersion": "Modern Fetch Standard",
-              "patternLabel": "Client-Server I/O",
+              "estMinutes": 30,
+              "teachesVersion": "Fetch API Living Standard",
+              "patternLabel": "Network Streaming",
               "prereqs": [],
               "url": "learn/foundations/fetch-api.html",
               "slug": "foundations/fetch-api",
               "prev": {
                 "slug": "foundations/async-js",
-                "title": "Asynchronous JavaScript & Promises",
+                "title": "Asynchronous JS: Event Loop & Promises",
                 "url": "learn/foundations/async-js.html"
               },
               "next": {
                 "slug": "react/thinking-in-react",
-                "title": "Thinking in React & Component Hierarchy",
+                "title": "Thinking in React: Component Hierarchy",
                 "url": "learn/react/thinking-in-react.html"
               }
             }
@@ -132,46 +132,46 @@
             {
               "track": "react",
               "lesson": "thinking-in-react",
-              "title": "Thinking in React & Component Hierarchy",
+              "title": "Thinking in React: Component Hierarchy",
               "level": 1,
               "order": 1,
               "estMinutes": 25,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Declarative UI",
+              "teachesVersion": "React 19.2 Architecture",
+              "patternLabel": "Component Mental Model",
               "prereqs": [],
               "url": "learn/react/thinking-in-react.html",
               "slug": "react/thinking-in-react",
               "prev": {
                 "slug": "foundations/fetch-api",
-                "title": "Fetch API & REST Communication",
+                "title": "Fetch API, Streams & AbortController",
                 "url": "learn/foundations/fetch-api.html"
               },
               "next": {
                 "slug": "react/use-state",
-                "title": "State with useState & Immutability",
+                "title": "useState Hook: Fiber Linked Lists & Immutability",
                 "url": "learn/react/use-state.html"
               }
             },
             {
               "track": "react",
               "lesson": "use-state",
-              "title": "State with useState & Immutability",
+              "title": "useState Hook: Fiber Linked Lists & Immutability",
               "level": 1,
               "order": 2,
-              "estMinutes": 25,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Core Hooks",
+              "estMinutes": 30,
+              "teachesVersion": "React 19.2 State",
+              "patternLabel": "State Architecture",
               "prereqs": [],
               "url": "learn/react/use-state.html",
               "slug": "react/use-state",
               "prev": {
                 "slug": "react/thinking-in-react",
-                "title": "Thinking in React & Component Hierarchy",
+                "title": "Thinking in React: Component Hierarchy",
                 "url": "learn/react/thinking-in-react.html"
               },
               "next": {
                 "slug": "react/use-effect",
-                "title": "Effects with useEffect & Synchronization",
+                "title": "useEffect Hook: Synchronization & Cleanup",
                 "url": "learn/react/use-effect.html"
               }
             }
@@ -183,46 +183,41 @@
             {
               "track": "react",
               "lesson": "use-effect",
-              "title": "Effects with useEffect & Synchronization",
+              "title": "useEffect Hook: Synchronization & Cleanup",
               "level": 2,
               "order": 3,
-              "estMinutes": 30,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Side Effects",
+              "estMinutes": 35,
+              "teachesVersion": "React 19.2 Effects",
+              "patternLabel": "Lifecycle Synchronization",
               "prereqs": [],
               "url": "learn/react/use-effect.html",
               "slug": "react/use-effect",
               "prev": {
                 "slug": "react/use-state",
-                "title": "State with useState & Immutability",
+                "title": "useState Hook: Fiber Linked Lists & Immutability",
                 "url": "learn/react/use-state.html"
               },
               "next": {
                 "slug": "react/reconciliation",
-                "title": "Virtual DOM Diffing & Reconciliation",
+                "title": "Reconciliation: Virtual DOM & Diffing Algorithm",
                 "url": "learn/react/reconciliation.html"
               }
-            }
-          ]
-        },
-        {
-          "level": 3,
-          "lessons": [
+            },
             {
               "track": "react",
               "lesson": "reconciliation",
-              "title": "Virtual DOM Diffing & Reconciliation",
-              "level": 3,
+              "title": "Reconciliation: Virtual DOM & Diffing Algorithm",
+              "level": 2,
               "order": 4,
-              "estMinutes": 35,
-              "teachesVersion": "React 19.2 Fiber",
-              "patternLabel": "Core Algorithm",
+              "estMinutes": 30,
+              "teachesVersion": "React 19.2 Diffing",
+              "patternLabel": "Reconciliation Engine",
               "prereqs": [],
               "url": "learn/react/reconciliation.html",
               "slug": "react/reconciliation",
               "prev": {
                 "slug": "react/use-effect",
-                "title": "Effects with useEffect & Synchronization",
+                "title": "useEffect Hook: Synchronization & Cleanup",
                 "url": "learn/react/use-effect.html"
               },
               "next": {
@@ -259,7 +254,7 @@
               "slug": "nodejs/what-node-is",
               "prev": {
                 "slug": "react/reconciliation",
-                "title": "Virtual DOM Diffing & Reconciliation",
+                "title": "Reconciliation: Virtual DOM & Diffing Algorithm",
                 "url": "learn/react/reconciliation.html"
               },
               "next": {
@@ -571,14 +566,14 @@
       "slug": "foundations/how-web-works",
       "track": "foundations",
       "lesson": "how-web-works",
-      "title": "How the Web & HTTP/3 Work",
+      "title": "How the Web Works: HTTP/3 & DNS Lifecycle",
       "level": 1,
       "order": 1,
       "url": "learn/foundations/how-web-works.html",
       "prev": null,
       "next": {
         "slug": "foundations/js-essentials",
-        "title": "JavaScript Execution & Scope",
+        "title": "JS Execution Context, Scope & Closures",
         "url": "learn/foundations/js-essentials.html"
       }
     },
@@ -586,18 +581,18 @@
       "slug": "foundations/js-essentials",
       "track": "foundations",
       "lesson": "js-essentials",
-      "title": "JavaScript Execution & Scope",
+      "title": "JS Execution Context, Scope & Closures",
       "level": 1,
       "order": 2,
       "url": "learn/foundations/js-essentials.html",
       "prev": {
         "slug": "foundations/how-web-works",
-        "title": "How the Web & HTTP/3 Work",
+        "title": "How the Web Works: HTTP/3 & DNS Lifecycle",
         "url": "learn/foundations/how-web-works.html"
       },
       "next": {
         "slug": "foundations/async-js",
-        "title": "Asynchronous JavaScript & Promises",
+        "title": "Asynchronous JS: Event Loop & Promises",
         "url": "learn/foundations/async-js.html"
       }
     },
@@ -605,18 +600,18 @@
       "slug": "foundations/async-js",
       "track": "foundations",
       "lesson": "async-js",
-      "title": "Asynchronous JavaScript & Promises",
+      "title": "Asynchronous JS: Event Loop & Promises",
       "level": 2,
       "order": 3,
       "url": "learn/foundations/async-js.html",
       "prev": {
         "slug": "foundations/js-essentials",
-        "title": "JavaScript Execution & Scope",
+        "title": "JS Execution Context, Scope & Closures",
         "url": "learn/foundations/js-essentials.html"
       },
       "next": {
         "slug": "foundations/fetch-api",
-        "title": "Fetch API & REST Communication",
+        "title": "Fetch API, Streams & AbortController",
         "url": "learn/foundations/fetch-api.html"
       }
     },
@@ -624,18 +619,18 @@
       "slug": "foundations/fetch-api",
       "track": "foundations",
       "lesson": "fetch-api",
-      "title": "Fetch API & REST Communication",
+      "title": "Fetch API, Streams & AbortController",
       "level": 2,
       "order": 4,
       "url": "learn/foundations/fetch-api.html",
       "prev": {
         "slug": "foundations/async-js",
-        "title": "Asynchronous JavaScript & Promises",
+        "title": "Asynchronous JS: Event Loop & Promises",
         "url": "learn/foundations/async-js.html"
       },
       "next": {
         "slug": "react/thinking-in-react",
-        "title": "Thinking in React & Component Hierarchy",
+        "title": "Thinking in React: Component Hierarchy",
         "url": "learn/react/thinking-in-react.html"
       }
     },
@@ -643,18 +638,18 @@
       "slug": "react/thinking-in-react",
       "track": "react",
       "lesson": "thinking-in-react",
-      "title": "Thinking in React & Component Hierarchy",
+      "title": "Thinking in React: Component Hierarchy",
       "level": 1,
       "order": 1,
       "url": "learn/react/thinking-in-react.html",
       "prev": {
         "slug": "foundations/fetch-api",
-        "title": "Fetch API & REST Communication",
+        "title": "Fetch API, Streams & AbortController",
         "url": "learn/foundations/fetch-api.html"
       },
       "next": {
         "slug": "react/use-state",
-        "title": "State with useState & Immutability",
+        "title": "useState Hook: Fiber Linked Lists & Immutability",
         "url": "learn/react/use-state.html"
       }
     },
@@ -662,18 +657,18 @@
       "slug": "react/use-state",
       "track": "react",
       "lesson": "use-state",
-      "title": "State with useState & Immutability",
+      "title": "useState Hook: Fiber Linked Lists & Immutability",
       "level": 1,
       "order": 2,
       "url": "learn/react/use-state.html",
       "prev": {
         "slug": "react/thinking-in-react",
-        "title": "Thinking in React & Component Hierarchy",
+        "title": "Thinking in React: Component Hierarchy",
         "url": "learn/react/thinking-in-react.html"
       },
       "next": {
         "slug": "react/use-effect",
-        "title": "Effects with useEffect & Synchronization",
+        "title": "useEffect Hook: Synchronization & Cleanup",
         "url": "learn/react/use-effect.html"
       }
     },
@@ -681,18 +676,18 @@
       "slug": "react/use-effect",
       "track": "react",
       "lesson": "use-effect",
-      "title": "Effects with useEffect & Synchronization",
+      "title": "useEffect Hook: Synchronization & Cleanup",
       "level": 2,
       "order": 3,
       "url": "learn/react/use-effect.html",
       "prev": {
         "slug": "react/use-state",
-        "title": "State with useState & Immutability",
+        "title": "useState Hook: Fiber Linked Lists & Immutability",
         "url": "learn/react/use-state.html"
       },
       "next": {
         "slug": "react/reconciliation",
-        "title": "Virtual DOM Diffing & Reconciliation",
+        "title": "Reconciliation: Virtual DOM & Diffing Algorithm",
         "url": "learn/react/reconciliation.html"
       }
     },
@@ -700,13 +695,13 @@
       "slug": "react/reconciliation",
       "track": "react",
       "lesson": "reconciliation",
-      "title": "Virtual DOM Diffing & Reconciliation",
-      "level": 3,
+      "title": "Reconciliation: Virtual DOM & Diffing Algorithm",
+      "level": 2,
       "order": 4,
       "url": "learn/react/reconciliation.html",
       "prev": {
         "slug": "react/use-effect",
-        "title": "Effects with useEffect & Synchronization",
+        "title": "useEffect Hook: Synchronization & Cleanup",
         "url": "learn/react/use-effect.html"
       },
       "next": {
@@ -725,7 +720,7 @@
       "url": "learn/nodejs/what-node-is.html",
       "prev": {
         "slug": "react/reconciliation",
-        "title": "Virtual DOM Diffing & Reconciliation",
+        "title": "Reconciliation: Virtual DOM & Diffing Algorithm",
         "url": "learn/react/reconciliation.html"
       },
       "next": {

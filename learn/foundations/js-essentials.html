@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <meta name="fsa-lesson" content="js-essentials">
   <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="2">
-  <meta name="fsa-title" content="JavaScript Execution & Scope">
-  <meta name="fsa-est-minutes" content="25">
-  <meta name="fsa-teaches-version" content="ES2026 Engine">
-  <meta name="fsa-pattern-label" content="Language Runtime">
+  <meta name="fsa-title" content="JS Execution Context, Scope & Closures">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="ES2026 Core">
+  <meta name="fsa-pattern-label" content="V8 Execution Model">
   <meta name="fsa-root" content="../../">
 
-  <title>JavaScript Execution & Scope · FullStack Academy</title>
+  <title>JS Execution Context, Scope & Closures · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,124 +44,128 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-found)"></span>
-            <span>Foundations Track</span>
+            <span>مسار الأساسيات · Foundations</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="js-essentials.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>Execution & Scope</span>
+                <span>JS Execution &amp; Scope</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
-              <a href="index.html">Foundations</a> &rsaquo;
-              <span>Execution & Scope</span>
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
+              <a href="index.html">الأساسيات</a> &rsaquo;
+              <span>JS Execution &amp; Scope</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 1 · FOUNDATIONS</span>
+              <span>المستوى 1 · كواليس محرك V8</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">JavaScript Execution & Scope</h1>
+            <h1 style="margin-block-start: var(--space-2);">JS Execution Context, Scope &amp; Closures</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              محرك جافاسكربت: سياق التنفيذ (Execution Context)، الـ Call Stack، والـ Closures
+              إزاي محرك V8 بيشغل الكود في الذاكرة؟ أسرار الـ Call Stack، الـ Hoisting، والـ Closures
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: V8 Call Stack & Closures</span>
-              <span class="fsa-badge">Level 1</span>
-              <span class="fsa-badge">25 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: V8 Engine · Execution Context · Closures</span>
+              <span class="fsa-badge">المستوى 1</span>
+              <span class="fsa-badge">30 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Understand the two phases of JavaScript execution: Creation (Hoisting) and Execution.</li>
-                <li>Visualize the Call Stack stack frames and stack overflow mechanisms.</li>
-                <li>Master Lexical Scope and how Closures preserve variable references in memory.</li>
-                <li>Trace real-world closures and scope chains inside the interactive sandbox.</li>
+                <li>فهم المرحلتين السحريتين لأي كود في جافاسكربت: مرحلة حجز الذاكرة (Memory Creation) ثم مرحلة التنفيذ (Execution).</li>
+                <li>تتبع مكدس الاستدعاءات (Call Stack LIFO) وكيف تحدث كارثة الـ Stack Overflow.</li>
+                <li>إتقان مفهوم الـ Closures ونطاق المتغيرات المعجمي (Lexical Scope) كأهم سلاح في الـ Full-Stack.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه حقيبة الظهر للطاهي (الـ Closure)</span>
+                <span>تشبيه الطباخ المساعد وحقيبة الظهر السحرية · Chef &amp; The Magic Backpack</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                تخيّل طاهياً يعمل في مطبخ كبير (الدالة الخارجية). عندما يقرر الطاهي مغادرة المطبخ، فإنه يحزم بعض الأدوات والوصفات السرية الخاصة بذلك المطبخ داخل <strong>حقيبة ظهره الخاصة</strong> (الـ Closure).
-                عندما يذهب إلى أي مكان آخر ويعمل بمفرده (الدالة الداخلية المعادة)، يمكنه في أي وقت فتح حقيبة ظهره واستخدام المتغيرات التي احتفظ بها من المطبخ الأصلي، حتى وإن تم إغلاق ذلك المطبخ بالكامل!
+                تخيل إن محرك <strong>V8</strong> شغال زي <strong>رئيس طهاة في مطعم عالمي</strong>:
+                قبل ما يولع النار حتى، بيمسك المنيو ويجهز الأطباق والمكونات على الرخامة في مرحلة أولى اسمها (<strong>Creation Phase</strong>).<br>
+                بعد كده، بيبدأ يطبخ الأطباق طبق ورا طبق ويرصهم فوق بعض في مكدس (<strong>Call Stack</strong>): الطبق اللي بيتحط على الوش هو أول واحد بيخلص ويخرج (LIFO)!<br>
+                أما الـ <strong>Closure</strong>: فتخيل إن كل دالة داخلية بتتولد في المطبخ، بتاخد معاها <strong>حقيبة ظهر سحرية (Backpack)</strong> فيها كل المكونات والبهارات بتاعة الدالة الأب، وحتى لو الدالة الأب خلصت وماتت وخرجت من المطبخ.. تفضل الدالة الابنة محتفظة بالحقيبة وتستخدم متغيرات الأب في أي وقت في المستقبل!
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              JavaScript is a single-threaded synchronous language with non-blocking concurrency. Every piece of code executes inside an <strong>Execution Context</strong> containing Variable Environments, the Scope Chain, and the <code>this</code> binding.
-            </p>
+            <h3>المشكلة التي حلتها الـ Closures في عالم البرمجة</h3>
             <p class="fsa-ar" dir="rtl">
-              جافاسكربت لغة <strong>أحادية الخيط (Single-Threaded)</strong>، أي أنها تنفذ أمراً واحداً فقط في اللحظة الواحدة. يقوم المحرك بإدارة التنفيذ عبر <strong>مكدس الاستدعاءات (Call Stack)</strong>، حيث يُنشئ لكل استدعاء دالة سياقاً خاصاً يحتوي على متغيراتها والارتباط بالسياقات الخارجية.
+              زمان، لما كنت بتعوز تعمل دالة تعدّاد (Counter) أو تحتفظ بحالة خاصة (Private State)، كنت بتضطر تعمل متغير عام (Global Variable) في الملف كله، وأي جزء في التطبيق كان ممكن يغيره بالغلط ويبوظ الدنيا.
+              مع الـ <strong>Closures</strong>، بقيت تقدر تعمل Encapsulation حقيقي وتخفي المتغيرات داخل دالة، وتصدر فقط دوال التحكم (زي فكرة الـ <code dir="ltr">useState</code> في React تماماً)!
             </p>
+          </section>
 
-            <h3>Step-by-Step Mechanics · مرحلتا التنفيذ في محرك V8</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. كواليس تشغيل الكود في الذاكرة · Execution Context Phases</h2>
             
-            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-found);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. Creation Phase & Hoisting (مرحلة التجهيز والرفع)</div>
+                <div class="fsa-step-card__title">1. مرحلة إنشاء السياق (Creation / Hoisting Phase)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  قبل تشغيل أي سطر، يمسح المحرك الكود ويحجز أماكن للمتغيرات في الذاكرة (تهيئة <code>var</code> بـ <code>undefined</code>، وترك <code>let/const</code> في المنطقة الميتة TDZ).
+                  محرك V8 يمسح الكود سطر سطر: يحجز مكان للدوال الكاملة في الذاكرة، ويحجز مكان لمتغيرات <code dir="ltr">var</code> بقيمة مبدئية <code dir="ltr">undefined</code>، بينما يضع متغيرات <code dir="ltr">let</code> و <code dir="ltr">const</code> في المنطقة الزمنية الميتة (Temporal Dead Zone - TDZ).
                 </p>
               </div>
             </div>
 
-            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
               <div class="fsa-step-card__badge">2</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. Execution Phase (مرحلة التنفيذ الفعلي)</div>
+                <div class="fsa-step-card__title">2. مرحلة التنفيذ الفعلي (Execution Phase)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  ينفذ المحرك الكود سطراً بسطر من الأعلى للأسفل، ويسند القيم الحقيقية للمتغيرات ويستدعي الدوال.
+                  يتم تشغيل الكود سطراً بسطر وحساب القيم، وعند استدعاء أي دالة يتم إنشاء (Function Execution Context) جديد ودفعه فوراً إلى قمة الـ Call Stack.
                 </p>
               </div>
             </div>
@@ -167,218 +173,208 @@
             <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
               <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">3. Call Stack Frame Push & Pop (دخول وخروج الإطارات)</div>
+                <div class="fsa-step-card__title">3. الاحتفاظ بالنطاق الحي (Closure Formation)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  عند استدعاء دالة، يُضاف إطارها إلى قمة الـ Call Stack، وعند انتهائها (<code>return</code>)، يُحذف الإطار فورياً لتحرير الذاكرة.
+                  إذا أعادت الدالة دالة فرعية بداخلها، تظل المتغيرات المشار إليها محفوظة في الـ Heap Memory ولا يمسها الـ Garbage Collector لأن مرجع الـ Closure ما زال حياً!
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through Call Stack frame allocations and Closure persistence:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف ينمو وينحسر مكدس الاستدعاءات (Call Stack) مع كل استدعاء لدالة:
+              تتبع عملية دفع الدوال إلى الـ Call Stack (Push) ثم تفريغها عند الانتهاء (Pop):
             </p>
 
-            <div class="fsa-stepper" id="callStackStepper"></div>
+            <div class="fsa-stepper" id="stackStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Call Stack Frame Stack Diagram">
-                <title>Call Stack LIFO Execution Diagram</title>
-                <desc>Last-In-First-Out Call Stack execution flow</desc>
-                <rect x="40" y="20" width="160" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="120" y="45" fill="var(--text-muted)" text-anchor="middle" font-size="11">Global Context</text>
-                <rect x="50" y="55" width="140" height="55" rx="6" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" class="fsa-anim-pulse" />
-                <text x="120" y="88" fill="var(--accent-primary)" text-anchor="middle" font-size="12" font-weight="700">fn: inner()</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Call Stack Execution Visualization">
+                <title>Call Stack LIFO Flow</title>
+                <desc>Global Execution Context pushes function b and c then pops in reverse order</desc>
+                <rect x="30" y="20" width="160" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="110" y="45" fill="var(--text-muted)" text-anchor="middle" font-size="11">Call Stack Base</text>
+                <rect x="45" y="60" width="130" height="40" rx="4" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="1" />
+                <text x="110" y="85" fill="var(--accent-primary)" text-anchor="middle" font-size="12" font-family="var(--font-mono)">Global() Context</text>
 
-                <path d="M 230 70 L 320 70" stroke="var(--accent-warning)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 210 70 L 270 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
 
-                <g transform="translate(350, 20)">
-                  <rect width="230" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="115" y="40" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">Heap Memory (Closure)</text>
-                  <text x="115" y="65" fill="var(--text-secondary)" text-anchor="middle" font-size="11" font-family="var(--font-mono)">secretToken: "xyz99"</text>
-                  <text x="115" y="85" fill="var(--text-muted)" text-anchor="middle" font-size="10">Retained via Scope Reference</text>
+                <g transform="translate(280, 20)">
+                  <rect width="160" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--track-found)" stroke-width="2" class="fsa-anim-pulse" />
+                  <rect x="15" y="15" width="130" height="30" rx="4" fill="var(--tint-warning)" stroke="var(--accent-warning)" stroke-width="1" />
+                  <text x="80" y="35" fill="var(--accent-warning)" text-anchor="middle" font-size="11" font-family="var(--font-mono)">calculate()</text>
+                  <rect x="15" y="55" width="130" height="30" rx="4" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="1" />
+                  <text x="80" y="75" fill="var(--accent-primary)" text-anchor="middle" font-size="11" font-family="var(--font-mono)">Global() Context</text>
+                </g>
+
+                <path d="M 460 70 L 520 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(530, 30)">
+                  <rect width="80" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="40" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">Pop &amp; Exit</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Closure Sandbox</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in isolated Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي الـ Closures والحالة المحمية</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Explore data encapsulation and state preservation with Closures live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: قم بتعديل الـ Closure وشاهد كيف تحتفظ الدالة بذاكرتها المستقلة:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد كيف تحتفظ الدالة بقيمة <code dir="ltr">count</code> الخاصة في الذاكرة دون أن يستطيع أي كود خارجي تعديلها إلا عبر الدوال المصرح لها:
               </p>
-
-              <div class="fsa-playground" id="closurePlayground"></div>
+              <div class="fsa-playground" id="scopePlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>What is printed by <code>console.log(a)</code> before <code>let a = 10;</code> is executed?</p>
-              <p class="fsa-ar" dir="rtl">ماذا سيحدث عند محاولة طباعة متغير معرف بـ <code>let</code> قبل سطر تعريفه؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                إيه اللي هيطبع في الـ Console لما نشغل الكود ده؟
+              </p>
+              <pre style="background: var(--bg-code); padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; margin-block: 8px;" dir="ltr"><code>console.log(a);
+var a = 10;
+console.log(b);
+let b = 20;</code></pre>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    سيحدث خطأ <strong>ReferenceError: Cannot access 'a' before initialization</strong> بسبب وجود المتغير في الـ Temporal Dead Zone (TDZ).
+                    <strong>السطر الأول يطبع: <code dir="ltr">undefined</code></strong> (بسبب رفع var في الـ Hoisting).<br>
+                    <strong>السطر الثالث يرمي استثناء: <code dir="ltr">ReferenceError: Cannot access 'b' before initialization</code></strong> لأن <code dir="ltr">let</code> موجودة في المنطقة الزمنية الميتة (TDZ).
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح دالة الـ Closure الاحترافية · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: function makeMultiplier(factor) {</span>
-                <span class="fsa-anatomy__line" data-line="2">2:   return function(number) {</span>
-                <span class="fsa-anatomy__line" data-line="3">3:     return number * factor;</span>
-                <span class="fsa-anatomy__line" data-line="4">4:   };</span>
-                <span class="fsa-anatomy__line" data-line="5">5: }</span>
+              <div class="fsa-anatomy__code" dir="ltr">
+                <span class="fsa-anatomy__line" data-line="1">1: function createWallet(initialBalance) {</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   let balance = initialBalance; // Private state</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   return {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:     deposit: (amount) => { balance += amount; return balance; },</span>
+                <span class="fsa-anatomy__line" data-line="5">5:     getBalance: () => balance</span>
+                <span class="fsa-anatomy__line" data-line="6">6:   };</span>
+                <span class="fsa-anatomy__line" data-line="7">7: }</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 1:</strong> الدالة الخارجية تستقبل المعامل <code>factor</code> وتنشئ بيئة نطاق خاص بها.
+                  <strong>السطر 2:</strong> متغير <code dir="ltr">balance</code> محبوس داخل النطاق المحلي لدالة <code dir="ltr">createWallet</code> ومستحيل الوصول له من الخارج.
                 </p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 3:</strong> الدالة المعادة تحتفظ بمرجع دائم للمتغير <code>factor</code> في الذاكرة حتى بعد انتهاء الدالة الخارجية.
+                  <strong>السطر 4 &amp; 5:</strong> دوال الـ Arrow المعادة تحتفظ برابط مباشر (Closure Reference) إلى <code dir="ltr">balance</code> حتى بعد انتهاء تنفيذ الدالة الأب.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>Scope Resolution Lookup</span>
+                  <span>كفاءة الـ Call Stack</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(d) Depth</div>
+                <div class="fsa-complexity-card__big">O(1) Push / Pop</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  البحث عن المتغير يبدأ من النطاق المحلي ويصعد في سلسلة النطاقات (Scope Chain) حتى النطاق العام (Global Scope).
+                  عمليات إضافة وحذف سياق الدوال في الـ Stack تتم بزمن فوري O(1) مباشر وسريع جداً في لغة الآلة.
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-warning);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-danger);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Call Stack Memory</span>
+                  <span>استهلاك الذاكرة (Memory Leaks)</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(N) Stack Depth</div>
+                <div class="fsa-complexity-card__big">Heap Retention</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  الاستدعاءات المتداخلة للدوال تستهلك إطارات في مكدس الذاكرة. تجاوز الحد الأقصى يسبب <strong>Stack Overflow</strong>.
+                  الـ Closures تمنع محرك الـ Garbage Collector من تنظيف المتغيرات، لذلك ترك مراجع غير مستخدمة قد يؤدي لتسريب الذاكرة (Memory Leak).
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>Under the Hood: Garbage Collection & Closures</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">
-                  يقوم جامع القمامة (Garbage Collector) بحذف المتغيرات بمجرد أن تصبح غير قابلة للوصول (Unreachable). لكن المتغيرات المغلقة داخل <strong>Closure</strong> تظل محتفظة بمرجع نشط في الـ Heap، مما يمنع حذفها حتى تنتهي دورة حياة الدالة الداخلية.
-                </p>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>The Classic "var in for-loop" Closure Bug</span>
+                  <span>فخ الـ var داخل حلقات التكرار (Loop Closure Trap)</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ BROKEN (All callbacks print 3)<br>for (var i = 0; i &lt; 3; i++) {<br>&nbsp;&nbsp;setTimeout(() => console.log(i), 100);<br>}</code>
+                    <code>// ❌ يطبع 3 ثلاث مرات!<br>for (var i = 0; i < 3; i++) {<br>&nbsp;&nbsp;setTimeout(() => console.log(i), 100);<br>}</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ FIXED (Prints 0, 1, 2)<br>for (let i = 0; i &lt; 3; i++) {<br>&nbsp;&nbsp;setTimeout(() => console.log(i), 100);<br>}</code>
+                    <code>// ✅ يطبع 0 ثم 1 ثم 2 بشكل سليم<br>for (let i = 0; i < 3; i++) {<br>&nbsp;&nbsp;setTimeout(() => console.log(i), 100);<br>}</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> <code>var</code> يمتلك نطاق دالة (Function Scope)، فيشارك الجميع نفس المتغير، بينما <code>let</code> ينشئ نطاق كتلة (Block Scope) جديداً لكل تكرار.
+                  <strong>التشخيص الهندسي:</strong> استخدام <code dir="ltr">var</code> يشارك نفس المتغير عبر كل التكرارات، بينما <code dir="ltr">let</code> تنشئ نطاق كتلة جديد (Block Scope) لكل لفة في الـ Loop فيتذكره الـ Closure بدقة.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Execution Context</dt>
-              <dd class="fsa-ar" dir="rtl">البيئة الافتراضية التي يتم فيها تقييم وتنفيذ كود جافاسكربت.</dd>
-              <dt>Call Stack</dt>
-              <dd class="fsa-ar" dir="rtl">مكدس يعتمد مبدأ (LIFO: يدخل آخراً يخرج أولاً) لتتبع مكان تنفيذ البرنامج واستدعاءات الدوال.</dd>
-              <dt>Closure</dt>
-              <dd class="fsa-ar" dir="rtl">اقتران الدالة ببيئتها المعجمية (Lexical Environment)، مما يتيح لها الوصول لمتغيرات النطاق الخارجي حتى بعد انتهائه.</dd>
+              <dt dir="ltr">Execution Context</dt>
+              <dd class="fsa-ar" dir="rtl">البيئة الافتراضية التي يجهزها محرك V8 لتحليل وتنفيذ كود جافاسكربت وتحتوي على المتغيرات ونطاق this.</dd>
+              <dt dir="ltr">Closure</dt>
+              <dd class="fsa-ar" dir="rtl">ميزة برمجية تمكن الدالة الداخلية من الوصول لمتغيرات الدالة الأب الخارجية وتذكرها حتى بعد إغلاق الدالة الأب بالكامل.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="jsEssentialsCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "Why does a Closure maintain access to outer variables even after the outer function returns?",
+                  "q": "What happens when a recursive function in JavaScript calls itself indefinitely without a base case termination?",
                   "options": [
-                    "Because all variables in JavaScript are globally scoped",
-                    "The inner function retains a reference to the outer Lexical Environment in memory",
-                    "The browser re-executes the outer function on every call"
+                    "V8 offloads the function to background worker threads",
+                    "The Call Stack overflows the memory limit, throwing 'Maximum call stack size exceeded'",
+                    "The browser silently skips the execution after 100 iterations"
                   ],
                   "answer": 1,
-                  "why": "JavaScript functions maintain an internal reference ([[Environment]]) to the scope in which they were created.",
-                  "whyAr": "تحتفظ الدالة الداخلية برابط دائم في الذاكرة للبيئة المعجمية (Lexical Environment) التي تم إنشاؤها فيها.",
-                  "anchor": "learn"
-                },
-                {
-                  "q": "What happens if a recursive function calls itself without a base termination condition?",
-                  "options": [
-                    "The function returns undefined automatically",
-                    "Maximum call stack size exceeded (Stack Overflow error)",
-                    "JavaScript starts running on a second background thread"
-                  ],
-                  "answer": 1,
-                  "why": "Each call pushes a new frame onto the finite Call Stack until memory limits are breached.",
-                  "whyAr": "تتراكم إطارات الدوال في الـ Call Stack حتى يتجاوز الحد المسموح به للذاكرة مسبباً Stack Overflow.",
-                  "anchor": "deep-dive"
+                  "why": "Each function call adds a frame to the Call Stack. Infinite recursion exhausts the stack limit and throws a RangeError.",
+                  "whyAr": "كل استدعاء للدالة يضيف إطاراً جديداً في مكدس الـ Call Stack، وعند الاستدعاء اللانهائي تنفد سعة المكدس ويرمي المحرك خطأ Maximum call stack size exceeded.",
+                  "anchor": "see"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Senior Interview Questions: Private State & Closures</summary>
+              <summary>سؤال مقابلات شهير: إزاي الـ Closures بتشتغل في هوك useState في React؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: How can you implement truly private variables in JavaScript prior to the private class fields (#) syntax?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> عبر استخدام نمط الـ Factory Function مع الـ Closures، حيث يتم تعريف المتغير داخل الدالة وإرجاع كائن يحتوي فقط على دوال الوصول (Getters / Setters) دون إتاحة المتغير مباشرة للنطاق الخارجي.
+                  <strong>الإجابة الهندسية:</strong><br>
+                  في ريآكت، كل مكون وظيفي (Functional Component) يتم تنفيذه وإعادة رسمه مع كل تحديث. دالة <code dir="ltr">useState</code> تعتمد على الـ Closures لحفظ مصفوفة الحالات في الـ Fiber Node المرتبط بالمكون، مما يتيح للدالة استرجاع قيمتها السابقة بدقة عند كل Render جديد دون فقدانها!
                 </p>
               </div>
             </details>
@@ -387,18 +383,18 @@
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="how-web-works.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous: How Web Works · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: دورة حياة الويب</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
             <a href="async-js.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next: Async JS · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس التالي: أسرار الـ Event Loop</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -406,7 +402,7 @@
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -430,41 +426,26 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
-          el: 'callStackStepper',
-          title: 'V8 Engine Call Stack Frame Lifecycle',
+          el: 'stackStepper',
+          title: 'تتبع حركة مكدس الاستدعاءات Call Stack LIFO',
           init: () => ({
-            stack: ['Global Context']
+            stack: [
+              { name: 'Global Execution Context', level: 'Base' }
+            ]
           }),
           steps: (state) => [
-            {
-              stack: ['Global Context', 'fn: calculateTotal()'],
-              say: 'تم استدعاء calculateTotal(): إضافة إطار الدالة إلى قمة الـ Call Stack'
-            },
-            {
-              stack: ['Global Context', 'fn: calculateTotal()', 'fn: applyTax()'],
-              say: 'داخل calculateTotal() تم استدعاء applyTax(): إضافة إطار جديد في القمة'
-            },
-            {
-              stack: ['Global Context', 'fn: calculateTotal()'],
-              say: 'انتهت دالة applyTax() وأعادت القيمة: إزالة إطارها (Pop) من الـ Call Stack'
-            },
-            {
-              stack: ['Global Context'],
-              say: 'انتهت دالة calculateTotal(): إزالة الإطار والعودة للسياق العام'
-            }
+            { activeIdx: 0, say: 'الخطوة 1: بدء تشغيل الملف وإنشاء السياق العام Global Context في قاع الـ Stack' },
+            { activeIdx: 0, say: 'الخطوة 2: استدعاء دالة multiply(4, 2) ودفعها لقمة المكدس (Push)' },
+            { activeIdx: 0, say: 'الخطوة 3: حساب النتيجة 8 والانتهاء من التنفيذ وحذف الدالة من المكدس (Pop)' },
+            { activeIdx: 0, say: 'الخطوة 4: العودة للسياق العام وإنهاء تشغيل البرنامج بنجاح' }
           ],
           render: (state, step, els) => {
-            const currentStack = step.stack || state.stack;
             els.viz.innerHTML = `
-              <div style="display: flex; flex-direction: column-reverse; gap: 8px; width: 240px; min-height: 140px; justify-content: flex-start; padding: 12px; background: var(--bg-code); border: 2px solid var(--border-default); border-radius: var(--radius-md);">
-                ${currentStack.map((frame, i) => {
-                  const isTop = i === currentStack.length - 1;
-                  return `
-                    <div style="padding: 8px 12px; background: ${isTop ? 'var(--tint-primary)' : 'var(--bg-raised)'}; border: 1px solid ${isTop ? 'var(--accent-primary)' : 'var(--border-subtle)'}; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: ${isTop ? 'var(--accent-primary)' : 'var(--text-primary)'}; text-align: center;">
-                      ${frame}
-                    </div>
-                  `;
-                }).join('')}
+              <div class="fsa-viz-cells" style="gap: 12px; align-items: flex-end;">
+                <div class="fsa-viz-cell is-active" style="width: 160px; height: 60px; font-size: 11px; padding: 4px; text-align: center;">
+                  <span style="font-weight: 700; color: var(--accent-primary);">Call Stack Frame</span>
+                  <span style="font-size: 9px; color: var(--text-muted); display: block; margin-top: 2px;">Active Context</span>
+                </div>
               </div>
             `;
           }
@@ -473,24 +454,20 @@
 
       if (window.FSA.playground) {
         window.FSA.playground.mount({
-          el: 'closurePlayground',
-          starterCode: `// Encapsulating Private State with Closures
-function createBankAccount(initialBalance) {
-  let balance = initialBalance; // Private variable
-
+          el: 'scopePlayground',
+          starterCode: `// تجربة حية للـ Closures وحفظ الحالة الخاصة
+function createCounter() {
+  let count = 0; // متغير محمي خاص
   return {
-    deposit: (amount) => {
-      balance += amount;
-      console.log(\`Deposited: \${amount}, New Balance: \${balance}\`);
-    },
-    getBalance: () => balance
+    increment: () => ++count,
+    getCount: () => count
   };
 }
 
-const myAccount = createBankAccount(100);
-myAccount.deposit(50);
-myAccount.deposit(200);
-console.log('Final Protected Balance:', myAccount.getBalance());`
+const counter1 = createCounter();
+console.log('Call 1:', counter1.increment()); // 1
+console.log('Call 2:', counter1.increment()); // 2
+console.log('Direct count:', counter1.count); // undefined (محمي تماماً!)`
         });
       }
     });

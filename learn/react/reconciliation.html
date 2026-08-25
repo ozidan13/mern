@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,15 @@
   <!-- ================= LESSON METADATA ================= -->
   <meta name="fsa-track" content="react">
   <meta name="fsa-lesson" content="reconciliation">
-  <meta name="fsa-level" content="3">
+  <meta name="fsa-level" content="2">
   <meta name="fsa-order" content="4">
-  <meta name="fsa-title" content="Virtual DOM Diffing & Reconciliation">
-  <meta name="fsa-est-minutes" content="35">
-  <meta name="fsa-teaches-version" content="React 19.2 Fiber">
-  <meta name="fsa-pattern-label" content="Core Algorithm">
+  <meta name="fsa-title" content="Reconciliation: Virtual DOM & Diffing Algorithm">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="React 19.2 Diffing">
+  <meta name="fsa-pattern-label" content="Reconciliation Engine">
   <meta name="fsa-root" content="../../">
 
-  <title>Virtual DOM Diffing & Reconciliation · FullStack Academy</title>
+  <title>Reconciliation: Virtual DOM & Diffing Algorithm · FullStack Academy</title>
 
   <!-- ================= ZERO-BUILD STYLES ================= -->
   <link rel="stylesheet" href="../../css/tokens.css">
@@ -25,15 +25,17 @@
   <link rel="stylesheet" href="../../css/learning.css">
 </head>
 <body>
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
   <div class="fsa-shell">
+    <!-- Topbar -->
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
           <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
         </button>
         <a href="../../index.html" class="fsa-topbar__brand">
+          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -42,348 +44,340 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Quick Find · بحث سريع</span>
+            <span>بحث سريع في المنهج</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
       </div>
 
       <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
           <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
           <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">Dashboard</span>
+          <span class="fsa-hide-mobile">لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <div class="fsa-layout">
+      <!-- Sidebar -->
       <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
         <nav class="fsa-sidebar__nav">
           <div class="fsa-sidebar__section-title">
             <span class="fsa-track-dot" style="--chip-color: var(--track-react)"></span>
-            <span>React.js Track</span>
+            <span>مسار ريآكت · React.js 19.2</span>
           </div>
           <ul class="fsa-sidebar__list" id="curriculumList">
             <li>
               <a href="reconciliation.html" class="fsa-sidebar__link is-active" aria-current="page">
                 <span class="fsa-sidebar__status-dot"></span>
-                <span>Virtual DOM & Diffing</span>
+                <span>Reconciliation &amp; VDOM</span>
               </a>
             </li>
           </ul>
         </nav>
       </aside>
 
+      <!-- Main Content -->
       <main id="main-content" class="fsa-main">
         <article class="fsa-article">
           
           <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
           <header class="fsa-lesson-header">
             <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">Home</a> &rsaquo;
-              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="../../index.html">الرئيسية</a> &rsaquo;
+              <a href="../index.html">المسارات</a> &rsaquo;
               <a href="index.html">React.js</a> &rsaquo;
               <span>Reconciliation</span>
             </nav>
 
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>LEVEL 3 · REACT 19.2</span>
+              <span>المستوى 2 · خوارزميات محرك ريآكت</span>
             </div>
 
-            <h1 style="margin-block-start: var(--space-2);">Virtual DOM Diffing & Reconciliation</h1>
+            <h1 style="margin-block-start: var(--space-2);">Reconciliation: Virtual DOM &amp; Diffing Algorithm</h1>
             <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              المطابقة وخوارزمية المقارنة: شجرة الـ Fiber، دور المفاتيح (Keys)، وفصل مرحلة الـ Render عن الـ Commit
+              إزاي ريآكت بتحدث الـ Real DOM بسرعة الصاروخ بتعقيد O(n)؟ وسر كارثة استخدام index كـ key!
             </p>
 
             <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">Teaches: React Fiber Heuristics</span>
-              <span class="fsa-badge">Level 3</span>
-              <span class="fsa-badge">35 mins · دقيقة</span>
+              <span class="fsa-chip">التقنيات: Virtual DOM · Diffing O(n) · Keys · Fiber WorkLoop</span>
+              <span class="fsa-badge">المستوى 2</span>
+              <span class="fsa-badge">30 دقيقة</span>
             </div>
 
-            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Learning Objectives · أهداف الدرس</span>
+                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
               </div>
               <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>Understand the $O(n)$ heuristic Diffing algorithm and why tree comparison is linear.</li>
-                <li>Analyze the two rules of Reconciliation: element type identity and <code>key</code> preservation.</li>
-                <li>Differentiate strictly between the asynchronous Render Phase and synchronous DOM Commit Phase.</li>
-                <li>Simulate list reordering and index vs stable key performance in the interactive runner.</li>
+                <li>فهم لماذا تكون عمليات تعديل الـ Real DOM بطيئة جداً ومكلفة للـ Browser Engine.</li>
+                <li>استيعاب الفرضيتين الهندسيين (Heuristic Assumptions) اللتين اختصرتا المقارنة من O(n³) إلى O(n) خطية.</li>
+                <li>فهم الدور المصيري لخاصية الـ <code dir="ltr">key</code> في الحفاظ على هوية المكونات ومنع أخطاء المدخلات في القوائم.</li>
               </ul>
             </div>
           </header>
 
-          <!-- ================= BEAT 2: LEARN ================= -->
-          <section id="learn" style="margin-block-start: var(--space-8);">
-            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
+          <section id="story" style="margin-block-start: var(--space-8);">
+            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
                 <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>Real-Life Analogy · تشبيه مراجعة وتعديل مسودة الكتاب</span>
+                <span>تشبيه مسودة المهندس المعماري وأرقام الجلوس في الامتحان · Blueprint &amp; Seat Numbers</span>
               </div>
               <p class="fsa-ar" dir="rtl">
-                تخيّل كاتباً يريد تعديل فقرة واحدة في كتاب من 500 صفحة:
-                إعادة طباعة وتجليد الكتاب بالكامل في كل مرة هو تماماً ما يحدث عند تعديل الـ DOM الحقيقي مباشرة (بطيء ومكلف جداً).
-                بدلاً من ذلك، يحتفظ الكاتب بـ <strong>مسودة رقمية خفيفة على شاشة الحاسوب (Virtual DOM)</strong>: يقارن المسودة القديمة بالجديدة، ويحدد فقط السطر الذي تغير (<strong>Diffing</strong>)، ثم يرسل للمطبعة أمراً بتعديل ذلك السطر فقط في النسخة المطبوعة النهائية (<strong>DOM Commit</strong>)!
+                تخيل إنك مهندس ديكور عايز تعدل لون لوحة واحدة في شقة..
+                لو كنت شغال بالطريقة القديمة الغبية، كنت هتهد عمارة كاملة وتبنيها من الصفر عشان تغير برواز اللوحة!<br>
+                في ريآكت، المهندس بيرسم <strong>مسودة خفيفة على الورق في ثانية (Virtual DOM)</strong>..
+                ويقارن المسودة القديمة بالجديدة (<strong>Diffing Algorithm</strong>)، فيكتشف إن كل الحوائط والأبواب زي ما هي والبرواز بس هو اللي اتغير!<br>
+                فيروح للـ Real DOM ويغير <strong>البرواز ده فقط في جزء من الألف من الثانية</strong>!<br>
+                أما خاصية الـ <strong>key</strong>: فهي زي <strong>رقم جلوس الطالب في لجنة الامتحان</strong>: لو الطلاب قاموا وبدلوا أماكنهم، المراقب بيعرف كل طالب برقم جلوسه الثابت.. لكن لو المراقب اعتمد على رقم الكرسي (الـ Index)، هيسجل درجات طالب شاطر لطالب تاني ويدمر اللجنة كلها!
               </p>
             </div>
 
-            <h3>Definition & Purpose</h3>
-            <p>
-              <strong>Reconciliation</strong> is the algorithm React uses to diff two trees of elements to determine which parts need to be updated in the host environment (the real DOM). By assuming elements of different types generate different trees and tracking identity with <code>key</code> props, React reduces tree diffing complexity from $O(n^3)$ to $O(n)$.
-            </p>
+            <h3>الفرضيتان العبقريتان لخوارزمية الـ Diffing</h3>
             <p class="fsa-ar" dir="rtl">
-              عملية <strong>المطابقة (Reconciliation)</strong> هي الخوارزمية الذكية التي يقارن بها React شجرتين من شجرة الـ Virtual DOM لتحديد أقل عدد ممكن من التعديلات الواجب تطبيقها على الـ DOM الحقيقي، مما يضمن أداءً فائق السرعة حتى في أضخم الواجهات.
+              مقارنة شجرتين رياضياً بأدق خوارزمية عامة بتكلف تعقيد زمني <code dir="ltr">O(n³)</code> (يعني لو شجرتك فيها 1000 عنصر، هتحتاج مليار عملية مقارنة)!
+              فريق ريآكت حط فرضيتين هندسيتين واقعيتين خفضت الوقت لـ <code dir="ltr">O(n)</code> فوري:<br>
+              1. <strong>اختلاف نوع العنصر (Different Element Types)</strong>: لو العنصر كان <code dir="ltr">&lt;div&gt;</code> واتحول لـ <code dir="ltr">&lt;span&gt;</code>، ريآكت بتهد الشجرة الفرعية بالكامل وتبنيها من جديد دون تضييع وقت في فحص الأبناء.<br>
+              2. <strong>ثبات الهوية بالمفاتيح (Keys Stability)</strong>: ريآكت بتعتمد على الـ <code dir="ltr">key</code> لمطابقة العناصر عبر الـ Renders حتى لو تم تغيير ترتيبها في المصفوفة.
             </p>
+          </section>
 
-            <h3>The Two Golden Rules of Diffing · قاعدتا المقارنة الذهبيتان</h3>
+          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+          <section id="mechanics" style="margin-block-start: var(--space-8);">
+            <h2>2. كواليس التحديث من الـ VDOM إلى الشاشة · Step-by-Step Mechanics</h2>
             
-            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+            <div class="fsa-step-card" style="--step-accent: var(--track-react);">
               <div class="fsa-step-card__badge">1</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. Elements of Different Types are Destroyed</div>
+                <div class="fsa-step-card__title">1. مرحلة الحساب والـ Render في الذاكرة (Render Phase)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  إذا تغير نوع العنصر (مثلاً من <code>&lt;div&gt;</code> إلى <code>&lt;p&gt;</code>)، يحذف React الشجرة القديمة بالكامل ويشيد شجرة جديدة من الصفر مع تدمير كل الـ State بداخلها.
+                  تقوم ريآكت باستدعاء دوال المكونات وإنشاء شجرة الـ Virtual DOM الجديدة ككائنات جافاسكربت بسيطة وسريعة جداً في الـ Heap.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. المقارنة السريعة وحساب الفروق (Diffing &amp; Patching)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تقارن ريآكت شجرة الـ Fiber الحالية بشجرة الـ Work-in-Progress الجديدة وتحدد قائمة التعديلات الدقيقة (Effect List / Mutations).
                 </p>
               </div>
             </div>
 
             <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
-              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__badge">3</div>
               <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. Keys Preserve Identity Across Re-orders</div>
+                <div class="fsa-step-card__title">3. مرحلة الالتزام والرسم على الشاشة (Commit Phase)</div>
                 <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  في القوائم والمصفوفات، يستخدم React خاصية <code>key</code> الفريدة لتتبع حركة العناصر ومعرفة أي عنصر تم نقله، حذفه، أو إضافته بدلاً من إعادة إنشائها جميعاً.
+                  في خطوة واحدة متزامنة وسريعة، تطبق ريآكت التعديلات على الـ Real DOM عبر <code dir="ltr">node.textContent</code> أو <code dir="ltr">appendChild</code> دون أي وميض للشاشة.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 3: SEE ================= -->
+          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
           <section id="see" style="margin-block-start: var(--space-8);">
-            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
-            <p>Step through list reordering and Fiber tree node diffing:</p>
+            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
-              شاهد كيف يكتشف المحرك التغييرات في القوائم باستخدام المفتاح الثابت (Key):
+              شاهد كيف تكشف خوارزمية الـ Diffing التعديل الدقيق في شجرة المكونات وتطبقه فقط:
             </p>
 
-            <div class="fsa-stepper" id="diffingStepper"></div>
+            <div class="fsa-stepper" id="reconcileStepper"></div>
 
             <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Virtual DOM Diffing Diagram">
-                <title>Virtual DOM Diffing and Patching</title>
-                <desc>Old Virtual DOM tree compared with New Virtual DOM tree generates minimal DOM Patch</desc>
-                <rect x="20" y="20" width="160" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="100" y="45" fill="var(--text-muted)" text-anchor="middle" font-size="11">Current Virtual DOM</text>
-                <circle cx="100" cy="80" r="18" fill="var(--bg-surface)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="100" y="85" fill="var(--text-primary)" text-anchor="middle" font-size="11" font-family="var(--font-mono)">v: 0</text>
-
-                <path d="M 190 70 L 250 70" stroke="var(--accent-warning)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-
-                <g transform="translate(260, 20)">
-                  <rect width="160" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="80" y="45" fill="var(--accent-primary)" text-anchor="middle" font-size="11" font-weight="700">WorkInProgress Tree</text>
-                  <circle cx="80" cy="80" r="18" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                  <text x="80" y="85" fill="var(--text-on-accent)" text-anchor="middle" font-size="11" font-family="var(--font-mono)">v: 1</text>
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Virtual DOM Diffing and Minimal Patching Flow">
+                <title>Virtual DOM Diffing Architecture</title>
+                <desc>Virtual DOM Tree A and Tree B are diffed in O(n) producing a minimal DOM Patch</desc>
+                <g transform="translate(20, 20)">
+                  <rect width="140" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="70" y="45" fill="var(--text-muted)" text-anchor="middle" font-size="11">Old VDOM Tree</text>
+                  <circle cx="70" cy="80" r="14" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
+                  <text x="70" y="84" fill="var(--accent-primary)" text-anchor="middle" font-size="10">v1</text>
                 </g>
 
-                <path d="M 430 70 L 490 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+                <path d="M 170 70 L 220 70" stroke="var(--track-react)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
 
-                <g transform="translate(490, 20)">
-                  <rect width="110" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="55" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">Real DOM</text>
-                  <text x="55" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">1 Patch Mutation</text>
+                <g transform="translate(230, 15)">
+                  <rect width="160" height="110" rx="8" fill="var(--tint-primary)" stroke="var(--track-react)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="80" y="40" fill="var(--track-react)" text-anchor="middle" font-size="12" font-weight="700">Diffing Engine O(n)</text>
+                  <text x="80" y="65" fill="var(--text-secondary)" text-anchor="middle" font-size="10">Compare Keys &amp; Types</text>
+                  <text x="80" y="90" fill="var(--accent-success)" text-anchor="middle" font-size="10">&check; 1 node changed</text>
+                </g>
+
+                <path d="M 400 70 L 450 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(460, 20)">
+                  <rect width="140" height="100" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="70" y="45" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">Real DOM Patch</text>
+                  <text x="70" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">node.textContent = 'X'</text>
                 </g>
               </svg>
             </div>
           </section>
 
-          <!-- ================= BEAT 4: TRY ================= -->
+          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
           <section id="try" style="margin-block-start: var(--space-8);">
-            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
               <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">Diffing Algorithm Sandbox</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+                <span class="fsa-try-it__badge">محاكي مقارنة الـ Keys والترتيب في القوائم</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
               </div>
-              <p>Simulate Virtual DOM node comparison and list reordering live:</p>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
-                جرب بنفسك: قارن بين استخدام index كمفتاح واستخدام id ثابت عند إعادة ترتيب العناصر:
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
+                شاهد كيف تتعرف الخوارزمية على العنصر الجديد المضاف في أول القائمة عند استخدام معرف فريد (ID):
               </p>
-
-              <div class="fsa-playground" id="diffingPlayground"></div>
+              <div class="fsa-playground" id="reconcilePlayground"></div>
             </div>
 
             <div class="fsa-experiment">
-              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
-              <p>Why is using array <code>index</code> as a key dangerous when items can be inserted at the top of a list?</p>
-              <p class="fsa-ar" dir="rtl">لماذا يعتبر استخدام مؤشر المصفوفة (index) كـ Key خطيراً عند إضافة عنصر في بداية القائمة؟</p>
+              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
+              <p class="fsa-ar" dir="rtl">
+                لو عندك قائمة فيها 3 عناصر وضفت عنصر جديد في <strong>أول القائمة</strong> وكنت مستخدم <code dir="ltr">key={index}</code>.. كم عنصر ريآكت هتضطر تعيد رسمه في الـ DOM؟
+              </p>
               <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
                 <div class="fsa-experiment__reveal">
                   <p class="fsa-ar" dir="rtl">
-                    لأن إضافة عنصر في البداية يغير index جميع العناصر التالية! فيعتقد React أن جميع العناصر قد تغيرت ويعيد رسم كل مدخلات الحقول (Form inputs) وحالاتها بشكل خاطئ.
+                    <strong>هتعيد رسم الـ 3 عناصر كلهم بالإضافة للعنصر الجديد (4 عناصر كاملة)!</strong><br>
+                    لأن الـ Index بتاع كل العناصر القديمة اتشفت من (0, 1, 2) إلى (1, 2, 3)، فريآكت اعتقدت إن كل العناصر اتغيرت!<br>
+                    بينما لو استخدمت <code dir="ltr">key={item.id}</code>، ريآكت هتدرك إن العناصر الـ 3 القديمة لم تتغير وتضيف فقط العنصر الجديد في 0ms!
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <!-- ================= BEAT 6: ANATOMY ================= -->
           <section id="anatomy" style="margin-block-start: var(--space-8);">
-            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <h2>5. تشريح كتابة القوائم الاحترافية بالمفاتيح المستقرة · Code Anatomy</h2>
             <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code">
-                <span class="fsa-anatomy__line" data-line="1">1: {items.map(item => (</span>
-                <span class="fsa-anatomy__line" data-line="2">2:   &lt;TodoItem</span>
-                <span class="fsa-anatomy__line" data-line="3">3:     key={item.id}</span>
-                <span class="fsa-anatomy__line" data-line="4">4:     title={item.title}</span>
-                <span class="fsa-anatomy__line" data-line="5">5:     completed={item.completed}</span>
-                <span class="fsa-anatomy__line" data-line="6">6:   /&gt;</span>
-                <span class="fsa-anatomy__line" data-line="7">7: ))}</span>
+              <div class="fsa-anatomy__code" dir="ltr">
+                <span class="fsa-anatomy__line" data-line="1">1: function UserList({ users }) {</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   return (</span>
+                <span class="fsa-anatomy__line" data-line="3">3:     &lt;ul&gt;</span>
+                <span class="fsa-anatomy__line" data-line="4">4:       {users.map(user => (</span>
+                <span class="fsa-anatomy__line" data-line="5">5:         &lt;UserItem key={user.id} user={user} /&gt;</span>
+                <span class="fsa-anatomy__line" data-line="6">6:       ))}</span>
+                <span class="fsa-anatomy__line" data-line="7">7:     &lt;/ul&gt;</span>
+                <span class="fsa-anatomy__line" data-line="8">8:   );</span>
+                <span class="fsa-anatomy__line" data-line="9">9: }</span>
               </div>
               <div class="fsa-anatomy__notes">
                 <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 3:</strong> استخدام <code>key={item.id}</code> بمفتاح ثابت فريد يضمن الحفاظ على حالة المكون وحركته حتى لو تم تغيير ترتيب القائمة.
+                  <strong>السطر 5:</strong> استخدام <code dir="ltr">key={user.id}</code> يربط هوية المكون بالمعرف الفريد القادم من قاعدة البيانات فيحافظ على حقول الإدخال والـ State الداخلية عند إعادة الترتيب أو الحذف.
                 </p>
               </div>
             </div>
           </section>
 
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <!-- ================= BEAT 7: DEEP DIVE ================= -->
           <section id="deep-dive" style="margin-block-start: var(--space-8);">
-            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--track-react);">
                 <div class="fsa-complexity-card__title">
                   <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>Heuristic Diffing Complexity</span>
+                  <span>كفاءة خوارزمية المقارنة</span>
                 </div>
-                <div class="fsa-complexity-card__big">O(N) Linear Time</div>
+                <div class="fsa-complexity-card__big">O(n) Linear Time</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  بفضل افتراضات React المبنية على نوع العنصر والمفاتيح، تتم المقارنة في زمن خطي بدلاً من $O(N^3)$.
+                  تتحرك ريآكت عبر مستويات الشجرة في مسار خطي واحد وتتجنب المقارنات المتداخلة العميقة.
                 </p>
               </div>
 
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-danger);">
                 <div class="fsa-complexity-card__title">
-                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>Fiber Double Buffering</span>
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>تكلفة إعادة إنشاء الـ DOM</span>
                 </div>
-                <div class="fsa-complexity-card__big">2x Tree Memory</div>
+                <div class="fsa-complexity-card__big">Layout Thrashing</div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  يحتفظ React بشجرتين في الذاكرة: الشجرة الحالية (Current) وشجرة العمل قيد التجهيز (WorkInProgress).
+                  تعديل الـ Real DOM يجبر المتصفح على إعادة حساب هندسة الصفحة (Reflow) وتلوين البكسلات (Repaint)، وهو ما تتفاداه ريآكت بحساب الفروق في الذاكرة أولاً.
                 </p>
               </div>
             </div>
-
-            <details class="fsa-details" open>
-              <summary>Render Phase vs Commit Phase in React 19</summary>
-              <div class="fsa-details__body">
-                <table class="fsa-table">
-                  <thead>
-                    <tr>
-                      <th>Phase</th>
-                      <th>Nature</th>
-                      <th>Can be Interrupted?</th>
-                      <th>Side Effects Allowed?</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Render Phase</strong></td>
-                      <td>Pure computation &amp; VDOM diffing</td>
-                      <td>Yes (Concurrent features)</td>
-                      <td>No (Must be pure)</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Commit Phase</strong></td>
-                      <td>Direct real DOM mutations</td>
-                      <td>No (Must be synchronous)</td>
-                      <td>Yes (LayoutEffects / DOM refs)</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </details>
           </section>
 
-          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <!-- ================= BEAT 8: PRACTICE ================= -->
           <section id="practice" style="margin-block-start: var(--space-8);">
-            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
               <div class="fsa-mistake-card">
                 <div class="fsa-mistake-card__header">
                   <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>Random Keys on Every Render (Math.random())</span>
+                  <span>توليد مفاتيح عشوائية أثناء الـ Render (Math.random Key)</span>
                 </div>
-                <div class="fsa-mistake-card__diff">
+                <div class="fsa-mistake-card__diff" dir="ltr">
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ DISASTROUS (Destroys DOM and State every render)<br>&lt;Item key={Math.random()} /&gt;</code>
+                    <code>// ❌ كارثة: مفتاح عشوائي يجبر ريآكت على تدمير المكون وبنائه في كل Render!<br>&lt;Item key={Math.random()} data={d} /&gt;</code>
                   </div>
                   <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ STABLE (Maintains identity and DOM node reuse)<br>&lt;Item key={item.id} /&gt;</code>
+                    <code>// ✅ استخدام معرف ثابت فريد من البيانات الأصلية<br>&lt;Item key={d.id} data={d} /&gt;</code>
                   </div>
                 </div>
                 <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص:</strong> توليد مفتاح عشوائي في كل دورة رسم يجبر React على تدمير المكون والـ DOM بالكامل في كل تحديث مما يدمر الأداء وتجربة المستخدم.
+                  <strong>التشخيص الهندسي:</strong> توليد مفتاح عشوائي يجعل ريآكت تعتقد أن المكون جديد تماماً في كل لقطة رسم، فيفقد تركيز المؤشر (Focus) وحالته الداخلية وتنهار سرعة التطبيق.
                 </p>
               </div>
             </div>
 
-            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
             <dl class="fsa-term-card">
-              <dt>Virtual DOM</dt>
-              <dd class="fsa-ar" dir="rtl">تمثيل افتراضي خفيف لشجرة عناصر الـ DOM في ذاكرة JavaScript.</dd>
-              <dt>Reconciliation</dt>
-              <dd class="fsa-ar" dir="rtl">الخوارزمية المسؤولة عن مطابقة شجرتين وتحديد التغييرات الصافية لتطبيقها على المتصفح.</dd>
+              <dt dir="ltr">Virtual DOM</dt>
+              <dd class="fsa-ar" dir="rtl">تمثيل خفيف لشجرة واجهة المستخدم محفوظ في الذاكرة يتيح لريآكت حساب التغييرات قبل لمس الـ DOM الحقيقي.</dd>
+              <dt dir="ltr">Reconciliation</dt>
+              <dd class="fsa-ar" dir="rtl">الخوارزمية المسؤولة عن مقارنة شجرتين من الـ Virtual DOM وتحديد أقل عدد ممكن من التعديلات لتطبيقها على المتصفح.</dd>
             </dl>
           </section>
 
-          <!-- ================= BEAT 8: PROVE ================= -->
+          <!-- ================= BEAT 9: PROVE ================= -->
           <section id="prove" style="margin-block-start: var(--space-8);">
-            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="reconciliationCheckpoint"></div>
             
             <script type="application/json" class="fsa-quiz-data">
             {
               "pool": [
                 {
-                  "q": "What happens when an element's HTML tag changes from &lt;section&gt; to &lt;article&gt;?",
+                  "q": "Why is using array index as a key dangerous when rendering a dynamic list with stateful items?",
                   "options": [
-                    "React updates only the tag name and preserves all inner state",
-                    "React destroys the old element and its entire subtree, recreating it from scratch",
-                    "React logs a runtime error and halts execution"
+                    "Because React throws a syntax error if index is a number",
+                    "Because inserting or removing items shifts the indices, causing React to associate old state with wrong items",
+                    "Because array indices exceed the 32-bit integer limit in V8"
                   ],
                   "answer": 1,
-                  "why": "Different element types produce completely different trees under React's heuristic diffing rules.",
-                  "whyAr": "بناءً على قواعد خوارزمية المطابقة، يؤدي تغيير نوع العنصر إلى هدم الشجرة القديمة بالكامل وإعادة بنائها.",
-                  "anchor": "learn"
+                  "why": "Indices change on insertions/deletions, confusing React's diffing algorithm and binding state to the wrong DOM nodes.",
+                  "whyAr": "لأن مؤشرات الـ Index تتغير عند إضافة أو حذف عناصر، مما يضلل خوارزمية المقارنة ويربط الحالة الداخلية بالعنصر الخطأ.",
+                  "anchor": "story"
                 }
               ]
             }
             </script>
           </section>
 
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
           <section id="production" style="margin-block-start: var(--space-8);">
-            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
-              <summary>Interview Question: React 19 Compiler vs Virtual DOM</summary>
+              <summary>سؤال مقابلات شهير: إيه الفرق بين React.memo و useMemo؟</summary>
               <div class="fsa-details__body">
-                <p><strong>Q: Does React 19 eliminate the Virtual DOM?</strong></p>
                 <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة:</strong> كلا! الـ Virtual DOM وشجرة الـ Fiber لا تزالان قلب محرك ريآكت. ما يقدمه الـ React 19 Compiler هو التحسين التلقائي للتخزين المؤقت (Auto-memoization)، مما يقلل عدد عمليات إعادة حساب الدوال دون إلغاء نموذج الـ Virtual DOM نفسه.
+                  <strong>الإجابة الهندسية:</strong><br>
+                  - <code dir="ltr">React.memo</code>: مكون عالي الرتبة (HOC) يمنع إعادة رسم <strong>المكون بالكامل</strong> إذا لم تتغير الـ Props الخاصة به.<br>
+                  - <code dir="ltr">useMemo</code>: هوك داخلي لحفظ نتيجة <strong>عملية حسابية ثقيلة</strong> داخل المكون وتجنب إعادة حسابها في كل Render ما لم تتغير اعتمادياتها.
                 </p>
               </div>
             </details>
@@ -392,18 +386,18 @@
           <!-- ================= FOOTER ================= -->
           <footer class="fsa-lesson-footer">
             <a href="use-effect.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-              <span>Previous: useEffect · السابق</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+              <span>الدرس السابق: هوك useEffect</span>
             </a>
 
             <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
               <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>Mark Complete · أكملت الدرس</span>
+              <span>أكملت الدرس · Mark Complete</span>
             </button>
 
-            <a href="../nodejs/what-node-is.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>Next Track: Node.js · التالي</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            <a href="../nodejs/index.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>المسار التالي: نود جي إس 24 LTS</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
           </footer>
 
@@ -411,7 +405,7 @@
       </main>
 
       <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
         <ul class="fsa-toc__list"></ul>
       </aside>
     </div>
@@ -435,29 +429,29 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.FSA.stepper) {
         window.FSA.stepper.mount({
-          el: 'diffingStepper',
-          title: 'List Reordering & Key Identity Preservation',
+          el: 'reconcileStepper',
+          title: 'مراحل خوارزمية المقارنة والتحديث في الـ DOM',
           init: () => ({
-            list: [
-              { id: 'item-1', name: 'Task 1 (Key: 101)' },
-              { id: 'item-2', name: 'Task 2 (Key: 102)' },
-              { id: 'item-3', name: 'Task 3 (Key: 103)' }
+            steps: [
+              { name: '1. Virtual DOM v1', action: 'المسودة السابقة' },
+              { name: '2. Diffing & Heuristics', action: 'فحص الأنواع والمفاتيح O(n)' },
+              { name: '3. Atomic DOM Patch', action: 'تطبيق التعديل الدقيق في المتصفح' }
             ]
           }),
           steps: (state) => [
-            { activeIdx: 0, say: 'الترتيب الأصلي: Task 1 في البداية' },
-            { activeIdx: 2, say: 'إضافة عنصر جديد في أول القائمة: Task 0 (Key: 100)' },
-            { activeIdx: 1, say: 'بفضل المفاتيح الثابتة: يتعرف React على أن Task 1 و 2 و 3 لم تتغير' },
-            { activeIdx: 0, say: 'تطبيق التعديل الصافي: إدراج DOM node واحدة فقط في البداية دون لمس البقية!' }
+            { activeIdx: 0, say: 'الخطوة 1: تجهيز شجرة الـ Virtual DOM الجديدة في الذاكرة' },
+            { activeIdx: 1, say: 'الخطوة 2: فحص العناصر المشتركة بالمفاتيح وتحديد العقد المعدلة فقط' },
+            { activeIdx: 2, say: 'الخطوة 3: تحديث العنصر المتغير فقط في الـ Real DOM بدون وميض' }
           ],
           render: (state, step, els) => {
             els.viz.innerHTML = `
               <div class="fsa-viz-cells" style="gap: 10px;">
-                ${state.list.map((item, i) => {
+                ${state.steps.map((s, i) => {
                   const isActive = step.activeIdx === i;
                   return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 60px; font-size: 11px; padding: 4px; text-align: center;">
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${item.name}</span>
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 150px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--track-react)' : 'var(--text-primary)'};">${s.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${s.action}</span>
                     </div>
                   `;
                 }).join('')}
@@ -469,23 +463,16 @@
 
       if (window.FSA.playground) {
         window.FSA.playground.mount({
-          el: 'diffingPlayground',
-          starterCode: `// Minimal Virtual DOM Diffing Simulator
-function diffNodes(oldNode, newNode) {
-  if (!oldNode) return { type: 'CREATE', node: newNode };
-  if (!newNode) return { type: 'REMOVE' };
-  if (oldNode.tag !== newNode.tag) return { type: 'REPLACE', node: newNode };
-  if (oldNode.text !== newNode.text) return { type: 'UPDATE_TEXT', text: newNode.text };
-  
-  return { type: 'NO_OP' };
-}
+          el: 'reconcilePlayground',
+          starterCode: `// محاكاة خوارزمية الـ Diffing بالمفاتيح
+const oldList = [{ id: 'p1', title: 'React' }, { id: 'p2', title: 'Node' }];
+const newList = [{ id: 'p0', title: 'New: Next.js' }, { id: 'p1', title: 'React' }, { id: 'p2', title: 'Node' }];
 
-const vdomA = { tag: 'button', text: 'Submit' };
-const vdomB = { tag: 'button', text: 'Saving...' };
-const vdomC = { tag: 'div', text: 'Saving...' };
+// مطابقة المفاتيح:
+const keysInOld = new Set(oldList.map(item => item.id));
+const inserted = newList.filter(item => !keysInOld.has(item.id));
 
-console.log('Diff A -> B:', diffNodes(vdomA, vdomB)); // Text update
-console.log('Diff B -> C:', diffNodes(vdomB, vdomC)); // Tree replace`
+console.log('✅ العقدة الوحيدة التي سيتم إنشاؤها في الـ DOM:', inserted);`
         });
       }
     });
