@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="postgresql">
+  <meta name="fsa-lesson" content="relational-model">
+  <meta name="fsa-level" content="1">
+  <meta name="fsa-order" content="1">
+  <meta name="fsa-title" content="Relational Model & ACID Guarantees">
+  <meta name="fsa-est-minutes" content="25">
+  <meta name="fsa-teaches-version" content="PostgreSQL 18.x">
+  <meta name="fsa-pattern-label" content="Relational Core">
+  <meta name="fsa-root" content="../../">
+
+  <title>Relational Model & ACID Guarantees · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-pg)"></span>
+            <span>PostgreSQL Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="relational-model.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>Relational Model & ACID</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">PostgreSQL</a> &rsaquo;
+              <span>Relational Model & ACID</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 1 · POSTGRESQL 18.X</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">Relational Model & ACID Guarantees</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              النموذج العلائقي وضمانات ACID: المفاتيح الأساسية والأجنبية، التطبيع، وسلامة المعاملات المالية
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: PostgreSQL 18.x ACID</span>
+              <span class="fsa-badge">Level 1</span>
+              <span class="fsa-badge">25 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Master the 4 ACID properties: Atomicity, Consistency, Isolation, Durability.</li>
+                <li>Understand Primary Keys, Foreign Keys, and Referential Integrity enforcement.</li>
+                <li>Differentiate strictly between Database Normalization (3NF) and Duplication.</li>
+                <li>Simulate an atomic bank transfer transaction inside the interactive runner.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه التحويل البنكي الخزفي المحمي</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                تخيّل عملية تحويل مالي بين حسابين بنكيين:
+                خصم 100$ من حسابك، ثم إضافة 100$ لحساب صديقك.
+                إذا انقطعت الكهرباء أو تعطل السيرفر في المنتصف تماماً بعد الخصم وقبل الإيداع، فإن النظام العلائقي الموثوق (ACID) يضمن <strong>الذرية (Atomicity)</strong>: إما أن تكتمل العمليتان معاً بنجاح، أو يتم التراجع عن الخصم بالكامل كأنه لم يحدث أبداً (Rollback)!
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              <strong>PostgreSQL</strong> is an enterprise-grade object-relational database management system (ORDBMS). It structures data into mathematically formal relations (tables), strictly enforcing schemas, foreign key relationships, and full ACID transactional compliance.
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              قاعدة بيانات <strong>PostgreSQL</strong> هي المعيار الأقوى للأنظمة المالية والإنتاجية الكبرى. تضمن الحفاظ التام على سلامة البيانات عبر قيود الجداول (Constraints)، والمفاتيح الأجنبية (Foreign Keys)، وضمانات ACID الصارمة.
+            </p>
+
+            <h3>The 4 Pillars of ACID · الأركان الأربعة لسلامة المعاملات</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">A</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Atomicity (الذرية: الكل أو لا شيء)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  جميع خطوات المعاملة تنجح معاً بالكامل (Commit) أو تفشل وتلغى معاً بالكامل (Rollback).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+              <div class="fsa-step-card__badge">C</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Consistency (الاتساق وسلامة القيود)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  لا يمكن للبيانات أن تخترق أي قيد مسبق (Unique, Foreign Key, Check Constraint).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">I</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Isolation (العزل بين العمليات المتزامنة)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  المعاملات المتزامنة لا ترى التعديلات غير المؤكدة لبعضها البعض لمنع القراءات المشوهة.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--track-pg);">
+              <div class="fsa-step-card__badge">D</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Durability (المتانة والبقاء الدائم)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  بمجرد تأكيد المعاملة (Commit)، تُحفظ البيانات على القرص ولا تفقد حتى في حالة انقطاع الكهرباء (WAL).
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through Atomic Transaction Commit and Rollback:</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد كيف تحمي المعاملة الذرية (Transaction) الحسابات المالية عند حدوث خطأ غير متوقع:
+            </p>
+
+            <div class="fsa-stepper" id="postgresAcidStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="PostgreSQL ACID Transaction Flow">
+                <title>PostgreSQL Transaction Flow</title>
+                <desc>BEGIN -> Deduct balance -> Deposit balance -> COMMIT or ROLLBACK</desc>
+                <rect x="20" y="30" width="110" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="75" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">BEGIN</text>
+
+                <path d="M 140 70 L 210 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(220, 25)">
+                  <rect width="180" height="90" rx="8" fill="var(--tint-primary)" stroke="var(--track-pg)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="90" y="45" fill="var(--track-pg)" text-anchor="middle" font-size="12" font-weight="700">Atomic Operations</text>
+                  <text x="90" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10">Debit A (-100)</text>
+                  <text x="90" y="88" fill="var(--accent-success)" text-anchor="middle" font-size="10">Credit B (+100)</text>
+                </g>
+
+                <path d="M 410 70 L 480 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(490, 30)">
+                  <rect width="110" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="55" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">COMMIT</text>
+                  <text x="55" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">Saved to WAL</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">SQL Transaction Simulator</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate an atomic multi-step balance transfer with automatic rollback on error:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: قم بتنفيذ المعاملة وشاهد كيف يعيد الـ Rollback الرصيد الأصلي عند حدوث عطل:
+              </p>
+
+              <div class="fsa-playground" id="postgresPlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>What happens if you delete a Parent User row while Foreign Key child records exist with default RESTRICT constraint?</p>
+              <p class="fsa-ar" dir="rtl">ماذا يحدث عند محاولة حذف صف أب مرتبط بصفوف أبناء عبر Foreign Key مقيد بـ RESTRICT؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    <strong>يرفض PostgreSQL الحذف تماماً</strong> ويرمي خطأ انتهاك التكامل المرجعي (Foreign key constraint violation) لحماية البيانات من أن تصبح يتيمة بدون أب.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: CREATE TABLE users (</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   id SERIAL PRIMARY KEY,</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   email VARCHAR(255) UNIQUE NOT NULL,</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   created_at TIMESTAMPTZ DEFAULT NOW()</span>
+                <span class="fsa-anatomy__line" data-line="5">5: );</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 2:</strong> <code>SERIAL PRIMARY KEY</code> ينشئ رقماً تسلسلياً تلقائياً ويضمن عدم التكرار وسرعة الفهرسة.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 3:</strong> قيد <code>UNIQUE NOT NULL</code> يضمن على مستوى محرك قاعدة البيانات عدم قبول حقول فارغة أو بريد مكرر.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>B-Tree Primary Key Lookup</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(log N) Indexed</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  البحث عبر المفتاح الأساسي يستخدم فهارس B-Tree للوصول لأي صف من بين ملايين الصفوف في أجزاء من الميلي ثانية.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>WAL (Write-Ahead Logging)</span>
+                </div>
+                <div class="fsa-complexity-card__big">Zero Data Loss</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تتم كتابة كل معاملة في سجل WAL قبل كتابتها في ملفات الجداول لضمان استعادة البيانات تلقائياً بعد أي انهيار.
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>Postgres jsonb: The Best of Both Worlds</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">
+                  يدعم PostgreSQL نوع البيانات <strong>JSONB (Binary JSON)</strong> المتقدم، مما يتيح لك تخزين مستندات JSON مرنة ومفهرسة داخل جداول SQL مع التمتع الكامل بضمانات ACID وعمليات الـ JOIN في نفس الوقت!
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Missing Index on Foreign Key Columns</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ SLOW (Full table scan on JOINs)<br>CREATE TABLE orders (<br>&nbsp;&nbsp;user_id INT REFERENCES users(id)<br>);</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ FAST (Indexed JOIN lookups)<br>CREATE TABLE orders ( user_id INT REFERENCES users(id) );<br>CREATE INDEX idx_orders_user_id ON orders(user_id);</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> لا ينشئ PostgreSQL فهارس تلقائية للمفاتيح الأجنبية، مما يسبب مسحاً كاملاً للجدول (Sequential Scan) عند تنفيذ عمليات الـ JOIN ما لم تنشئ الفهرس يدوياً.
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>ACID</dt>
+              <dd class="fsa-ar" dir="rtl">مجموعة من 4 خصائص قياسية تضمن معالجة معاملات قاعدة البيانات بموثوقية وأمان تام.</dd>
+              <dt>Foreign Key</dt>
+              <dd class="fsa-ar" dir="rtl">حقل في جدول يشير إلى المفتاح الأساسي في جدول آخر لفرض التكامل والترابط المرجعي.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="postgresRelCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "Which ACID property guarantees that all operations within a database transaction complete successfully, or all are rolled back?",
+                  "options": [
+                    "Atomicity",
+                    "Consistency",
+                    "Durability"
+                  ],
+                  "answer": 0,
+                  "why": "Atomicity ensures that multi-step transactions are treated as a single indivisible unit of work.",
+                  "whyAr": "تضمن الذرية (Atomicity) تنفيذ خطوات المعاملة كوحدة واحدة غير قابلة للتجزئة: الكل أو لا شيء.",
+                  "anchor": "learn"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Interview Question: Connection Pooling in PostgreSQL</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: Why is Connection Pooling (e.g. PgBouncer) mandatory when connecting Node.js to PostgreSQL?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> لأن PostgreSQL ينشئ عملية نظام منفصلة (Fork Process) لكل اتصال جديد تستهلك حوالي 10MB من الـ RAM. مجمّع الاتصالات (Connection Pool) يحافظ على عدد ثابت من الاتصالات المفتوحة ويعيد استخدامها بين آلاف طلبات Node.js بكفاءة.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="../mongodb/document-model.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous Track: MongoDB · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="../prisma/what-is-an-orm.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next Track: Prisma ORM · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'postgresAcidStepper',
+          title: 'Atomic Banking Transaction Commit and Rollback',
+          init: () => ({
+            accounts: [
+              { name: 'User A Balance', balance: 500 },
+              { name: 'User B Balance', balance: 200 }
+            ]
+          }),
+          steps: (state) => [
+            { activeIdx: 0, say: 'الخطوة 1: بدء المعاملة (BEGIN) وحجز قفل التعديل' },
+            { activeIdx: 0, say: 'الخطوة 2: خصم 100$ من حساب المستخدم A (المتبقي: 400$)' },
+            { activeIdx: 1, say: 'الخطوة 3: إضافة 100$ إلى حساب المستخدم B (الجديد: 300$)' },
+            { activeIdx: 1, say: 'الخطوة 4: تأكيد المعاملة (COMMIT) وتثبيت الرصيدين في القرص بنجاح' }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 12px;">
+                ${state.accounts.map((acc, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 150px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-size: 9px; color: var(--text-muted);">${acc.name}</span>
+                      <span style="font-size: 14px; font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'}; display: block; margin-top: 4px;">$${acc.balance}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'postgresPlayground',
+          starterCode: `// Atomic Transaction Simulator
+const db = {
+  accountA: 500,
+  accountB: 200
+};
+
+function transferFunds(amount, shouldFail = false) {
+  const snapshot = { ...db }; // Snapshot for Rollback
+  console.log('Initial Balances:', db);
+
+  try {
+    console.log(\`[BEGIN] Transferring $\${amount}...\`);
+    if (db.accountA < amount) throw new Error('Insufficient Funds');
+    
+    db.accountA -= amount;
+    if (shouldFail) throw new Error('Network Connection Severed!');
+    
+    db.accountB += amount;
+    console.log('[COMMIT] Transaction successfully applied!');
+  } catch (err) {
+    console.error('[ROLLBACK] Error occurred:', err.message);
+    Object.assign(db, snapshot); // Rollback to snapshot
+    console.log('Restored Balances:', db);
+  }
+}
+
+transferFunds(100, true); // Simulated Failure with Rollback`
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -652,8 +652,8 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 | 12 | Reference, Projects & Playground surfaces | ✅ Completed | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
 | 13 | Content Wave 1 — Foundations + React | ✅ Completed | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
 | 14 | Content Wave 2 — Node + Express | ✅ Completed | 13 | ~26 lessons + event-loop & conveyor flagships |
-| 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | In Progress | 14 | ~44 lessons + remaining flagships |
-| 16 | Hardening — A11y, Responsive, Performance | Pending | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
+| 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | ✅ Completed | 14 | ~44 lessons + remaining flagships |
+| 16 | Hardening — A11y, Responsive, Performance | In Progress | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
 | 17 | QA & Launch | Pending | 16 | Smoke protocol passed; live on GitHub Pages |
 
 ---
@@ -770,7 +770,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 13.
 **Acceptance:** event-loop step ordering reproduced identically by a scratch Node script · all predict-output exercises have verified expected outputs · check-content green · every lesson has interactive practice and visual engagement.
 
-### Phase 15 — Content Wave 3: Mongo + Postgres + Prisma + Architecture *(weeks 19–26)*
+### Phase 15 — Content Wave 3: Mongo + Postgres + Prisma + Architecture *(Completed)*
 
 **Objective:** the data story and the connective conclusion.
 **Key tasks:** 12 MongoDB lessons (aggregation pipeline stepper, embed-vs-reference simulator) · 12 PostgreSQL lessons (join animator, isolation-anomaly stepper, EXPLAIN reader) · 10 Prisma lessons (layer tracer, N+1 detector) · 10 Architecture/Next-concepts lessons (four condensed request-lifecycle steppers) · comparison content (the honest middle path: Postgres jsonb) · remaining reference/error pages · final project briefs · all at the full Part 7 bar with interactive Try-It sections and visual engagement matching the reference benchmark.

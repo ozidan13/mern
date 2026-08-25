@@ -9,8 +9,8 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-25T05:55:43.565Z",
-  "totalLessons": 14,
+  "generatedAt": "2026-08-25T05:57:17.613Z",
+  "totalLessons": 18,
   "tracks": [
     {
       "id": "foundations",
@@ -411,7 +411,11 @@
                 "title": "The Middleware Conveyor Pipeline & next()",
                 "url": "learn/express/middleware.html"
               },
-              "next": null
+              "next": {
+                "slug": "mongodb/document-model",
+                "title": "BSON Document Model vs Tables",
+                "url": "learn/mongodb/document-model.html"
+              }
             }
           ]
         }
@@ -422,32 +426,144 @@
       "title": "MongoDB 8.0",
       "icon": "fsa-icon-book",
       "color": "var(--track-mongo)",
-      "totalLessons": 0,
-      "levels": []
+      "totalLessons": 1,
+      "levels": [
+        {
+          "level": 1,
+          "lessons": [
+            {
+              "track": "mongodb",
+              "lesson": "document-model",
+              "title": "BSON Document Model vs Tables",
+              "level": 1,
+              "order": 1,
+              "estMinutes": 25,
+              "teachesVersion": "MongoDB 8.x",
+              "patternLabel": "Document Database",
+              "prereqs": [],
+              "url": "learn/mongodb/document-model.html",
+              "slug": "mongodb/document-model",
+              "prev": {
+                "slug": "express/rest-crud",
+                "title": "Building a Production REST CRUD API",
+                "url": "learn/express/rest-crud.html"
+              },
+              "next": {
+                "slug": "postgresql/relational-model",
+                "title": "Relational Model & ACID Guarantees",
+                "url": "learn/postgresql/relational-model.html"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "postgresql",
       "title": "PostgreSQL 18.x",
       "icon": "fsa-icon-book",
       "color": "var(--track-pg)",
-      "totalLessons": 0,
-      "levels": []
+      "totalLessons": 1,
+      "levels": [
+        {
+          "level": 1,
+          "lessons": [
+            {
+              "track": "postgresql",
+              "lesson": "relational-model",
+              "title": "Relational Model & ACID Guarantees",
+              "level": 1,
+              "order": 1,
+              "estMinutes": 25,
+              "teachesVersion": "PostgreSQL 18.x",
+              "patternLabel": "Relational Core",
+              "prereqs": [],
+              "url": "learn/postgresql/relational-model.html",
+              "slug": "postgresql/relational-model",
+              "prev": {
+                "slug": "mongodb/document-model",
+                "title": "BSON Document Model vs Tables",
+                "url": "learn/mongodb/document-model.html"
+              },
+              "next": {
+                "slug": "prisma/what-is-an-orm",
+                "title": "What is an ORM & The Prisma Architecture",
+                "url": "learn/prisma/what-is-an-orm.html"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "prisma",
       "title": "Prisma 7.x",
       "icon": "fsa-icon-code",
       "color": "var(--track-prisma)",
-      "totalLessons": 0,
-      "levels": []
+      "totalLessons": 1,
+      "levels": [
+        {
+          "level": 1,
+          "lessons": [
+            {
+              "track": "prisma",
+              "lesson": "what-is-an-orm",
+              "title": "What is an ORM & The Prisma Architecture",
+              "level": 1,
+              "order": 1,
+              "estMinutes": 25,
+              "teachesVersion": "Prisma 7.x",
+              "patternLabel": "Data Layer",
+              "prereqs": [],
+              "url": "learn/prisma/what-is-an-orm.html",
+              "slug": "prisma/what-is-an-orm",
+              "prev": {
+                "slug": "postgresql/relational-model",
+                "title": "Relational Model & ACID Guarantees",
+                "url": "learn/postgresql/relational-model.html"
+              },
+              "next": {
+                "slug": "architecture/request-lifecycles",
+                "title": "The Full-Stack End-to-End Request Lifecycle",
+                "url": "learn/architecture/request-lifecycles.html"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "architecture",
       "title": "Full-Stack Architecture & Next.js",
       "icon": "fsa-icon-lightbulb",
       "color": "var(--track-arch)",
-      "totalLessons": 0,
-      "levels": []
+      "totalLessons": 1,
+      "levels": [
+        {
+          "level": 3,
+          "lessons": [
+            {
+              "track": "architecture",
+              "lesson": "request-lifecycles",
+              "title": "The Full-Stack End-to-End Request Lifecycle",
+              "level": 3,
+              "order": 1,
+              "estMinutes": 40,
+              "teachesVersion": "MERN & PERN Stack",
+              "patternLabel": "System Architecture",
+              "prereqs": [],
+              "url": "learn/architecture/request-lifecycles.html",
+              "slug": "architecture/request-lifecycles",
+              "prev": {
+                "slug": "prisma/what-is-an-orm",
+                "title": "What is an ORM & The Prisma Architecture",
+                "url": "learn/prisma/what-is-an-orm.html"
+              },
+              "next": null
+            }
+          ]
+        }
+      ]
     }
   ],
   "flatList": [
@@ -706,6 +822,82 @@
         "slug": "express/middleware",
         "title": "The Middleware Conveyor Pipeline & next()",
         "url": "learn/express/middleware.html"
+      },
+      "next": {
+        "slug": "mongodb/document-model",
+        "title": "BSON Document Model vs Tables",
+        "url": "learn/mongodb/document-model.html"
+      }
+    },
+    {
+      "slug": "mongodb/document-model",
+      "track": "mongodb",
+      "lesson": "document-model",
+      "title": "BSON Document Model vs Tables",
+      "level": 1,
+      "order": 1,
+      "url": "learn/mongodb/document-model.html",
+      "prev": {
+        "slug": "express/rest-crud",
+        "title": "Building a Production REST CRUD API",
+        "url": "learn/express/rest-crud.html"
+      },
+      "next": {
+        "slug": "postgresql/relational-model",
+        "title": "Relational Model & ACID Guarantees",
+        "url": "learn/postgresql/relational-model.html"
+      }
+    },
+    {
+      "slug": "postgresql/relational-model",
+      "track": "postgresql",
+      "lesson": "relational-model",
+      "title": "Relational Model & ACID Guarantees",
+      "level": 1,
+      "order": 1,
+      "url": "learn/postgresql/relational-model.html",
+      "prev": {
+        "slug": "mongodb/document-model",
+        "title": "BSON Document Model vs Tables",
+        "url": "learn/mongodb/document-model.html"
+      },
+      "next": {
+        "slug": "prisma/what-is-an-orm",
+        "title": "What is an ORM & The Prisma Architecture",
+        "url": "learn/prisma/what-is-an-orm.html"
+      }
+    },
+    {
+      "slug": "prisma/what-is-an-orm",
+      "track": "prisma",
+      "lesson": "what-is-an-orm",
+      "title": "What is an ORM & The Prisma Architecture",
+      "level": 1,
+      "order": 1,
+      "url": "learn/prisma/what-is-an-orm.html",
+      "prev": {
+        "slug": "postgresql/relational-model",
+        "title": "Relational Model & ACID Guarantees",
+        "url": "learn/postgresql/relational-model.html"
+      },
+      "next": {
+        "slug": "architecture/request-lifecycles",
+        "title": "The Full-Stack End-to-End Request Lifecycle",
+        "url": "learn/architecture/request-lifecycles.html"
+      }
+    },
+    {
+      "slug": "architecture/request-lifecycles",
+      "track": "architecture",
+      "lesson": "request-lifecycles",
+      "title": "The Full-Stack End-to-End Request Lifecycle",
+      "level": 3,
+      "order": 1,
+      "url": "learn/architecture/request-lifecycles.html",
+      "prev": {
+        "slug": "prisma/what-is-an-orm",
+        "title": "What is an ORM & The Prisma Architecture",
+        "url": "learn/prisma/what-is-an-orm.html"
       },
       "next": null
     }

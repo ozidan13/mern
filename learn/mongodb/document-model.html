@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="mongodb">
+  <meta name="fsa-lesson" content="document-model">
+  <meta name="fsa-level" content="1">
+  <meta name="fsa-order" content="1">
+  <meta name="fsa-title" content="BSON Document Model vs Tables">
+  <meta name="fsa-est-minutes" content="25">
+  <meta name="fsa-teaches-version" content="MongoDB 8.x">
+  <meta name="fsa-pattern-label" content="Document Database">
+  <meta name="fsa-root" content="../../">
+
+  <title>BSON Document Model vs Tables · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-mongo)"></span>
+            <span>MongoDB Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="document-model.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>Document Model vs Tables</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">MongoDB</a> &rsaquo;
+              <span>Document Model</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 1 · MONGO 8.X</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">BSON Document Model vs Tables</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              نموذج المستندات BSON مقابل الجداول العلائقية: تصميم المخططات، والتضمين (Embedding) مقابل الإسناد (Referencing)
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: MongoDB 8.x Architecture</span>
+              <span class="fsa-badge">Level 1</span>
+              <span class="fsa-badge">25 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Understand the BSON (Binary JSON) storage engine and ObjectId generation anatomy.</li>
+                <li>Compare Document collections with Relational tables (Row vs Document, Table vs Collection).</li>
+                <li>Master the golden schema rule: Data that is accessed together should be stored together (Embedding).</li>
+                <li>Determine when to Reference (1:Many high cardinality) vs when to Embed (1:Few).</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه مجلد الملفات الشامل مقابل الأوراق المتناثرة</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                في قواعد البيانات العلائقية التقليدية (SQL)، لكي تقرأ بيانات مستخدم وعناوينه وطلباته، عليك تجميع أوراق متناثرة من 4 جداول مختلفة عبر عمليات دمج معقدة (JOINs).
+                أما في <strong>MongoDB</strong>، فالأمر يشبه <strong>مجلداً بلاستيكياً واحداً (Document)</strong> تضع فيه بطاقة المستخدم وعناوينه مدمجة بداخله كـ Sub-document: تفتح المجلد مرة واحدة فتجد كل شيء جاهزاً في قراءة قرصية واحدة (Single Disk Read)!
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              <strong>MongoDB</strong> is a document-oriented NoSQL database. It stores records as BSON documents (Binary JSON), grouping them into flexible collections without rigid table schemas. It enables dynamic schemas, nested arrays, and high-throughput read/write operations.
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              تعتمد قاعدة بيانات <strong>MongoDB</strong> على تخزين البيانات بصيغة <strong>BSON (Binary JSON)</strong>. تتيح للمطورين تمثيل كائنات معقدة ومتداخلة ومصفوفات داخل نفس المستند بدون الحاجة لجداول وسيطة أو قيود صارمة للمخطط.
+            </p>
+
+            <h3>Key Architectural Equivalents · المقابل بين SQL و MongoDB</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--track-mongo);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Table &rarr; Collection (المجموعة)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  المجموعة تضم مستندات من نفس الفئة (مثل <code>users</code> أو <code>posts</code>) بدون فرض نفس الحقول على كل المستندات.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Row &rarr; Document / BSON (المستند)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  المستند يمثل سجلاً واحداً يحمل معرفاً فريداً <code>_id (ObjectId)</code> بحد أقصى للحجم 16MB.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">Column &rarr; Field (الحقل)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  الحقل يقبل جميع الأنواع القياسية بالإضافة للمصفوفات (Arrays) والمستندات الفرعية المضمنة (Embedded Documents).
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through Document Embedding vs Referencing tradeoffs:</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد المقارنة البصرية بين تضمين العناوين داخل المستند وبين فصلها في مجموعة منفصلة:
+            </p>
+
+            <div class="fsa-stepper" id="mongoModelStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="MongoDB Document Model Diagram">
+                <title>MongoDB BSON Document Structure</title>
+                <desc>User Document embeds Addresses array and references Orders collection</desc>
+                <rect x="20" y="15" width="260" height="110" rx="8" fill="var(--tint-primary)" stroke="var(--track-mongo)" stroke-width="2" class="fsa-anim-pulse" />
+                <text x="150" y="38" fill="var(--track-mongo)" text-anchor="middle" font-size="12" font-weight="700">User Document (_id: 101)</text>
+                <text x="150" y="60" fill="var(--text-primary)" text-anchor="middle" font-size="11">name: "Omar Zidan"</text>
+                <rect x="40" y="70" width="220" height="40" rx="4" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="1" />
+                <text x="150" y="94" fill="var(--accent-primary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">addresses: [{ city: "Cairo" }]</text>
+
+                <path d="M 290 70 L 370 70" stroke="var(--accent-warning)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(380, 25)">
+                  <rect width="220" height="90" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                  <text x="110" y="35" fill="var(--text-muted)" text-anchor="middle" font-size="11" font-weight="700">Orders Collection</text>
+                  <text x="110" y="60" fill="var(--text-secondary)" text-anchor="middle" font-size="10">userId: 101 (Reference)</text>
+                  <text x="110" y="78" fill="var(--accent-success)" text-anchor="middle" font-size="10">total: $150.00</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">BSON Document Sandbox</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate nested BSON document queries and array mutations live:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: قم بتعديل هيكل المستند والبحث في المصفوفات المتداخلة:
+              </p>
+
+              <div class="fsa-playground" id="mongoPlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>When should you PREFER embedding comments directly inside a blog post document?</p>
+              <p class="fsa-ar" dir="rtl">متى يكون تضمين التعليقات داخل مستند المقال خياراً مثالياً؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    عندما يكون عدد التعليقات محدوداً (1:Few) وتتم قراءتها دائماً مع المقال في نفس الوقت. أما إذا كان المقال قد يتلقى آلاف التعليقات، فيجب فصلها لتجنب تجاوز حد الـ 16MB.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: {</span>
+                <span class="fsa-anatomy__line" data-line="2">2:   "_id": ObjectId("66cbb4e2f9d123456789abcd"),</span>
+                <span class="fsa-anatomy__line" data-line="3">3:   "title": "FullStack Architecture Masterclass",</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   "tags": ["nodejs", "mongodb", "react"],</span>
+                <span class="fsa-anatomy__line" data-line="5">5:   "author": { "name": "Omar", "verified": true }</span>
+                <span class="fsa-anatomy__line" data-line="6">6: }</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 2:</strong> المعرف التلقائي <code>ObjectId</code> يتكون من 12 بايت تحتوي على الـ Timestamp ومعرف الجهاز ورقم تسلسلي فريد عالمياً.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 5:</strong> كائن <code>author</code> مضمن كمستند فرعي (Embedded Document) يقرأ في نفس العملية الذرية.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Read Performance (Embedded)</span>
+                </div>
+                <div class="fsa-complexity-card__big">1 Disk Seek (Zero JOINs)</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تضمين البيانات المرتبطة يسمح بقراءة السجل وأبنائه في عملية قراءة قرصية ذرية واحدة.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-danger);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>BSON Size Limit</span>
+                </div>
+                <div class="fsa-complexity-card__big">16 MB Max Document</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  الحد الأقصى المطلق لحجم أي مستند BSON واحد في MongoDB هو 16 ميجابايت لمنع استهلاك مفرط للذاكرة.
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>Anatomy of a MongoDB ObjectId (12 Bytes)</summary>
+              <div class="fsa-details__body">
+                <ul style="padding-inline-start: var(--space-5); line-height: 1.8;">
+                  <li><strong>4 Bytes:</strong> Unix Timestamp بالثواني (يمكن استخراج تاريخ الإنشاء من المعرف مباشرة).</li>
+                  <li><strong>5 Bytes:</strong> معرف فريد للعملية والآلة العشوائية (Process &amp; Machine Identifier).</li>
+                  <li><strong>3 Bytes:</strong> عداد تراكمي متزايد (Incrementing Counter).</li>
+                </ul>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Unbounded Array Growth (تضخم المصفوفة اللانهائي)</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ DANGEROUS (Unbounded array hits 16MB limit)<br>{ _id: 1, logs: [ ...millionsOfLogEntries ] }</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ SAFE (Referenced collection per log entry)<br>{ _id: 101, serverId: 1, message: "OK", timestamp: ... }</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> تخزين سجلات أو أحداث تنمو بلا سقف داخل مصفوفة في نفس المستند سيؤدي حتماً لاختراق حاجز الـ 16MB وانهيار عمليات الكتابة.
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>BSON</dt>
+              <dd class="fsa-ar" dir="rtl">تنسيق ثنائي لتمثيل JSON يوفر سرعة عالية في التحليل ويدعم أنواع بيانات إضافية (مثل التاريخ و ObjectId و Binary).</dd>
+              <dt>Embedding</dt>
+              <dd class="fsa-ar" dir="rtl">تضمين المستندات المرتبطة ككائنات فرعية داخل المستند الأب لتسريع القراءة.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="mongoDocCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "What is the maximum allowed size for a single BSON document in MongoDB?",
+                  "options": [
+                    "2 Megabytes",
+                    "16 Megabytes",
+                    "Unlimited"
+                  ],
+                  "answer": 1,
+                  "why": "MongoDB enforces a strict 16MB maximum document size limit to prevent memory exhaustion during RAM caching.",
+                  "whyAr": "تفرض MongoDB حداً أقصى صارماً قدره 16 ميجابايت للمستند الواحد لمنع استهلاك الذاكرة وتدهور الأداء.",
+                  "anchor": "deep-dive"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Interview Question: When to choose MongoDB over PostgreSQL?</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: Under what architectural requirements should a team select MongoDB over a relational database?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> عندما تكون هياكل البيانات هرمية ومتغيرة المخطط (Polymorphic schema)، وحجم الكتابة مرتفعاً جداً ويتطلب توزيعاً أفقياً مرناً (Sharding)، وحيث تقرأ البيانات دائماً ككتلة واحدة مدمجة (مثل كتالوجات المنتجات والتغذية الإخبارية).
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="../express/rest-crud.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous Track: Express.js · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="../postgresql/relational-model.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next Track: PostgreSQL · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'mongoModelStepper',
+          title: 'Embedding vs Referencing Tradeoff Stepper',
+          init: () => ({
+            models: [
+              { name: '1. User Document', desc: 'Embedded Address array inside document' },
+              { name: '2. Query Execution', desc: 'db.users.findOne({ _id: 1 }) -> 1 Disk Seek' },
+              { name: '3. Orders Collection', desc: 'Separate referenced collection for high volume' }
+            ]
+          }),
+          steps: (state) => [
+            { activeIdx: 0, say: 'الخطوة 1: حفظ العناوين مضمنة داخل نفس المستند' },
+            { activeIdx: 1, say: 'الخطوة 2: استرجاع المستخدم وعناوينه في قراءة قرصية واحدة بدون JOINs' },
+            { activeIdx: 2, say: 'الخطوة 3: فصل الطلبات الكثيرة في مجموعة منفصلة لمنع تضخم المستند' }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 10px;">
+                ${state.models.map((m, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${m.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${m.desc}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'mongoPlayground',
+          starterCode: `// MongoDB Document Structure Simulation
+const userDoc = {
+  _id: '66cbb4e2f9d123456789abcd',
+  name: 'Amira',
+  skills: ['React', 'Node.js', 'MongoDB'],
+  address: {
+    country: 'Egypt',
+    city: 'Alexandria'
+  }
+};
+
+console.log('User Document:', userDoc);
+console.log('Nested Field Query (City):', userDoc.address.city);
+console.log('Array Member Query (skills[1]):', userDoc.skills[1]);`
+        });
+      }
+    });
+  </script>
+</body>
+</html>

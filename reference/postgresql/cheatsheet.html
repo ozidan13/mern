@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostgreSQL 18.x Cheatsheet · دليل بوستجرس السريع — FullStack Academy</title>
+  
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Reference</span>
+        </a>
+      </div>
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="fsa-main" style="max-width: 960px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <nav class="fsa-breadcrumbs">
+        <a href="../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Reference</a> &rsaquo;
+        <span>PostgreSQL Cheatsheet</span>
+      </nav>
+
+      <h1>PostgreSQL 18.x SQL Commands Cheatsheet</h1>
+      <p class="fsa-lead">Core DDL statements, JOIN syntax, and transaction controls.</p>
+
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>Transaction Management (ACID)</h2>
+        <pre style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm);"><code>BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT; -- or ROLLBACK;</code></pre>
+      </section>
+
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>SQL JOIN Types</h2>
+        <table class="fsa-table">
+          <thead>
+            <tr><th>Join Type</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>INNER JOIN</code></td><td>Returns rows with matching values in both tables</td></tr>
+            <tr><td><code>LEFT JOIN</code></td><td>Returns all rows from left table, matched from right</td></tr>
+            <tr><td><code>FULL OUTER JOIN</code></td><td>Returns all rows when there is a match in either table</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>
