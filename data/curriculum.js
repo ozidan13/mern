@@ -9,8 +9,8 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-25T05:53:12.307Z",
-  "totalLessons": 8,
+  "generatedAt": "2026-08-25T05:55:43.565Z",
+  "totalLessons": 14,
   "tracks": [
     {
       "id": "foundations",
@@ -225,7 +225,11 @@
                 "title": "Effects with useEffect & Synchronization",
                 "url": "learn/react/use-effect.html"
               },
-              "next": null
+              "next": {
+                "slug": "nodejs/what-node-is",
+                "title": "Node.js Architecture & V8 Runtime",
+                "url": "learn/nodejs/what-node-is.html"
+              }
             }
           ]
         }
@@ -236,16 +240,182 @@
       "title": "Node.js 24 LTS",
       "icon": "fsa-icon-terminal",
       "color": "var(--track-node)",
-      "totalLessons": 0,
-      "levels": []
+      "totalLessons": 3,
+      "levels": [
+        {
+          "level": 1,
+          "lessons": [
+            {
+              "track": "nodejs",
+              "lesson": "what-node-is",
+              "title": "Node.js Architecture & V8 Runtime",
+              "level": 1,
+              "order": 1,
+              "estMinutes": 20,
+              "teachesVersion": "Node 24 LTS",
+              "patternLabel": "Runtime Internals",
+              "prereqs": [],
+              "url": "learn/nodejs/what-node-is.html",
+              "slug": "nodejs/what-node-is",
+              "prev": {
+                "slug": "react/reconciliation",
+                "title": "Virtual DOM Diffing & Reconciliation",
+                "url": "learn/react/reconciliation.html"
+              },
+              "next": {
+                "slug": "nodejs/event-loop",
+                "title": "The 6-Phase Event Loop Deep Dive",
+                "url": "learn/nodejs/event-loop.html"
+              }
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "lessons": [
+            {
+              "track": "nodejs",
+              "lesson": "event-loop",
+              "title": "The 6-Phase Event Loop Deep Dive",
+              "level": 2,
+              "order": 2,
+              "estMinutes": 35,
+              "teachesVersion": "Node 24 LTS",
+              "patternLabel": "Event Loop Architecture",
+              "prereqs": [],
+              "url": "learn/nodejs/event-loop.html",
+              "slug": "nodejs/event-loop",
+              "prev": {
+                "slug": "nodejs/what-node-is",
+                "title": "Node.js Architecture & V8 Runtime",
+                "url": "learn/nodejs/what-node-is.html"
+              },
+              "next": {
+                "slug": "nodejs/streams-buffers",
+                "title": "Streams, Buffers & Backpressure Handling",
+                "url": "learn/nodejs/streams-buffers.html"
+              }
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "lessons": [
+            {
+              "track": "nodejs",
+              "lesson": "streams-buffers",
+              "title": "Streams, Buffers & Backpressure Handling",
+              "level": 3,
+              "order": 3,
+              "estMinutes": 30,
+              "teachesVersion": "Node 24 Streams",
+              "patternLabel": "Data Streaming",
+              "prereqs": [],
+              "url": "learn/nodejs/streams-buffers.html",
+              "slug": "nodejs/streams-buffers",
+              "prev": {
+                "slug": "nodejs/event-loop",
+                "title": "The 6-Phase Event Loop Deep Dive",
+                "url": "learn/nodejs/event-loop.html"
+              },
+              "next": {
+                "slug": "express/hello-express",
+                "title": "Express Fundamentals & Server Setup",
+                "url": "learn/express/hello-express.html"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "express",
       "title": "Express.js 5.2",
       "icon": "fsa-icon-terminal",
       "color": "var(--track-express)",
-      "totalLessons": 0,
-      "levels": []
+      "totalLessons": 3,
+      "levels": [
+        {
+          "level": 1,
+          "lessons": [
+            {
+              "track": "express",
+              "lesson": "hello-express",
+              "title": "Express Fundamentals & Server Setup",
+              "level": 1,
+              "order": 1,
+              "estMinutes": 20,
+              "teachesVersion": "Express 5.2",
+              "patternLabel": "Server Fundamentals",
+              "prereqs": [],
+              "url": "learn/express/hello-express.html",
+              "slug": "express/hello-express",
+              "prev": {
+                "slug": "nodejs/streams-buffers",
+                "title": "Streams, Buffers & Backpressure Handling",
+                "url": "learn/nodejs/streams-buffers.html"
+              },
+              "next": {
+                "slug": "express/middleware",
+                "title": "The Middleware Conveyor Pipeline & next()",
+                "url": "learn/express/middleware.html"
+              }
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "lessons": [
+            {
+              "track": "express",
+              "lesson": "middleware",
+              "title": "The Middleware Conveyor Pipeline & next()",
+              "level": 2,
+              "order": 2,
+              "estMinutes": 30,
+              "teachesVersion": "Express 5.2 Middleware",
+              "patternLabel": "Pipeline Architecture",
+              "prereqs": [],
+              "url": "learn/express/middleware.html",
+              "slug": "express/middleware",
+              "prev": {
+                "slug": "express/hello-express",
+                "title": "Express Fundamentals & Server Setup",
+                "url": "learn/express/hello-express.html"
+              },
+              "next": {
+                "slug": "express/rest-crud",
+                "title": "Building a Production REST CRUD API",
+                "url": "learn/express/rest-crud.html"
+              }
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "lessons": [
+            {
+              "track": "express",
+              "lesson": "rest-crud",
+              "title": "Building a Production REST CRUD API",
+              "level": 3,
+              "order": 3,
+              "estMinutes": 35,
+              "teachesVersion": "Express 5.2 CRUD",
+              "patternLabel": "API Architecture",
+              "prereqs": [],
+              "url": "learn/express/rest-crud.html",
+              "slug": "express/rest-crud",
+              "prev": {
+                "slug": "express/middleware",
+                "title": "The Middleware Conveyor Pipeline & next()",
+                "url": "learn/express/middleware.html"
+              },
+              "next": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "mongodb",
@@ -422,6 +592,120 @@
         "slug": "react/use-effect",
         "title": "Effects with useEffect & Synchronization",
         "url": "learn/react/use-effect.html"
+      },
+      "next": {
+        "slug": "nodejs/what-node-is",
+        "title": "Node.js Architecture & V8 Runtime",
+        "url": "learn/nodejs/what-node-is.html"
+      }
+    },
+    {
+      "slug": "nodejs/what-node-is",
+      "track": "nodejs",
+      "lesson": "what-node-is",
+      "title": "Node.js Architecture & V8 Runtime",
+      "level": 1,
+      "order": 1,
+      "url": "learn/nodejs/what-node-is.html",
+      "prev": {
+        "slug": "react/reconciliation",
+        "title": "Virtual DOM Diffing & Reconciliation",
+        "url": "learn/react/reconciliation.html"
+      },
+      "next": {
+        "slug": "nodejs/event-loop",
+        "title": "The 6-Phase Event Loop Deep Dive",
+        "url": "learn/nodejs/event-loop.html"
+      }
+    },
+    {
+      "slug": "nodejs/event-loop",
+      "track": "nodejs",
+      "lesson": "event-loop",
+      "title": "The 6-Phase Event Loop Deep Dive",
+      "level": 2,
+      "order": 2,
+      "url": "learn/nodejs/event-loop.html",
+      "prev": {
+        "slug": "nodejs/what-node-is",
+        "title": "Node.js Architecture & V8 Runtime",
+        "url": "learn/nodejs/what-node-is.html"
+      },
+      "next": {
+        "slug": "nodejs/streams-buffers",
+        "title": "Streams, Buffers & Backpressure Handling",
+        "url": "learn/nodejs/streams-buffers.html"
+      }
+    },
+    {
+      "slug": "nodejs/streams-buffers",
+      "track": "nodejs",
+      "lesson": "streams-buffers",
+      "title": "Streams, Buffers & Backpressure Handling",
+      "level": 3,
+      "order": 3,
+      "url": "learn/nodejs/streams-buffers.html",
+      "prev": {
+        "slug": "nodejs/event-loop",
+        "title": "The 6-Phase Event Loop Deep Dive",
+        "url": "learn/nodejs/event-loop.html"
+      },
+      "next": {
+        "slug": "express/hello-express",
+        "title": "Express Fundamentals & Server Setup",
+        "url": "learn/express/hello-express.html"
+      }
+    },
+    {
+      "slug": "express/hello-express",
+      "track": "express",
+      "lesson": "hello-express",
+      "title": "Express Fundamentals & Server Setup",
+      "level": 1,
+      "order": 1,
+      "url": "learn/express/hello-express.html",
+      "prev": {
+        "slug": "nodejs/streams-buffers",
+        "title": "Streams, Buffers & Backpressure Handling",
+        "url": "learn/nodejs/streams-buffers.html"
+      },
+      "next": {
+        "slug": "express/middleware",
+        "title": "The Middleware Conveyor Pipeline & next()",
+        "url": "learn/express/middleware.html"
+      }
+    },
+    {
+      "slug": "express/middleware",
+      "track": "express",
+      "lesson": "middleware",
+      "title": "The Middleware Conveyor Pipeline & next()",
+      "level": 2,
+      "order": 2,
+      "url": "learn/express/middleware.html",
+      "prev": {
+        "slug": "express/hello-express",
+        "title": "Express Fundamentals & Server Setup",
+        "url": "learn/express/hello-express.html"
+      },
+      "next": {
+        "slug": "express/rest-crud",
+        "title": "Building a Production REST CRUD API",
+        "url": "learn/express/rest-crud.html"
+      }
+    },
+    {
+      "slug": "express/rest-crud",
+      "track": "express",
+      "lesson": "rest-crud",
+      "title": "Building a Production REST CRUD API",
+      "level": 3,
+      "order": 3,
+      "url": "learn/express/rest-crud.html",
+      "prev": {
+        "slug": "express/middleware",
+        "title": "The Middleware Conveyor Pipeline & next()",
+        "url": "learn/express/middleware.html"
       },
       "next": null
     }

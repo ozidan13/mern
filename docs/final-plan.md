@@ -651,8 +651,8 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 | 11 | Homepage & Catalog Pages | ✅ Completed | 3, 9 | landing, `learn/`, track homes, 404 |
 | 12 | Reference, Projects & Playground surfaces | ✅ Completed | 5, 9 | `reference/`, `projects/`, `tasks/` convention, `playground.html` |
 | 13 | Content Wave 1 — Foundations + React | ✅ Completed | 5–9 | ~36 lessons + 2 task-apps, all quality bars green |
-| 14 | Content Wave 2 — Node + Express | In Progress | 13 | ~26 lessons + event-loop & conveyor flagships |
-| 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | Pending | 14 | ~44 lessons + remaining flagships |
+| 14 | Content Wave 2 — Node + Express | ✅ Completed | 13 | ~26 lessons + event-loop & conveyor flagships |
+| 15 | Content Wave 3 — Mongo + Postgres + Prisma + Architecture | In Progress | 14 | ~44 lessons + remaining flagships |
 | 16 | Hardening — A11y, Responsive, Performance | Pending | 11–15 | WCAG 2.2 AA sign-off, device matrix pass, budgets green |
 | 17 | QA & Launch | Pending | 16 | Smoke protocol passed; live on GitHub Pages |
 
@@ -762,7 +762,7 @@ Format per phase: **Objective · Key tasks · Deliverables · Dependencies · Ac
 **Depends on:** 5–9.
 **Acceptance:** check-content green across the wave · smoke journey completable start-to-finish by a test user who knows no React · quiz first-attempt pass rates 60–80% in calibration testing · every lesson has at least one interactive practice activity that tests the mastery target · no lesson relies on static questions as primary assessment · every lesson uses visual elements and animations to explain concepts.
 
-### Phase 14 — Content Wave 2: Node + Express *(weeks 15–19)*
+### Phase 14 — Content Wave 2: Node + Express *(Completed)*
 
 **Objective:** the backend spine.
 **Key tasks:** 14 Node lessons (flagship: six-phase event-loop stepper validated against real runtime ordering; streams visualizer) · 12 Express lessons (flagships: middleware conveyor, request lifecycle) · URL-shortener and blogs-API project briefs · Node/Express reference + error pages (`EADDRINUSE` et al.) · all at the full Part 7 bar with interactive Try-It sections and visual engagement matching the reference benchmark.

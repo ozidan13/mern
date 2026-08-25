@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="what-node-is">
+  <meta name="fsa-level" content="1">
+  <meta name="fsa-order" content="1">
+  <meta name="fsa-title" content="Node.js Architecture & V8 Runtime">
+  <meta name="fsa-est-minutes" content="20">
+  <meta name="fsa-teaches-version" content="Node 24 LTS">
+  <meta name="fsa-pattern-label" content="Runtime Internals">
+  <meta name="fsa-root" content="../../">
+
+  <title>Node.js Architecture & V8 Runtime · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-node)"></span>
+            <span>Node.js Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="what-node-is.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>Node.js Architecture</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">Node.js</a> &rsaquo;
+              <span>Architecture & V8</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 1 · NODE 24 LTS</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">Node.js Architecture & V8 Runtime</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              معمارية Node.js: محرك V8، مكتبة libuv، ومفهوم الـ Non-blocking Asynchronous I/O
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: Node 24 LTS Architecture</span>
+              <span class="fsa-badge">Level 1</span>
+              <span class="fsa-badge">20 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Understand what Node.js is (a runtime environment, NOT a framework or language).</li>
+                <li>Analyze the division of labor between Google V8, libuv C++ library, and OS kernels.</li>
+                <li>Master the libuv Thread Pool and when background threads are utilized.</li>
+                <li>Simulate CPU-bound vs I/O-bound operations inside the interactive runner.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه النادل السريع ومساعدي المطبخ (libuv)</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                تخيّل مطعماً راقياً يعمل فيه <strong>نادل واحد فائق السرعة (خيط جافاسكربت الرئيسي)</strong>:
+                النادل يستقبل طلبات مئات الزبائن دون أن يقف طاهياً في المطبخ بنفسه!
+                بدلاً من ذلك، بمجرد أن يطلب الزبون وجبة تتطلب وقتاً (قراءة ملف أو استعلام قاعدة بيانات)، يمرر النادل التذكرة إلى <strong>فريق من مساعدي المطبخ في الخلفية (libuv Thread Pool)</strong>.
+                يواصل النادل خدمة الطاولات الأخرى، وعندما يجهز الطعام، يناديه المساعدون ليسلم الطبق للزبون فوراً.
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              Node.js is an open-source, cross-platform JavaScript runtime environment built on Chrome's V8 JavaScript engine. It executes JavaScript code outside a web browser, enabling developers to build highly scalable network servers using event-driven, non-blocking I/O.
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              بيئة <strong>Node.js</strong> هي بيئة تشغيل برمجية تنقل جافاسكربت من المتصفح إلى السيرفر. تعتمد على محرك V8 لتحويل الكود إلى لغة الآلة، وتستخدم مكتبة <code>libuv</code> المكتوبة بلغة C++ للتعامل مع نظام التشغيل وإدارة العمليات غير المتزامنة بكفاءة خيالية.
+            </p>
+
+            <h3>The Core Anatomy of Node.js · المكونات الأساسية الثلاثة</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">1. V8 Engine (محرك التنفيذ)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  محرك جوجل فائق السرعة المسؤول عن قراءة وتحليل وتنفيذ كود JavaScript وإدارة الـ Call Stack والـ Heap.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. libuv Library (قلب الـ Async I/O)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  مكتبة C++ مسؤولة عن إدارة الـ Event Loop، التعامل مع الملفات (fs)، الشبكات (sockets)، وإدارة الـ Thread Pool.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--track-node);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">3. Node C++ Bindings & Core API</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  حلقة الوصل التي تتيح لدوال جافاسكربت (مثل <code>fs.readFile</code> و <code>http.createServer</code>) استدعاء دوال نظام التشغيل الأصلية.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through asynchronous file I/O offloading to libuv threads:</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد كيف يمرر الخيط الرئيسي المهام الثقيلة إلى خيوط libuv الخلفية:
+            </p>
+
+            <div class="fsa-stepper" id="nodeArchStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Node.js libuv Architecture Flow">
+                <title>Node.js and libuv Architecture Diagram</title>
+                <desc>V8 Main Thread delegates async tasks to libuv Thread Pool and receives Event Loop callbacks</desc>
+                <rect x="20" y="30" width="140" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="90" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">V8 Main Thread</text>
+                <text x="90" y="85" fill="var(--accent-primary)" text-anchor="middle" font-size="10">(Single-Threaded)</text>
+
+                <path d="M 170 70 L 240 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(250, 20)">
+                  <rect width="180" height="100" rx="8" fill="var(--tint-primary)" stroke="var(--track-node)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="90" y="45" fill="var(--track-node)" text-anchor="middle" font-size="12" font-weight="700">libuv Engine</text>
+                  <text x="90" y="68" fill="var(--text-secondary)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">Event Loop + Pool</text>
+                  <text x="90" y="88" fill="var(--accent-primary)" text-anchor="middle" font-size="9">4 Default Threads</text>
+                </g>
+
+                <path d="M 440 70 L 500 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(500, 30)">
+                  <rect width="100" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="50" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">OS Kernel</text>
+                  <text x="50" y="75" fill="var(--text-muted)" text-anchor="middle" font-size="10">epoll / kqueue</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">Node.js I/O Simulator</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate non-blocking vs blocking tasks execution live:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: شاهد كيف تكتمل المهام غير المحظورة (Non-blocking) في الخلفية:
+              </p>
+
+              <div class="fsa-playground" id="nodePlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>What happens if you run a synchronous infinite while loop (<code>while(true){}</code>) in a Node.js server?</p>
+              <p class="fsa-ar" dir="rtl">ماذا يحدث لخادم Node.js إذا تم تشغيل حلقة تكرار متزامنة لا نهائية؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    <strong>يتجمد الخادم بالكامل!</strong> لأن خيط جافاسكربت الرئيسي واحد، فإذا انحصر في حسابات CPU متزامنة، سيعجز عن معالجة أي طلبات لجميع المستخدمين الآخرين (Block the Event Loop).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: import http from 'node:http';</span>
+                <span class="fsa-anatomy__line" data-line="2">2: </span>
+                <span class="fsa-anatomy__line" data-line="3">3: const server = http.createServer((req, res) => {</span>
+                <span class="fsa-anatomy__line" data-line="4">4:   res.writeHead(200, { 'Content-Type': 'application/json' });</span>
+                <span class="fsa-anatomy__line" data-line="5">5:   res.end(JSON.stringify({ status: 'ok', runtime: 'Node 24' }));</span>
+                <span class="fsa-anatomy__line" data-line="6">6: });</span>
+                <span class="fsa-anatomy__line" data-line="7">7: server.listen(3000);</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 1:</strong> استخدام بادئة <code>node:</code> الرسمية لاستيراد الحزم المدمجة في Node.js.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 3:</strong> تمرير معالج الأحداث (Request Listener) الذي يستدعيه الـ Event Loop مع كل طلب وارد.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Concurrent I/O Scalability</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1) Thread per 10k</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  بدلاً من حجز خيط (Thread) منفصل لكل زبون كما في السيرفرات التقليدية، يخدم Node آلاف الطلبات بخيط واحد.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>Thread Pool Size</span>
+                </div>
+                <div class="fsa-complexity-card__big">UV_THREADPOOL_SIZE=4</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  الحجم الافتراضي لطاقم خيوط libuv هو 4 خيوط، ويمكن رفعه عبر متغيرات البيئة لمعالجة العمليات الثقيلة (مثل التشفير).
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>When does libuv use background threads?</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">
+                  ليست كل العمليات غير المتزامنة تستخدم الـ Thread Pool!
+                  طلبات الشبكة (Sockets) تتم إدارتها مباشرة عبر كيرنل نظام التشغيل (epoll / kqueue) بدون خيوط إضافية.
+                  بينما تستخدم خيوط libuv فقط للعمليات التي لا تدعم الـ Asynchronous في نظام التشغيل مثل:
+                  <strong>قراءة الملفات (fs)</strong>، <strong>التشفير (crypto)</strong>، <strong>وضغط البيانات (zlib)</strong>.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Using Sync I/O in Production Request Handlers</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ BLOCKING (Freezes all other incoming requests)<br>const data = fs.readFileSync('/large-file.json');</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ NON-BLOCKING (Delegates to libuv)<br>const data = await fs.promises.readFile('/large-file.json');</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> استخدام الدوال المتزامنة (Sync) يحظر خيط الـ Event Loop ويمنع خدمة باقي المستخدمين حتى تكتمل القراءة من القرص.
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>V8 Engine</dt>
+              <dd class="fsa-ar" dir="rtl">محرك مفتوح المصدر تم تطويره بواسطة Google يقوم بترجمة كود جافاسكربت إلى لغة الآلة مباشرة (JIT Compilation).</dd>
+              <dt>libuv</dt>
+              <dd class="fsa-ar" dir="rtl">مكتبة دعم متعددة المنصات تركز على الإدخال والإخراج غير المحظور (Asynchronous I/O) وإدارة الـ Event Loop.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="nodeArchCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "Which library provides the cross-platform asynchronous I/O and Event Loop engine in Node.js?",
+                  "options": [
+                    "Google V8",
+                    "libuv",
+                    "React Fiber"
+                  ],
+                  "answer": 1,
+                  "why": "libuv is the C++ library that handles the event loop, thread pool, and non-blocking I/O in Node.js.",
+                  "whyAr": "مكتبة libuv هي المسؤولة عن معالجة الـ Event Loop والـ Thread Pool والإدخال/الإخراج غير المتزامن في Node.js.",
+                  "anchor": "learn"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Interview Question: When is Node.js NOT suitable?</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: What types of applications are NOT a good fit for Node.js?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> التطبيقات كثيفة العمليات الحسابية والمعالجة (CPU-intensive Tasks) مثل معالجة الفيديو، تدريب نماذج الذكاء الاصطناعي، وتعديل الصور الضخمة — لأنها تحظر الخيط الرئيسي للـ Event Loop، ما لم يتم عزلها في Worker Threads أو خدمات منفصلة.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="../react/reconciliation.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous Track: React · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="event-loop.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next: 6-Phase Event Loop · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'nodeArchStepper',
+          title: 'Node.js V8 & libuv Task Delegation Flow',
+          init: () => ({
+            steps: [
+              { name: '1. V8 Script Call', desc: 'fs.readFile("data.json")' },
+              { name: '2. libuv Offload', desc: 'Task delegated to Worker Thread' },
+              { name: '3. Main Continues', desc: 'V8 handles other requests' },
+              { name: '4. File Ready', desc: 'Thread emits completion event' },
+              { name: '5. Callback Run', desc: 'Event Loop executes user callback' }
+            ]
+          }),
+          steps: (state) => [
+            { activeIdx: 0, say: 'الخطوة 1: استدعاء دالة قراءة الملف في خيط جافاسكربت الرئيسي' },
+            { activeIdx: 1, say: 'الخطوة 2: تمرير قراءة القرص لمكتبة libuv وإسنادها لخيط خلفي' },
+            { activeIdx: 2, say: 'الخطوة 3: الخيط الرئيسي يواصل العمل فوراً ويخدم باقي المستخدمين' },
+            { activeIdx: 3, say: 'الخطوة 4: اكتمال قراءة الملف من القرص وإشعار الـ Event Loop' },
+            { activeIdx: 4, say: 'الخطوة 5: تنفيذ الـ Callback وتسليم البيانات المحملة' }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 8px;">
+                ${state.steps.map((s, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 110px; height: 60px; font-size: 10px; padding: 2px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${s.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block;">${s.desc}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'nodePlayground',
+          starterCode: `// Simulating Node.js Non-Blocking Asynchronous I/O
+function simulateFileRead(fileName) {
+  console.log(\`[V8 Main Thread] Starting to read: \${fileName}\`);
+  
+  // Delegated to libuv thread pool
+  setTimeout(() => {
+    console.log(\`[libuv Callback] Finished reading \${fileName} (500 KB loaded)\`);
+  }, 300);
+}
+
+simulateFileRead('users-database.json');
+console.log('[V8 Main Thread] Free to serve other incoming HTTP requests immediately!');`
+        });
+      }
+    });
+  </script>
+</body>
+</html>

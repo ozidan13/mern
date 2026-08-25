@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="event-loop">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="2">
+  <meta name="fsa-title" content="The 6-Phase Event Loop Deep Dive">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="Node 24 LTS">
+  <meta name="fsa-pattern-label" content="Event Loop Architecture">
+  <meta name="fsa-root" content="../../">
+
+  <title>The 6-Phase Event Loop Deep Dive · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-node)"></span>
+            <span>Node.js Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="event-loop.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>The 6-Phase Event Loop</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">Node.js</a> &rsaquo;
+              <span>6-Phase Event Loop</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 2 · NODE 24 LTS</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">The 6-Phase Event Loop Deep Dive</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              الغوص في المراحل الست لحلقة الأحداث: Timers، I/O Poll، Check، والفرق بين process.nextTick و setImmediate
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: libuv 6-Phase Loop</span>
+              <span class="fsa-badge">Level 2</span>
+              <span class="fsa-badge">35 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Master the 6 distinct phases of the libuv Event Loop in chronological order.</li>
+                <li>Understand the VIP priority of <code>process.nextTick()</code> and Microtasks between phases.</li>
+                <li>Differentiate clearly between <code>setImmediate()</code> (Check phase) and <code>setTimeout()</code>.</li>
+                <li>Simulate complex asynchronous task scheduling inside the interactive stepper.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه القطار الدائري والمحطات الست</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                حلقة الأحداث في Node.js تشبه <strong>قطاراً دائرياً مستمراً يمر بـ 6 محطات محددة</strong>:
+                1. محطة المواعيد المحددة (<strong>Timers</strong>).<br>
+                2. محطة الأخطاء المعلقة (<strong>Pending I/O</strong>).<br>
+                3. محطة الصيانة الداخلية (<strong>Idle/Prepare</strong>).<br>
+                4. محطة استلام البضائع الجديدة واستقبال اتصالات الشبكة (<strong>Poll</strong>).<br>
+                5. محطة التنفيذ الفوري (<strong>Check / setImmediate</strong>).<br>
+                6. محطة الإغلاق وتنظيف الموارد (<strong>Close Callbacks</strong>).<br>
+                وقبل أن يتحرك القطار من أي محطة للمحطة التالية، يتوقف لحظياً لخدمة ركاب الدرجة الأولى الممتازة (<strong>process.nextTick</strong>)!
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              The Event Loop is what allows Node.js to perform non-blocking I/O operations despite JavaScript being single-threaded. It constantly iterates through six distinct queues managed by libuv, processing callbacks and coordinating asynchronous operations.
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              حلقة الأحداث (<strong>Event Loop</strong>) هي المحرك الأساسي لبيئة Node.js. تعمل كحلقة تكرار لانهائية تديرها مكتبة <code>libuv</code>، وتمر بانتظام عبر 6 مراحل متتالية لمعالجة الـ Callbacks وتنفيذ الشيفرات البرمجية فور جاهزيتها.
+            </p>
+
+            <h3>The 6 Chronological Phases · المراحل الست لحلقة الأحداث</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">1. Timers Phase</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تنفيذ الـ Callbacks المجدولة عبر <code>setTimeout()</code> و <code>setInterval()</code> التي انتهت مدتها الزمنية.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. Pending Callbacks</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تنفيذ استدعاءات أخطاء النظام المؤجلة (مثل أخطاء مقابس TCP من نوع ECONNREFUSED).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--track-express);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">3. Idle / Prepare</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  مرحلة داخلية خاصة بنظام libuv فقط لتجهيز ومزامنة العمليات الداخلية.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
+              <div class="fsa-step-card__badge">4</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">4. Poll Phase (المحطة المركزية)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  استرداد أحداث الإدخال والإخراج الجديدة (قراءة الملفات، طلبات HTTP الواردة)، والانتظار في حالة عدم وجود مهام.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--track-node);">
+              <div class="fsa-step-card__badge">5</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">5. Check Phase (setImmediate)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تنفيذ الدوال المجدولة صراحة عبر <code>setImmediate()</code> فور انتهاء مرحلة الـ Poll مباشرة.
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-danger);">
+              <div class="fsa-step-card__badge">6</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">6. Close Callbacks</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تنفيذ استدعاءات إغلاق المقابس والموارد المنتهية (مثل <code>socket.on('close')</code>).
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through the 6 Event Loop phases in real-time execution order:</p>
+            <p class="fsa-ar" dir="rtl">
+              تتبّع حركة مؤشر حلقة الأحداث بين المراحل الست وتنفيذ طوابير المهام خطوة بخطوة:
+            </p>
+
+            <div class="fsa-stepper" id="eventLoopStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="The 6 Phases of the Node.js Event Loop">
+                <title>Node.js libuv 6-Phase Event Loop</title>
+                <desc>Cycle: Timers -> Pending -> Idle -> Poll -> Check -> Close</desc>
+                <rect x="20" y="20" width="85" height="100" rx="6" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                <text x="62" y="65" fill="var(--accent-primary)" text-anchor="middle" font-size="11" font-weight="700">1. Timers</text>
+
+                <rect x="120" y="20" width="85" height="100" rx="6" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="162" y="65" fill="var(--text-muted)" text-anchor="middle" font-size="10">2. Pending</text>
+
+                <rect x="220" y="20" width="85" height="100" rx="6" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
+                <text x="262" y="65" fill="var(--text-muted)" text-anchor="middle" font-size="10">3. Idle</text>
+
+                <rect x="320" y="20" width="85" height="100" rx="6" fill="var(--tint-primary)" stroke="var(--accent-success)" stroke-width="2" class="fsa-anim-pulse" />
+                <text x="362" y="65" fill="var(--accent-success)" text-anchor="middle" font-size="11" font-weight="700">4. Poll (I/O)</text>
+
+                <rect x="420" y="20" width="85" height="100" rx="6" fill="var(--bg-raised)" stroke="var(--track-node)" stroke-width="2" />
+                <text x="462" y="65" fill="var(--track-node)" text-anchor="middle" font-size="10">5. Check</text>
+
+                <rect x="520" y="20" width="85" height="100" rx="6" fill="var(--bg-raised)" stroke="var(--accent-danger)" stroke-width="2" />
+                <text x="562" y="65" fill="var(--accent-danger)" text-anchor="middle" font-size="10">6. Close</text>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">Event Loop Execution Simulator</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate execution order of process.nextTick, Promise, and Timers live:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: قم بتعديل الكود وشاهد الترتيب الفعلي لخروج المخرجات:
+              </p>
+
+              <div class="fsa-playground" id="eventLoopPlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>Which executes first: <code>process.nextTick()</code> or <code>Promise.then()</code>?</p>
+              <p class="fsa-ar" dir="rtl">أيهما يسبق الآخر في التنفيذ: process.nextTick أم Promise.then؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    <strong>process.nextTick() ينفذ أولاً دائماً!</strong> يمتلك طابور nextTick أولوية مطلقة يتم تفريغها بالكامل حتى قبل طابور وعود جافاسكربت (Promise Microtasks).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: setTimeout(() => console.log('Timer'), 0);</span>
+                <span class="fsa-anatomy__line" data-line="2">2: setImmediate(() => console.log('Immediate'));</span>
+                <span class="fsa-anatomy__line" data-line="3">3: process.nextTick(() => console.log('NextTick'));</span>
+                <span class="fsa-anatomy__line" data-line="4">4: Promise.resolve().then(() => console.log('Promise'));</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 3:</strong> <code>process.nextTick</code> ينفذ أولاً فور انتهاء الكود المتزامن الحالي.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 4:</strong> <code>Promise.then</code> ينفذ ثانياً كجزء من الـ Microtask Queue.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Phase Transition Cost</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1) Queue Pointer</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  الانتقال بين مراحل الـ Event Loop يتم بزمن ثابت O(1) عبر مؤشرات طوابير libuv.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-danger);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>nextTick Starvation Risk</span>
+                </div>
+                <div class="fsa-complexity-card__big">I/O Starvation</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  الاستدعاء التكراري المتواصل لـ <code>process.nextTick</code> يمنع الـ Event Loop من الانتقال للمرحلة التالية تماماً.
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>setTimeout vs setImmediate in I/O Callbacks</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">
+                  داخل أي معالج إدخال وإخراج (مثل <code>fs.readFile</code>)، دالة <strong>setImmediate تنفذ دائماً قبل setTimeout</strong>!
+                  السبب: مرحلة قراءة الملف تقع في الـ <strong>Poll Phase</strong>، والمرحلة التالية لها مباشرة في الدورة هي الـ <strong>Check Phase</strong> (مكان setImmediate).
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Recursive process.nextTick Starvation</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ STARVATION (Event loop never advances)<br>function loop() {<br>&nbsp;&nbsp;process.nextTick(loop);<br>}</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ SAFE (Allows other I/O phases to run)<br>function loop() {<br>&nbsp;&nbsp;setImmediate(loop);<br>}</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> لأن nextTick يفرغ طابوره قبل التقدم لأي مرحلة أخرى، التكرار اللانهائي يجوع عمليات الشبكة والملفات تماماً.
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>Poll Phase</dt>
+              <dd class="fsa-ar" dir="rtl">مرحلة حلقة الأحداث التي تحسب وقت الانتظار وتستقبل أحداث الشبكة والـ I/O الجديدة من كيرنل النظام.</dd>
+              <dt>setImmediate</dt>
+              <dd class="fsa-ar" dir="rtl">ميزة خاصة بـ Node.js لجدولة استدعاء دالة ليتم تنفيذها في مرحلة الـ Check فور انتهاء الـ Poll.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="eventLoopCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "In which phase of the Node.js Event Loop do setImmediate() callbacks execute?",
+                  "options": [
+                    "Timers Phase",
+                    "Check Phase",
+                    "Pending Callbacks Phase"
+                  ],
+                  "answer": 1,
+                  "why": "setImmediate callbacks are explicitly executed during the Check phase right after the Poll phase.",
+                  "whyAr": "تنفذ استدعاءات setImmediate صراحة في مرحلة الـ Check مباشرة بعد انتهاء مرحلة الـ Poll.",
+                  "anchor": "learn"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Senior Node.js Interview: Event Loop Lag Monitoring</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: How do you measure and monitor Event Loop Lag in a high-traffic production cluster?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> عبر استخدام <code>perf_hooks.monitorEventLoopDelay()</code> المدمجة في Node.js، لقياس زمن تأخر الدوران بالميلي ثانية وتنبيه فرق المراقبة (APM) عند تجاوز عتبة الـ 50ms لمنع تدهور استجابة السيرفر.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="what-node-is.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous: Node Architecture · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="streams-buffers.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next: Streams & Buffers · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'eventLoopStepper',
+          title: 'Chronological 6-Phase Event Loop Tour',
+          init: () => ({
+            phases: [
+              { name: '1. Timers', role: 'setTimeout / setInterval' },
+              { name: '2. Pending', role: 'Deferred OS I/O Errors' },
+              { name: '3. Idle/Prepare', role: 'libuv internal housekeeping' },
+              { name: '4. Poll Phase', role: 'Incoming HTTP/TCP and File I/O' },
+              { name: '5. Check Phase', role: 'setImmediate callbacks' },
+              { name: '6. Close Phase', role: 'socket.on("close")' }
+            ]
+          }),
+          steps: (state) => [
+            { activeIdx: 0, say: 'المرحلة 1 (Timers): فحص المؤقتات وتنفيذ الـ Callbacks المنتهية' },
+            { activeIdx: 1, say: 'المرحلة 2 (Pending): معالجة أخطاء المقابس المؤجلة' },
+            { activeIdx: 2, say: 'المرحلة 3 (Idle): صيانة داخلية لمكتبة libuv' },
+            { activeIdx: 3, say: 'المرحلة 4 (Poll): استلام طلبات الشبكة الجديدة وقراءة بيانات الملفات' },
+            { activeIdx: 4, say: 'المرحلة 5 (Check): تنفيذ دوال setImmediate المجدولة' },
+            { activeIdx: 5, say: 'المرحلة 6 (Close): إغلاق المقابس وتنظيف الموارد والعودة للبداية' }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 8px;">
+                ${state.phases.map((p, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 110px; height: 65px; font-size: 10px; padding: 2px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${p.name}</span>
+                      <span style="font-size: 8px; color: var(--text-muted); display: block; margin-top: 2px;">${p.role}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'eventLoopPlayground',
+          starterCode: `// Event Loop Priority Simulation
+console.log('1. Synchronous Start');
+
+setTimeout(() => {
+  console.log('4. setTimeout (Timers Phase)');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3. Promise.then (Microtask Queue)');
+});
+
+// Emulating nextTick priority in standard environment
+console.log('2. Synchronous End');`
+        });
+      }
+    });
+  </script>
+</body>
+</html>

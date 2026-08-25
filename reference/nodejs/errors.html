@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js Error Code Catalog · أكواد أخطاء نود — FullStack Academy</title>
+  
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Reference</span>
+        </a>
+      </div>
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="fsa-main" style="max-width: 960px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <nav class="fsa-breadcrumbs">
+        <a href="../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Reference</a> &rsaquo;
+        <span>Node.js Errors</span>
+      </nav>
+
+      <h1>Node.js System Error Code Catalog</h1>
+      <p class="fsa-lead">Complete diagnostic and resolution playbook for common Node.js runtime exceptions.</p>
+
+      <!-- EADDRINUSE -->
+      <section id="eaddrinuse" class="fsa-card" style="margin-block: var(--space-6); border-inline-start: 4px solid var(--accent-danger);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="margin: 0; font-family: var(--font-mono); font-size: var(--fs-xl);">EADDRINUSE — Address Already in Use</h2>
+          <span class="fsa-badge" style="color: var(--accent-danger); border-color: var(--accent-danger);">System Error</span>
+        </div>
+        
+        <p style="margin-block: var(--space-3);">
+          <strong>Triggered when:</strong> A server attempts to bind to a local port or IP address that is already bound by another running process (e.g. an existing background node instance).
+        </p>
+
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary);">
+          <strong>السبب:</strong> محاولة تشغيل خادم على منفذ (Port) محجوز بالفعل بواسطة عملية أخرى قيد التشغيل في الخلفية.
+        </p>
+
+        <div style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm); margin-block: var(--space-3);">
+          <span style="color: var(--accent-danger);">Error: listen EADDRINUSE: address already in use :::3000</span>
+        </div>
+
+        <h3>How to Fix in Development · الحل النموذجي</h3>
+        <pre style="background: var(--bg-code); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-sm);"><code># On Windows (PowerShell):
+Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess | Stop-Process
+
+# On Linux/macOS:
+lsof -ti :3000 | xargs kill -9</code></pre>
+      </section>
+
+      <!-- ECONNREFUSED -->
+      <section id="econnrefused" class="fsa-card" style="margin-block: var(--space-6); border-inline-start: 4px solid var(--accent-warning);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="margin: 0; font-family: var(--font-mono); font-size: var(--fs-xl);">ECONNREFUSED — Connection Refused</h2>
+          <span class="fsa-badge" style="color: var(--accent-warning); border-color: var(--accent-warning);">Network Error</span>
+        </div>
+        
+        <p style="margin-block: var(--space-3);">
+          <strong>Triggered when:</strong> An outgoing client connection (e.g. database or fetch) could not be established because the target host actively rejected it (server is offline or wrong port).
+        </p>
+
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary);">
+          <strong>السبب:</strong> محاولة الاتصال بخادم أو قاعدة بيانات مغلقة أو لا تستمع على المنفذ المطلوب.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

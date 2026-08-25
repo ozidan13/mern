@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================= LESSON METADATA ================= -->
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="streams-buffers">
+  <meta name="fsa-level" content="3">
+  <meta name="fsa-order" content="3">
+  <meta name="fsa-title" content="Streams, Buffers & Backpressure Handling">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="Node 24 Streams">
+  <meta name="fsa-pattern-label" content="Data Streaming">
+  <meta name="fsa-root" content="../../">
+
+  <title>Streams, Buffers & Backpressure Handling · FullStack Academy</title>
+
+  <!-- ================= ZERO-BUILD STYLES ================= -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="Toggle Navigation Menu">
+          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+        </button>
+        <a href="../../index.html" class="fsa-topbar__brand">
+          <span>FullStack Academy</span>
+        </a>
+      </div>
+
+      <div class="fsa-topbar__center">
+        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
+            <span>Quick Find · بحث سريع</span>
+          </span>
+          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span class="fsa-hide-mobile">Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="fsa-layout">
+      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
+        <nav class="fsa-sidebar__nav">
+          <div class="fsa-sidebar__section-title">
+            <span class="fsa-track-dot" style="--chip-color: var(--track-node)"></span>
+            <span>Node.js Track</span>
+          </div>
+          <ul class="fsa-sidebar__list" id="curriculumList">
+            <li>
+              <a href="streams-buffers.html" class="fsa-sidebar__link is-active" aria-current="page">
+                <span class="fsa-sidebar__status-dot"></span>
+                <span>Streams & Buffers</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="main-content" class="fsa-main">
+        <article class="fsa-article">
+          
+          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
+          <header class="fsa-lesson-header">
+            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+              <a href="../../index.html">Home</a> &rsaquo;
+              <a href="../index.html">Learn</a> &rsaquo;
+              <a href="index.html">Node.js</a> &rsaquo;
+              <span>Streams & Buffers</span>
+            </nav>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
+              <span>LEVEL 3 · NODE 24 LTS</span>
+            </div>
+
+            <h1 style="margin-block-start: var(--space-2);">Streams, Buffers & Backpressure Handling</h1>
+            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
+              معالجة البيانات الضخمة مع الـ Streams والـ Buffers، وإدارة الضغط العكسي (Backpressure) باستخدام pipeline
+            </p>
+
+            <div class="fsa-lesson-header__meta">
+              <span class="fsa-chip">Teaches: Node 24 Stream Pipeline</span>
+              <span class="fsa-badge">Level 3</span>
+              <span class="fsa-badge">30 mins · دقيقة</span>
+            </div>
+
+            <div class="fsa-callout" data-kind="info" style="margin-block-start: var(--space-4);">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Learning Objectives · أهداف الدرس</span>
+              </div>
+              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
+                <li>Understand binary data handling in Node.js with raw <code>Buffer</code> memory allocations.</li>
+                <li>Master the four Stream types: <code>Readable</code>, <code>Writable</code>, <code>Duplex</code>, and <code>Transform</code>.</li>
+                <li>Analyze the Backpressure problem when writing slower than reading (<code>highWaterMark</code>).</li>
+                <li>Use <code>stream.pipeline</code> and async generators for safe memory-bounded stream piping.</li>
+              </ul>
+            </div>
+          </header>
+
+          <!-- ================= BEAT 2: LEARN ================= -->
+          <section id="learn" style="margin-block-start: var(--space-8);">
+            <h2>1. Core Concept & Mechanics · الفكرة الأساسية</h2>
+
+            <div class="fsa-callout" data-kind="analogy">
+              <div class="fsa-callout__title">
+                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+                <span>Real-Life Analogy · تشبيه مشاهدة فيلم عبر البث (Streaming)</span>
+              </div>
+              <p class="fsa-ar" dir="rtl">
+                إذا أردت مشاهدة فيلم بحجم 10GB، فلن تنتظر تحميل الـ 10GB بالكامل إلى ذاكرة جهازك قبل أن تبدأ اللقطة الأولى! (هذا ما تفعله <code>fs.readFile</code> العادية، مما يفجر ذاكرة الـ RAM).
+                بدلاً من ذلك، تشاهد الفيلم عبر <strong>البث المباشر (Stream)</strong>: يستقبل مشغلك قطعة صغيرة (<strong>Chunk / Buffer</strong>) بحجم 64KB، يعرضها على الشاشة، ثم يستقبل القطعة التالية ويفرغ القديمة، مما يتيح معالجة ملفات بحجم 100GB باستخدام 20MB فقط من الذاكرة!
+              </p>
+            </div>
+
+            <h3>Definition & Purpose</h3>
+            <p>
+              <strong>Streams</strong> are collections of data that might not be available all at once and don't have to fit in memory. In Node.js, streams provide an event-driven interface for chunk-by-chunk data processing (such as disk I/O, HTTP requests, and compression).
+            </p>
+            <p class="fsa-ar" dir="rtl">
+              الـ <strong>Streams</strong> هي الوسيلة المثلى في Node.js لمعالجة كميات البيانات الضخمة التي تتجاوز سعة الذاكرة العشوائية (RAM). تتيح قراءة وكتابة وتعديل البيانات على هيئة قطع صغيرة متتالية (Chunks)، مما يوفر كفاءة زمنية واستقراراً لا يضاهى.
+            </p>
+
+            <h3>The Four Stream Types · الأنواع الأربعة للتدفقات</h3>
+            
+            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
+              <div class="fsa-step-card__badge">1</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">1. Readable Stream (تدفق للقراءة)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  مصدر للبيانات يمكنك القراءة منه (مثل <code>fs.createReadStream</code> أو <code>req</code> في خادم HTTP).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--accent-warning);">
+              <div class="fsa-step-card__badge">2</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">2. Writable Stream (تدفق للكتابة)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  وجهة يمكنك كتابة البيانات إليها (مثل <code>fs.createWriteStream</code> أو <code>res</code> في ردود HTTP).
+                </p>
+              </div>
+            </div>
+
+            <div class="fsa-step-card" style="--step-accent: var(--track-node);">
+              <div class="fsa-step-card__badge">3</div>
+              <div class="fsa-step-card__content">
+                <div class="fsa-step-card__title">3. Transform Stream (تدفق للتحويل والمعالجة)</div>
+                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                  تدفق مزدوج يستقبل البيانات، يعدلها (مثل ضغط gzip أو تشفير AES)، ثم يخرجها كبيانات جديدة.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 3: SEE ================= -->
+          <section id="see" style="margin-block-start: var(--space-8);">
+            <h2>2. Visual Explanation · الرؤية البصرية والتفاعلية</h2>
+            <p>Step through stream chunking and backpressure control:</p>
+            <p class="fsa-ar" dir="rtl">
+              شاهد كيف تنتقل قطع الـ Chunks بين تدفق القراءة والكتابة وتتحكم إشارة الـ Backpressure في سرعة الضخ:
+            </p>
+
+            <div class="fsa-stepper" id="streamsStepper"></div>
+
+            <div class="fsa-diagram">
+              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="Node.js Stream Pipeline with Backpressure">
+                <title>Stream Pipeline and Backpressure Diagram</title>
+                <desc>Readable stream sends chunks through Transform to Writable with pause/drain control</desc>
+                <rect x="20" y="30" width="130" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-primary)" stroke-width="2" />
+                <text x="85" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">Readable</text>
+                <text x="85" y="85" fill="var(--accent-primary)" text-anchor="middle" font-size="10">Chunks 64KB</text>
+
+                <path d="M 160 70 L 230 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(240, 30)">
+                  <rect width="140" height="80" rx="8" fill="var(--tint-primary)" stroke="var(--track-node)" stroke-width="2" class="fsa-anim-pulse" />
+                  <text x="70" y="55" fill="var(--track-node)" text-anchor="middle" font-size="12" font-weight="700">Transform</text>
+                  <text x="70" y="75" fill="var(--text-muted)" text-anchor="middle" font-size="10">zlib.createGzip()</text>
+                </g>
+
+                <path d="M 390 70 L 460 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
+
+                <g transform="translate(470, 30)">
+                  <rect width="130" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
+                  <text x="65" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">Writable</text>
+                  <text x="65" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">Disk / Socket</text>
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 4: TRY ================= -->
+          <section id="try" style="margin-block-start: var(--space-8);">
+            <h2>3. Try It Yourself · التجربة التفاعلية</h2>
+            
+            <div class="fsa-try-it">
+              <div class="fsa-try-it__header">
+                <span class="fsa-try-it__badge">Buffer & Stream Simulator</span>
+                <span style="font-size: var(--fs-xs); color: var(--text-muted);">Runs in Web Worker</span>
+              </div>
+              <p>Simulate raw binary Buffer allocations and Chunk streams live:</p>
+              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-4);">
+                جرب بنفسك: قم بإنشاء Buffer ثنائي واقرأ محتوياته بالـ Hex والـ UTF-8:
+              </p>
+
+              <div class="fsa-playground" id="streamsPlayground"></div>
+            </div>
+
+            <div class="fsa-experiment">
+              <div class="fsa-experiment__title">Predict Before You Run · توقّع النتيجة أولاً</div>
+              <p>What happens if a Readable stream pushes data faster than the Writable stream can write to disk?</p>
+              <p class="fsa-ar" dir="rtl">ماذا يحدث إذا كان تدفق القراءة يضخ البيانات بسرعة أعلى من قدرة تدفق الكتابة على التخزين؟</p>
+              <div class="fsa-experiment__choices">
+                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">Reveal Answer · كشف الإجابة</button>
+                <div class="fsa-experiment__reveal">
+                  <p class="fsa-ar" dir="rtl">
+                    يحدث <strong>Backpressure (ضغط عكسي)</strong>! يعيد الـ Writable إشارة <code>false</code>، مما يوقف القراءة مؤقتاً حتى يتم تفريغ الـ Buffer عبر حدث <code>drain</code> لتجنب امتلاء الذاكرة.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 5: ANATOMY ================= -->
+          <section id="anatomy" style="margin-block-start: var(--space-8);">
+            <h2>4. Code Anatomy · تشريح الكود</h2>
+            <div class="fsa-anatomy">
+              <div class="fsa-anatomy__code">
+                <span class="fsa-anatomy__line" data-line="1">1: import { pipeline } from 'node:stream/promises';</span>
+                <span class="fsa-anatomy__line" data-line="2">2: import { createReadStream, createWriteStream } from 'node:fs';</span>
+                <span class="fsa-anatomy__line" data-line="3">3: import { createGzip } from 'node:zlib';</span>
+                <span class="fsa-anatomy__line" data-line="4">4: </span>
+                <span class="fsa-anatomy__line" data-line="5">5: await pipeline(</span>
+                <span class="fsa-anatomy__line" data-line="6">6:   createReadStream('large-video.mp4'),</span>
+                <span class="fsa-anatomy__line" data-line="7">7:   createGzip(),</span>
+                <span class="fsa-anatomy__line" data-line="8">8:   createWriteStream('compressed.mp4.gz')</span>
+                <span class="fsa-anatomy__line" data-line="9">9: );</span>
+              </div>
+              <div class="fsa-anatomy__notes">
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 5:</strong> استخدام <code>stream/promises pipeline</code> يدير الـ Backpressure تلقائياً وينظف الموارد في حالة حدوث أي خطأ.
+                </p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>السطر 7:</strong> تدفق <code>createGzip</code> يضغط كل قطعة (Chunk) فور وصولها ويمررها مباشرة للقرص دون تخزين الملف في الـ RAM.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= BEAT 6: DEEP DIVE ================= -->
+          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+            <h2>5. Deep Dive & Complexity Analysis · التحليل والتعقيد</h2>
+            
+            <div class="fsa-complexity-grid">
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
+                  <span>Memory Complexity (RAM)</span>
+                </div>
+                <div class="fsa-complexity-card__big">O(1) Bounded Buffer</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  تستهلك الـ Streams حجماً ثابتاً صغيراً في الذاكرة (افتراضياً 64KB للـ highWaterMark) بصرف النظر عن حجم الملف.
+                </p>
+              </div>
+
+              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
+                <div class="fsa-complexity-card__title">
+                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
+                  <span>Time-To-First-Byte (TTFB)</span>
+                </div>
+                <div class="fsa-complexity-card__big">Instant Streaming</div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
+                  يبدأ إرسال أول بايت للعميل فور قراءة أول Chunk دون انتظار اكتمال قراءة الملف بأكمله.
+                </p>
+              </div>
+            </div>
+
+            <details class="fsa-details" open>
+              <summary>Why readable.pipe() is dangerous in Production</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">
+                  دالة <code>readable.pipe(writable)</code> القديمة لا تدير أخطاء الإغلاق التلقائي (Destruction) بشكل كامل إذا انقطع اتصال العميل في المنتصف، مما يسبب <strong>تسريبات ذاكرة (Memory Leaks)</strong>. لذلك يوصى دائماً باستخدام <code>stream.pipeline</code> الحديثة التي تضمن تنظيف كل التدفقات.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= BEAT 7: PRACTICE ================= -->
+          <section id="practice" style="margin-block-start: var(--space-8);">
+            <h2>6. Practice & Common Mistakes · أخطاء شائعة</h2>
+
+            <div class="fsa-mistakes-gallery">
+              <div class="fsa-mistake-card">
+                <div class="fsa-mistake-card__header">
+                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
+                  <span>Buffering Entire Big File into RAM (Out-Of-Memory Crash)</span>
+                </div>
+                <div class="fsa-mistake-card__diff">
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
+                    <code>// ❌ CRASHES ON 2GB FILE<br>const file = await fs.promises.readFile('huge.csv');<br>res.send(file);</code>
+                  </div>
+                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
+                    <code>// ✅ MEMORY SAFE (Constant 64KB RAM)<br>const stream = fs.createReadStream('huge.csv');<br>stream.pipe(res);</code>
+                  </div>
+                </div>
+                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
+                  <strong>التشخيص:</strong> قراءة الملف ككتلة واحدة تجبر V8 على حجز 2GB من الـ Heap memory، مما يؤدي إلى انهيار العملية (JavaScript heap out of memory).
+                </p>
+              </div>
+            </div>
+
+            <h3>Mini-Glossary · قاموس المصطلحات</h3>
+            <dl class="fsa-term-card">
+              <dt>Buffer</dt>
+              <dd class="fsa-ar" dir="rtl">فئة مدمجة في Node.js لتخصيص ومعالجة مساحات ذاكرة ثنائية ثابتة الحجم خارج محرك V8.</dd>
+              <dt>Backpressure</dt>
+              <dd class="fsa-ar" dir="rtl">آلية لتنظيم تدفق البيانات وإشعار مصدر القراءة بالإبطاء عندما يمتلئ طابور كتابة الوجهة.</dd>
+            </dl>
+          </section>
+
+          <!-- ================= BEAT 8: PROVE ================= -->
+          <section id="prove" style="margin-block-start: var(--space-8);">
+            <h2>7. Mastery Checkpoint · اختبر فهمك وتأكد من الإتقان</h2>
+            <div class="fsa-checkpoint" id="streamsCheckpoint"></div>
+            
+            <script type="application/json" class="fsa-quiz-data">
+            {
+              "pool": [
+                {
+                  "q": "What is the primary purpose of Backpressure in Node.js Streams?",
+                  "options": [
+                    "To speed up network encryption algorithms",
+                    "To prevent fast Readable streams from overwhelming slow Writable buffers and crashing memory",
+                    "To compress video files into MP4"
+                  ],
+                  "answer": 1,
+                  "why": "Backpressure regulates data flow so that memory buffers do not grow unbounded when write speed is slower than read speed.",
+                  "whyAr": "ينظم الـ Backpressure سرعة تدفق البيانات لمنع تضخم الذاكرة عندما تكون سرعة الكتابة أبطأ من سرعة القراءة.",
+                  "anchor": "deep-dive"
+                }
+              ]
+            }
+            </script>
+          </section>
+
+          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
+          <section id="production" style="margin-block-start: var(--space-8);">
+            <h2>8. Production Notes & Interviews · في بيئة العمل والمقابلات</h2>
+            <details class="fsa-details" open>
+              <summary>Interview Question: Async Iterators with Streams</summary>
+              <div class="fsa-details__body">
+                <p><strong>Q: How can you process chunks in a Readable stream using modern for-await-of syntax?</strong></p>
+                <p class="fsa-ar" dir="rtl">
+                  <strong>الإجابة:</strong> تدعم تدفقات Node.js بروتوكول <code>AsyncIterator</code>، مما يتيح قراءة ومعالجة كل قطعة كودياً عبر:
+                  <code>for await (const chunk of readStream) { process(chunk); }</code> بطريقة نظيفة وخالية من الـ Callbacks.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="fsa-lesson-footer">
+            <a href="event-loop.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+              <span>Previous: Event Loop · السابق</span>
+            </a>
+
+            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
+              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
+              <span>Mark Complete · أكملت الدرس</span>
+            </button>
+
+            <a href="../express/hello-express.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
+              <span>Next Track: Express.js · التالي</span>
+              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
+            </a>
+          </footer>
+
+        </article>
+      </main>
+
+      <aside class="fsa-toc" aria-label="Table of contents">
+        <div class="fsa-toc__title">On this page · محتويات الدرس</div>
+        <ul class="fsa-toc__list"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../data/curriculum.js"></script>
+  <script src="../../data/technologies.js"></script>
+  <script src="../../data/tips.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/codeblock.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/exercise.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FSA.stepper) {
+        window.FSA.stepper.mount({
+          el: 'streamsStepper',
+          title: 'Stream Pipeline Chunk Flow and Drain',
+          init: () => ({
+            chunks: [
+              { id: 1, text: 'Chunk #1 (64KB)' },
+              { id: 2, text: 'Chunk #2 (64KB)' },
+              { id: 3, text: 'Chunk #3 (64KB)' }
+            ]
+          }),
+          steps: (state) => [
+            { activeIdx: 0, say: 'الخطوة 1: قراءة Chunk #1 وإرساله لتدفق التحويل (Gzip)' },
+            { activeIdx: 1, say: 'الخطوة 2: ضغط القطعة وكتابتها فوراً على القرص' },
+            { activeIdx: 2, say: 'الخطوة 3: قراءة Chunk #2 وتحرير ذاكرة القطعة الأولى' },
+            { activeIdx: 0, say: 'الخطوة 4: اكتمال التدفق وإغلاق الملف بأقل استهلاك ممكن للـ RAM' }
+          ],
+          render: (state, step, els) => {
+            els.viz.innerHTML = `
+              <div class="fsa-viz-cells" style="gap: 10px;">
+                ${state.chunks.map((c, i) => {
+                  const isActive = step.activeIdx === i;
+                  return `
+                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 60px; font-size: 11px; padding: 4px; text-align: center;">
+                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${c.text}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (window.FSA.playground) {
+        window.FSA.playground.mount({
+          el: 'streamsPlayground',
+          starterCode: `// Binary Chunk and Buffer Simulation
+const rawText = "FullStack Academy Zero-Build Platform";
+const encoder = new TextEncoder();
+const uint8Array = encoder.encode(rawText);
+
+console.log('Original Text:', rawText);
+console.log('Binary Buffer Bytes (Length):', uint8Array.length);
+console.log('Raw Byte Values:', Array.from(uint8Array.slice(0, 8)), '...');`
+        });
+      }
+    });
+  </script>
+</body>
+</html>
