@@ -141,6 +141,16 @@
   --toc-w: 240px;
   --measure: 72ch;
   --gutter: clamp(var(--space-4), 4vw, var(--space-12));
+
+  /* ---- section layout metrics -------------------------------- */
+  --section-gap: var(--space-16);          /* 64px between full-width sections */
+  --section-pad-x: var(--gutter);           /* horizontal padding for sections */
+  --section-pad-y: var(--space-12);         /* 48px vertical padding */
+  --split-ratio: 1fr 1.2fr;                 /* default split ratio: explanation / interactive */
+  --split-gap: var(--space-8);              /* 32px gap between split panes */
+  --playground-min-h: 360px;                /* minimum height for code playgrounds */
+  --section-bg-alt: rgba(255, 255, 255, 0.02); /* subtle alternating section bg */
+  --section-border: var(--border-subtle);   /* section separator */
 }
 
 /* ============================================================
@@ -195,5 +205,7 @@
   --shadow-1: 0 0 0 1px var(--border-subtle), 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-2: 0 0 0 1px var(--border-default), 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-glow: 0 0 20px -2px rgba(37, 99, 235, 0.2);
+
+  --section-bg-alt: rgba(0, 0, 0, 0.02);
 }
 

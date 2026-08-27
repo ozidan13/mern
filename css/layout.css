@@ -393,3 +393,285 @@
     padding-block-end: 54px; /* clearance for bottombar */
   }
 }
+
+/* ============================================================
+   SECTION LAYOUT SYSTEM — Full-Width Learning Sections
+   ------------------------------------------------------------
+   Allows lesson content to break out into rich layouts:
+   Split-screen, Playgrounds, and Immersive Interactive Cards.
+   ============================================================ */
+
+/* ---- Base Section ------------------------------------------ */
+.fsa-section {
+  --_section-pad-x: var(--section-pad-x);
+  --_section-pad-y: var(--section-pad-y);
+  position: relative;
+  width: 100%;
+  padding-block: var(--_section-pad-y);
+  margin-block-end: var(--section-gap);
+  border-radius: var(--radius-lg);
+}
+
+.fsa-section + .fsa-section {
+  margin-block-start: 0;
+}
+
+/* Alternating background for visual rhythm */
+.fsa-section[data-alt-bg="true"],
+.fsa-section--alt {
+  background: var(--section-bg-alt);
+  padding-inline: var(--_section-pad-x);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ---- Contained Section ------------------------------------- */
+.fsa-section--contained {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ---- Split Section (Two-Column Grid) ----------------------- */
+.fsa-section--split {
+  display: grid;
+  grid-template-columns: var(--split-ratio);
+  gap: var(--split-gap);
+  align-items: start;
+}
+
+.fsa-section--split > .fsa-section__prose {
+  min-width: 0;
+}
+
+.fsa-section--split > .fsa-section__interactive {
+  position: sticky;
+  inset-block-start: calc(var(--topbar-h) + var(--space-4));
+  max-height: calc(100vh - var(--topbar-h) - var(--space-8));
+  overflow-y: auto;
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-4);
+}
+
+/* ---- Playground Section ------------------------------------ */
+.fsa-section--playground {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: var(--playground-min-h);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-code);
+}
+
+.fsa-section--playground > .fsa-section__editor {
+  border-inline-end: 1px solid var(--border-subtle);
+  min-height: var(--playground-min-h);
+  display: flex;
+  flex-direction: column;
+}
+
+.fsa-section--playground > .fsa-section__preview {
+  background: var(--bg-surface);
+  min-height: var(--playground-min-h);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Immersive Section ------------------------------------- */
+.fsa-section--immersive {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-8);
+  box-shadow: var(--shadow-1);
+}
+
+/* ---- Section Header ---------------------------------------- */
+.fsa-section__header {
+  margin-block-end: var(--space-5);
+}
+
+.fsa-section__title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.fsa-section__subtitle {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-block-start: var(--space-2);
+  line-height: var(--lh-ar);
+}
+
+/* ============================================================
+   IMMERSIVE MODE — Expand Main to Full Width
+   ------------------------------------------------------------
+   When [data-immersive] is set on .fsa-shell, the sidebar and
+   TOC collapse to give the lesson content the full viewport.
+   ============================================================ */
+
+.fsa-shell[data-immersive] .fsa-sidebar,
+.fsa-shell[data-immersive] .fsa-toc {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: width var(--dur-slow) var(--ease-out),
+              padding var(--dur-slow) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+
+.fsa-shell[data-immersive] .fsa-main {
+  padding-inline: var(--gutter);
+}
+
+.fsa-shell[data-immersive] .fsa-article {
+  max-width: 1400px;
+}
+
+.fsa-shell[data-immersive] .fsa-layout {
+  max-width: none;
+}
+
+/* ---- Section Navigation (Sticky Progress Bar & Dots) ------- */
+.fsa-section-nav {
+  position: sticky;
+  inset-block-start: var(--topbar-h);
+  z-index: calc(var(--z-topbar) - 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  background: color-mix(in srgb, var(--bg-canvas) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-block-end: 1px solid var(--border-subtle);
+  margin-block-end: var(--space-6);
+}
+
+.fsa-section-nav__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.fsa-section-nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fsa-section-nav__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--border-default);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.fsa-section-nav__dot:hover {
+  background: var(--text-muted);
+  transform: scale(1.3);
+}
+
+.fsa-section-nav__dot.is-active {
+  background: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--tint-primary);
+  transform: scale(1.2);
+}
+
+.fsa-section-nav__dot.is-completed {
+  background: var(--accent-success);
+}
+
+.fsa-section-nav__label {
+  position: absolute;
+  inset-block-end: calc(100% + var(--space-2));
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  background: var(--bg-raised);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
+}
+
+.fsa-section-nav__dot:hover + .fsa-section-nav__label,
+.fsa-section-nav__dot:focus-visible + .fsa-section-nav__label {
+  opacity: 1;
+}
+
+/* ---- Responsive Breakpoints for Section Layouts ------------ */
+@media (max-width: 1024px) {
+  .fsa-section--split {
+    grid-template-columns: 1fr;
+  }
+
+  .fsa-section--split > .fsa-section__interactive {
+    position: static;
+    max-height: none;
+  }
+
+  .fsa-section--playground {
+    grid-template-columns: 1fr;
+  }
+
+  .fsa-section--playground > .fsa-section__editor {
+    border-inline-end: none;
+    border-block-end: 1px solid var(--border-subtle);
+  }
+}
+
+@media (max-width: 768px) {
+  .fsa-section {
+    --_section-pad-x: var(--space-3);
+    --_section-pad-y: var(--space-6);
+    margin-block-end: var(--space-8);
+  }
+
+  .fsa-section-nav {
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .fsa-section-nav__dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* ---- Reduced Motion ---------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .fsa-shell[data-immersive] .fsa-sidebar,
+  .fsa-shell[data-immersive] .fsa-toc,
+  .fsa-section-nav__dot {
+    transition: none;
+  }
+}

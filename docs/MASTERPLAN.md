@@ -13,7 +13,7 @@
 
 | Phase | Name | Status | Scope | Navigation |
 | :---: | :--- | :---: | :--- | :---: |
-| **1** | Foundation & Architecture | ⬜ Not Completed | Layout system, breakout sections, CSS tokens, immersive mode | [Phase 1 Details](#phase-1-foundation--architecture) |
+| **1** | Foundation & Architecture | ✅ Completed | Layout system, breakout sections, CSS tokens, immersive mode | [Phase 1 Details](#phase-1-foundation--architecture) |
 | **2** | Lesson Experience System | ⬜ Not Completed | Reusable section primitives (concept, playground, challenge, comparison, exploration, recap) | [Phase 2 Details](#phase-2-lesson-experience-system) |
 | **3** | Content & Storytelling Engine | ⬜ Not Completed | Natural Egyptian Arabic + English pedagogical flow, embedded storytelling | [Phase 3 Details](#phase-3-content--storytelling-engine) |
 | **4** | Interactive Learning Framework | ⬜ Not Completed | DOM preview iframe, API request inspector, stepper interactivity, progressive exercises | [Phase 4 Details](#phase-4-interactive-learning-framework) |
@@ -85,25 +85,30 @@ Establish the layout system, breakout container primitives, CSS custom property 
 - None (Baseline phase).
 
 ### Actionable Tasks
-- [ ] **Task 1.1:** Add layout tokens to `css/tokens.css` for `--section-gap`, `--section-pad-x`, `--section-pad-y`, `--split-ratio`, `--split-gap`, `--playground-min-h`, and `--section-bg-alt` in both dark and light themes.
-- [ ] **Task 1.2:** Implement breakout container classes in `css/layout.css`: `.fsa-section`, `.fsa-section--contained`, `.fsa-section--split`, `.fsa-section--playground`, and `.fsa-section--immersive`.
-- [ ] **Task 1.3:** Implement Immersive Mode CSS in `css/layout.css` to collapse `.fsa-sidebar` and `.fsa-toc` when `.fsa-shell[data-immersive]` is active.
-- [ ] **Task 1.4:** Create `js/sections.js` with `FSA.sections` namespace to auto-discover `[data-fsa-section]` elements, generate `.fsa-section-nav` progress dots, and manage viewport intersection states.
-- [ ] **Task 1.5:** Update `templates/lesson-template.html` to include the new section primitives and link `js/sections.js`.
+- [x] **Task 1.1:** Add layout tokens to `css/tokens.css` for `--section-gap`, `--section-pad-x`, `--section-pad-y`, `--split-ratio`, `--split-gap`, `--playground-min-h`, and `--section-bg-alt` in both dark and light themes.
+- [x] **Task 1.2:** Implement breakout container classes in `css/layout.css`: `.fsa-section`, `.fsa-section--contained`, `.fsa-section--split`, `.fsa-section--playground`, and `.fsa-section--immersive`.
+- [x] **Task 1.3:** Implement Immersive Mode CSS in `css/layout.css` to collapse `.fsa-sidebar` and `.fsa-toc` when `.fsa-shell[data-immersive]` is active.
+- [x] **Task 1.4:** Create `js/sections.js` with `FSA.sections` namespace to auto-discover `[data-fsa-section]` elements, generate `.fsa-section-nav` progress dots, and manage viewport intersection states.
+- [x] **Task 1.5:** Update `templates/lesson-template.html` to include the new section primitives and link `js/sections.js`.
 
 ### Acceptance Criteria
-- [ ] Full-width sections expand smoothly to `100vw` without causing horizontal scrollbars on desktop or mobile.
-- [ ] Existing 18 lessons continue to render without visual regressions.
-- [ ] Activating immersive mode transitions the sidebar and TOC with zero layout shift in <250ms.
-- [ ] Works cleanly on `file:///` protocol across Chrome, Firefox, and Safari.
+- [x] Full-width sections expand smoothly to `100vw` without causing horizontal scrollbars on desktop or mobile.
+- [x] Existing 18 lessons continue to render without visual regressions.
+- [x] Activating immersive mode transitions the sidebar and TOC with zero layout shift in <250ms.
+- [x] Works cleanly on `file:///` protocol across Chrome, Firefox, and Safari.
 
 ### Verification Steps
 1. Load `templates/lesson-template.html` in browser via `file:///`.
 2. Resize viewport between 320px, 768px, 1024px, and 1920px.
 3. Test toggling `data-immersive` on `.fsa-shell`.
 
-### Completion Status: ⬜ Not Completed
-### Remaining Work: All tasks pending.
+### Completion Status: ✅ Completed (2026-08-27)
+### Implemented Artifacts:
+- `css/tokens.css` (Section layout tokens added for dark/light themes)
+- `css/layout.css` (Section layout breakout system, split sections, immersive mode, and section nav dots)
+- `js/sections.js` (FSA.sections module for auto-discovery, intersection observer, and immersive mode toggle)
+- `templates/lesson-template.html` (Integrated with `sections.js`)
+- Full validation pipeline verified clean with 0 warnings.
 
 ---
 
