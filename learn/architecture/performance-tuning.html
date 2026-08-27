@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="architecture">
+  <meta name="fsa-lesson" content="performance-tuning">
+  <meta name="fsa-level" content="3">
+  <meta name="fsa-order" content="12">
+  <meta name="fsa-title" content="Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits">
+  <meta name="fsa-est-minutes" content="26">
+  <meta name="fsa-teaches-version" content="Performance Standard">
+  <meta name="fsa-pattern-label" content="Performance Engineering">
+  <meta name="fsa-root" content="../../">
+
+  <title>Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits · CodeHub Interactive</title>
+
+  <!-- Critical Theme & Offline Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">CodeHub</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Architecture & System Design · العمارة وتصميم النظم الكبرى</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 75%;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <!-- Populated dynamically or statically -->
+            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="index.html">architecture</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">performance-tuning</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track">ARCHITECTURE</span>
+            <span class="fsa-badge fsa-badge--info">Level 3</span>
+            <span class="fsa-badge fsa-badge--success">Performance Standard</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title">Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl">تحسين الأداء الشامل: تحليل ذاكرة V8 Heap، فحص مسار الرسم الحرج واختناقات الشبكة</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
+            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
+              <li>تشخيص تسريبات الذاكرة في Node.js باستخدام v8.writeHeapSnapshot وأدوات DevTools.</li>
+              <li>تحسين مسار العرض الحرج (Critical Rendering Path) لتحقيق أسرع Web Vitals (LCP, INP, CLS).</li>
+              <li>استخدام أدوات الحزم (Bundle Visualizers) لتقليص حجم كود الـ JavaScript المرسل للعميل بنسبة 60%.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+
+          <div class="fsa-callout" data-kind="analogy">
+            <div class="fsa-callout__title">
+              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl">
+              تحسين الأداء مش تخمين عشوائي؛ هو علم قياس وتحليل دقيق (Measurement & Profiling). عندما تلاحظ بطء الموقع، كيف تحدد السبب الحقيقي؟ هل هو تسريب في الـ V8 Heap؟ هل هو حجب للـ Main Thread بسبب كود متزامن ثقيل؟ هل هو حجم الـ JavaScript Bundles في الواجهة؟ أم هو استعلام SQL يفتقر للفهارس؟ في هذا الدرس سنتعلم أدوات التشخيص المتقدمة وكيفية فك الاختناقات في كل طبقة من طبقات الـ Full-Stack.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
+          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+          
+          
+          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
+            <div class="fsa-step-card__badge">1</div>
+            <div class="fsa-step-card__content">
+              <div class="fsa-step-card__title">تحليل الذاكرة بـ Heap Snapshots</div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                مقارنة الكائنات المحتجزة (Retained Objects) في الذاكرة لكشف الـ Closures والمستمعين غير المحذوفين.
+              </p>
+            </div>
+          </div>
+
+          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
+            <div class="fsa-step-card__badge">2</div>
+            <div class="fsa-step-card__content">
+              <div class="fsa-step-card__title">تحسين مؤشر INP (Interaction to Next Paint)</div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                تفكيك المهام الطويلة (Long Tasks > 50ms) في الفرونت إند عبر setTimeout و requestIdleCallback.
+              </p>
+            </div>
+          </div>
+
+          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
+            <div class="fsa-step-card__badge">3</div>
+            <div class="fsa-step-card__content">
+              <div class="fsa-step-card__title">الضغط والـ Tree-Shaking</div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                تفعيل ضغط Brotli/Gzip وحذف الأكواد الميتة وتقسيم الحزم عبر Dynamic Imports.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
+          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
+          <p class="fsa-ar" dir="rtl">
+            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+          </p>
+
+          <div class="fsa-stepper" id="performance-tuningStepper" style="margin-block: var(--space-4);"></div>
+
+          <div class="fsa-diagram">
+            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits Architecture Flow Diagram">
+              <title>Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits Conceptual Architecture Flow</title>
+              <desc>Visual pipeline describing step-by-step execution for Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits</desc>
+              <g transform="translate(20, 20)">
+                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
+                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
+                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+              </g>
+              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
+              <g transform="translate(270, 20)">
+                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
+                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Performance Engineering</text>
+                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              </g>
+              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
+              <g transform="translate(520, 20)">
+                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
+                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
+                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
+          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl">
+            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="performance-tuningPlayground">
+            <div class="fsa-playground__toolbar">
+              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Node.js Performance Timeline Measurement Simulation
+const { performance } = require("node:perf_hooks");
+
+function measureOperation(name, fn) {
+  const t0 = performance.now();
+  fn();
+  const t1 = performance.now();
+  console.log(`⏱️ Operation [${name}] took: ${(t1 - t0).toFixed(3)}ms`);
+}
+
+measureOperation("Array Search", () => {
+  const arr = new Array(100000).fill(0).map((_, i) => i);
+  arr.includes(99999);
+});</textarea>
+            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
+          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box">
+            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
+            <p class="fsa-ar" dir="rtl">ما هو مؤشر INP (Interaction to Next Paint) الذي استبدل مؤشر FID في معايير جوجل لسرعة الويب؟</p>
+            <details class="fsa-details" style="margin-block-start: var(--space-3);">
+              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">مؤشر INP يقيس زمن استجابة الصفحة لجميع تفاعلات المستخدم طوال مدة زيارته للموقع (النقرات وضغطات المفاتيح) والتأكد من عدم تجمد الواجهة، والحد المستهدف للإنتاج هو أقل من 200 ميلي ثانية.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
+          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
+            <pre><code>1: import v8 from "node:v8";                       // مكتبة محرك V8
+2: const fileName = v8.writeHeapSnapshot();        // التقاط لقطة ذاكرة حية لتحليلها في Chrome DevTools
+3: console.log("Heap snapshot generated at:", fileName); // مسار الملف</code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
+          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
+              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>تخمين أسباب البطء وتعديل الكود عشوائياً دون قياسات فعلية (Profiling)!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
+              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
+              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>استخدام أداة Profiler لتحديد السطر الدقيق المسبب للبطء بالأرقام والنسب المئوية</code></pre>
+            </div>
+          </div>
+          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
+            <strong>التشخيص الهندسي:</strong> التحسين المبكر الأعمى (Premature Optimization) يضيع الوقت ويعقد الكود دون حل المشكلة الحقيقية.
+          </p>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
+          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
+          <p class="fsa-ar" dir="rtl">
+            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+          </p>
+
+          <div class="fsa-checkpoint" id="performance-tuningCheckpoint" data-quiz-id="performance-tuning-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "Which tool built into Chrome DevTools allows inspecting Node.js V8 Heap Snapshots to find memory leaks?",
+    "qAr": "أي أداة في Chrome DevTools تتيح فحص لقطات الـ Heap Snapshots لكشف تسريبات الذاكرة في Node.js؟",
+    "options": [
+      "Network Panel",
+      "Memory Panel",
+      "Security Panel",
+      "Elements Panel"
+    ],
+    "correct": 1,
+    "why": "The Memory Panel allows loading and comparing Heap Snapshots taken from Node.js processes.",
+    "whyAr": "قسم الذاكرة (Memory Panel) يتيح تحميل ومقارنة لقطات الـ Heap لكشف الكائنات المتسربة بدقة."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
+          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
+              <div style="font-weight: 700; color: var(--accent-primary);">Performance Engineering</div>
+              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
+              <div style="font-weight: 700; color: var(--accent-success);">Performance Standard</div>
+              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            </div>
+          </div>
+
+          <!-- Senior Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4);">
+            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): كيف تقضي على مهام الـ Long Tasks في جافاسكربت لمنع تجمد الواجهة أثناء الحسابات الثقيلة؟</summary>
+            <div class="fsa-details__body">
+              <p class="fsa-ar" dir="rtl">نستخدم استراتيجية تجزئة المهام (Task Chunking / Time-Slicing)؛ نقوم بتقسيم الحلقة التكرارية الضخمة إلى مصفوفات صغيرة، وبعد كل جزء نستخدم `await new Promise(res => setTimeout(res, 0))` أو `scheduler.yield()` لإعطاء المتصفح فرصة لرسم الإطار ومعالجة نقرات المستخدم بسلاسة.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Buttons -->
+        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
+          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
+          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
+        </nav>
+      </article>
+    </main>
+
+    <!-- Right Sticky Table of Contents -->
+    <aside class="fsa-toc">
+      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
+      <nav class="fsa-toc__nav" aria-label="Table of Contents">
+        <ul class="fsa-toc__list">
+          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
+          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
+          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
+          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
+          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
+          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
+          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
+          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
+          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+
+  <!-- Core JavaScript Frameworks -->
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/sections.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

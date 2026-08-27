@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="architecture">
+  <meta name="fsa-lesson" content="caching-redis">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="5">
+  <meta name="fsa-title" content="Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies">
+  <meta name="fsa-est-minutes" content="26">
+  <meta name="fsa-teaches-version" content="Redis 7.x / Node.js 24">
+  <meta name="fsa-pattern-label" content="Distributed Caching">
+  <meta name="fsa-root" content="../../">
+
+  <title>Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies · CodeHub Interactive</title>
+
+  <!-- Critical Theme & Offline Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">CodeHub</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Architecture & System Design · العمارة وتصميم النظم الكبرى</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 75%;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <!-- Populated dynamically or statically -->
+            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="index.html">architecture</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">caching-redis</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track">ARCHITECTURE</span>
+            <span class="fsa-badge fsa-badge--info">Level 2</span>
+            <span class="fsa-badge fsa-badge--success">Redis 7.x / Node.js 24</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title">Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl">الكاش الموزع بـ Redis: أنماط Cache-Aside والتحديث المتزامن وإبطال الكاش</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
+            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
+              <li>فهم أنماط الكاش: Cache-Aside (Lazy Loading), Write-Through, Write-Behind.</li>
+              <li>تطبيق استراتيجيات إبطال الكاش وتحديد أوقات الصلاحية (TTL: Time-To-Live).</li>
+              <li>حماية الخادم من ظواهر: Cache Stampede (بـ Mutex Locking) و Cache Avalanche.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+
+          <div class="fsa-callout" data-kind="analogy">
+            <div class="fsa-callout__title">
+              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl">
+              هناك مقولة شهيرة في علوم الحاسوب: "لا يوجد سوى شيئين صعبين في هندسة البرمجيات: إبطال الكاش وتسمية الأشياء" (Cache Invalidation and Naming Things). استخدام <code dir="ltr">Redis</code> كمخزن كاش في الذاكرة (In-Memory Data Store) يقلل زمن استجابة الـ API من 500ms إلى 2ms ويحمي قاعدة البيانات من الانهيار في أوقات الذروة. لكن تطبيق استراتيجية كاش خاطئة قد يؤدي لعرض بيانات قديمة (Stale Data) أو انهيار النظام بظاهرة <code dir="ltr">Cache Stampede</code>!
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
+          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+          
+          
+          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
+            <div class="fsa-step-card__badge">1</div>
+            <div class="fsa-step-card__content">
+              <div class="fsa-step-card__title">نمط Cache-Aside</div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                التحقق من وجود البيانات في Redis؛ إذا وُجدت (Cache Hit) تُرجع فوراً، وإذا لم توجد (Cache Miss) تُجلب من الداتابيز وتُخزن في Redis مع TTL.
+              </p>
+            </div>
+          </div>
+
+          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
+            <div class="fsa-step-card__badge">2</div>
+            <div class="fsa-step-card__content">
+              <div class="fsa-step-card__title">التنظيف عند التعديل (Event-Driven Invalidation)</div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                حذف مفتاح الكاش فور تعديل السجل لضمان عدم عرض بيانات مضللة للمستخدم.
+              </p>
+            </div>
+          </div>
+
+          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
+            <div class="fsa-step-card__badge">3</div>
+            <div class="fsa-step-card__content">
+              <div class="fsa-step-card__title">الـ TTL العشوائي (Jitter)</div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+                إضافة ثوانٍ عشوائية لأوقات الـ TTL لمنع انتهاء صلاحية ملايين المفاتيح في نفس اللحظة (Cache Avalanche).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
+          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
+          <p class="fsa-ar" dir="rtl">
+            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+          </p>
+
+          <div class="fsa-stepper" id="caching-redisStepper" style="margin-block: var(--space-4);"></div>
+
+          <div class="fsa-diagram">
+            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies Architecture Flow Diagram">
+              <title>Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies Conceptual Architecture Flow</title>
+              <desc>Visual pipeline describing step-by-step execution for Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies</desc>
+              <g transform="translate(20, 20)">
+                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
+                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
+                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+              </g>
+              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
+              <g transform="translate(270, 20)">
+                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
+                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Distributed Caching</text>
+                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              </g>
+              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
+              <g transform="translate(520, 20)">
+                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
+                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
+                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
+          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl">
+            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="caching-redisPlayground">
+            <div class="fsa-playground__toolbar">
+              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Cache-Aside Pattern Simulator
+const mockRedis = new Map();
+async function getCachedProduct(productId, dbFetch) {
+  const cacheKey = `product:${productId}`;
+  if (mockRedis.has(cacheKey)) {
+    console.log(`⚡ [Redis CACHE HIT] ${cacheKey} -> Served in 0.5ms!`);
+    return mockRedis.get(cacheKey);
+  }
+  
+  console.log(`🐢 [Redis CACHE MISS] Fetching from DB (Cost: 150ms)...`);
+  const fresh = await dbFetch();
+  mockRedis.set(cacheKey, fresh);
+  return fresh;
+}
+
+await getCachedProduct("101", () => ({ id: "101", name: "Pro Laptop", price: 1200 }));
+await getCachedProduct("101", () => ({})); // Instant Hit!</textarea>
+            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
+          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box">
+            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
+            <p class="fsa-ar" dir="rtl">ما هي مشكلة الـ Cache Stampede (Dogpiling) وكيف تحلها هندسياً؟</p>
+            <details class="fsa-details" style="margin-block-start: var(--space-3);">
+              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body">
+                <p class="fsa-ar" dir="rtl">تحدث عندما تنتهي صلاحية مفتاح كاش عالي الزيارات (مثل الصفحة الرئيسية)، فيقوم 10,000 مستخدم في نفس الثانية بإرسال 10,000 استعلام ثقيل لقاعدة البيانات معاً مما يسقطها؛ نحلها باستخدام قفل موزع (Redis Mutex Lock) يسمح لطلب واحد فقط بإعادة بناء الكاش بينما تنتظر بقية الطلبات.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
+          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
+            <pre><code>1: const cached = await redis.get(key);            // فحص الكاش
+2: if (cached) return JSON.parse(cached);          // إرجاع فوري عند الـ Hit
+3: const data = await db.query(...);               // الجلب من قاعدة البيانات عند الـ Miss
+4: await redis.set(key, JSON.stringify(data), "EX", 3600); // 1 Hour TTL // حفظ في الكاش مع وقت انتهاء
+5: return data;                                    // إرجاع البيانات</code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
+          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
+              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>تخزين البيانات في Redis بدون تحديد وقت انتهاء صلاحية (TTL) نهائياً!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
+              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
+              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>تحديد TTL مناسب دائماً مع إضافة Random Jitter لمنع تسريب الذاكرة</code></pre>
+            </div>
+          </div>
+          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
+            <strong>التشخيص الهندسي:</strong> عدم وضع TTL يملأ ذاكرة الـ RAM حتى ينهار سيرفر Redis ويمنع تحديث البيانات تلقائياً.
+          </p>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
+          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
+          <p class="fsa-ar" dir="rtl">
+            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+          </p>
+
+          <div class="fsa-checkpoint" id="caching-redisCheckpoint" data-quiz-id="caching-redis-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "Which caching strategy loads data into the cache only when requested by the application for the first time?",
+    "qAr": "أي استراتيجية كاش تقوم بتحميل البيانات في الكاش فقط عند طلب التطبيق لها لأول مرة؟",
+    "options": [
+      "Write-Through",
+      "Cache-Aside (Lazy Loading)",
+      "Write-Behind",
+      "Refresh-Ahead"
+    ],
+    "correct": 1,
+    "why": "Cache-Aside loads data lazily upon a cache miss.",
+    "whyAr": "نمط Cache-Aside يحمل البيانات عند الطلب فقط عند حدوث Cache Miss."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
+          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
+              <div style="font-weight: 700; color: var(--accent-primary);">Distributed Caching</div>
+              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
+              <div style="font-weight: 700; color: var(--accent-success);">Redis 7.x / Node.js 24</div>
+              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            </div>
+          </div>
+
+          <!-- Senior Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4);">
+            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هي هياكل بيانات Redis المتقدمة واستخداماتها في أنظمة الإنتاج؟</summary>
+            <div class="fsa-details__body">
+              <p class="fsa-ar" dir="rtl">Redis ليس مجرد Key-Value نصي؛ يمتلك: 1. `Hashes`: لتخزين كائنات المستخدمين وتعديل حقول فردية بـ `HSET`. 2. `Sorted Sets (ZSET)`: للوحات الصدارة والتصنيفات والـ Rate Limiting. 3. `Bitmaps / HyperLogLog`: لحساب ملايين المستخدمين الفريدين بـ 12KB فقط. 4. `Pub/Sub & Streams`: لتبادل الرسائل الحية.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Buttons -->
+        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
+          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
+          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
+        </nav>
+      </article>
+    </main>
+
+    <!-- Right Sticky Table of Contents -->
+    <aside class="fsa-toc">
+      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
+      <nav class="fsa-toc__nav" aria-label="Table of Contents">
+        <ul class="fsa-toc__list">
+          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
+          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
+          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
+          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
+          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
+          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
+          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
+          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
+          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+
+  <!-- Core JavaScript Frameworks -->
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/sections.js"></script>
+  <script src="../../js/stepper.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/quiz.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>
