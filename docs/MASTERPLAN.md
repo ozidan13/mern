@@ -18,7 +18,7 @@
 | **3** | Content & Storytelling Engine | ✅ Completed | Natural Egyptian Arabic + English pedagogical flow, embedded storytelling | [Phase 3 Details](#phase-3-content--storytelling-engine) |
 | **4** | Interactive Learning Framework | ✅ Completed | DOM preview iframe, API request inspector, stepper interactivity, progressive exercises | [Phase 4 Details](#phase-4-interactive-learning-framework) |
 | **5** | UI/UX & Responsive Experience | ✅ Completed | Premium full-width layouts, mobile viewports, high-contrast focus, zero visual noise | [Phase 5 Details](#phase-5-uiux--responsive-experience) |
-| **6** | Lesson Migration (18 Existing) | ⬜ Not Completed | Upgrade all 18 existing lessons to full interactive experience standard | [Phase 6 Details](#phase-6-lesson-migration) |
+| **6** | Lesson Migration (18 Existing) | ✅ Completed | Upgrade all 18 existing lessons to full interactive experience standard | [Phase 6 Details](#phase-6-lesson-migration) |
 | **7** | QA & Learning Validation | ⬜ Not Completed | 17-point quality gate, accessibility, performance audit, CI-Lite scripts | [Phase 7 Details](#phase-7-qa--learning-validation) |
 | **8** | Curriculum Expansion (88 New Lessons) | ⬜ Not Completed | Authoring and rolling out the remaining 88 lessons across all 8 tracks | [Phase 8 Details](#phase-8-curriculum-expansion-88-new-lessons) |
 
@@ -319,13 +319,16 @@ Migrate and upgrade all 18 existing lessons in `learn/` to the new full-width, i
 | **Architecture** | `learn/architecture/request-lifecycles.html` | End-to-End 4-tier request tracer with latency waterfall |
 
 ### Acceptance Criteria
-- [ ] All 18 lessons updated to use `[data-fsa-section]` architecture.
-- [ ] All explicit story headers removed and converted to natural embedded narratives.
-- [ ] Each lesson contains at least 3 active interactive touchpoints (stepper, playground, challenge).
-- [ ] All 18 lessons pass `check-content.mjs` with 0 errors and 0 warnings.
+- [x] All 18 lessons updated to use `[data-fsa-section]` architecture.
+- [x] All explicit story headers removed and converted to natural embedded narratives.
+- [x] Each lesson contains at least 3 active interactive touchpoints (stepper, playground, challenge).
+- [x] All 18 lessons pass `check-content.mjs` with 0 errors and 0 warnings.
 
-### Completion Status: ⬜ Not Completed
-### Remaining Work: 18 lessons to migrate.
+### Completion Status: ✅ Completed (2026-08-27)
+### Implemented Artifacts:
+- All 18 lessons in `learn/` migrated to `[data-fsa-section]` structure with `sections.js` integration.
+- `scripts/migrate-lessons-to-sections.mjs` added to repeatable tooling.
+- Automated validation passed across all tracks.
 
 ---
 

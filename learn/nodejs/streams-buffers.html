@@ -123,8 +123,8 @@
           </header>
 
           <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
-          <section id="story" style="margin-block-start: var(--space-8);">
-            <h2>1. القصة والتشبيه الواقعي · The Core Story</h2>
+          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+            <h2>السياق والمشكلة الهندسية الواقعية</h2>
 
             <div class="fsa-callout" data-kind="analogy">
               <div class="fsa-callout__title">
@@ -147,7 +147,7 @@
           </section>
 
           <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-          <section id="mechanics" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
             <h2>2. كواليس معالجة التدفقات الثنائية · Step-by-Step Mechanics</h2>
             
             <div class="fsa-step-card" style="--step-accent: var(--track-node);">
@@ -182,7 +182,7 @@
           </section>
 
           <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
-          <section id="see" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
             <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
             <p class="fsa-ar" dir="rtl">
               شاهد كيف تنتقل أجزاء الـ Chunks عبر الـ Pipeline دون تراكم في الذاكرة:
@@ -221,7 +221,7 @@
           </section>
 
           <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
-          <section id="try" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
             <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
             
             <div class="fsa-try-it">
@@ -253,7 +253,7 @@
           </section>
 
           <!-- ================= BEAT 6: ANATOMY ================= -->
-          <section id="anatomy" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
             <h2>5. تشريح نمط نقل الملفات الآمن عبر stream.pipeline · Code Anatomy</h2>
             <div class="fsa-anatomy">
               <div class="fsa-anatomy__code" dir="ltr">
@@ -281,7 +281,7 @@
           </section>
 
           <!-- ================= BEAT 7: DEEP DIVE ================= -->
-          <section id="deep-dive" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تحليل الأداء" id="deep-dive">
             <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
             
             <div class="fsa-complexity-grid">
@@ -310,7 +310,7 @@
           </section>
 
           <!-- ================= BEAT 8: PRACTICE ================= -->
-          <section id="practice" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
             <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
 
             <div class="fsa-mistakes-gallery">
@@ -343,7 +343,7 @@
           </section>
 
           <!-- ================= BEAT 9: PROVE ================= -->
-          <section id="prove" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
             <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
             <div class="fsa-checkpoint" id="streamsBuffersCheckpoint"></div>
             
@@ -368,7 +368,7 @@
           </section>
 
           <!-- ================= BEAT 10: PRODUCTION NOTES ================= -->
-          <section id="production" style="margin-block-start: var(--space-8);">
+          <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
             <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
             <details class="fsa-details" open>
               <summary>سؤال مقابلات شهير: إزاي تعمل Streaming لتسجيل صوتي أو فيديو كبير في Express بدون استهلاك الرام؟</summary>
@@ -420,6 +420,7 @@
   <script src="../../js/playground.js"></script>
   <script src="../../js/quiz.js"></script>
   <script src="../../js/exercise.js"></script>
+  <script src="../../js/sections.js"></script>
   <script src="../../js/search.js"></script>
   <script src="../../js/app.js"></script>
 
