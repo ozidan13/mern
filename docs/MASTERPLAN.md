@@ -19,7 +19,7 @@
 | **4** | Interactive Learning Framework | ✅ Completed | DOM preview iframe, API request inspector, stepper interactivity, progressive exercises | [Phase 4 Details](#phase-4-interactive-learning-framework) |
 | **5** | UI/UX & Responsive Experience | ✅ Completed | Premium full-width layouts, mobile viewports, high-contrast focus, zero visual noise | [Phase 5 Details](#phase-5-uiux--responsive-experience) |
 | **6** | Lesson Migration (18 Existing) | ✅ Completed | Upgrade all 18 existing lessons to full interactive experience standard | [Phase 6 Details](#phase-6-lesson-migration) |
-| **7** | QA & Learning Validation | ⬜ Not Completed | 17-point quality gate, accessibility, performance audit, CI-Lite scripts | [Phase 7 Details](#phase-7-qa--learning-validation) |
+| **7** | QA & Learning Validation | ✅ Completed | 17-point quality gate, accessibility, performance audit, CI-Lite scripts | [Phase 7 Details](#phase-7-qa--learning-validation) |
 | **8** | Curriculum Expansion (88 New Lessons) | ⬜ Not Completed | Authoring and rolling out the remaining 88 lessons across all 8 tracks | [Phase 8 Details](#phase-8-curriculum-expansion-88-new-lessons) |
 
 > **Status Legend:**  
@@ -344,7 +344,7 @@ Execute comprehensive technical, educational, and accessibility quality gates ac
 - Documentation synchronization (`mern-project-ref.md`, `docs/MASTERPLAN.md`)
 
 ### Actionable Tasks
-- [ ] **Task 7.1:** Update `scripts/check-content.mjs` to enforce 17-point quality criteria on all lessons:
+- [x] **Task 7.1:** Update `scripts/check-content.mjs` to enforce 17-point quality criteria on all lessons:
   1. Valid metadata tags (`fsa-track`, `fsa-lesson`, `fsa-level`, `fsa-order`, `fsa-title`, `fsa-est-minutes`).
   2. Presence of at least two `[data-fsa-section]` breakout sections.
   3. No explicit story headers (regex check for "قصة", "Story Time", "تشبيه").
@@ -362,16 +362,19 @@ Execute comprehensive technical, educational, and accessibility quality gates ac
   15. Mobile drawer toggle present.
   16. Skip-to-content link present.
   17. Table of contents container present.
-- [ ] **Task 7.2:** Execute full CI-Lite build pipeline and verify clean generation of `data/curriculum.js` and `data/search-index.js`.
-- [ ] **Task 7.3:** Complete educational validation verifying that concepts are taught 100% within lesson scope.
-- [ ] **Task 7.4:** Perform offline validation on disconnected test machine via `file:///` protocol.
+- [x] **Task 7.2:** Execute full CI-Lite build pipeline and verify clean generation of `data/curriculum.js` and `data/search-index.js`.
+- [x] **Task 7.3:** Complete educational validation verifying that concepts are taught 100% within lesson scope.
+- [x] **Task 7.4:** Perform offline validation on disconnected test machine via `file:///` protocol.
 
 ### Acceptance Criteria
-- [ ] Automated validation pipeline exits with code 0 (0 errors, 0 warnings).
-- [ ] 100% offline functionality verified.
+- [x] Automated validation pipeline exits with code 0 (0 errors, 0 warnings).
+- [x] 100% offline functionality verified.
 
-### Completion Status: ⬜ Not Completed
-### Remaining Work: Validation pipeline to be executed after migration.
+### Completion Status: ✅ Completed (2026-08-27)
+### Implemented Artifacts:
+- `scripts/check-content.mjs` (Enforces all 17 quality gate criteria across all 18 lessons)
+- CI-Lite generator pipeline clean build: `data/curriculum.js` & `data/search-index.js`
+- Zero external dependencies; 100% offline verified.
 
 ---
 
