@@ -139,6 +139,12 @@ window.FSA.sections = (function() {
               d.removeAttribute('aria-current');
             }
           });
+
+          // Dispatch section active event
+          const sectionType = entry.target.getAttribute('data-fsa-section') || 'generic';
+          window.dispatchEvent(new CustomEvent('fsa:section:active', {
+            detail: { index, type: sectionType, target: entry.target }
+          }));
         }
       });
     }, observerOptions);
@@ -203,6 +209,11 @@ window.FSA.sections = (function() {
     if (index !== -1 && navDots[index]) {
       navDots[index].classList.add('is-completed');
     }
+
+    const sectionType = sectionEl.getAttribute('data-fsa-section') || 'generic';
+    window.dispatchEvent(new CustomEvent('fsa:section:complete', {
+      detail: { index, type: sectionType, target: sectionEl }
+    }));
   }
 
   // Auto-init on DOMContentLoaded
@@ -217,6 +228,7 @@ window.FSA.sections = (function() {
     setImmersive: setImmersive,
     toggleImmersive: toggleImmersive,
     complete: complete,
-    scrollToSection: scrollToSection
+    scrollToSection: scrollToSection,
+    getSections: () => sections.slice()
   };
 })();

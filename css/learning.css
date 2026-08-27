@@ -614,3 +614,223 @@
   margin-block: var(--space-3);
 }
 
+/* ============================================================
+   INTERACTIVE SECTION PRIMITIVES (Phase 2 Experience System)
+   ============================================================ */
+
+/* ---- Concept Split Section ---- */
+.fsa-section[data-fsa-section="concept"] {
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+/* ---- Playground Tabs & Mode Switcher ---- */
+.fsa-playground__mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-surface);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-playground__mode-tabs {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.fsa-playground__mode-tab {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.fsa-playground__mode-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+
+.fsa-playground__mode-tab.is-active {
+  background: var(--tint-primary);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.fsa-playground__preview-container {
+  width: 100%;
+  height: 100%;
+  min-height: var(--playground-min-h);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.fsa-playground__preview-frame {
+  width: 100%;
+  height: 100%;
+  min-height: var(--playground-min-h);
+  border: none;
+  background: #ffffff;
+}
+
+/* ---- REST API Inspector Panel ---- */
+.fsa-api-inspector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-surface);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.fsa-api-inspector__req-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-raised);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.fsa-api-inspector__method {
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.fsa-api-inspector__method--get { background: var(--tint-success); color: var(--accent-success); }
+.fsa-api-inspector__method--post { background: var(--tint-primary); color: var(--accent-primary); }
+.fsa-api-inspector__method--put { background: var(--tint-warning); color: var(--accent-warning); }
+.fsa-api-inspector__method--delete { background: var(--tint-danger); color: var(--accent-danger); }
+
+.fsa-api-inspector__url {
+  color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fsa-api-inspector__status {
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+}
+
+.fsa-api-inspector__status--200 { background: var(--tint-success); color: var(--accent-success); }
+.fsa-api-inspector__status--400,
+.fsa-api-inspector__status--500 { background: var(--tint-danger); color: var(--accent-danger); }
+
+.fsa-api-inspector__body {
+  padding: var(--space-4);
+  overflow-y: auto;
+  flex: 1;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ---- Comparison Matrix ---- */
+.fsa-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-5);
+  margin-block: var(--space-4);
+}
+
+.fsa-comparison-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.fsa-comparison-card--bad {
+  border-inline-start: 4px solid var(--accent-danger);
+}
+
+.fsa-comparison-card--good {
+  border-inline-start: 4px solid var(--accent-success);
+}
+
+.fsa-comparison-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+
+.fsa-comparison-card--bad .fsa-comparison-card__header { color: var(--accent-danger); }
+.fsa-comparison-card--good .fsa-comparison-card__header { color: var(--accent-success); }
+
+/* ---- Challenge Box (Phase 2 Experience) ---- */
+.fsa-challenge-box {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-block: var(--space-4);
+  box-shadow: var(--shadow-1);
+}
+
+.fsa-challenge-box__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.fsa-challenge-box__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--tint-warning);
+  color: var(--accent-warning);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+/* ---- Structured Recap Takeaways ---- */
+.fsa-recap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-block: var(--space-4);
+}
+
+.fsa-recap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.fsa-recap-item__icon {
+  color: var(--accent-success);
+  flex-shrink: 0;
+  margin-block-start: 2px;
+}
+
+
