@@ -553,3 +553,23 @@ tbody tr:nth-child(even) {
   margin-block-end: var(--space-1);
 }
 
+/* ================= AMBIENT TRACK GLOWS & FOCUS ENHANCEMENTS ================= */
+.fsa-section[data-fsa-section="playground"]:focus-within,
+.fsa-section[data-fsa-section="challenge"]:focus-within {
+  box-shadow: 0 0 24px -4px var(--tint-primary), var(--shadow-1);
+}
+
+.fsa-line--highlight {
+  background: var(--tint-primary);
+  border-inline-start: 3px solid var(--accent-primary);
+  display: block;
+  padding-inline-start: var(--space-2);
+}
+
+/* Focus Visible Styling (WCAG 2.1 AA) */
+:focus-visible {
+  outline: 2px solid var(--focus-color, var(--accent-primary));
+  outline-offset: 2px;
+}
+
+
