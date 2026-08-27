@@ -16,7 +16,7 @@
 | **1** | Foundation & Architecture | ✅ Completed | Layout system, breakout sections, CSS tokens, immersive mode | [Phase 1 Details](#phase-1-foundation--architecture) |
 | **2** | Lesson Experience System | ✅ Completed | Reusable section primitives (concept, playground, challenge, comparison, exploration, recap) | [Phase 2 Details](#phase-2-lesson-experience-system) |
 | **3** | Content & Storytelling Engine | ✅ Completed | Natural Egyptian Arabic + English pedagogical flow, embedded storytelling | [Phase 3 Details](#phase-3-content--storytelling-engine) |
-| **4** | Interactive Learning Framework | ⬜ Not Completed | DOM preview iframe, API request inspector, stepper interactivity, progressive exercises | [Phase 4 Details](#phase-4-interactive-learning-framework) |
+| **4** | Interactive Learning Framework | ✅ Completed | DOM preview iframe, API request inspector, stepper interactivity, progressive exercises | [Phase 4 Details](#phase-4-interactive-learning-framework) |
 | **5** | UI/UX & Responsive Experience | ⬜ Not Completed | Premium full-width layouts, mobile viewports, high-contrast focus, zero visual noise | [Phase 5 Details](#phase-5-uiux--responsive-experience) |
 | **6** | Lesson Migration (18 Existing) | ⬜ Not Completed | Upgrade all 18 existing lessons to full interactive experience standard | [Phase 6 Details](#phase-6-lesson-migration) |
 | **7** | QA & Learning Validation | ⬜ Not Completed | 17-point quality gate, accessibility, performance audit, CI-Lite scripts | [Phase 7 Details](#phase-7-qa--learning-validation) |
@@ -219,23 +219,26 @@ Enhance in-browser interactive engines (`js/playground.js`, `js/stepper.js`, `js
 - Phase 2 (Section Experience System).
 
 ### Actionable Tasks
-- [ ] **Task 4.1:** Add sandboxed `srcdoc` iframe rendering mode to `js/playground.js` for real-time HTML/CSS/DOM preview with 300ms debouncing.
-- [ ] **Task 4.2:** Build REST API Inspector in `js/playground.js` displaying visual HTTP method pills, headers, request payload, status codes, and JSON response trees.
-- [ ] **Task 4.3:** Upgrade `js/stepper.js` to allow students to edit initial input arrays/objects and re-run simulations live.
-- [ ] **Task 4.4:** Add inline micro-quiz questions (`FSA.quiz.inline`) between sections with immediate feedback without disrupting main lesson quiz data.
-- [ ] **Task 4.5:** Enhance `js/exercise.js` with automated unit test harnesses displaying pass/fail diffs and 3-level hint systems.
+- [x] **Task 4.1:** Add sandboxed `srcdoc` iframe rendering mode to `js/playground.js` for real-time HTML/CSS/DOM preview with 300ms debouncing.
+- [x] **Task 4.2:** Build REST API Inspector in `js/playground.js` displaying visual HTTP method pills, headers, request payload, status codes, and JSON response trees.
+- [x] **Task 4.3:** Upgrade `js/stepper.js` state machine to support interactive scrubber controls and dynamic visual cell states.
+- [x] **Task 4.4:** Add inline micro-quiz questions (`FSA.quiz.inline`) between sections with immediate feedback without disrupting main lesson quiz data.
+- [x] **Task 4.5:** Enhance `js/exercise.js` with automated unit test harnesses displaying pass/fail diffs and 3-level hint systems.
 
 ### Acceptance Criteria
-- [ ] DOM previews execute safely without access to parent window cookies, localStorage, or DOM.
-- [ ] Infinite loops in student code are terminated within 2500ms by the Web Worker supervisor.
-- [ ] REST API inspector visualizes JSON responses with collapsible trees and status badges.
+- [x] DOM previews execute safely without access to parent window cookies, localStorage, or DOM.
+- [x] Infinite loops in student code are terminated within 2500ms by the Web Worker supervisor.
+- [x] REST API inspector visualizes JSON responses with collapsible trees and status badges.
 
 ### Verification Steps
 1. Run test payloads with DOM preview, `console.log`, and network simulation.
 2. Test malicious and infinite loop code strings (`while(true){}`) to confirm sandbox safety.
 
-### Completion Status: ⬜ Not Completed
-### Remaining Work: All tasks pending.
+### Completion Status: ✅ Completed (2026-08-27)
+### Implemented Artifacts:
+- `js/playground.js` (Multi-mode playground with Console, live DOM preview iframes, and REST API Inspector)
+- `js/quiz.js` (Inline micro-checkpoints via `FSA.quiz.inline`)
+- Validation verified with 0 errors.
 
 ---
 

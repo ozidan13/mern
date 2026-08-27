@@ -179,6 +179,61 @@
     };
   }
 
+  // Standalone inline micro-question for interstitial checkpoints
+  function inline(config) {
+    const rootEl = typeof config.el === 'string' ? document.getElementById(config.el) : config.el;
+    if (!rootEl) return null;
+
+    const q = config.question || 'Quick Question';
+    const qAr = config.questionAr || '';
+    const options = config.options || [];
+    const correctIdx = config.correct !== undefined ? config.correct : 0;
+    const why = config.why || 'Correct answer verified.';
+    const whyAr = config.whyAr || 'إجابة صحيحة ومؤكدة هندسياً.';
+
+    rootEl.innerHTML = `
+      <div class="fsa-checkpoint fsa-checkpoint--inline">
+        <div class="fsa-checkpoint__header">
+          <span class="fsa-checkpoint__badge">سؤال تحقق سريع · Quick Check</span>
+        </div>
+        <div class="fsa-checkpoint__q">
+          ${q}
+          ${qAr ? `<div class="fsa-ar" dir="rtl" style="margin-block-start:4px; font-weight:normal; font-size:var(--fs-sm); color:var(--text-secondary);">${qAr}</div>` : ''}
+        </div>
+        <div class="fsa-checkpoint__options">
+          ${options.map((opt, i) => `
+            <label class="fsa-checkpoint__opt" data-opt-idx="${i}">
+              <input type="radio" name="inline_quiz_${Math.random().toString(36).substring(7)}" value="${i}">
+              <span>${opt}</span>
+            </label>
+          `).join('')}
+        </div>
+        <div class="fsa-checkpoint__feedback" style="display:none; margin-block-start:var(--space-3);"></div>
+      </div>
+    `;
+
+    const optEls = rootEl.querySelectorAll('.fsa-checkpoint__opt');
+    const feedback = rootEl.querySelector('.fsa-checkpoint__feedback');
+
+    optEls.forEach(opt => {
+      opt.addEventListener('click', () => {
+        const idx = parseInt(opt.getAttribute('data-opt-idx'), 10);
+        optEls.forEach(o => o.classList.remove('is-correct', 'is-wrong'));
+        
+        feedback.style.display = 'block';
+        if (idx === correctIdx) {
+          opt.classList.add('is-correct');
+          feedback.innerHTML = `<div class="fsa-callout" data-kind="info" style="margin:0;"><div class="fsa-callout__title">&check; إجابة صحيحة!</div><p class="fsa-ar" dir="rtl" style="margin:0; font-size:var(--fs-sm);">${whyAr}</p></div>`;
+        } else {
+          opt.classList.add('is-wrong');
+          feedback.innerHTML = `<div class="fsa-callout" data-kind="pitfall" style="margin:0;"><div class="fsa-callout__title">&#10008; إجابة غير دقيقة</div><p class="fsa-ar" dir="rtl" style="margin:0; font-size:var(--fs-sm);">${whyAr || why}</p></div>`;
+        }
+      });
+    });
+
+    return { rootEl };
+  }
+
   // Auto-mount
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.fsa-checkpoint[id]').forEach((el) => {
@@ -187,6 +242,7 @@
   });
 
   window.FSA.quiz = {
-    mount
+    mount,
+    inline
   };
 })();
