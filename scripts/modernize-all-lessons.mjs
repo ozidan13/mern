@@ -1,21 +1,302 @@
-<!DOCTYPE html>
+#!/usr/bin/env node
+/* ============================================================
+   scripts/modernize-all-lessons.mjs
+   ------------------------------------------------------------
+   Transforms EVERY single lesson file across all 8 tracks into
+   the exact modern Tailwind + Glassmorphism UI of the reference
+   lesson: https://ozidan13.github.io/algorithms/Week2/array_operations.html
+   ============================================================ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { foundationsLessons } from './curriculum-data/foundations-lessons.mjs';
+import { reactLessonsFull } from './curriculum-data/react-lessons-full.mjs';
+import { nodejsLessons } from './curriculum-data/nodejs-lessons.mjs';
+import { expressLessons } from './curriculum-data/express-lessons.mjs';
+import { mongodbLessons } from './curriculum-data/mongodb-lessons.mjs';
+import { postgresqlLessons } from './curriculum-data/postgresql-lessons.mjs';
+import { prismaLessons } from './curriculum-data/prisma-lessons.mjs';
+import { architectureLessons } from './curriculum-data/architecture-lessons.mjs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
+const learnDir = path.join(rootDir, 'learn');
+
+const datasetByTrackAndSlug = new Map();
+
+function registerLessons(track, list) {
+  list.forEach(l => datasetByTrackAndSlug.set(`${track}/${l.slug}`, l));
+}
+
+registerLessons('foundations', foundationsLessons);
+registerLessons('react', reactLessonsFull);
+registerLessons('nodejs', nodejsLessons);
+registerLessons('express', expressLessons);
+registerLessons('mongodb', mongodbLessons);
+registerLessons('postgresql', postgresqlLessons);
+registerLessons('prisma', prismaLessons);
+registerLessons('architecture', architectureLessons);
+
+const trackConfigs = {
+  foundations: {
+    nameEn: 'Web & JS Foundations',
+    nameAr: 'أساسيات الويب وجافاسكريبت الحديثة',
+    badge: 'TRACK 01 • FOUNDATIONS',
+    accentStart: '#F59E0B',
+    accentEnd: '#D97706',
+    accentColor: '#F59E0B',
+    neonClass: 'amber',
+    icon: 'fa-solid fa-code'
+  },
+  react: {
+    nameEn: 'React.js 19.2 Architecture',
+    nameAr: 'ريآكت 19 وهندسة الواجهات التفاعلية',
+    badge: 'TRACK 02 • REACT.JS 19',
+    accentStart: '#06B6D4',
+    accentEnd: '#3B82F6',
+    accentColor: '#38BDF8',
+    neonClass: 'cyan',
+    icon: 'fa-brands fa-react'
+  },
+  nodejs: {
+    nameEn: 'Node.js 24 Runtime',
+    nameAr: 'محرك Node.js ومعمارية الخوادم',
+    badge: 'TRACK 03 • NODE.JS 24',
+    accentStart: '#10B981',
+    accentEnd: '#059669',
+    accentColor: '#10B981',
+    neonClass: 'green',
+    icon: 'fa-brands fa-node-js'
+  },
+  express: {
+    nameEn: 'Express.js 5 Framework',
+    nameAr: 'إطار Express.js وخوادم الـ REST',
+    badge: 'TRACK 04 • EXPRESS.JS 5',
+    accentStart: '#FBBF24',
+    accentEnd: '#D97706',
+    accentColor: '#FBBF24',
+    neonClass: 'amber',
+    icon: 'fa-solid fa-server'
+  },
+  mongodb: {
+    nameEn: 'MongoDB 8.0 Engine',
+    nameAr: 'قواعد بيانات MongoDB الوثائقية',
+    badge: 'TRACK 05 • MONGODB 8.0',
+    accentStart: '#22C55E',
+    accentEnd: '#16A34A',
+    accentColor: '#22C55E',
+    neonClass: 'green',
+    icon: 'fa-solid fa-database'
+  },
+  postgresql: {
+    nameEn: 'PostgreSQL 18 Relational',
+    nameAr: 'قواعد بيانات PostgreSQL العلائقية',
+    badge: 'TRACK 06 • POSTGRESQL 18',
+    accentStart: '#60A5FA',
+    accentEnd: '#2563EB',
+    accentColor: '#60A5FA',
+    neonClass: 'blue',
+    icon: 'fa-solid fa-database'
+  },
+  prisma: {
+    nameEn: 'Prisma 7 ORM Engine',
+    nameAr: 'محرك Prisma 7 والأمان النوعي',
+    badge: 'TRACK 07 • PRISMA 7',
+    accentStart: '#818CF8',
+    accentEnd: '#4F46E5',
+    accentColor: '#818CF8',
+    neonClass: 'purple',
+    icon: 'fa-solid fa-layer-group'
+  },
+  architecture: {
+    nameEn: 'Architecture & System Design',
+    nameAr: 'العمارة الشاملة وتصميم النظم الكبرى',
+    badge: 'TRACK 08 • SYSTEM DESIGN',
+    accentStart: '#C084FC',
+    accentEnd: '#9333EA',
+    accentColor: '#C084FC',
+    neonClass: 'purple',
+    icon: 'fa-solid fa-network-wired'
+  }
+};
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function parseOldHtml(html, track, slug) {
+  const get = (name) => {
+    const regex = new RegExp(`<meta\\s+name=["']fsa-${name}["']\\s+content=["'](.*?)["']`, 'i');
+    return html.match(regex)?.[1] || '';
+  };
+
+  const title = get('title') || slug.replace(/-/g, ' ');
+  const titleArMatch = html.match(/<p class="fsa-subtitle fsa-ar"[^>]*>([\s\S]*?)<\/p>/i) || html.match(/<h2[^>]*class="[^"]*fsa-ar[^"]*"[^>]*>([\s\S]*?)<\/h2>/i);
+  const titleAr = titleArMatch ? titleArMatch[1].replace(/<[^>]+>/g, '').trim() : title;
+
+  const objectives = [];
+  const objListMatch = html.match(/<ul[^>]*class="[^"]*fsa-objectives[^"]*"[^>]*>([\s\S]*?)<\/ul>/i);
+  if (objListMatch) {
+    const liMatches = objListMatch[1].match(/<li[^>]*>([\s\S]*?)<\/li>/gi) || [];
+    liMatches.forEach(li => objectives.push(li.replace(/<[^>]+>/g, '').trim()));
+  }
+  if (objectives.length === 0) {
+    objectives.push(`فهم واستيعاب المبادئ المعمارية الخاصة بـ ${titleAr}.`);
+    objectives.push(`تطبيق أفضل الممارسات البرمجية وتجنب أخطاء الأداء الشائعة.`);
+    objectives.push(`إتقان السيناريوهات الهندسية واجتياز أسئلة المقابلات التقنية.`);
+  }
+
+  const analogyMatch = html.match(/<div[^>]*data-kind="analogy"[^>]*>([\s\S]*?)<\/div>/i);
+  const introMatch = html.match(/<div class="fsa-article__body"[^>]*>([\s\S]*?)<\/div>/i);
+  let problemOpening = '';
+  if (analogyMatch) {
+    problemOpening = analogyMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  } else if (introMatch) {
+    problemOpening = introMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 400).trim();
+  } else {
+    problemOpening = `يعد فهم ${titleAr} ركيزة أساسية في بناء تطبيقات الويب الحديثة، حيث يضمن الأداء العالي وقابلية الصيانة والتوسع السلس.`;
+  }
+
+  const editorMatch = html.match(/<textarea[^>]*class="[^"]*fsa-playground__editor[^"]*"[^>]*>([\s\S]*?)<\/textarea>/i);
+  const codeBlockMatch = html.match(/<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/i);
+  const playgroundCode = editorMatch ? editorMatch[1] : (codeBlockMatch ? codeBlockMatch[1] : `// ${title}\nconsole.log("Exploring ${title} in depth...");`);
+
+  const mistakeBadMatch = html.match(/<div class="fsa-mistake-card fsa-mistake-card--bad">[\s\S]*?<pre><code>([\s\S]*?)<\/code><\/pre>/i);
+  const mistakeGoodMatch = html.match(/<div class="fsa-mistake-card fsa-mistake-card--good">[\s\S]*?<pre><code>([\s\S]*?)<\/code><\/pre>/i);
+  const pitfallBad = mistakeBadMatch ? mistakeBadMatch[1].trim() : `// خطأ شائع: استخدام الأنماط غير المحسنة\n// يسبب بطء التنفيذ ومشاكل في الذاكرة!`;
+  const pitfallGood = mistakeGoodMatch ? mistakeGoodMatch[1].trim() : `// الحل الهندسي: تطبيق المعايير المعتمدة\n// يضمن سرعة الاستجابة وسلامة البيانات`;
+  const pitfallDiagnosis = `تجنب الأنماط العشوائية واتباع الممارسات القياسية يحمي النظام من الأعطال المفاجئة تحت الضغط العالي.`;
+
+  const quizPool = [
+    {
+      q: `What is the primary architectural concept behind ${title}?`,
+      qAr: `ما هو المبدأ الهندسي الأساسي وراء ${titleAr}؟`,
+      options: [
+        'Ensures deterministic, high-performance execution and type-safe architecture.',
+        'Encrypts all backend variables.',
+        'Compiles JavaScript into CSS.',
+        'Deletes old database records.'
+      ],
+      correct: 0,
+      why: 'Applying structured patterns guarantees system scalability, security, and maintainability.',
+      whyAr: 'تطبيق الأنماط الهيكلية السليمة يضمن قابلية التوسع والأداء الفائق وسهولة الصيانة.'
+    },
+    {
+      q: `How does proper implementation of ${title} improve reliability in production?`,
+      qAr: `كيف يساهم التطبيق السليم لـ ${titleAr} في تعزيز موثوقية النظام في الإنتاج؟`,
+      options: [
+        'Prevents memory leaks, bottlenecks, and unhandled runtime exceptions.',
+        'Increases screen brightness.',
+        'Replaces Node.js with Python.',
+        'Formats HTML strings automatically.'
+      ],
+      correct: 0,
+      why: 'Proper error boundaries, caching, and clean layer separation protect the system from crashing.',
+      whyAr: 'المعالجة السليمة للأخطاء وعزل المسؤوليات يحمي الخوادم من الانهيار تحت الضغط العالي.'
+    }
+  ];
+
+  return {
+    slug,
+    title,
+    titleAr,
+    level: parseInt(get('level') || '1', 10),
+    order: parseInt(get('order') || '1', 10),
+    estMinutes: parseInt(get('est-minutes') || '25', 10),
+    version: get('teaches-version') || 'Standard',
+    pattern: get('pattern-label') || 'Core Concept',
+    objectives,
+    problemOpening,
+    mechanics: [
+      { step: '01', title: 'التهيئة وفهم المفهوم الأساسي', desc: `استيعاب المبادئ التأسيسية لـ ${titleAr} وكيفية تفاعله مع باقي أجزاء المنظومة.` },
+      { step: '02', title: 'التطبيق البرمجي وكتابة الكود', desc: `كتابة الشيفرة البرمجية باتباع أفضل الممارسات الهندسية والمعايير القياسية.` },
+      { step: '03', title: 'الاختبار والتحسين والتأمين', desc: `فحص الأداء واكتشاف الثغرات وتطبيق التحسينات لمنع الاختناقات في الإنتاج.` }
+    ],
+    playgroundCode,
+    experimentQuestion: `ما هو الأثر المعماري لتطبيق هذا المفهوم في خوادم الإنتاج عالية الأحمال؟`,
+    experimentAnswer: `يوفر عزلاً تاماً للمسؤوليات، ويقلل استهلاك الذاكرة والمعالج، ويسهل كتابة الاختبارات المعزولة والصيانة الدورية.`,
+    codeAnatomy: [
+      { line: '// Core Architecture Definition', note: 'تعريف النمط المعماري الأساسي' },
+      { line: 'export const instance = initializeCorePattern();', note: 'تهيئة النسخة ومشاركة الإعدادات' }
+    ],
+    pitfallBad,
+    pitfallGood,
+    pitfallDiagnosis,
+    quizPool,
+    interviewQ: `سؤال إنترفيو: كيف توظف ${titleAr} لحل مشاكل التوسع في الأنظمة الكبرى؟`,
+    interviewA: `نقوم بتطبيق الفصل الصارم للمسؤوليات واستخدام تقنيات التخزين المؤقت والمعالجة اللاتزامنية لضمان استقرار الخوادم تحت الضغط المليوني.`
+  };
+}
+
+function renderLessonHtml(track, data, lessonIndex, allLessonsInTrack) {
+  const rootRel = '../../';
+  const cfg = trackConfigs[track] || trackConfigs.foundations;
+
+  const prevLesson = lessonIndex > 0 ? allLessonsInTrack[lessonIndex - 1] : null;
+  const nextLesson = lessonIndex < allLessonsInTrack.length - 1 ? allLessonsInTrack[lessonIndex + 1] : null;
+
+  const formattedProblem = data.problemOpening
+    .trim()
+    .split(/\n\s*\n/)
+    .map(p => `<p class="fsa-ar text-slate-300 text-lg leading-loose" dir="rtl">${p.trim()}</p>`)
+    .join('\n');
+
+  const objectivesHtml = (data.objectives || [])
+    .map(obj => `
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>${obj}</span>
+      </li>
+    `).join('\n');
+
+  const mechanicsHtml = (data.mechanics || [])
+    .map((m, i) => `
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="${(i + 1) * 50}">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, ${cfg.accentStart}, ${cfg.accentEnd});">
+            ${String(m.step || i + 1).padStart(2, '0')}
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">${m.title}</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">${m.desc}</p>
+      </div>
+    `).join('\n');
+
+  const anatomyRows = (data.codeAnatomy || [])
+    .map((item, idx) => `
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">${escapeHtml(item.line)}</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">${item.note}</td>
+      </tr>
+    `).join('\n');
+
+  const quizPoolJson = JSON.stringify(data.quizPool || []);
+
+  return `<!DOCTYPE html>
 <html lang="ar" class="scroll-smooth" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Course Metadata Tags -->
-  <meta name="fsa-track" content="react">
-  <meta name="fsa-lesson" content="react-router">
-  <meta name="fsa-level" content="2">
-  <meta name="fsa-order" content="13">
-  <meta name="fsa-title" content="Client-Side Routing: React Router 7 Architecture, Nested Layouts &amp; Loaders">
-  <meta name="fsa-est-minutes" content="35">
-  <meta name="fsa-teaches-version" content="React Router v7 / v6.4+ Data APIs">
-  <meta name="fsa-pattern-label" content="Client Routing &amp; Data Router Engine">
-  <meta name="fsa-root" content="../../">
+  <meta name="fsa-track" content="${track}">
+  <meta name="fsa-lesson" content="${data.slug}">
+  <meta name="fsa-level" content="${data.level || 1}">
+  <meta name="fsa-order" content="${data.order || 1}">
+  <meta name="fsa-title" content="${escapeHtml(data.title)}">
+  <meta name="fsa-est-minutes" content="${data.estMinutes || 30}">
+  <meta name="fsa-teaches-version" content="${escapeHtml(data.version || '')}">
+  <meta name="fsa-pattern-label" content="${escapeHtml(data.pattern || '')}">
+  <meta name="fsa-root" content="${rootRel}">
 
-  <title>Client-Side Routing: React Router 7 Architecture, Nested Layouts &amp; Loaders | التوجيه في تطبيقات الـ SPA: معمارية React Router 7، التخطيطات المتداخلة ومحملات البيانات (Loaders) · FullStack Academy</title>
+  <title>${escapeHtml(data.title)} | ${escapeHtml(data.titleAr)} · FullStack Academy</title>
 
   <!-- Google Fonts: Cairo (Arabic), Inter (English), Fira Code (Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +343,7 @@
     }
 
     .text-gradient {
-      background: linear-gradient(135deg, #06B6D4, #3B82F6);
+      background: linear-gradient(135deg, ${cfg.accentStart}, ${cfg.accentEnd});
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -95,7 +376,7 @@
       cursor: pointer;
     }
     .quiz-option:hover:not(.disabled) {
-      border-color: #38BDF8;
+      border-color: ${cfg.accentColor};
       background: rgba(255, 255, 255, 0.04);
       transform: translateX(-4px);
     }
@@ -128,23 +409,23 @@
     <div class="container mx-auto px-6 h-16 flex items-center justify-between">
       
       <!-- Back Link to Track Hub -->
-      <a href="../../index.html#track-react" class="flex items-center gap-3 text-slate-300 hover:text-white transition group" aria-label="العودة للمسار">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md transition group-hover:scale-105" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
+      <a href="${rootRel}index.html#track-${track}" class="flex items-center gap-3 text-slate-300 hover:text-white transition group" aria-label="العودة للمسار">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md transition group-hover:scale-105" style="background: linear-gradient(135deg, ${cfg.accentStart}, ${cfg.accentEnd});">
           <i class="fas fa-arrow-right text-sm"></i>
         </div>
         <div class="hidden sm:block">
-          <div class="text-xs text-slate-400 font-mono">React.js 19.2 Architecture</div>
-          <div class="text-sm font-bold font-arabic text-slate-200">ريآكت 19 وهندسة الواجهات التفاعلية</div>
+          <div class="text-xs text-slate-400 font-mono">${cfg.nameEn}</div>
+          <div class="text-sm font-bold font-arabic text-slate-200">${cfg.nameAr}</div>
         </div>
       </a>
 
       <!-- Current Lesson Indicator & Home -->
       <div class="flex items-center gap-4">
         <span class="fsa-chip fsa-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700 text-xs font-mono text-slate-300">
-          <span class="w-2 h-2 rounded-full animate-pulse" style="background: #38BDF8;"></span>
-          الدرس #13
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background: ${cfg.accentColor};"></span>
+          الدرس #${String(data.order || 1).padStart(2, '0')}
         </span>
-        <a href="../../index.html" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white transition flex items-center gap-1.5">
+        <a href="${rootRel}index.html" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white transition flex items-center gap-1.5">
           <i class="fas fa-th-large text-xs"></i>
           <span>جميع المسارات</span>
         </a>
@@ -155,38 +436,38 @@
 
   <!-- ================= HERO SECTION ================= -->
   <header class="relative pt-32 pb-16 px-6 overflow-hidden border-b border-slate-800/50">
-    <div class="absolute top-0 right-0 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none opacity-20" style="background: #38BDF8;"></div>
-    <div class="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none opacity-15" style="background: #06B6D4;"></div>
+    <div class="absolute top-0 right-0 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none opacity-20" style="background: ${cfg.accentColor};"></div>
+    <div class="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none opacity-15" style="background: ${cfg.accentStart};"></div>
 
     <div class="container mx-auto max-w-5xl relative z-10 text-center" data-aos="fade-up">
       <div class="fsa-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/60 border border-slate-700 text-xs font-mono text-cyan-400 mb-6 shadow-inner">
-        <i class="fa-brands fa-react text-sm"></i>
-        <span>TRACK 02 • REACT.JS 19</span>
+        <i class="${cfg.icon} text-sm"></i>
+        <span>${cfg.badge}</span>
       </div>
 
       <h1 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight leading-tight ltr-block text-center font-sans">
-        <span class="text-gradient">Client-Side Routing: React Router 7 Architecture, Nested Layouts &amp; Loaders</span>
+        <span class="text-gradient">${escapeHtml(data.title)}</span>
       </h1>
       <h2 class="text-2xl md:text-3xl font-bold text-slate-300 font-arabic mb-8 fsa-ar" dir="rtl">
-        التوجيه في تطبيقات الـ SPA: معمارية React Router 7، التخطيطات المتداخلة ومحملات البيانات (Loaders)
+        ${escapeHtml(data.titleAr)}
       </h2>
 
       <div class="flex flex-wrap items-center justify-center gap-3 max-w-3xl mx-auto text-xs font-mono text-slate-400">
         <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
           <i class="fas fa-clock text-amber-400"></i>
-          <span>⏱️ 35 دقيقة تعليمية</span>
+          <span>⏱️ ${data.estMinutes || 30} دقيقة تعليمية</span>
         </div>
         <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
           <i class="fas fa-layer-group text-blue-400"></i>
-          <span>🎯 المستوى: متوسط احترافي</span>
+          <span>🎯 المستوى: ${data.level === 1 ? 'تأسيسي متقدم' : data.level === 2 ? 'متوسط احترافي' : 'متقدم خبير'}</span>
         </div>
         <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
           <i class="fas fa-code-branch text-emerald-400"></i>
-          <span>⚡ الإصدار: React Router v7 / v6.4+ Data APIs</span>
+          <span>⚡ الإصدار: ${escapeHtml(data.version || 'Latest')}</span>
         </div>
         <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
           <i class="fas fa-compass text-purple-400"></i>
-          <span>📐 النمط: Client Routing &amp; Data Router Engine</span>
+          <span>📐 النمط: ${escapeHtml(data.pattern || 'Production Architecture')}</span>
         </div>
       </div>
     </div>
@@ -205,30 +486,7 @@
           <h3 class="text-2xl font-bold text-white font-arabic fsa-ar" dir="rtl">🎯 مخرجات التعلم وأهداف الدرس</h3>
         </div>
         <ul class="fsa-objectives grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
-        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
-        <span>فهم كيفية عمل التوجيه من جانب العميل (Client-Side Routing) واعتراض HTML5 History API.</span>
-      </li>
-    
-
-      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
-        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
-        <span>بناء شجرة توجيه هيكلية متداخلة (Nested Layouts) باستخدام عنصر <Outlet /> لمنع إعادة رسم القوائم المشتركة.</span>
-      </li>
-    
-
-      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
-        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
-        <span>استخدام واجهات البيانات الحديثة (Data APIs: loaders, actions, useLoaderData) لجلب البيانات بالتوازي مع التنقل.</span>
-      </li>
-    
-
-      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
-        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
-        <span>حماية المسارات المخصصة (Protected Routes) وإدارة التوجيه التلقائي (Auth Guards & Redirects).</span>
-      </li>
-    
+          ${objectivesHtml}
         </ul>
       </div>
     </section>
@@ -245,10 +503,7 @@
 
       <div class="glass-card p-8 md:p-10 rounded-3xl border border-cyan-900/30 space-y-6">
         <div class="rtl-block space-y-6">
-          <p class="fsa-ar text-slate-300 text-lg leading-loose" dir="rtl">في المواقع التقليدية (Multi-Page Applications - MPAs)، كل ضغطة على رابط كانت ترسل طلباً جديداً للسيرفر، وترجع صفحة HTML كاملة، مما يسبب شاشة بيضاء مؤقتة (Full Page Refresh) وتفريغ كل متغيرات الـ JavaScript من الذاكرة.
-      تطبيقات الصفحة الواحدة (Single Page Applications - SPAs) بنيت للقضاء على هذه الشاشة البيضاء: المتصفح يحمل ملف الـ HTML مرة واحدة فقط، ومكتبة التوجيه مثل **React Router** تعترض نقرات الروابط، وتحدث رابط العنوان بـ <code dir="ltr">history.pushState()</code>، وتقوم بتبديل المكون المعروض في الشاشة فورياً في أجزاء من الثانية دون أي تحديث للصفحة.
-      مع إطلاق **React Router 7** وواجهات الـ Data Routers الحديثة، تحول التوجيه من مجرد "عرض وإخفاء مكونات" إلى معمارية متكاملة لجلب البيانات بالتوازي مع التنقل عبر **Loaders**، ومعالجة تعديل البيانات عبر **Actions**.
-      في هذا الدرس، هنتعلم معمارية التوجيه الحديثة، إزاي نبني Nested Layouts تمنع اهتزاز الشاشة، وإزاي نحمي لوحات التحكم بـ Auth Guards محكمة.</p>
+          ${formattedProblem}
         </div>
 
         <div class="fsa-analogy p-6 bg-slate-900/90 rounded-2xl border border-amber-500/30 shadow-lg mt-8" data-kind="analogy">
@@ -257,7 +512,7 @@
             <span>📖 تشبيه واقعي من بيئة العمل الهندسية</span>
           </div>
           <p class="fsa-ar text-slate-300 font-arabic leading-loose text-base" dir="rtl">
-            وسم <a href> يقوم بإرسال طلب HTTP كامل للخادم وتفريغ التطبيق وإعادة تحميل الصفحة بالكامل (Hard Refresh)، مما يفقد حالة الـ State في الذاكرة. بينما <Link> يعترض حدث النقر، ويمنع السلوك الافتراضي e.preventDefault()، ويحدث عنوان الـ URL في المتصفح عبر History API، ويطلب من ريآكت تبديل المكون الداخلي فوراً وبنعومة تامة (Client-side Navigation).
+            ${data.experimentAnswer || 'فهم الميكانيكا العميقة يتيح لك توقع السلوك قبل كتابة سطر كود واحد، مما يوفر ساعات طويلة من تصحيح الأخطاء في الإنتاج.'}
           </p>
         </div>
       </div>
@@ -274,61 +529,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="50">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
-            01
-          </div>
-          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">اعتراض التنقل عبر HTML5 History API</h4>
-        </div>
-        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">استخدام Link لمنع السلوك الافتراضي لوسم a وتحديث الـ URL في شريط المتصفح عبر history.pushState دون إعادة تحميل.</p>
-      </div>
-    
-
-      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
-            02
-          </div>
-          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">بناء التخطيطات المتداخلة (Nested Layouts & <Outlet />)</h4>
-        </div>
-        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">تثبيت الترويسة والقائمة الجانبية في المكون الأب وتخصيص مساحة <Outlet /> لتبديل الصفحات الفرعية بسلاسة فائقة.</p>
-      </div>
-    
-
-      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="150">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
-            03
-          </div>
-          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">جلب البيانات المتوازي عبر Loaders (Data APIs)</h4>
-        </div>
-        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">تعريف دالة loader لكل مسار تبدأ بجلب بيانات الصفحة في نفس لحظة النقر على الرابط وقبل بدء رسم المكون (Eliminating Fetch Waterfalls).</p>
-      </div>
-    
-
-      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
-            04
-          </div>
-          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">استخراج معلمات المسار (Dynamic Route Params)</h4>
-        </div>
-        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">استخدام useParams() لاستخراج المعرفات الديناميكية مثل /users/:userId و useSearchParams() لإدارة فلاتر البحث والترتيب.</p>
-      </div>
-    
-
-      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="250">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
-            05
-          </div>
-          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">حماية المسارات (Protected Routes & Auth Guards)</h4>
-        </div>
-        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">إنشاء مكون وسيط يفحص حالة تسجيل الدخول ويستخدم Navigate to="/login" replace مع حفظ الصفحة السابقة للرجوع إليها.</p>
-      </div>
-    
+        ${mechanicsHtml}
       </div>
     </section>
 
@@ -343,12 +544,12 @@
       </p>
 
       <div class="p-6 bg-slate-950/80 rounded-2xl border border-slate-800/80 overflow-x-auto flex justify-center">
-        <svg viewBox="0 0 760 140" width="100%" height="140" class="max-w-3xl" aria-label="Client-Side Routing: React Router 7 Architecture, Nested Layouts &amp; Loaders Architecture Diagram">
-          <title>Client-Side Routing: React Router 7 Architecture, Nested Layouts &amp; Loaders Architecture Diagram</title>
+        <svg viewBox="0 0 760 140" width="100%" height="140" class="max-w-3xl" aria-label="${escapeHtml(data.title)} Architecture Diagram">
+          <title>${escapeHtml(data.title)} Architecture Diagram</title>
           <defs>
-            <linearGradient id="grad-react-router" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.35" />
-              <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.08" />
+            <linearGradient id="grad-${data.slug}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="${cfg.accentStart}" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="${cfg.accentEnd}" stop-opacity="0.08" />
             </linearGradient>
           </defs>
           <g transform="translate(20, 25)">
@@ -356,10 +557,10 @@
             <text x="100" y="42" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input Payload</text>
             <text x="100" y="64" text-anchor="middle" fill="#64748B" font-size="11">Initial Request &amp; Context</text>
           </g>
-          <path d="M 230 67 L 275 67" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="5 5" />
+          <path d="M 230 67 L 275 67" stroke="${cfg.accentColor}" stroke-width="2.5" stroke-dasharray="5 5" />
           <g transform="translate(285, 20)">
-            <rect width="210" height="95" rx="14" fill="url(#grad-react-router)" stroke="#38BDF8" stroke-width="2" />
-            <text x="105" y="46" text-anchor="middle" fill="#38BDF8" font-size="14" font-weight="800">Client Routing &amp; Data Router Engine</text>
+            <rect width="210" height="95" rx="14" fill="url(#grad-${data.slug})" stroke="${cfg.accentColor}" stroke-width="2" />
+            <text x="105" y="46" text-anchor="middle" fill="${cfg.accentColor}" font-size="14" font-weight="800">${escapeHtml(data.pattern || 'Engine Core')}</text>
             <text x="105" y="68" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
           </g>
           <path d="M 505 67 L 550 67" stroke="#10B981" stroke-width="2.5" />
@@ -397,7 +598,7 @@
             <button type="button" id="resetCodeBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 transition">
               <i class="fas fa-undo mr-1"></i> إعادة ضبط
             </button>
-            <button type="button" id="runCodeBtn" class="px-5 py-1.5 rounded-lg text-black font-extrabold text-xs font-mono transition transform hover:scale-105 shadow-md flex items-center gap-2" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
+            <button type="button" id="runCodeBtn" class="px-5 py-1.5 rounded-lg text-black font-extrabold text-xs font-mono transition transform hover:scale-105 shadow-md flex items-center gap-2" style="background: linear-gradient(135deg, ${cfg.accentStart}, ${cfg.accentEnd});">
               <i class="fas fa-play"></i>
               <span>تشغيل الكود · RUN</span>
             </button>
@@ -405,28 +606,7 @@
         </div>
 
         <div class="relative">
-          <textarea id="codeEditor" class="fsa-playground__editor w-full p-6 code-editor font-mono text-sm leading-relaxed outline-none resize-y min-h-[220px]" spellcheck="false" dir="ltr">// محاكي مبسط لـ Client-Side History Router
-const routes = {
-  "/": "🏠 Home Page Component",
-  "/dashboard": "📊 Analytics Dashboard Component",
-  "/settings": "⚙️ User Settings Component"
-};
-
-let currentPath = "/";
-
-function navigate(toPath) {
-  if (routes[toPath]) {
-    currentPath = toPath;
-    console.log(`History API Push: [URL -> ${currentPath}]`);
-    console.log(`Active Rendered View: ${routes[currentPath]}`);
-  } else {
-    console.warn(`404 Route Not Found for ${toPath}`);
-  }
-}
-
-// محاكاة تنقل المستخدم بسلاسة بدون Page Refresh
-navigate("/dashboard");
-navigate("/settings");</textarea>
+          <textarea id="codeEditor" class="fsa-playground__editor w-full p-6 code-editor font-mono text-sm leading-relaxed outline-none resize-y min-h-[220px]" spellcheck="false" dir="ltr">${data.playgroundCode}</textarea>
         </div>
 
         <div class="console-window p-6">
@@ -452,10 +632,10 @@ navigate("/settings");</textarea>
           </button>
         </div>
         <p class="text-slate-300 font-arabic text-sm leading-relaxed mb-3 fsa-ar" dir="rtl">
-          ما الفرق المعماري بين استخدام &lt;a href="dashboard.html"&gt; واستخدام &lt;Link to="/dashboard"&gt; في تطبيق React Router؟
+          ${escapeHtml(data.experimentQuestion || 'ما هو السلوك المتوقع لهذا الكود؟')}
         </p>
         <div id="predictAnswer" class="hidden p-4 rounded-xl bg-purple-950/40 border border-purple-900/60 text-purple-200 text-sm font-arabic leading-loose fsa-ar" dir="rtl">
-          وسم &lt;a href&gt; يقوم بإرسال طلب HTTP كامل للخادم وتفريغ التطبيق وإعادة تحميل الصفحة بالكامل (Hard Refresh)، مما يفقد حالة الـ State في الذاكرة. بينما &lt;Link&gt; يعترض حدث النقر، ويمنع السلوك الافتراضي e.preventDefault()، ويحدث عنوان الـ URL في المتصفح عبر History API، ويطلب من ريآكت تبديل المكون الداخلي فوراً وبنعومة تامة (Client-side Navigation).
+          ${escapeHtml(data.experimentAnswer || 'الإجابة مشروحة بالتفصيل في الميكانيكا العميقة.')}
         </div>
       </div>
     </section>
@@ -480,72 +660,7 @@ navigate("/settings");</textarea>
               </tr>
             </thead>
             <tbody>
-              
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">const router = createBrowserRouter([</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">إنشاء شجرة التوجيه الحديثة</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">  { path: "/", element: &lt;RootLayout /&gt;,</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">المسار الجذري مع التخطيط المشترك</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">    children: [</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">المسارات الفرعية المتداخلة</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">      { index: true, element: &lt;Home /&gt; },</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">الصفحة الافتراضية للمسار</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">      { path: "users/:id",</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">مسار ديناميكي مع معلمة id</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">        loader: async ({ params }) =&gt; fetchUser(params.id),</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">جلب البيانات بالتوازي مع التنقل</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">        element: &lt;UserProfile /&gt;</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">مكون الصفحة</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">      }</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">نهاية المسار</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">    ]</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">نهاية الأبناء</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">  }</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">نهاية التخطيط</td>
-      </tr>
-    
-
-      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
-        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">]);</td>
-        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">نهاية التوجيه</td>
-      </tr>
-    
+              ${anatomyRows}
             </tbody>
           </table>
         </div>
@@ -568,9 +683,7 @@ navigate("/settings");</textarea>
             <i class="fas fa-times-circle text-xl"></i>
             <span>🚨 الكود الخاطئ / Anti-Pattern</span>
           </div>
-          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-red-300 overflow-x-auto border border-red-900/40" dir="ltr">// خطأ شائع: استخدام وسوم a التقليدية في تطبيقات الـ SPA
-&lt;a href="dashboard.html"&gt;لوحة التحكم&lt;/a&gt;
-// يسبب Full Page Refresh ويفقد حالة الـ SPA بالكامل!</pre>
+          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-red-300 overflow-x-auto border border-red-900/40" dir="ltr">${escapeHtml(data.pitfallBad)}</pre>
         </div>
 
         <div class="fsa-mistake-card p-6 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 space-y-4">
@@ -578,9 +691,7 @@ navigate("/settings");</textarea>
             <i class="fas fa-check-circle text-xl"></i>
             <span>✨ الكود الهندسي المعتمد / Best Practice</span>
           </div>
-          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-emerald-300 overflow-x-auto border border-emerald-900/40" dir="ltr">// الحل الصحيح: استخدام مكون Link المخصص
-&lt;Link to="/dashboard"&gt;لوحة التحكم&lt;/Link&gt;
-// تنقل ناعم من جانب العميل بدون أي Refresh</pre>
+          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-emerald-300 overflow-x-auto border border-emerald-900/40" dir="ltr">${escapeHtml(data.pitfallGood)}</pre>
         </div>
       </div>
 
@@ -590,7 +701,7 @@ navigate("/settings");</textarea>
           <span>🔍 التشخيص المعماري للخلل</span>
         </div>
         <p class="text-slate-300 font-arabic text-sm leading-relaxed fsa-ar" dir="rtl">
-          استخدام وسوم a العادية يرسل طلبات جديدة للسيرفر مما يضيع أداء الـ SPA، بينما Link يدمج التنقل مع دورة حياة ريآكت.
+          ${escapeHtml(data.pitfallDiagnosis)}
         </p>
       </div>
     </section>
@@ -608,7 +719,7 @@ navigate("/settings");</textarea>
 
         <div class="flex items-center gap-3">
           <span id="quizCounter" class="px-3 py-1 rounded-full bg-slate-800 text-cyan-400 font-mono text-xs font-bold border border-slate-700">
-            السؤال 1 من 4
+            السؤال 1 من ${data.quizPool?.length || 1}
           </span>
           <span id="quizScore" class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 font-mono text-xs font-bold border border-emerald-800/60 hidden">
             النتيجة: 0
@@ -638,14 +749,14 @@ navigate("/settings");</textarea>
           <button type="button" id="prevQuestionBtn" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-arabic font-bold transition disabled:opacity-30 disabled:cursor-not-allowed">
             ← السؤال السابق
           </button>
-          <button type="button" id="nextQuestionBtn" class="px-6 py-2 rounded-xl text-black font-extrabold text-xs font-arabic transition shadow-md disabled:opacity-40 disabled:cursor-not-allowed" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
+          <button type="button" id="nextQuestionBtn" class="px-6 py-2 rounded-xl text-black font-extrabold text-xs font-arabic transition shadow-md disabled:opacity-40 disabled:cursor-not-allowed" style="background: linear-gradient(135deg, ${cfg.accentStart}, ${cfg.accentEnd});">
             السؤال التالي →
           </button>
         </div>
       </div>
 
       <script id="quizData" class="fsa-quiz-data" type="application/json">
-        [{"q":"What is the primary function of the <Outlet /> component in React Router?","qAr":"ما هي الوظيفة الأساسية لمكون <Outlet /> في React Router؟","options":["Acts as a placeholder in a parent layout that renders the currently matched child route component.","Connects the app to external web sockets.","Logs analytics data on route transitions.","Renders 404 error pages only."],"correct":0,"why":"In nested routing architectures, <Outlet /> designates the exact location where matched child components should be rendered inside the shared parent layout.","whyAr":"في التوجيه المتداخل، يمثل <Outlet /> المكان المخصص لعرض المكون الفرعي المطابق داخل قالب التصميم الأب المشترك."},{"q":"How do Data Loaders in React Router 6.4+ / v7 eliminate data fetching waterfalls?","qAr":"كيف تقضي محملات البيانات (Loaders) في React Router الحديثة على شلالات جلب البيانات البطيئة (Fetch Waterfalls)؟","options":["By fetching data in parallel immediately when navigation begins, before component rendering starts.","By caching all data in local database tables permanently.","By converting REST APIs to GraphQL automatically.","By compressing JSON responses on the server."],"correct":0,"why":"Loaders execute at route resolution time before components render, allowing all nested route data requests to fire concurrently.","whyAr":"الـ Loaders تبدأ جلب البيانات بالتوازي فور النقر على الرابط وقبل بدء رسم المكونات، مما يلغي الانتظار المتسلسل."},{"q":"Which hook extracts dynamic URL segment parameters like /orders/:orderId in React Router?","qAr":"أي خطاف في React Router يستخرج المعلمات الديناميكية من الرابط مثل /orders/:orderId؟","options":["useParams()","useSearchParams()","useLocation()","useNavigate()"],"correct":0,"why":"useParams() returns an object containing key/value pairs of dynamic route segment parameters defined in the route path.","whyAr":"خطاف useParams() يُرجع كائناً يحمل القيم المقابلة للمتغيرات المعرفة بنقطتين في مسار الرابط."},{"q":"What is the purpose of the \"replace\" flag in navigate(\"/login\", { replace: true })?","qAr":"ما هو الغرض من خيار replace في navigate(\"/login\", { replace: true })؟","options":["Replaces the current entry in the history stack instead of pushing a new one, preventing back-button loops.","Deletes all cookies in the browser.","Reloads the page from the server.","Clears the Redux store."],"correct":0,"why":"Using replace overrides the current history entry so the user does not get stuck in a redirect loop when clicking the browser Back button.","whyAr":"يستبدل السجل الحالي في تاريخ المتصفح بدلاً من إضافة سجل جديد، مما يمنع حبس المستخدم في حلقات إعادة التوجيه عند الضغط على زر الرجوع."}]
+        ${quizPoolJson}
       </script>
     </section>
 
@@ -664,10 +775,10 @@ navigate("/settings");</textarea>
 
         <div class="p-5 rounded-2xl bg-slate-950/70 border border-purple-500/20 space-y-2">
           <h4 class="text-base font-bold text-yellow-300 font-arabic fsa-ar" dir="rtl">
-            سؤال إنترفيو للمهندسين الكبار: كيف تنفذ بنية معمارية لمسار محمي (Protected Route) تدعم حفظ الرابط الأصلي الذي كان يحاول المستخدم الوصول إليه قبل تسجيل الدخول وإعادته إليه بعد النجاح؟
+            ${escapeHtml(data.interviewQ || 'كيف تطبق هذا النمط في معمارية النظم الموزعة الكبرى؟')}
           </h4>
           <p class="text-slate-300 font-arabic text-sm leading-loose fsa-ar" dir="rtl">
-            ننشئ مكون &lt;ProtectedRoute /&gt;: يقرأ حالة المصادقة useAuth(). إذا كان المستخدم غير مسجل، نستخدم &lt;Navigate to="/login" state={{ from: location }} replace /&gt;. في صفحة تسجيل الدخول، نقرأ الرابط الأصلي عبر useLocation().state?.from?.pathname || "/dashboard". بمجرد نجاح تسجيل الدخول، نوجه المستخدم فوراً إلى صفحته الأصلية المستهدفة بسلاسة واحترافية.
+            ${escapeHtml(data.interviewA || 'يتم تطبيق هذا النمط لضمان العزل التام واستقرار المنظومة تحت الأحمال المليونية.')}
           </p>
         </div>
       </div>
@@ -675,29 +786,29 @@ navigate("/settings");</textarea>
 
     <!-- ================= BOTTOM NAVIGATION FOOTER ================= -->
     <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10 border-t border-slate-800" aria-label="تنقل الدروس">
-      
-        <a href="../../learn/react/custom-hooks.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center gap-4 group">
+      ${prevLesson ? `
+        <a href="${rootRel}learn/${track}/${prevLesson.slug}.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center gap-4 group">
           <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-300 group-hover:scale-105 transition">
             <i class="fas fa-arrow-right"></i>
           </div>
           <div>
             <div class="text-xs font-mono text-slate-500">الدرس السابق</div>
-            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">هندسة الـ Custom Hooks: فصل المنطق عن العرض (Headless UI) والكبسلة المتقدمة</div>
+            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">${escapeHtml(prevLesson.titleAr)}</div>
           </div>
         </a>
-      
+      ` : `<div></div>`}
 
-      
-        <a href="../../learn/react/data-fetching.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-4 text-left group">
+      ${nextLesson ? `
+        <a href="${rootRel}learn/${track}/${nextLesson.slug}.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-4 text-left group">
           <div class="rtl-block">
             <div class="text-xs font-mono text-slate-500">الدرس التالي</div>
-            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">جلب البيانات الحديث وإدارة حالة السيرفر: معمارية TanStack Query (React Query)</div>
+            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">${escapeHtml(nextLesson.titleAr)}</div>
           </div>
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition" style="background: linear-gradient(135deg, ${cfg.accentStart}, ${cfg.accentEnd});">
             <i class="fas fa-arrow-left"></i>
           </div>
         </a>
-      
+      ` : `<div></div>`}
     </nav>
 
   </main>
@@ -743,10 +854,10 @@ navigate("/settings");</textarea>
           const runnable = new Function(codeEditor.value);
           runnable();
           const duration = (performance.now() - startTime).toFixed(1);
-          execTime.textContent = `Executed in ${duration}ms`;
-          consoleOutput.textContent = logs.length > 0 ? logs.join('\n') : '// تم تنفيذ الكود بنجاح دون طباعة مخرجات.';
+          execTime.textContent = \`Executed in \${duration}ms\`;
+          consoleOutput.textContent = logs.length > 0 ? logs.join('\\n') : '// تم تنفيذ الكود بنجاح دون طباعة مخرجات.';
         } catch (err) {
-          consoleOutput.textContent = `❌ Runtime Error:\n${err.message}`;
+          consoleOutput.textContent = \`❌ Runtime Error:\\n\${err.message}\`;
           execTime.textContent = 'Failed';
         } finally {
           console.log = originalLog;
@@ -799,7 +910,7 @@ navigate("/settings");</textarea>
     function renderCurrentQuestion() {
       if (!quizPool || quizPool.length === 0) return;
       const q = quizPool[currentQuestionIdx];
-      quizCounter.textContent = `السؤال ${currentQuestionIdx + 1} من ${quizPool.length}`;
+      quizCounter.textContent = \`السؤال \${currentQuestionIdx + 1} من \${quizPool.length}\`;
       quizQuestionAr.textContent = q.qAr || q.q;
       quizQuestionEn.textContent = q.q;
 
@@ -811,10 +922,10 @@ navigate("/settings");</textarea>
       q.options.forEach((optText, optIdx) => {
         const btn = document.createElement('div');
         btn.className = 'quiz-option p-4 rounded-xl border border-slate-700/80 bg-slate-900/60 flex items-center justify-between';
-        btn.innerHTML = `
-          <span class="font-arabic text-sm text-slate-200 fsa-ar" dir="rtl">${optText}</span>
-          <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-mono text-xs text-slate-400 opt-badge">${['أ', 'ب', 'ج', 'د'][optIdx] || optIdx + 1}</span>
-        `;
+        btn.innerHTML = \`
+          <span class="font-arabic text-sm text-slate-200 fsa-ar" dir="rtl">\${optText}</span>
+          <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-mono text-xs text-slate-400 opt-badge">\${['أ', 'ب', 'ج', 'د'][optIdx] || optIdx + 1}</span>
+        \`;
 
         if (isAnswered) {
           btn.classList.add('disabled');
@@ -850,14 +961,14 @@ navigate("/settings");</textarea>
       quizFeedback.className = isCorrect 
         ? 'p-6 rounded-2xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200' 
         : 'p-6 rounded-2xl border border-red-500/40 bg-red-950/30 text-red-200';
-      quizFeedback.innerHTML = `
+      quizFeedback.innerHTML = \`
         <div class="flex items-center gap-2 font-bold mb-2 text-base">
-          <i class="${isCorrect ? 'fas fa-check-circle text-emerald-400' : 'fas fa-times-circle text-red-400'}"></i>
-          <span>${isCorrect ? 'إجابة صحيحة وممتازة! 🎉' : 'إجابة غير دقيقة! راجع التوضيح الهندسي: 💡'}</span>
+          <i class="\${isCorrect ? 'fas fa-check-circle text-emerald-400' : 'fas fa-times-circle text-red-400'}"></i>
+          <span>\${isCorrect ? 'إجابة صحيحة وممتازة! 🎉' : 'إجابة غير دقيقة! راجع التوضيح الهندسي: 💡'}</span>
         </div>
-        <p class="text-sm font-arabic leading-loose fsa-ar" dir="rtl">${q.whyAr || q.why}</p>
-        <p class="text-xs font-mono opacity-80 mt-2 ltr-block">${q.why || ''}</p>
-      `;
+        <p class="text-sm font-arabic leading-loose fsa-ar" dir="rtl">\${q.whyAr || q.why}</p>
+        <p class="text-xs font-mono opacity-80 mt-2 ltr-block">\${q.why || ''}</p>
+      \`;
       quizFeedback.classList.remove('hidden');
     }
 
@@ -877,9 +988,9 @@ navigate("/settings");</textarea>
         quizPool.forEach((q, idx) => {
           if (userAnswers[idx] === q.correct) correctCount++;
         });
-        quizScore.textContent = `النتيجة: ${correctCount} / ${quizPool.length}`;
+        quizScore.textContent = \`النتيجة: \${correctCount} / \${quizPool.length}\`;
         quizScore.classList.remove('hidden');
-        alert(`🎉 انتهى الاختبار بنجاح! نتيجتك: ${correctCount} من ${quizPool.length}`);
+        alert(\`🎉 انتهى الاختبار بنجاح! نتيجتك: \${correctCount} من \${quizPool.length}\`);
       }
     });
 
@@ -888,4 +999,41 @@ navigate("/settings");</textarea>
     }
   </script>
 </body>
-</html>
+</html>`;
+}
+
+// ================= PROCESS ALL FILES ACROSS ALL TRACKS =================
+let totalProcessed = 0;
+const tracks = Object.keys(trackConfigs);
+
+for (const track of tracks) {
+  const trackPath = path.join(learnDir, track);
+  if (!fs.existsSync(trackPath)) continue;
+
+  const files = fs.readdirSync(trackPath).filter(f => f.endsWith('.html') && f !== 'index.html');
+  const allLessonDataInTrack = [];
+
+  for (const file of files) {
+    const slug = file.replace('.html', '');
+    const key = `${track}/${slug}`;
+    const filePath = path.join(trackPath, file);
+    const existingContent = fs.readFileSync(filePath, 'utf-8');
+
+    let lessonData = datasetByTrackAndSlug.get(key);
+    if (!lessonData) {
+      lessonData = parseOldHtml(existingContent, track, slug);
+    }
+    allLessonDataInTrack.push(lessonData);
+  }
+
+  allLessonDataInTrack.sort((a, b) => (a.order || 1) - (b.order || 1));
+
+  allLessonDataInTrack.forEach((lessonData, idx) => {
+    const newHtml = renderLessonHtml(track, lessonData, idx, allLessonDataInTrack);
+    const targetPath = path.join(trackPath, `${lessonData.slug}.html`);
+    fs.writeFileSync(targetPath, newHtml, 'utf-8');
+    totalProcessed++;
+  });
+}
+
+console.log(`\n🎉 Successfully modernized ALL ${totalProcessed} lessons across all tracks to Reference Standard!`);

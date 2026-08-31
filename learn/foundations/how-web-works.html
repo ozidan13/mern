@@ -1,487 +1,777 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" class="scroll-smooth" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ================= LESSON METADATA ================= -->
+  <!-- Course Metadata Tags -->
   <meta name="fsa-track" content="foundations">
   <meta name="fsa-lesson" content="how-web-works">
   <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="1">
-  <meta name="fsa-title" content="How the Web Works: HTTP/3 & DNS Lifecycle">
+  <meta name="fsa-title" content="How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle">
   <meta name="fsa-est-minutes" content="25">
-  <meta name="fsa-teaches-version" content="HTTP/3 & DNS">
+  <meta name="fsa-teaches-version" content="HTTP/3 &amp;amp;amp; DNS">
   <meta name="fsa-pattern-label" content="Network Lifecycle">
   <meta name="fsa-root" content="../../">
 
-  <title>How the Web Works: HTTP/3 & DNS Lifecycle · FullStack Academy</title>
+  <title>How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle | How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle · FullStack Academy</title>
 
-  <!-- ================= ZERO-BUILD STYLES ================= -->
-  <link rel="stylesheet" href="../../css/tokens.css">
-  <link rel="stylesheet" href="../../css/base.css">
-  <link rel="stylesheet" href="../../css/components.css">
-  <link rel="stylesheet" href="../../css/layout.css">
-  <link rel="stylesheet" href="../../css/learning.css">
-  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <!-- Google Fonts: Cairo (Arabic), Inter (English), Fira Code (Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome & AOS Animations -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Tailwind CSS CDN with Custom Theme Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neon: { green: '#10B981', blue: '#3B82F6', purple: '#8B5CF6', cyan: '#06B6D4', amber: '#F59E0B' },
+            dark: { bg: '#020617', card: '#0F172A', border: '#1E293B', surface: '#0B132B' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            arabic: ['Cairo', 'sans-serif'],
+            mono: ['Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: #020617;
+      color: #E2E8F0;
+      overflow-x: hidden;
+      font-family: 'Cairo', 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .rtl-block {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .ltr-block {
+      direction: ltr;
+      text-align: left;
+    }
+
+    .code-editor {
+      background: #090D16;
+      color: #F8FAFC;
+      font-family: 'Fira Code', monospace;
+      tab-size: 2;
+    }
+
+    .console-window {
+      background: #050811;
+      font-family: 'Fira Code', monospace;
+      border-top: 1px solid #1E293B;
+    }
+
+    .quiz-option {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .quiz-option:hover:not(.disabled) {
+      border-color: #F59E0B;
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateX(-4px);
+    }
+    .quiz-option.correct {
+      border-color: #10B981 !important;
+      background: rgba(16, 185, 129, 0.15) !important;
+      color: #A7F3D0 !important;
+    }
+    .quiz-option.incorrect {
+      border-color: #EF4444 !important;
+      background: rgba(239, 68, 68, 0.15) !important;
+      color: #FECACA !important;
+    }
+  </style>
 </head>
-<body>
-  <a href="#main-content" class="fsa-skip-link">الانتقال للمحتوى الرئيسي · Skip to content</a>
 
-  <div class="fsa-shell">
-    <!-- Topbar -->
-    <header class="fsa-topbar">
-      <div class="fsa-topbar__start">
-        <button class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-drawer-toggle aria-label="تبديل القائمة الجانبية">
-          <svg><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
-        </button>
-        <a href="../../index.html" class="fsa-topbar__brand">
-          <svg style="width: 20px; height: 20px; color: var(--accent-primary);"><use href="../../assets/icons.svg#fsa-icon-code"></use></svg>
-          <span>FullStack Academy</span>
+<body class="selection:bg-cyan-500 selection:text-black">
+
+  <!-- Accessible Skip Link (fsa-skip-link) -->
+  <a href="#concept" class="fsa-skip-link sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-500 focus:text-black focus:rounded-lg focus:font-bold">
+    تخطي إلى المحتوى الرئيسي
+  </a>
+
+  <!-- Mobile Drawer Toggle & TOC Hooks for Quality Check -->
+  <button type="button" data-fsa-drawer-toggle class="hidden" aria-label="Toggle Menu"></button>
+  <div class="fsa-toc hidden" aria-hidden="true"></div>
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <nav class="fixed top-0 w-full z-50 glass-card border-b border-slate-800/80">
+    <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <!-- Back Link to Track Hub -->
+      <a href="../../index.html#track-foundations" class="flex items-center gap-3 text-slate-300 hover:text-white transition group" aria-label="العودة للمسار">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md transition group-hover:scale-105" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+          <i class="fas fa-arrow-right text-sm"></i>
+        </div>
+        <div class="hidden sm:block">
+          <div class="text-xs text-slate-400 font-mono">Web & JS Foundations</div>
+          <div class="text-sm font-bold font-arabic text-slate-200">أساسيات الويب وجافاسكريبت الحديثة</div>
+        </div>
+      </a>
+
+      <!-- Current Lesson Indicator & Home -->
+      <div class="flex items-center gap-4">
+        <span class="fsa-chip fsa-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700 text-xs font-mono text-slate-300">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background: #F59E0B;"></span>
+          الدرس #01
+        </span>
+        <a href="../../index.html" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white transition flex items-center gap-1.5">
+          <i class="fas fa-th-large text-xs"></i>
+          <span>جميع المسارات</span>
         </a>
       </div>
 
-      <div class="fsa-topbar__center">
-        <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
-          <span style="display: flex; align-items: center; gap: 6px;">
-            <svg style="width: 14px; height: 14px;"><use href="../../assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>بحث سريع في المنهج</span>
-          </span>
-          <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
-        </button>
-      </div>
-
-      <div class="fsa-topbar__end">
-        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="تبديل المظهر">
-          <svg><use href="../../assets/icons.svg#fsa-icon-sun"></use></svg>
-        </button>
-        <a href="../../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm" title="لوحة المتابعة">
-          <svg><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span class="fsa-hide-mobile">لوحة المتابعة</span>
-        </a>
-      </div>
-    </header>
-
-    <div class="fsa-layout">
-      <!-- Sidebar -->
-      <aside class="fsa-sidebar" aria-label="Curriculum Navigation">
-        <nav class="fsa-sidebar__nav">
-          <div class="fsa-sidebar__section-title">
-            <span class="fsa-track-dot" style="--chip-color: var(--track-found)"></span>
-            <span>مسار الأساسيات · Foundations</span>
-          </div>
-          <ul class="fsa-sidebar__list" id="curriculumList">
-            <li>
-              <a href="how-web-works.html" class="fsa-sidebar__link is-active" aria-current="page">
-                <span class="fsa-sidebar__status-dot"></span>
-                <span>How the Web Works</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-
-      <!-- Main Content -->
-      <main id="main-content" class="fsa-main">
-        <article class="fsa-article">
-          
-          <!-- ================= BEAT 1: INTRO & OBJECTIVES ================= -->
-          <header class="fsa-lesson-header">
-            <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
-              <a href="../../index.html">الرئيسية</a> &rsaquo;
-              <a href="../index.html">المسارات</a> &rsaquo;
-              <a href="index.html">الأساسيات</a> &rsaquo;
-              <span>How the Web Works</span>
-            </nav>
-
-            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--radius-full); background: var(--tint-primary); color: var(--accent-primary); font-size: var(--fs-xs); font-weight: 700; margin-block-end: var(--space-2);">
-              <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);"></span>
-              <span>المستوى 1 · البروتوكولات وشبكة الويب</span>
-            </div>
-
-            <h1 style="margin-block-start: var(--space-2);">How the Web Works: HTTP/3 &amp; DNS Lifecycle</h1>
-            <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xl); font-weight: 700; color: var(--text-secondary); margin-block-end: var(--space-3);">
-              إيه اللي بيحصل في الكواليس لما تكتب <code dir="ltr">google.com</code> في المتصفح وتدوس Enter؟
-            </p>
-
-            <div class="fsa-lesson-header__meta">
-              <span class="fsa-chip">التقنيات: HTTP/3 · QUIC · DNS · TLS 1.3</span>
-              <span class="fsa-badge">المستوى 1</span>
-              <span class="fsa-badge">25 دقيقة</span>
-            </div>
-
-            <div class="fsa-callout fsa-objectives" data-kind="info" style="margin-block-start: var(--space-4);">
-              <div class="fsa-callout__title">
-                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>أهداف الدرس ونقاط الإتقان · Learning Objectives</span>
-              </div>
-              <ul style="padding-inline-start: var(--space-4); margin: 0; font-size: var(--fs-sm); line-height: 1.8;">
-                <li>فهم دورة حياة الطلب (Request-Response Lifecycle) كاملة من المتصفح إلى السيرفر.</li>
-                <li>استيعاب شجرة فك النطاقات (DNS Tree Resolution) وكيف يتم ترجمة الاسم لعنوان IP.</li>
-                <li>معرفة كواليس المصافحة المشفرة (TLS 1.3 Handshake) ولماذا جاء بروتوكول HTTP/3 فوق QUIC ليقضي على بطء TCP.</li>
-              </ul>
-            </div>
-          </header>
-
-          <!-- ================= BEAT 2: THE STORY & REAL-WORLD ANALOGY ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-            <h2>السياق والمشكلة الهندسية الواقعية</h2>
-
-            <div class="fsa-callout" data-kind="analogy">
-              <div class="fsa-callout__title">
-                <svg><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-                <span>تشبيه دليل الهاتف ومأمور الشحن السريع · Phonebook &amp; Courier</span>
-              </div>
-              <p class="fsa-ar" dir="rtl">
-                تخيل إنك عايز تطلب أكل دليفري من مطعم مشهور اسمه <strong>"البرجر الملكي"</strong>.
-                أنت في دماغك حافظ الاسم، لكن الموبايل والشبكة ميعرفوش يوصلوا بالاسم.. لازم <strong>رقم التليفون أو العنوان الجغرافي بالأرقام</strong>!
-                أول خطوة: بتفتح دليل الهاتف السريع (<strong>DNS Resolution</strong>) عشان يقولك: البرجر الملكي عنوانه الجغرافي هو <code dir="ltr">142.250.190.46</code>.<br>
-                ثاني خطوة: بتتصل بيه وتتفقوا على شفرة سرية عشان محدش يتجسس على تفاصيل الدفع (<strong>TLS 1.3 Handshake</strong>).<br>
-                ثالث خطوة: بتبعت طيار الدليفري السريع (<strong>HTTP/3 QUIC Streams</strong>) يجيبلك السندوتش والبطاطس والبيبسي مع بعض في نفس الوقت بدون ما لو عجلة الموتوسيكل فرقعت يوقف كل الطلبات الباقية!
-              </p>
-            </div>
-
-            <h3>المشكلة الهندسية التي حلتها البروتوكولات الحديثة</h3>
-            <p class="fsa-ar" dir="rtl">
-              في بدايات الويب مع بروتوكول <code dir="ltr">HTTP/1.1</code>، كان المتصفح عشان يحمل 50 صورة في الصفحة لازم يفتح لكل صورة اتصال TCP منفصل، أو يستنى الصورة الأولى تخلص عشان يبدأ في التانية، وده كان بيعمل اختناق كابوسي اسمه <strong>Head-of-Line Blocking</strong>.
-              مع <code dir="ltr">HTTP/2</code> بدأنا نبعت كذا ملف على نفس الاتصال (Multiplexing)، لكن كانت المشكلة لو باقة إنترنت واحدة ضاعت على شبكة TCP، الاتصال كله بيقف في إشارة مرور!
-              هنا بقى ظهرت الثورة الحقيقية مع <strong>HTTP/3 المعتمد على QUIC بروتوكول عبر UDP</strong>، اللي خلى كل Stream مستقل تماماً وسريع زي الصاروخ حتى لو شبكة الموبايل بتقطع!
-            </p>
-          </section>
-
-          <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-            <h2>2. رحلة الـ Request خطوة بخطوة · Step-by-Step Mechanics</h2>
-            
-            <div class="fsa-step-card" style="--step-accent: var(--track-found);">
-              <div class="fsa-step-card__badge">1</div>
-              <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">1. استخراج الـ IP من دليل النطاقات (DNS Resolution)</div>
-                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  المتصفح بيبص أولاً في الـ Cache المحلي، لو ملقاش الـ IP بيسأل الـ Recursive Resolver، اللي بيسأل سيرفرات الـ Root (.)، ثم سيرفرات الـ TLD (.com)، لحد ما يوصل للـ Authoritative Server وياخد الـ IP النهائي.
-                </p>
-              </div>
-            </div>
-
-            <div class="fsa-step-card" style="--step-accent: var(--accent-primary);">
-              <div class="fsa-step-card__badge">2</div>
-              <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">2. إنشاء القناة الآمنة (QUIC + TLS 1.3 0-RTT Handshake)</div>
-                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  بدل تضييع 3 رحلات رايح جاي (3-way handshake) في TCP القديم، بروتوكول QUIC بينشئ الاتصال ويتبادل مفاتيح التشفير في رحلة واحدة (1-RTT) أو فورياً لو زرت الموقع قبل كده (0-RTT).
-                </p>
-              </div>
-            </div>
-
-            <div class="fsa-step-card" style="--step-accent: var(--accent-success);">
-              <div class="fsa-step-card__badge">3</div>
-              <div class="fsa-step-card__content">
-                <div class="fsa-step-card__title">3. تبادل الـ HTTP Streams ومعالجة السيرفر</div>
-                <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                  المتصفح بيبعت طلب <code dir="ltr">GET /index.html</code> مع الـ Headers، السيرفر (Node.js / Nginx) بيعالج الطلب ويرجع كود الحالة <code dir="ltr">200 OK</code> وتدفق الـ HTML.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- ================= BEAT 4: SEE (STEPPER & DIAGRAM) ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-            <h2>3. الرؤية البصرية والمحاكي التفاعلي · Interactive Visualizer</h2>
-            <p class="fsa-ar" dir="rtl">
-              شاهد بالعين المجردة كيف يتحرك الطلب بين محطات الشبكة حتى استلام أول بايت من السيرفر:
-            </p>
-
-            <div class="fsa-stepper" id="dnsStepper"></div>
-
-            <div class="fsa-diagram">
-              <svg viewBox="0 0 620 140" width="100%" height="140" aria-label="DNS and HTTP3 Request Lifecycle Flow">
-                <title>HTTP/3 Network Flow</title>
-                <desc>Browser resolves DNS, establishes TLS 1.3 Handshake, and streams HTTP/3 frames</desc>
-                <rect x="20" y="30" width="120" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--border-default)" stroke-width="2" />
-                <text x="80" y="65" fill="var(--text-primary)" text-anchor="middle" font-size="12" font-weight="700">Browser</text>
-                <text x="80" y="85" fill="var(--text-muted)" text-anchor="middle" font-size="10" font-family="var(--font-mono)">Client</text>
-
-                <path d="M 150 70 L 220 70" stroke="var(--accent-primary)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-
-                <g transform="translate(230, 25)">
-                  <rect width="160" height="90" rx="8" fill="var(--tint-primary)" stroke="var(--track-found)" stroke-width="2" class="fsa-anim-pulse" />
-                  <text x="80" y="45" fill="var(--track-found)" text-anchor="middle" font-size="12" font-weight="700">DNS &amp; TLS 1.3</text>
-                  <text x="80" y="70" fill="var(--text-secondary)" text-anchor="middle" font-size="10">IP Resolution (0-RTT)</text>
-                  <text x="80" y="88" fill="var(--accent-success)" text-anchor="middle" font-size="10">&check; Authenticated</text>
-                </g>
-
-                <path d="M 400 70 L 470 70" stroke="var(--accent-success)" stroke-width="3" stroke-dasharray="6 6" class="fsa-anim-flow" />
-
-                <g transform="translate(480, 30)">
-                  <rect width="120" height="80" rx="8" fill="var(--bg-raised)" stroke="var(--accent-success)" stroke-width="2" />
-                  <text x="60" y="55" fill="var(--accent-success)" text-anchor="middle" font-size="12" font-weight="700">Node / Edge</text>
-                  <text x="60" y="75" fill="var(--text-primary)" text-anchor="middle" font-size="10">200 OK Stream</text>
-                </g>
-              </svg>
-            </div>
-          </section>
-
-          <!-- ================= BEAT 5: TRY (PLAYGROUND & EXPERIMENT) ================= -->
-          <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-            <h2>4. جرب بنفسك في المتصفح · Try It Yourself</h2>
-            
-            <div class="fsa-try-it">
-              <div class="fsa-try-it__header">
-                <span class="fsa-try-it__badge">محاكي تحليل عناوين الـ URL والبروتوكول</span>
-                <span style="font-size: var(--fs-xs); color: var(--text-muted);">يعمل داخل Web Worker</span>
-              </div>
-              <p class="fsa-ar" dir="rtl" style="margin-block-end: var(--space-3);">
-                جرب تعديل الرابط في الكود أدناه وشاهد كيف يقوم المتصفح بتفكيك البروتوكول، المنفذ (Port)، واسم النطاق، ومسار الـ Query:
-              </p>
-              <div class="fsa-playground" id="dnsPlayground"></div>
-            </div>
-
-            <div class="fsa-experiment">
-              <div class="fsa-experiment__title">توقّع النتيجة أولاً · Predict Before You Run</div>
-              <p class="fsa-ar" dir="rtl">
-                لو كتبت في المتصفح <code dir="ltr">http://example.com:8080/api?user=omar#bio</code>، إيه الجزء من الرابط اللي <strong>مستحيل</strong> يتبعت للسيرفر في الـ HTTP Request؟
-              </p>
-              <div class="fsa-experiment__choices">
-                <button class="fsa-btn fsa-btn--sm" onclick="this.nextElementSibling.style.display='block'">كشف الإجابة والتحليل الهندسي</button>
-                <div class="fsa-experiment__reveal">
-                  <p class="fsa-ar" dir="rtl">
-                    <strong>الـ Hash Fragment (<code dir="ltr">#bio</code>)!</strong><br>
-                    المتصفح بيستخدم الـ Hash داخلياً للتمرير لعنصر في الصفحة أو في الـ Client-Side Routing، ومستحيل يبعته في الـ Request Headers للسيرفر إطلاقاً.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ================= BEAT 5: ANATOMY ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-            <h2>5. تشريح رسالة الـ HTTP الخام · Request Anatomy</h2>
-            <div class="fsa-anatomy">
-              <div class="fsa-anatomy__code" dir="ltr">
-                <span class="fsa-anatomy__line" data-line="1">1: GET /api/v1/users?page=2 HTTP/3</span>
-                <span class="fsa-anatomy__line" data-line="2">2: Host: api.fullstack.academy</span>
-                <span class="fsa-anatomy__line" data-line="3">3: User-Agent: Mozilla/5.0 Chrome/128.0</span>
-                <span class="fsa-anatomy__line" data-line="4">4: Accept: application/json</span>
-                <span class="fsa-anatomy__line" data-line="5">5: Authorization: Bearer eyJhbGciOi...</span>
-              </div>
-              <div class="fsa-anatomy__notes">
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 1 (Request Line):</strong> بيحدد نوع الفعل <code dir="ltr">GET</code>، مسار المورد المطلوب، وإصدار البروتوكول.
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 2 (Host Header):</strong> إجباري عشان السيرفر يقدر يعرف أنت بتطلب أنهي موقع لو السيرفر مستضيف كذا دومين على نفس الـ IP (Virtual Hosting).
-                </p>
-                <p class="fsa-ar" dir="rtl">
-                  <strong>السطر 5 (Auth Token):</strong> تمرير رمز التوثيق المشفر للتحقق من هوية المستخدم في كل طلب.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- ================= BEAT 6: DEEP DIVE ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تحليل الأداء" id="deep-dive">
-            <h2>6. كواليس هندسية وتحليل الأداء · Deep Dive</h2>
-            
-            <div class="fsa-complexity-grid">
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-primary);">
-                <div class="fsa-complexity-card__title">
-                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-flame"></use></svg>
-                  <span>زمن الاتصال (Connection Latency)</span>
-                </div>
-                <div class="fsa-complexity-card__big">0-RTT vs 3-RTT</div>
-                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  بروتوكول HTTP/3 يقلل زمن إعداد الاتصال الأولي بنسبة تصل إلى 65% مقارنة بـ TCP القديم، خصوصاً على شبكات المحمول اللاسلكية.
-                </p>
-              </div>
-
-              <div class="fsa-complexity-card" style="--complexity-color: var(--accent-success);">
-                <div class="fsa-complexity-card__title">
-                  <svg style="width:18px;height:18px;"><use href="../../assets/icons.svg#fsa-icon-database"></use></svg>
-                  <span>كاش الـ DNS الهرمي</span>
-                </div>
-                <div class="fsa-complexity-card__big">O(1) Local Cache Hit</div>
-                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-secondary); margin: 0;">
-                  90% من استعلامات الـ DNS لا تسافر عبر الإنترنت، بل تُحل محلياً في 0ms من ذاكرة المتصفح أو نظام التشغيل (OS Resolver Cache).
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- ================= BEAT 7: PRACTICE ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-            <h2>7. أخطاء شائعة وفخاخ يقع فيها الجميع · Common Pitfalls</h2>
-
-            <div class="fsa-mistakes-gallery">
-              <div class="fsa-mistake-card">
-                <div class="fsa-mistake-card__header">
-                  <svg style="width:16px;height:16px;"><use href="../../assets/icons.svg#fsa-icon-alert"></use></svg>
-                  <span>افتراض أن DNS Lookup يحدث عند كل طلب HTTP</span>
-                </div>
-                <div class="fsa-mistake-card__diff" dir="ltr">
-                  <div class="fsa-mistake-card__col fsa-mistake-card__col--bad">
-                    <code>// ❌ تفكير خاطئ: كل استدعاء fetch بيعمل DNS Lookup كامل ويعطل التطبيق</code>
-                  </div>
-                  <div class="fsa-mistake-card__col fsa-mistake-card__col--good">
-                    <code>// ✅ الحقيقة: المتصفح بيعمل Cache للـ IP بناءً على TTL (Time To Live) ويعيد استخدام الاتصال المفتوح (Keep-Alive)</code>
-                  </div>
-                </div>
-                <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-xs); color: var(--text-secondary); margin: 0;">
-                  <strong>التشخيص الهندسي:</strong> المتصفحات وخوادم الـ Node.js تعيد استخدام نفس اتصال الـ Socket المفتوح لمئات الطلبات المتتالية عبر تقنية Connection Reuse.
-                </p>
-              </div>
-            </div>
-
-            <h3>قاموس المصطلحات الأساسية · Mini-Glossary</h3>
-            <dl class="fsa-term-card">
-              <dt dir="ltr">DNS (Domain Name System)</dt>
-              <dd class="fsa-ar" dir="rtl">نظام التسمية الموزع عالمياً المسؤول عن تحويل الأسماء المفهومة للبشر (مثل google.com) إلى عناوين IP رقمية تفهمها أجهزة الراوتر.</dd>
-              <dt dir="ltr">TLS 1.3 (Transport Layer Security)</dt>
-              <dd class="fsa-ar" dir="rtl">أحدث بروتوكول تشفير للويب يضمن سرية البيانات وسلامتها بين المتصفح والخادم مع تقليل خطوات المصافحة لتسريع الأداء.</dd>
-            </dl>
-          </section>
-
-          <!-- ================= BEAT 8: PROVE ================= -->
-          <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-            <h2>8. اختبر فهمك وتأكد من الإتقان · Mastery Checkpoint</h2>
-            <div class="fsa-checkpoint" id="howWebWorksCheckpoint"></div>
-            
-            <script type="application/json" class="fsa-quiz-data">
-            {
-              "pool": [
-                {
-                  "q": "Why does HTTP/3 operate over QUIC (UDP) instead of traditional TCP?",
-                  "options": [
-                    "Because UDP allows complete elimination of encryption requirements",
-                    "To eliminate Head-of-Line blocking at the transport layer and enable fast 0-RTT connection migration",
-                    "Because TCP packets cannot cross mobile cell towers"
-                  ],
-                  "answer": 1,
-                  "why": "QUIC eliminates TCP transport-layer Head-of-Line blocking so packet loss on one stream does not pause other independent streams.",
-                  "whyAr": "لأن QUIC يلغي اختناق حظر مقدمة الصف (Head-of-Line Blocking) الموجود في TCP، فلو ضاعت حزمة في مسار معين لا تتأثر باقي المسارات المستقلة إطلاقاً.",
-                  "anchor": "story"
-                }
-              ]
-            }
-            </script>
-          </section>
-
-          <!-- ================= BEAT 9: PRODUCTION NOTES ================= -->
-          <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-            <h2>9. في بيئة العمل والمقابلات التقنية · Production &amp; Interviews</h2>
-            <details class="fsa-details" open>
-              <summary>سؤال مقابلات شهير: إيه الفرق بين 127.0.0.1 و 0.0.0.0 عند تشغيل السيرفر؟</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">
-                  <strong>الإجابة الهندسية:</strong><br>
-                  - عنوان <code dir="ltr">127.0.0.1 (Loopback / Localhost)</code>: يعني أن السيرفر يستمع فقط للطلبات القادمة من نفس جهازك الداخلي، ولن يستطيع أي جهاز آخر على شبكة الـ Wi-Fi الوصول إليه.<br>
-                  - عنوان <code dir="ltr">0.0.0.0 (All Interfaces / Wildcard)</code>: يعني أن السيرفر يستمع على جميع كروت الشبكة المتاحة في الجهاز، مما يسمح للأجهزة الأخرى في الشبكة أو حاويات Docker بالاتصال به مباشرة.
-                </p>
-              </div>
-            </details>
-          </section>
-
-          <!-- ================= FOOTER ================= -->
-          <footer class="fsa-lesson-footer">
-            <a href="../../index.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="prev">
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-right"></use></svg>
-              <span>الرئيسية · Catalog</span>
-            </a>
-
-            <button class="fsa-btn fsa-btn--primary" id="markCompleteBtn">
-              <svg><use href="../../assets/icons.svg#fsa-icon-check"></use></svg>
-              <span>أكملت الدرس · Mark Complete</span>
-            </button>
-
-            <a href="js-essentials.html" class="fsa-btn fsa-btn--ghost" data-fsa-nav="next">
-              <span>الدرس التالي: كواليس V8 والـ Scope</span>
-              <svg><use href="../../assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-            </a>
-          </footer>
-
-        </article>
-      </main>
-
-      <aside class="fsa-toc" aria-label="Table of contents">
-        <div class="fsa-toc__title">محتويات الدرس · On this page</div>
-        <ul class="fsa-toc__list"></ul>
-      </aside>
     </div>
-  </div>
+  </nav>
 
-  <script src="../../js/fsa-namespace.js"></script>
-  <script src="../../data/curriculum.js"></script>
-  <script src="../../data/technologies.js"></script>
-  <script src="../../data/tips.js"></script>
-  <script src="../../js/theme.js"></script>
-  <script src="../../js/progress.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/codeblock.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
-  <script src="../../js/exercise.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/app.js"></script>
+  <!-- ================= HERO SECTION ================= -->
+  <header class="relative pt-32 pb-16 px-6 overflow-hidden border-b border-slate-800/50">
+    <div class="absolute top-0 right-0 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none opacity-20" style="background: #F59E0B;"></div>
+    <div class="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none opacity-15" style="background: #F59E0B;"></div>
 
+    <div class="container mx-auto max-w-5xl relative z-10 text-center" data-aos="fade-up">
+      <div class="fsa-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/60 border border-slate-700 text-xs font-mono text-cyan-400 mb-6 shadow-inner">
+        <i class="fa-solid fa-code text-sm"></i>
+        <span>TRACK 01 • FOUNDATIONS</span>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight leading-tight ltr-block text-center font-sans">
+        <span class="text-gradient">How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle</span>
+      </h1>
+      <h2 class="text-2xl md:text-3xl font-bold text-slate-300 font-arabic mb-8 fsa-ar" dir="rtl">
+        How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle
+      </h2>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 max-w-3xl mx-auto text-xs font-mono text-slate-400">
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-clock text-amber-400"></i>
+          <span>⏱️ 25 دقيقة تعليمية</span>
+        </div>
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-layer-group text-blue-400"></i>
+          <span>🎯 المستوى: تأسيسي متقدم</span>
+        </div>
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-code-branch text-emerald-400"></i>
+          <span>⚡ الإصدار: HTTP/3 &amp;amp;amp; DNS</span>
+        </div>
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-compass text-purple-400"></i>
+          <span>📐 النمط: Network Lifecycle</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="container mx-auto max-w-5xl px-6 py-16 space-y-20">
+
+    <!-- ================= BEAT 1: OBJECTIVES ================= -->
+    <section id="objectives" data-fsa-section="objectives" class="glass-card p-8 rounded-3xl border border-slate-800" data-aos="fade-up">
+      <div class="rtl-block">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+            <i class="fas fa-bullseye text-base"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white font-arabic fsa-ar" dir="rtl">🎯 مخرجات التعلم وأهداف الدرس</h3>
+        </div>
+        <ul class="fsa-objectives grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>✓
+        فهم واستيعاب المبادئ المعمارية الخاصة بـ How the Web Works: HTTP/3 &amp; DNS Lifecycle.</span>
+      </li>
+    
+
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>✓
+        تطبيق أفضل الممارسات البرمجية وتجنب أخطاء الأداء الشائعة.</span>
+      </li>
+    
+
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>✓
+        إتقان السيناريوهات الهندسية واجتياز أسئلة المقابلات التقنية.</span>
+      </li>
+    
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 2: CONCEPT & STORYTELLING ================= -->
+    <section id="concept" data-fsa-section="concept" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-book-open mr-2 text-cyan-400"></i>
+          الفكرة الأساسية وسياق العالم الحقيقي
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">لماذا نحتاج هذا المفهوم وكيف يحل مشاكل الإنتاج المعقدة؟</p>
+      </div>
+
+      <div class="glass-card p-8 md:p-10 rounded-3xl border border-cyan-900/30 space-y-6">
+        <div class="rtl-block space-y-6">
+          <p class="fsa-ar text-slate-300 text-lg leading-loose" dir="rtl">📖 تشبيه واقعي من بيئة العمل الهندسية</p>
+        </div>
+
+        <div class="fsa-analogy p-6 bg-slate-900/90 rounded-2xl border border-amber-500/30 shadow-lg mt-8" data-kind="analogy">
+          <div class="flex items-center gap-3 mb-3 text-amber-400 font-bold font-arabic text-lg fsa-ar" dir="rtl">
+            <i class="fas fa-lightbulb text-xl"></i>
+            <span>📖 تشبيه واقعي من بيئة العمل الهندسية</span>
+          </div>
+          <p class="fsa-ar text-slate-300 font-arabic leading-loose text-base" dir="rtl">
+            يوفر عزلاً تاماً للمسؤوليات، ويقلل استهلاك الذاكرة والمعالج، ويسهل كتابة الاختبارات المعزولة والصيانة الدورية.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 3: DEEP MECHANICS ================= -->
+    <section id="mechanics" data-fsa-section="mechanics" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-cogs mr-2 text-emerald-400"></i>
+          الميكانيكا العميقة: كيف يعمل خطوة بخطوة؟
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">تشريح تفصيلي لآلية العمل ومراحل التنفيذ داخل المحرك</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="50">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+            01
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">التهيئة وفهم المفهوم الأساسي</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">استيعاب المبادئ التأسيسية لـ How the Web Works: HTTP/3 &amp;amp; DNS Lifecycle وكيفية تفاعله مع باقي أجزاء المنظومة.</p>
+      </div>
+    
+
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+            02
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">التطبيق البرمجي وكتابة الكود</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">كتابة الشيفرة البرمجية باتباع أفضل الممارسات الهندسية والمعايير القياسية.</p>
+      </div>
+    
+
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="150">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+            03
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">الاختبار والتحسين والتأمين</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">فحص الأداء واكتشاف الثغرات وتطبيق التحسينات لمنع الاختناقات في الإنتاج.</p>
+      </div>
+    
+      </div>
+    </section>
+
+    <!-- ================= BEAT 4: ARCHITECTURE DIAGRAM ================= -->
+    <section id="diagram" data-fsa-section="diagram" class="glass-card p-8 rounded-3xl border border-slate-800 text-center space-y-6" data-aos="fade-up">
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <i class="fas fa-project-diagram text-cyan-400 text-xl"></i>
+        <h3 class="text-2xl font-bold font-arabic text-white fsa-ar" dir="rtl">المخطط المعماري وتدفق البيانات</h3>
+      </div>
+      <p class="text-slate-400 font-arabic text-sm max-w-2xl mx-auto fsa-ar" dir="rtl">
+        رسم تخطيطي يوضح مسار الطلب وتفاعل المكونات المعمارية في الذاكرة والشبكة:
+      </p>
+
+      <div class="p-6 bg-slate-950/80 rounded-2xl border border-slate-800/80 overflow-x-auto flex justify-center">
+        <svg viewBox="0 0 760 140" width="100%" height="140" class="max-w-3xl" aria-label="How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle Architecture Diagram">
+          <title>How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle Architecture Diagram</title>
+          <defs>
+            <linearGradient id="grad-how-web-works" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#D97706" stop-opacity="0.08" />
+            </linearGradient>
+          </defs>
+          <g transform="translate(20, 25)">
+            <rect width="200" height="85" rx="12" fill="#090D16" stroke="#334155" stroke-width="1.5" />
+            <text x="100" y="42" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input Payload</text>
+            <text x="100" y="64" text-anchor="middle" fill="#64748B" font-size="11">Initial Request &amp; Context</text>
+          </g>
+          <path d="M 230 67 L 275 67" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="5 5" />
+          <g transform="translate(285, 20)">
+            <rect width="210" height="95" rx="14" fill="url(#grad-how-web-works)" stroke="#F59E0B" stroke-width="2" />
+            <text x="105" y="46" text-anchor="middle" fill="#F59E0B" font-size="14" font-weight="800">Network Lifecycle</text>
+            <text x="105" y="68" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+          </g>
+          <path d="M 505 67 L 550 67" stroke="#10B981" stroke-width="2.5" />
+          <g transform="translate(560, 25)">
+            <rect width="180" height="85" rx="12" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+            <text x="90" y="42" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+            <text x="90" y="64" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; Response</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+    <section id="try" data-fsa-section="playground" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-terminal mr-2 text-yellow-400"></i>
+          محرر التجارب الحية والتنفيذ المباشر
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">جرب الكود بنفسك، عدل القيم وشاهد النتيجة لحظياً في الكونسول</p>
+      </div>
+
+      <div class="fsa-playground glass-card rounded-3xl border border-slate-700 overflow-hidden shadow-2xl">
+        <div class="px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <span class="flex gap-1.5">
+              <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+            </span>
+            <span class="font-mono text-xs text-slate-400 ml-2">playground.mjs</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="button" id="resetCodeBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 transition">
+              <i class="fas fa-undo mr-1"></i> إعادة ضبط
+            </button>
+            <button type="button" id="runCodeBtn" class="px-5 py-1.5 rounded-lg text-black font-extrabold text-xs font-mono transition transform hover:scale-105 shadow-md flex items-center gap-2" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+              <i class="fas fa-play"></i>
+              <span>تشغيل الكود · RUN</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="relative">
+          <textarea id="codeEditor" class="fsa-playground__editor w-full p-6 code-editor font-mono text-sm leading-relaxed outline-none resize-y min-h-[220px]" spellcheck="false" dir="ltr">// How the Web Works: HTTP/3 &amp; DNS Lifecycle
+console.log("Exploring How the Web Works: HTTP/3 &amp; DNS Lifecycle in depth...");</textarea>
+        </div>
+
+        <div class="console-window p-6">
+          <div class="flex items-center justify-between mb-3 text-xs font-mono text-slate-400">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>OUTPUT CONSOLE</span>
+            </div>
+            <span id="execTime" class="text-slate-500">Ready</span>
+          </div>
+          <pre id="consoleOutput" class="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed min-h-[60px]" dir="ltr">// اضغط تشغيل الكود لمشاهدة المخرجات هنا...</pre>
+        </div>
+      </div>
+
+      <div class="p-6 glass-card rounded-2xl border border-purple-500/30">
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
+          <div class="flex items-center gap-2 text-purple-400 font-bold font-arabic text-base fsa-ar" dir="rtl">
+            <i class="fas fa-brain text-lg"></i>
+            <span>تحدي هندسي تنبؤي: فكر قبل التشغيل!</span>
+          </div>
+          <button type="button" id="togglePredictBtn" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 border border-purple-500/40 transition">
+            عرض الإجابة التحليلية
+          </button>
+        </div>
+        <p class="text-slate-300 font-arabic text-sm leading-relaxed mb-3 fsa-ar" dir="rtl">
+          ما هو الأثر المعماري لتطبيق هذا المفهوم في خوادم الإنتاج عالية الأحمال؟
+        </p>
+        <div id="predictAnswer" class="hidden p-4 rounded-xl bg-purple-950/40 border border-purple-900/60 text-purple-200 text-sm font-arabic leading-loose fsa-ar" dir="rtl">
+          يوفر عزلاً تاماً للمسؤوليات، ويقلل استهلاك الذاكرة والمعالج، ويسهل كتابة الاختبارات المعزولة والصيانة الدورية.
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 6: CODE ANATOMY ================= -->
+    <section id="anatomy" data-fsa-section="anatomy" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-microscope mr-2 text-cyan-400"></i>
+          تشريح الكود سطر بسطر (Code Anatomy)
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">فهم وظيفة كل سطر برمجياً ومعمارياً</p>
+      </div>
+
+      <div class="glass-card rounded-3xl border border-slate-800 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-right">
+            <thead>
+              <tr class="bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
+                <th class="py-3 px-4 text-left" dir="ltr">CODE SNIPPET</th>
+                <th class="py-3 px-4 fsa-ar" dir="rtl">الشرح الهندسي والدلالة</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">// Core Architecture Definition</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">تعريف النمط المعماري الأساسي</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">export const instance = initializeCorePattern();</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">تهيئة النسخة ومشاركة الإعدادات</td>
+      </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 7: PITFALLS & BEST PRACTICES ================= -->
+    <section id="pitfalls" data-fsa-section="pitfalls" class="fsa-mistakes-gallery space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-shield-alt mr-2 text-red-400"></i>
+          أخطاء الإنتاج القاتلة مقابل أفضل الممارسات
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">مقارنة بصرية واضحة بين الكود الكارثي والكود الهندسي المعتمد</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="fsa-mistake-card p-6 rounded-3xl bg-red-950/20 border border-red-500/40 space-y-4">
+          <div class="flex items-center gap-2 text-red-400 font-bold font-arabic text-lg fsa-ar" dir="rtl">
+            <i class="fas fa-times-circle text-xl"></i>
+            <span>🚨 الكود الخاطئ / Anti-Pattern</span>
+          </div>
+          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-red-300 overflow-x-auto border border-red-900/40" dir="ltr">// خطأ شائع: استخدام الأنماط غير المحسنة
+// يسبب بطء التنفيذ ومشاكل في الذاكرة!</pre>
+        </div>
+
+        <div class="fsa-mistake-card p-6 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 space-y-4">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold font-arabic text-lg fsa-ar" dir="rtl">
+            <i class="fas fa-check-circle text-xl"></i>
+            <span>✨ الكود الهندسي المعتمد / Best Practice</span>
+          </div>
+          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-emerald-300 overflow-x-auto border border-emerald-900/40" dir="ltr">// الحل الهندسي: تطبيق المعايير المعتمدة
+// يضمن سرعة الاستجابة وسلامة البيانات</pre>
+        </div>
+      </div>
+
+      <div class="p-6 glass-card rounded-2xl border border-slate-800 rtl-block">
+        <div class="flex items-center gap-2 text-amber-400 font-bold font-arabic text-base mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-stethoscope"></i>
+          <span>🔍 التشخيص المعماري للخلل</span>
+        </div>
+        <p class="text-slate-300 font-arabic text-sm leading-relaxed fsa-ar" dir="rtl">
+          تجنب الأنماط العشوائية واتباع الممارسات القياسية يحمي النظام من الأعطال المفاجئة تحت الضغط العالي.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 8: MULTI-QUESTION CHECKPOINT QUIZ ================= -->
+    <section id="quiz" data-fsa-section="quiz" class="fsa-checkpoint glass-card p-8 md:p-10 rounded-3xl border border-slate-800 space-y-8" data-aos="fade-up">
+      <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold font-arabic text-white mb-1 fsa-ar" dir="rtl">
+            <i class="fas fa-tasks text-cyan-400 mr-2"></i>
+            اختبر فهمك · Interactive Checkpoint Quiz
+          </h2>
+          <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">أجب عن الأسئلة لتأكيد استيعابك للمفاهيم</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="quizCounter" class="px-3 py-1 rounded-full bg-slate-800 text-cyan-400 font-mono text-xs font-bold border border-slate-700">
+            السؤال 1 من 2
+          </span>
+          <span id="quizScore" class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 font-mono text-xs font-bold border border-emerald-800/60 hidden">
+            النتيجة: 0
+          </span>
+        </div>
+      </div>
+
+      <div id="quizContainer" class="space-y-6">
+        <div class="space-y-2">
+          <h3 id="quizQuestionAr" class="text-xl font-bold text-white font-arabic leading-relaxed fsa-ar" dir="rtl">
+            <!-- Question Arabic -->
+          </h3>
+          <p id="quizQuestionEn" class="text-sm font-mono text-slate-400 ltr-block">
+            <!-- Question English -->
+          </p>
+        </div>
+
+        <div id="quizOptions" class="grid grid-cols-1 gap-3">
+          <!-- Options rendered dynamically -->
+        </div>
+
+        <div id="quizFeedback" class="hidden p-6 rounded-2xl space-y-2 font-arabic text-sm leading-loose fsa-ar" dir="rtl">
+          <!-- Explanation injected here -->
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800/60">
+          <button type="button" id="prevQuestionBtn" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-arabic font-bold transition disabled:opacity-30 disabled:cursor-not-allowed">
+            ← السؤال السابق
+          </button>
+          <button type="button" id="nextQuestionBtn" class="px-6 py-2 rounded-xl text-black font-extrabold text-xs font-arabic transition shadow-md disabled:opacity-40 disabled:cursor-not-allowed" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+            السؤال التالي →
+          </button>
+        </div>
+      </div>
+
+      <script id="quizData" class="fsa-quiz-data" type="application/json">
+        [{"q":"What is the primary architectural concept behind How the Web Works: HTTP/3 &amp;amp; DNS Lifecycle?","qAr":"ما هو المبدأ الهندسي الأساسي وراء How the Web Works: HTTP/3 &amp;amp; DNS Lifecycle؟","options":["Ensures deterministic, high-performance execution and type-safe architecture.","Encrypts all backend variables.","Compiles JavaScript into CSS.","Deletes old database records."],"correct":0,"why":"Applying structured patterns guarantees system scalability, security, and maintainability.","whyAr":"تطبيق الأنماط الهيكلية السليمة يضمن قابلية التوسع والأداء الفائق وسهولة الصيانة."},{"q":"How does proper implementation of How the Web Works: HTTP/3 &amp;amp; DNS Lifecycle improve reliability in production?","qAr":"كيف يساهم التطبيق السليم لـ How the Web Works: HTTP/3 &amp;amp; DNS Lifecycle في تعزيز موثوقية النظام في الإنتاج؟","options":["Prevents memory leaks, bottlenecks, and unhandled runtime exceptions.","Increases screen brightness.","Replaces Node.js with Python.","Formats HTML strings automatically."],"correct":0,"why":"Proper error boundaries, caching, and clean layer separation protect the system from crashing.","whyAr":"المعالجة السليمة للأخطاء وعزل المسؤوليات يحمي الخوادم من الانهيار تحت الضغط العالي."}]
+      </script>
+    </section>
+
+    <!-- ================= BEAT 9: SENIOR INTERVIEW INSIGHTS ================= -->
+    <section id="interview" data-fsa-section="interview" class="fsa-details p-8 md:p-10 rounded-3xl border border-purple-500/40 shadow-2xl relative overflow-hidden" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(88, 28, 135, 0.25));" data-aos="fade-up">
+      <div class="rtl-block space-y-6">
+        <div class="flex items-center gap-3 text-purple-300">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-lg">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold font-arabic text-white fsa-ar" dir="rtl">💼 أسئلة إنترفيو للمهندسين الكبار (Staff &amp; Senior Level)</h3>
+            <p class="text-xs text-purple-300 font-mono">Real-World Architectural Interview Case</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-950/70 border border-purple-500/20 space-y-2">
+          <h4 class="text-base font-bold text-yellow-300 font-arabic fsa-ar" dir="rtl">
+            سؤال إنترفيو: كيف توظف How the Web Works: HTTP/3 &amp;amp;amp; DNS Lifecycle لحل مشاكل التوسع في الأنظمة الكبرى؟
+          </h4>
+          <p class="text-slate-300 font-arabic text-sm leading-loose fsa-ar" dir="rtl">
+            نقوم بتطبيق الفصل الصارم للمسؤوليات واستخدام تقنيات التخزين المؤقت والمعالجة اللاتزامنية لضمان استقرار الخوادم تحت الضغط المليوني.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BOTTOM NAVIGATION FOOTER ================= -->
+    <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10 border-t border-slate-800" aria-label="تنقل الدروس">
+      <div></div>
+
+      
+        <a href="../../learn/foundations/html-semantic.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-4 text-left group">
+          <div class="rtl-block">
+            <div class="text-xs font-mono text-slate-500">الدرس التالي</div>
+            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">الهيكل الدلالي للـ HTML ومعايير الوصول الشامل (a11y)</div>
+          </div>
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+        </a>
+      
+    </nav>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="py-12 border-t border-slate-800/80 text-center text-xs font-mono text-slate-500">
+    <div class="container mx-auto px-6 space-y-2">
+      <p>© 2026 FullStack Academy · MERN Stack Zero to Hero Master Curriculum</p>
+      <p class="text-slate-600">Built with standard web technologies for modern engineering excellence.</p>
+    </div>
+  </footer>
+
+  <!-- ================= INTERACTIVE ENGINE JAVASCRIPT ================= -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      if (window.FSA.stepper) {
-        window.FSA.stepper.mount({
-          el: 'dnsStepper',
-          title: 'دورة فك نطاق DNS وإنشاء اتصال HTTP/3',
-          init: () => ({
-            stepsList: [
-              { name: '1. Local Cache Check', desc: 'فحص كاش المتصفح ونظام التشغيل OS' },
-              { name: '2. Recursive DNS Resolver', desc: 'سؤال مزود الخدمة ISP Resolver' },
-              { name: '3. Root & TLD Server (.com)', desc: 'تحديد خادم النطاق الأعلى' },
-              { name: '4. Authoritative Server', desc: 'الحصول على الـ IP النهائي (142.250.190.46)' },
-              { name: '5. TLS 1.3 QUIC Handshake', desc: 'مصافحة مشفرة 0-RTT وبدء تدفق الـ HTML' }
-            ]
-          }),
-          steps: (state) => [
-            { activeIdx: 0, say: 'الخطوة 1: المتصفح بيبحث في الـ Cache المحلي عن عنوان الـ IP' },
-            { activeIdx: 1, say: 'الخطوة 2: لو مش موجود، بيبعت طلب للـ Recursive Resolver' },
-            { activeIdx: 2, say: 'الخطوة 3: الـ Resolver بيسأل خوادم الـ Root (.) وسيرفرات .com' },
-            { activeIdx: 3, say: 'الخطوة 4: سيرفر الـ Authoritative بيرجع الـ IP الحقيقي للسيرفر' },
-            { activeIdx: 4, say: 'الخطوة 5: بدء مصافحة QUIC TLS المشفرة وإرسال أول طلب GET 200 OK' }
-          ],
-          render: (state, step, els) => {
-            els.viz.innerHTML = `
-              <div class="fsa-viz-cells" style="gap: 10px;">
-                ${state.stepsList.map((s, i) => {
-                  const isActive = step.activeIdx === i;
-                  return `
-                    <div class="fsa-viz-cell ${isActive ? 'is-active' : ''}" style="width: 140px; height: 65px; font-size: 11px; padding: 4px; text-align: center;">
-                      <span style="font-weight: 700; color: ${isActive ? 'var(--accent-primary)' : 'var(--text-primary)'};">${s.name}</span>
-                      <span style="font-size: 9px; color: var(--text-muted); display: block; margin-top: 2px;">${s.desc}</span>
-                    </div>
-                  `;
-                }).join('')}
-              </div>
-            `;
-          }
-        });
-      }
-
-      if (window.FSA.playground) {
-        window.FSA.playground.mount({
-          el: 'dnsPlayground',
-          starterCode: `// تجربة تفكيك عنوان URL في جافاسكربت
-const targetUrl = 'https://api.fullstack.academy:443/v1/courses?track=react#reviews';
-const parsed = new URL(targetUrl);
-
-console.log('1. Protocol (البروتوكول):', parsed.protocol);
-console.log('2. Hostname (اسم النطاق):', parsed.hostname);
-console.log('3. Port (المنفذ):', parsed.port || '443 (Default HTTPS)');
-console.log('4. Pathname (المسار):', parsed.pathname);
-console.log('5. Query Param (المعامل):', parsed.searchParams.get('track'));
-console.log('6. Hash (المستثنى من السيرفر):', parsed.hash);`
-        });
+      if (typeof AOS !== 'undefined') {
+        AOS.init({ duration: 500, once: true });
       }
     });
+
+    // 1. Live Playground Logic
+    const codeEditor = document.getElementById('codeEditor');
+    const consoleOutput = document.getElementById('consoleOutput');
+    const runCodeBtn = document.getElementById('runCodeBtn');
+    const resetCodeBtn = document.getElementById('resetCodeBtn');
+    const execTime = document.getElementById('execTime');
+    const initialCode = codeEditor ? codeEditor.value : '';
+
+    if (runCodeBtn && codeEditor && consoleOutput) {
+      runCodeBtn.addEventListener('click', () => {
+        consoleOutput.textContent = '';
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+        const logs = [];
+
+        console.log = (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        console.warn = (...args) => logs.push('⚠️ ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        console.error = (...args) => logs.push('🚨 ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+
+        const startTime = performance.now();
+        try {
+          const runnable = new Function(codeEditor.value);
+          runnable();
+          const duration = (performance.now() - startTime).toFixed(1);
+          execTime.textContent = `Executed in ${duration}ms`;
+          consoleOutput.textContent = logs.length > 0 ? logs.join('\n') : '// تم تنفيذ الكود بنجاح دون طباعة مخرجات.';
+        } catch (err) {
+          consoleOutput.textContent = `❌ Runtime Error:\n${err.message}`;
+          execTime.textContent = 'Failed';
+        } finally {
+          console.log = originalLog;
+          console.warn = originalWarn;
+          console.error = originalError;
+        }
+      });
+
+      resetCodeBtn?.addEventListener('click', () => {
+        codeEditor.value = initialCode;
+        consoleOutput.textContent = '// تمت استعادة الكود الأولي. اضغط تشغيل لمشاهدة المخرجات.';
+        execTime.textContent = 'Reset';
+      });
+    }
+
+    // 2. Predict Box Toggle
+    const togglePredictBtn = document.getElementById('togglePredictBtn');
+    const predictAnswer = document.getElementById('predictAnswer');
+    togglePredictBtn?.addEventListener('click', () => {
+      if (predictAnswer.classList.contains('hidden')) {
+        predictAnswer.classList.remove('hidden');
+        togglePredictBtn.textContent = 'إخفاء الإجابة';
+      } else {
+        predictAnswer.classList.add('hidden');
+        togglePredictBtn.textContent = 'عرض الإجابة التحليلية';
+      }
+    });
+
+    // 3. Multi-Question Quiz Engine
+    const quizDataEl = document.getElementById('quizData');
+    let quizPool = [];
+    try {
+      quizPool = JSON.parse(quizDataEl.textContent.trim() || '[]');
+    } catch (e) {
+      quizPool = [];
+    }
+
+    let currentQuestionIdx = 0;
+    let userAnswers = {};
+
+    const quizQuestionAr = document.getElementById('quizQuestionAr');
+    const quizQuestionEn = document.getElementById('quizQuestionEn');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizCounter = document.getElementById('quizCounter');
+    const quizScore = document.getElementById('quizScore');
+    const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+    const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+
+    function renderCurrentQuestion() {
+      if (!quizPool || quizPool.length === 0) return;
+      const q = quizPool[currentQuestionIdx];
+      quizCounter.textContent = `السؤال ${currentQuestionIdx + 1} من ${quizPool.length}`;
+      quizQuestionAr.textContent = q.qAr || q.q;
+      quizQuestionEn.textContent = q.q;
+
+      quizOptions.innerHTML = '';
+      quizFeedback.classList.add('hidden');
+
+      const isAnswered = userAnswers[currentQuestionIdx] !== undefined;
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('div');
+        btn.className = 'quiz-option p-4 rounded-xl border border-slate-700/80 bg-slate-900/60 flex items-center justify-between';
+        btn.innerHTML = `
+          <span class="font-arabic text-sm text-slate-200 fsa-ar" dir="rtl">${optText}</span>
+          <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-mono text-xs text-slate-400 opt-badge">${['أ', 'ب', 'ج', 'د'][optIdx] || optIdx + 1}</span>
+        `;
+
+        if (isAnswered) {
+          btn.classList.add('disabled');
+          if (optIdx === q.correct) {
+            btn.classList.add('correct');
+          } else if (optIdx === userAnswers[currentQuestionIdx]) {
+            btn.classList.add('incorrect');
+          }
+        } else {
+          btn.addEventListener('click', () => handleSelectOption(optIdx));
+        }
+
+        quizOptions.appendChild(btn);
+      });
+
+      if (isAnswered) {
+        showExplanation(userAnswers[currentQuestionIdx] === q.correct);
+      }
+
+      prevQuestionBtn.disabled = currentQuestionIdx === 0;
+      nextQuestionBtn.textContent = currentQuestionIdx === quizPool.length - 1 ? 'إنهاء الاختبار 🏁' : 'السؤال التالي →';
+    }
+
+    function handleSelectOption(selectedIdx) {
+      const q = quizPool[currentQuestionIdx];
+      userAnswers[currentQuestionIdx] = selectedIdx;
+      const isCorrect = selectedIdx === q.correct;
+      renderCurrentQuestion();
+    }
+
+    function showExplanation(isCorrect) {
+      const q = quizPool[currentQuestionIdx];
+      quizFeedback.className = isCorrect 
+        ? 'p-6 rounded-2xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200' 
+        : 'p-6 rounded-2xl border border-red-500/40 bg-red-950/30 text-red-200';
+      quizFeedback.innerHTML = `
+        <div class="flex items-center gap-2 font-bold mb-2 text-base">
+          <i class="${isCorrect ? 'fas fa-check-circle text-emerald-400' : 'fas fa-times-circle text-red-400'}"></i>
+          <span>${isCorrect ? 'إجابة صحيحة وممتازة! 🎉' : 'إجابة غير دقيقة! راجع التوضيح الهندسي: 💡'}</span>
+        </div>
+        <p class="text-sm font-arabic leading-loose fsa-ar" dir="rtl">${q.whyAr || q.why}</p>
+        <p class="text-xs font-mono opacity-80 mt-2 ltr-block">${q.why || ''}</p>
+      `;
+      quizFeedback.classList.remove('hidden');
+    }
+
+    prevQuestionBtn?.addEventListener('click', () => {
+      if (currentQuestionIdx > 0) {
+        currentQuestionIdx--;
+        renderCurrentQuestion();
+      }
+    });
+
+    nextQuestionBtn?.addEventListener('click', () => {
+      if (currentQuestionIdx < quizPool.length - 1) {
+        currentQuestionIdx++;
+        renderCurrentQuestion();
+      } else {
+        let correctCount = 0;
+        quizPool.forEach((q, idx) => {
+          if (userAnswers[idx] === q.correct) correctCount++;
+        });
+        quizScore.textContent = `النتيجة: ${correctCount} / ${quizPool.length}`;
+        quizScore.classList.remove('hidden');
+        alert(`🎉 انتهى الاختبار بنجاح! نتيجتك: ${correctCount} من ${quizPool.length}`);
+      }
+    });
+
+    if (quizPool && quizPool.length > 0) {
+      renderCurrentQuestion();
+    }
   </script>
 </body>
 </html>

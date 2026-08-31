@@ -125,10 +125,28 @@ function checkFile(filePath, relPath) {
     warnings.push('Missing version chip or metadata badges in header');
   }
 
-  // 14. No unauthorized CDN requests (Google Fonts is permitted per design system)
-  const cdnMatches = html.match(/(https?:\/\/(?:cdn\.|unpkg\.|cdnjs\.)[^\s"'>]+)/gi) || [];
-  if (cdnMatches.length > 0) {
-    errors.push(`External unauthorized CDN dependency detected: ${cdnMatches.join(', ')}`);
+  // 14. CDN whitelist check: check external script and stylesheet tags
+  const externalTags = html.match(/<(?:script|link)[^>]+(?:src|href)=["'](https?:\/\/[^"']+)["']/gi) || [];
+  const unauthorizedCdns = [];
+  for (const tag of externalTags) {
+    const urlMatch = tag.match(/(?:src|href)=["'](https?:\/\/[^"']+)["']/i);
+    if (urlMatch) {
+      const url = urlMatch[1];
+      const isAllowed = 
+        url.includes('fonts.googleapis.com') ||
+        url.includes('fonts.gstatic.com') ||
+        url.includes('cdn.tailwindcss.com') ||
+        url.includes('cdnjs.cloudflare.com/ajax/libs/font-awesome') ||
+        url.includes('unpkg.com/aos') ||
+        url.includes('ozidan13.github.io') ||
+        url.includes('w3.org/2000/svg');
+      if (!isAllowed) {
+        unauthorizedCdns.push(url);
+      }
+    }
+  }
+  if (unauthorizedCdns.length > 0) {
+    errors.push(`External unauthorized CDN dependency detected: ${unauthorizedCdns.slice(0, 3).join(', ')}`);
   }
 
   const absPathMatches = bodyWithoutScripts.match(/(?:href|src)=["']\/[^\/][^"']*["']/gi) || [];

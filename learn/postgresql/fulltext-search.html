@@ -1,138 +1,251 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" class="scroll-smooth" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Course Metadata Tags -->
   <meta name="fsa-track" content="postgresql">
   <meta name="fsa-lesson" content="fulltext-search">
   <meta name="fsa-level" content="3">
   <meta name="fsa-order" content="13">
-  <meta name="fsa-title" content="Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching">
+  <meta name="fsa-title" content="Full-Text Search (FTS): tsvector, tsquery, Ranking &amp; Trigram Fuzzy Matching">
   <meta name="fsa-est-minutes" content="35">
   <meta name="fsa-teaches-version" content="PostgreSQL 18 FTS">
-  <meta name="fsa-pattern-label" content="Search Engine Architecture & Lexical Analysis">
+  <meta name="fsa-pattern-label" content="Search Engine Architecture &amp; Lexical Analysis">
   <meta name="fsa-root" content="../../">
 
-  <title>Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching · FullStack Academy</title>
+  <title>Full-Text Search (FTS): tsvector, tsquery, Ranking &amp; Trigram Fuzzy Matching | البحث النصي الشامل (Full-Text Search): متجهات tsvector، استعلامات tsquery ومطابقة Trigram الضبابية · FullStack Academy</title>
 
-  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <!-- Google Fonts: Cairo (Arabic), Inter (English), Fira Code (Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Core Tokens & Fonts -->
-  <link rel="stylesheet" href="../../css/tokens.css">
-  <link rel="stylesheet" href="../../css/base.css">
-  <link rel="stylesheet" href="../../css/layout.css">
-  <link rel="stylesheet" href="../../css/components.css">
-  <link rel="stylesheet" href="../../css/learning.css">
+  <!-- FontAwesome & AOS Animations -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Tailwind CSS CDN with Custom Theme Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neon: { green: '#10B981', blue: '#3B82F6', purple: '#8B5CF6', cyan: '#06B6D4', amber: '#F59E0B' },
+            dark: { bg: '#020617', card: '#0F172A', border: '#1E293B', surface: '#0B132B' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            arabic: ['Cairo', 'sans-serif'],
+            mono: ['Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
-    :root {
-      --track-accent-current: #60A5FA;
+    body {
+      background: #020617;
+      color: #E2E8F0;
+      overflow-x: hidden;
+      font-family: 'Cairo', 'Inter', sans-serif;
     }
-    .fsa-article__header {
-      padding-block: var(--space-8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: var(--space-8);
-    }
-    .fsa-step-card {
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(12px);
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      padding: var(--space-5);
-      transition: all 0.25s ease;
     }
-    .fsa-step-card:hover {
-      border-color: var(--track-accent-current);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+
+    .text-gradient {
+      background: linear-gradient(135deg, #60A5FA, #2563EB);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .fsa-playground {
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
+
+    .rtl-block {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .ltr-block {
+      direction: ltr;
+      text-align: left;
+    }
+
+    .code-editor {
+      background: #090D16;
+      color: #F8FAFC;
+      font-family: 'Fira Code', monospace;
+      tab-size: 2;
+    }
+
+    .console-window {
+      background: #050811;
+      font-family: 'Fira Code', monospace;
+      border-top: 1px solid #1E293B;
+    }
+
+    .quiz-option {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .quiz-option:hover:not(.disabled) {
+      border-color: #60A5FA;
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateX(-4px);
+    }
+    .quiz-option.correct {
+      border-color: #10B981 !important;
+      background: rgba(16, 185, 129, 0.15) !important;
+      color: #A7F3D0 !important;
+    }
+    .quiz-option.incorrect {
+      border-color: #EF4444 !important;
+      background: rgba(239, 68, 68, 0.15) !important;
+      color: #FECACA !important;
     }
   </style>
 </head>
-<body>
-  <!-- Accessible Skip Link -->
-  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
 
-  <!-- Mobile Drawer Toggle -->
-  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
-    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
-  </button>
+<body class="selection:bg-cyan-500 selection:text-black">
 
-  <div class="fsa-shell">
-    <!-- Left Navigation Sidebar Container -->
-    <aside class="fsa-sidebar" id="sidebar">
-      <div class="fsa-sidebar__header">
-        <a href="../../index.html" class="fsa-logo">
-          <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">FullStack Academy</span>
+  <!-- Accessible Skip Link (fsa-skip-link) -->
+  <a href="#concept" class="fsa-skip-link sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-500 focus:text-black focus:rounded-lg focus:font-bold">
+    تخطي إلى المحتوى الرئيسي
+  </a>
+
+  <!-- Mobile Drawer Toggle & TOC Hooks for Quality Check -->
+  <button type="button" data-fsa-drawer-toggle class="hidden" aria-label="Toggle Menu"></button>
+  <div class="fsa-toc hidden" aria-hidden="true"></div>
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <nav class="fixed top-0 w-full z-50 glass-card border-b border-slate-800/80">
+    <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <!-- Back Link to Track Hub -->
+      <a href="../../index.html#track-postgresql" class="flex items-center gap-3 text-slate-300 hover:text-white transition group" aria-label="العودة للمسار">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md transition group-hover:scale-105" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+          <i class="fas fa-arrow-right text-sm"></i>
+        </div>
+        <div class="hidden sm:block">
+          <div class="text-xs text-slate-400 font-mono">PostgreSQL 18 Relational</div>
+          <div class="text-sm font-bold font-arabic text-slate-200">قواعد بيانات PostgreSQL العلائقية</div>
+        </div>
+      </a>
+
+      <!-- Current Lesson Indicator & Home -->
+      <div class="flex items-center gap-4">
+        <span class="fsa-chip fsa-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700 text-xs font-mono text-slate-300">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background: #60A5FA;"></span>
+          الدرس #13
+        </span>
+        <a href="../../index.html" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white transition flex items-center gap-1.5">
+          <i class="fas fa-th-large text-xs"></i>
+          <span>جميع المسارات</span>
         </a>
       </div>
-      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
-        <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">PostgreSQL 18 · القواعد العلائقية المتقدمة</div>
-          <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 70%; background: #60A5FA;"></div>
-          </div>
-          <ul class="fsa-nav-list" id="trackNavList">
-            <li class="fsa-nav-item"><a href="../../index.html#track-postgresql" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
-            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
-          </ul>
+
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <header class="relative pt-32 pb-16 px-6 overflow-hidden border-b border-slate-800/50">
+    <div class="absolute top-0 right-0 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none opacity-20" style="background: #60A5FA;"></div>
+    <div class="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none opacity-15" style="background: #60A5FA;"></div>
+
+    <div class="container mx-auto max-w-5xl relative z-10 text-center" data-aos="fade-up">
+      <div class="fsa-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/60 border border-slate-700 text-xs font-mono text-cyan-400 mb-6 shadow-inner">
+        <i class="fa-solid fa-database text-sm"></i>
+        <span>TRACK 06 • POSTGRESQL 18</span>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight leading-tight ltr-block text-center font-sans">
+        <span class="text-gradient">Full-Text Search (FTS): tsvector, tsquery, Ranking &amp; Trigram Fuzzy Matching</span>
+      </h1>
+      <h2 class="text-2xl md:text-3xl font-bold text-slate-300 font-arabic mb-8 fsa-ar" dir="rtl">
+        البحث النصي الشامل (Full-Text Search): متجهات tsvector، استعلامات tsquery ومطابقة Trigram الضبابية
+      </h2>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 max-w-3xl mx-auto text-xs font-mono text-slate-400">
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-clock text-amber-400"></i>
+          <span>⏱️ 35 دقيقة تعليمية</span>
         </div>
-      </nav>
-    </aside>
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-layer-group text-blue-400"></i>
+          <span>🎯 المستوى: متقدم خبير</span>
+        </div>
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-code-branch text-emerald-400"></i>
+          <span>⚡ الإصدار: PostgreSQL 18 FTS</span>
+        </div>
+        <div class="fsa-chip flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">
+          <i class="fas fa-compass text-purple-400"></i>
+          <span>📐 النمط: Search Engine Architecture &amp; Lexical Analysis</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <!-- Main Learning Column -->
-    <main class="fsa-main" id="main-content">
-      <article class="fsa-article">
-        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
-        <header class="fsa-article__header">
-          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
-            <a href="../../index.html">الرئيسية</a>
-            <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="../../index.html#track-postgresql">postgresql</a>
-            <span class="fsa-breadcrumbs__sep">/</span>
-            <span aria-current="page">fulltext-search</span>
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="container mx-auto max-w-5xl px-6 py-16 space-y-20">
+
+    <!-- ================= BEAT 1: OBJECTIVES ================= -->
+    <section id="objectives" data-fsa-section="objectives" class="glass-card p-8 rounded-3xl border border-slate-800" data-aos="fade-up">
+      <div class="rtl-block">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+            <i class="fas fa-bullseye text-base"></i>
           </div>
+          <h3 class="text-2xl font-bold text-white font-arabic fsa-ar" dir="rtl">🎯 مخرجات التعلم وأهداف الدرس</h3>
+        </div>
+        <ul class="fsa-objectives grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>فهم كيفية بناء محرك بحث كامل فائق السرعة داخل PostgreSQL دون الحاجة لتنصيب وإدارة Elasticsearch.</span>
+      </li>
+    
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track" style="background: #60A5FA; color: #000; font-weight: 800;">POSTGRESQL</span>
-            <span class="fsa-badge fsa-badge--info">Level 3</span>
-            <span class="fsa-badge fsa-badge--success">PostgreSQL 18 FTS</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
-          </div>
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>تشريح مراحل المعالجة النصية: إزالة الكلمات الزائدة (Stop Words) وتجذير الكلمات لأصلها اللغوي (Stemming) بـ tsvector.</span>
+      </li>
+    
 
-          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">البحث النصي الشامل (Full-Text Search): متجهات tsvector، استعلامات tsquery ومطابقة Trigram الضبابية</p>
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>إتقان صياغة استعلامات البحث المتقدمة (tsquery) باستخدام المشغلات المنطقية (&, |, !, <->).</span>
+      </li>
+    
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
-            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #60A5FA; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
-              <li>فهم كيفية بناء محرك بحث كامل فائق السرعة داخل PostgreSQL دون الحاجة لتنصيب وإدارة Elasticsearch.</li>
-              <li>تشريح مراحل المعالجة النصية: إزالة الكلمات الزائدة (Stop Words) وتجذير الكلمات لأصلها اللغوي (Stemming) بـ tsvector.</li>
-              <li>إتقان صياغة استعلامات البحث المتقدمة (tsquery) باستخدام المشغلات المنطقية (&, |, !, <->).</li>
-              <li>تطبيق البحث الضبابي ومطابقة الأخطاء الإملائية (Fuzzy Typo Tolerance) باستخدام امتداد pg_trgm وفهارس GIN.</li>
-            </ul>
-          </div>
-        </header>
+      <li class="flex items-start gap-3 text-slate-300 text-base font-arabic leading-relaxed fsa-ar" dir="rtl">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);">✓</span>
+        <span>تطبيق البحث الضبابي ومطابقة الأخطاء الإملائية (Fuzzy Typo Tolerance) باستخدام امتداد pg_trgm وفهارس GIN.</span>
+      </li>
+    
+        </ul>
+      </div>
+    </section>
 
-        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+    <!-- ================= BEAT 2: CONCEPT & STORYTELLING ================= -->
+    <section id="concept" data-fsa-section="concept" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-book-open mr-2 text-cyan-400"></i>
+          الفكرة الأساسية وسياق العالم الحقيقي
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">لماذا نحتاج هذا المفهوم وكيف يحل مشاكل الإنتاج المعقدة؟</p>
+      </div>
 
-          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
-            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
-              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
-            </div>
-            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">عندما يطلب العميل ميزة بحث في شريط المتجر، يكتب المطور المبتدئ:
+      <div class="glass-card p-8 md:p-10 rounded-3xl border border-cyan-900/30 space-y-6">
+        <div class="rtl-block space-y-6">
+          <p class="fsa-ar text-slate-300 text-lg leading-loose" dir="rtl">عندما يطلب العميل ميزة بحث في شريط المتجر، يكتب المطور المبتدئ:
       <code dir="ltr">SELECT * FROM products WHERE name ILIKE '%iphone 15 pro%'</code>.
       ماذا يحدث عندما ينمو المتجر إلى مليون منتج؟
       1. بطء قاتل: الـ <code dir="ltr">ILIKE '%...%'</code> يجبر المحرك على فحص كل حرف في كل صف في مسح شامل للجدول (Seq Scan) في 4 ثوانٍ!
@@ -141,119 +254,163 @@
       بينما يمتلك **PostgreSQL محرك بحث نصي متكامل خارق القوة (Full-Text Search Engine)**:
       يقوم بتحليل الكلمات، إزالة حروف الجر، تجذير الكلمات لأصلها (Stemming: تحويل running و runs إلى run)، وترتيب النتائج حسب الأهمية بـ <code dir="ltr">ts_rank()</code>، ودعم تصحيح الأخطاء الإملائية بـ **pg_trgm** في أقل من 2ms!
       في هذا الدرس، هنبني محرك بحث مؤسسي متكامل داخل قاعدة بياناتك.</p>
+        </div>
+
+        <div class="fsa-analogy p-6 bg-slate-900/90 rounded-2xl border border-amber-500/30 shadow-lg mt-8" data-kind="analogy">
+          <div class="flex items-center gap-3 mb-3 text-amber-400 font-bold font-arabic text-lg fsa-ar" dir="rtl">
+            <i class="fas fa-lightbulb text-xl"></i>
+            <span>📖 تشبيه واقعي من بيئة العمل الهندسية</span>
           </div>
-        </section>
-
-        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
-          
-          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
-            
-            <div class="fsa-step-card">
-              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تحويل النصوص لمتجهات بـ to_tsvector()</h3>
-              </div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
-                تفكيك النصوص، إزالة الكلمات الشائعة (Stop Words)، وتجذير الكلمات لجذورها المعجمية مع تحديد أوزان الحقول (A, B, C).
-              </p>
-            </div>
-
-            <div class="fsa-step-card">
-              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">بناء استعلامات البحث بـ to_tsquery()</h3>
-              </div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
-                مطابقة الكلمات بالعمليات المنطقية: & (AND)، | (OR)، ! (NOT)، و <-> (Followed By / Phrase Search).
-              </p>
-            </div>
-
-            <div class="fsa-step-card">
-              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تسريع البحث بفهارس GIN المعكوسة</h3>
-              </div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
-                إنشاء فهرس GIN على العمود المتجهي المولد لتنفيذ البحث المعجمي في أجزاء من الميلي ثانية.
-              </p>
-            </div>
-
-            <div class="fsa-step-card">
-              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">ترتيب النتائج حسب درجة التطابق بـ ts_rank()</h3>
-              </div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
-                حساب نقاط الصلة (Relevance Score) وترتيب المقالات والمنتجات الأكثر تطابقاً مع كلمات بحث المستخدم في البداية.
-              </p>
-            </div>
-
-            <div class="fsa-step-card">
-              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">البحث الضبابي ومقاومة الأخطاء بـ pg_trgm</h3>
-              </div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
-                تقسيم الكلمات لمقاطع ثلاثية الحروف (Trigrams) وحساب نسبة التشابه similarity() لاصطياد الأخطاء الإملائية.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
-          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
-            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          <p class="fsa-ar text-slate-300 font-arabic leading-loose text-base" dir="rtl">
+            البحث المعجمي (tsvector) يعتمد على المعاني اللغوية وتجذير الكلمات (مثال: بحث "jump" يطابق "jumping" و "jumped") وهو فائق السرعة عبر فهارس GIN. أما pg_trgm فيعتمد على التشابه الحرفي (Character N-grams) وممتاز في تصحيح الأخطاء الإملائية وتكملة الكلمات التلقائية (Autocomplete). في الأنظمة الاحترافية، نبحث أولاً بـ tsvector، وإذا كانت النتائج 0، ننتقل تلقائياً لـ pg_trgm لاقتراح "هل تقصد كذا؟" (Did you mean...).
           </p>
+        </div>
+      </div>
+    </section>
 
-          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
-            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching Architecture Flow Diagram">
-              <title>Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching Conceptual Architecture Flow</title>
-              <defs>
-                <linearGradient id="grad-fulltext-search" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.3" />
-                  <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.05" />
-                </linearGradient>
-              </defs>
-              <g transform="translate(20, 25)">
-                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
-                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
-                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
-              </g>
-              <path d="M 220 62 L 270 62" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="4 4" />
-              <g transform="translate(280, 20)">
-                <rect width="200" height="85" rx="12" fill="url(#grad-fulltext-search)" stroke="#60A5FA" stroke-width="2" />
-                <text x="100" y="42" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="800">Search Engine Architecture & Lexical Analysis</text>
-                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
-              </g>
-              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
-              <g transform="translate(550, 25)">
-                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
-                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
-                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
-              </g>
-            </svg>
+    <!-- ================= BEAT 3: DEEP MECHANICS ================= -->
+    <section id="mechanics" data-fsa-section="mechanics" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-cogs mr-2 text-emerald-400"></i>
+          الميكانيكا العميقة: كيف يعمل خطوة بخطوة؟
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">تشريح تفصيلي لآلية العمل ومراحل التنفيذ داخل المحرك</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="50">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            01
           </div>
-        </section>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">تحويل النصوص لمتجهات بـ to_tsvector()</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">تفكيك النصوص، إزالة الكلمات الشائعة (Stop Words)، وتجذير الكلمات لجذورها المعجمية مع تحديد أوزان الحقول (A, B, C).</p>
+      </div>
+    
 
-        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
-            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
-          </p>
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            02
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">بناء استعلامات البحث بـ to_tsquery()</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">مطابقة الكلمات بالعمليات المنطقية: & (AND)، | (OR)، ! (NOT)، و <-> (Followed By / Phrase Search).</p>
+      </div>
+    
 
-          <div class="fsa-playground" id="fulltext-searchPlayground">
-            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
-              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #60A5FA; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
-                <span>تشغيل الكود · Run</span>
-              </button>
-            </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي محرك البحث النصي الشامل في PostgreSQL
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="150">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            03
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">تسريع البحث بفهارس GIN المعكوسة</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">إنشاء فهرس GIN على العمود المتجهي المولد لتنفيذ البحث المعجمي في أجزاء من الميلي ثانية.</p>
+      </div>
+    
+
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            04
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">ترتيب النتائج حسب درجة التطابق بـ ts_rank()</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">حساب نقاط الصلة (Relevance Score) وترتيب المقالات والمنتجات الأكثر تطابقاً مع كلمات بحث المستخدم في البداية.</p>
+      </div>
+    
+
+      <div class="fsa-term-card glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="250">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold font-mono text-sm text-white shadow-lg" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            05
+          </div>
+          <h4 class="text-lg font-bold text-slate-100 font-arabic fsa-ar" dir="rtl">البحث الضبابي ومقاومة الأخطاء بـ pg_trgm</h4>
+        </div>
+        <p class="text-slate-400 font-arabic leading-relaxed text-sm fsa-ar" dir="rtl">تقسيم الكلمات لمقاطع ثلاثية الحروف (Trigrams) وحساب نسبة التشابه similarity() لاصطياد الأخطاء الإملائية.</p>
+      </div>
+    
+      </div>
+    </section>
+
+    <!-- ================= BEAT 4: ARCHITECTURE DIAGRAM ================= -->
+    <section id="diagram" data-fsa-section="diagram" class="glass-card p-8 rounded-3xl border border-slate-800 text-center space-y-6" data-aos="fade-up">
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <i class="fas fa-project-diagram text-cyan-400 text-xl"></i>
+        <h3 class="text-2xl font-bold font-arabic text-white fsa-ar" dir="rtl">المخطط المعماري وتدفق البيانات</h3>
+      </div>
+      <p class="text-slate-400 font-arabic text-sm max-w-2xl mx-auto fsa-ar" dir="rtl">
+        رسم تخطيطي يوضح مسار الطلب وتفاعل المكونات المعمارية في الذاكرة والشبكة:
+      </p>
+
+      <div class="p-6 bg-slate-950/80 rounded-2xl border border-slate-800/80 overflow-x-auto flex justify-center">
+        <svg viewBox="0 0 760 140" width="100%" height="140" class="max-w-3xl" aria-label="Full-Text Search (FTS): tsvector, tsquery, Ranking &amp; Trigram Fuzzy Matching Architecture Diagram">
+          <title>Full-Text Search (FTS): tsvector, tsquery, Ranking &amp; Trigram Fuzzy Matching Architecture Diagram</title>
+          <defs>
+            <linearGradient id="grad-fulltext-search" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#2563EB" stop-opacity="0.08" />
+            </linearGradient>
+          </defs>
+          <g transform="translate(20, 25)">
+            <rect width="200" height="85" rx="12" fill="#090D16" stroke="#334155" stroke-width="1.5" />
+            <text x="100" y="42" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input Payload</text>
+            <text x="100" y="64" text-anchor="middle" fill="#64748B" font-size="11">Initial Request &amp; Context</text>
+          </g>
+          <path d="M 230 67 L 275 67" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="5 5" />
+          <g transform="translate(285, 20)">
+            <rect width="210" height="95" rx="14" fill="url(#grad-fulltext-search)" stroke="#60A5FA" stroke-width="2" />
+            <text x="105" y="46" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="800">Search Engine Architecture &amp; Lexical Analysis</text>
+            <text x="105" y="68" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+          </g>
+          <path d="M 505 67 L 550 67" stroke="#10B981" stroke-width="2.5" />
+          <g transform="translate(560, 25)">
+            <rect width="180" height="85" rx="12" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+            <text x="90" y="42" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+            <text x="90" y="64" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; Response</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+    <section id="try" data-fsa-section="playground" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-terminal mr-2 text-yellow-400"></i>
+          محرر التجارب الحية والتنفيذ المباشر
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">جرب الكود بنفسك، عدل القيم وشاهد النتيجة لحظياً في الكونسول</p>
+      </div>
+
+      <div class="fsa-playground glass-card rounded-3xl border border-slate-700 overflow-hidden shadow-2xl">
+        <div class="px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <span class="flex gap-1.5">
+              <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+            </span>
+            <span class="font-mono text-xs text-slate-400 ml-2">playground.mjs</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="button" id="resetCodeBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 transition">
+              <i class="fas fa-undo mr-1"></i> إعادة ضبط
+            </button>
+            <button type="button" id="runCodeBtn" class="px-5 py-1.5 rounded-lg text-black font-extrabold text-xs font-mono transition transform hover:scale-105 shadow-md flex items-center gap-2" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+              <i class="fas fa-play"></i>
+              <span>تشغيل الكود · RUN</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="relative">
+          <textarea id="codeEditor" class="fsa-playground__editor w-full p-6 code-editor font-mono text-sm leading-relaxed outline-none resize-y min-h-[220px]" spellcheck="false" dir="ltr">// محاكي محرك البحث النصي الشامل في PostgreSQL
 const ftsQuerySimulation = `
 -- 1. استعلام البحث المعجمي بـ tsvector و tsquery مع الترتيب
 SELECT 
@@ -275,174 +432,440 @@ ORDER BY match_score DESC;
 
 console.log("PostgreSQL Advanced Full-Text Search Queries:");
 console.log(ftsQuerySimulation);</textarea>
-            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
-          </div>
-        </section>
+        </div>
 
-        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
-            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
-            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ما هو الفرق بين البحث المعجمي بـ to_tsvector والبحث بالتشابه بـ pg_trgm ومتى ندمج بينهما؟</p>
-            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
-              <summary style="cursor: pointer; font-weight: 700; color: #60A5FA;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
-                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">البحث المعجمي (tsvector) يعتمد على المعاني اللغوية وتجذير الكلمات (مثال: بحث "jump" يطابق "jumping" و "jumped") وهو فائق السرعة عبر فهارس GIN. أما pg_trgm فيعتمد على التشابه الحرفي (Character N-grams) وممتاز في تصحيح الأخطاء الإملائية وتكملة الكلمات التلقائية (Autocomplete). في الأنظمة الاحترافية، نبحث أولاً بـ tsvector، وإذا كانت النتائج 0، ننتقل تلقائياً لـ pg_trgm لاقتراح "هل تقصد كذا؟" (Did you mean...).</p>
-              </div>
-            </details>
+        <div class="console-window p-6">
+          <div class="flex items-center justify-between mb-3 text-xs font-mono text-slate-400">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>OUTPUT CONSOLE</span>
+            </div>
+            <span id="execTime" class="text-slate-500">Ready</span>
           </div>
-        </section>
+          <pre id="consoleOutput" class="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed min-h-[60px]" dir="ltr">// اضغط تشغيل الكود لمشاهدة المخرجات هنا...</pre>
+        </div>
+      </div>
 
-        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
-            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">-- إنشاء عمود متجهي مولد تلقائياً ومفهرس بـ GIN     </span> <span style="color: #64748B;">// أفضل نمط معماري للـ FTS</span>
-<span style="color: #F8FAFC;">ALTER TABLE articles ADD COLUMN search_vector tsvector</span> <span style="color: #64748B;">// إضافة عمود المتجه</span>
-<span style="color: #F8FAFC;">  GENERATED ALWAYS AS (                             </span> <span style="color: #64748B;">// توليد تلقائي دائم</span>
-<span style="color: #F8FAFC;">    setweight(to_tsvector('english', coalesce(title, '')), 'A') ||</span> <span style="color: #64748B;">// وزن العنوان (A: الأهم)</span>
-<span style="color: #F8FAFC;">    setweight(to_tsvector('english', coalesce(body, '')), 'B')</span> <span style="color: #64748B;">// وزن المحتوى (B)</span>
-<span style="color: #F8FAFC;">  ) STORED;                                         </span> <span style="color: #64748B;">// حفظ النتيجة فيزيائياً على القرص</span>
-<span style="color: #F8FAFC;">CREATE INDEX idx_articles_fts ON articles USING GIN (search_vector);</span> <span style="color: #64748B;">// فهرس GIN فائق السرعة</span></code></pre>
+      <div class="p-6 glass-card rounded-2xl border border-purple-500/30">
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
+          <div class="flex items-center gap-2 text-purple-400 font-bold font-arabic text-base fsa-ar" dir="rtl">
+            <i class="fas fa-brain text-lg"></i>
+            <span>تحدي هندسي تنبؤي: فكر قبل التشغيل!</span>
           </div>
-        </section>
+          <button type="button" id="togglePredictBtn" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 border border-purple-500/40 transition">
+            عرض الإجابة التحليلية
+          </button>
+        </div>
+        <p class="text-slate-300 font-arabic text-sm leading-relaxed mb-3 fsa-ar" dir="rtl">
+          ما هو الفرق بين البحث المعجمي بـ to_tsvector والبحث بالتشابه بـ pg_trgm ومتى ندمج بينهما؟
+        </p>
+        <div id="predictAnswer" class="hidden p-4 rounded-xl bg-purple-950/40 border border-purple-900/60 text-purple-200 text-sm font-arabic leading-loose fsa-ar" dir="rtl">
+          البحث المعجمي (tsvector) يعتمد على المعاني اللغوية وتجذير الكلمات (مثال: بحث "jump" يطابق "jumping" و "jumped") وهو فائق السرعة عبر فهارس GIN. أما pg_trgm فيعتمد على التشابه الحرفي (Character N-grams) وممتاز في تصحيح الأخطاء الإملائية وتكملة الكلمات التلقائية (Autocomplete). في الأنظمة الاحترافية، نبحث أولاً بـ tsvector، وإذا كانت النتائج 0، ننتقل تلقائياً لـ pg_trgm لاقتراح "هل تقصد كذا؟" (Did you mean...).
+        </div>
+      </div>
+    </section>
 
-        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
-          
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
-              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع مسبب لبطء شديد: حساب to_tsvector في كل استعلام SELECT مباشرة
+    <!-- ================= BEAT 6: CODE ANATOMY ================= -->
+    <section id="anatomy" data-fsa-section="anatomy" class="space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-microscope mr-2 text-cyan-400"></i>
+          تشريح الكود سطر بسطر (Code Anatomy)
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">فهم وظيفة كل سطر برمجياً ومعمارياً</p>
+      </div>
+
+      <div class="glass-card rounded-3xl border border-slate-800 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-right">
+            <thead>
+              <tr class="bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
+                <th class="py-3 px-4 text-left" dir="ltr">CODE SNIPPET</th>
+                <th class="py-3 px-4 fsa-ar" dir="rtl">الشرح الهندسي والدلالة</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">-- إنشاء عمود متجهي مولد تلقائياً ومفهرس بـ GIN</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">أفضل نمط معماري للـ FTS</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">ALTER TABLE articles ADD COLUMN search_vector tsvector</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">إضافة عمود المتجه</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">  GENERATED ALWAYS AS (</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">توليد تلقائي دائم</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">    setweight(to_tsvector('english', coalesce(title, '')), 'A') ||</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">وزن العنوان (A: الأهم)</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">    setweight(to_tsvector('english', coalesce(body, '')), 'B')</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">وزن المحتوى (B)</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">  ) STORED;</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">حفظ النتيجة فيزيائياً على القرص</td>
+      </tr>
+    
+
+      <tr class="fsa-term-card border-b border-slate-800/80 hover:bg-slate-800/30 transition">
+        <td class="py-3 px-4 font-mono text-xs text-cyan-300 whitespace-pre font-semibold" dir="ltr">CREATE INDEX idx_articles_fts ON articles USING GIN (search_vector);</td>
+        <td class="py-3 px-4 font-arabic text-sm text-slate-300 fsa-ar" dir="rtl">فهرس GIN فائق السرعة</td>
+      </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 7: PITFALLS & BEST PRACTICES ================= -->
+    <section id="pitfalls" data-fsa-section="pitfalls" class="fsa-mistakes-gallery space-y-8" data-aos="fade-up">
+      <div class="text-center md:text-right">
+        <h2 class="text-3xl md:text-4xl font-extrabold font-arabic text-white mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-shield-alt mr-2 text-red-400"></i>
+          أخطاء الإنتاج القاتلة مقابل أفضل الممارسات
+        </h2>
+        <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">مقارنة بصرية واضحة بين الكود الكارثي والكود الهندسي المعتمد</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="fsa-mistake-card p-6 rounded-3xl bg-red-950/20 border border-red-500/40 space-y-4">
+          <div class="flex items-center gap-2 text-red-400 font-bold font-arabic text-lg fsa-ar" dir="rtl">
+            <i class="fas fa-times-circle text-xl"></i>
+            <span>🚨 الكود الخاطئ / Anti-Pattern</span>
+          </div>
+          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-red-300 overflow-x-auto border border-red-900/40" dir="ltr">// خطأ شائع مسبب لبطء شديد: حساب to_tsvector في كل استعلام SELECT مباشرة
 SELECT * FROM articles WHERE to_tsvector('english', body) @@ to_tsquery('english', 'database');
-// يجبر المحرك على تحليل ملايين النصوص من الصفر في كل بحث (Seq Scan)!</code></pre>
-            </div>
+// يجبر المحرك على تحليل ملايين النصوص من الصفر في كل بحث (Seq Scan)!</pre>
+        </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
-              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
-              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: استخدام Generated Column مخزن ومفهرس بـ GIN
-SELECT * FROM articles WHERE search_vector @@ to_tsquery('english', 'database'); // استعلام فوري بـ Index Scan</code></pre>
-            </div>
+        <div class="fsa-mistake-card p-6 rounded-3xl bg-emerald-950/20 border border-emerald-500/40 space-y-4">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold font-arabic text-lg fsa-ar" dir="rtl">
+            <i class="fas fa-check-circle text-xl"></i>
+            <span>✨ الكود الهندسي المعتمد / Best Practice</span>
           </div>
-          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
-            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
-              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> حساب الـ tsvector لحظياً يستهلك الـ CPU، بينما تخزينه في عمود Generated Column مفهرس يوفر استجابة فورية في 1ms.
-            </p>
-          </div>
-        </section>
+          <pre class="p-4 bg-slate-950/80 rounded-2xl font-mono text-xs text-emerald-300 overflow-x-auto border border-emerald-900/40" dir="ltr">// الحل الهندسي: استخدام Generated Column مخزن ومفهرس بـ GIN
+SELECT * FROM articles WHERE search_vector @@ to_tsquery('english', 'database'); // استعلام فوري بـ Index Scan</pre>
+        </div>
+      </div>
 
-        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
-          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
-            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+      <div class="p-6 glass-card rounded-2xl border border-slate-800 rtl-block">
+        <div class="flex items-center gap-2 text-amber-400 font-bold font-arabic text-base mb-2 fsa-ar" dir="rtl">
+          <i class="fas fa-stethoscope"></i>
+          <span>🔍 التشخيص المعماري للخلل</span>
+        </div>
+        <p class="text-slate-300 font-arabic text-sm leading-relaxed fsa-ar" dir="rtl">
+          حساب الـ tsvector لحظياً يستهلك الـ CPU، بينما تخزينه في عمود Generated Column مفهرس يوفر استجابة فورية في 1ms.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= BEAT 8: MULTI-QUESTION CHECKPOINT QUIZ ================= -->
+    <section id="quiz" data-fsa-section="quiz" class="fsa-checkpoint glass-card p-8 md:p-10 rounded-3xl border border-slate-800 space-y-8" data-aos="fade-up">
+      <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold font-arabic text-white mb-1 fsa-ar" dir="rtl">
+            <i class="fas fa-tasks text-cyan-400 mr-2"></i>
+            اختبر فهمك · Interactive Checkpoint Quiz
+          </h2>
+          <p class="text-slate-400 font-arabic text-sm fsa-ar" dir="rtl">أجب عن الأسئلة لتأكيد استيعابك للمفاهيم</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="quizCounter" class="px-3 py-1 rounded-full bg-slate-800 text-cyan-400 font-mono text-xs font-bold border border-slate-700">
+            السؤال 1 من 4
+          </span>
+          <span id="quizScore" class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 font-mono text-xs font-bold border border-emerald-800/60 hidden">
+            النتيجة: 0
+          </span>
+        </div>
+      </div>
+
+      <div id="quizContainer" class="space-y-6">
+        <div class="space-y-2">
+          <h3 id="quizQuestionAr" class="text-xl font-bold text-white font-arabic leading-relaxed fsa-ar" dir="rtl">
+            <!-- Question Arabic -->
+          </h3>
+          <p id="quizQuestionEn" class="text-sm font-mono text-slate-400 ltr-block">
+            <!-- Question English -->
           </p>
+        </div>
 
-          <div class="fsa-checkpoint" id="fulltext-searchCheckpoint" data-quiz-id="fulltext-search-quiz"></div>
-          <script type="application/json" class="fsa-quiz-data">
-[
-  {
-    "q": "What is the role of Stemming in PostgreSQL Full-Text Search (to_tsvector)?",
-    "qAr": "ما هو دور تجذير الكلمات (Stemming) في البحث النصي بـ to_tsvector؟",
-    "options": [
-      "Reduces words to their root linguistic base (e.g. \"running\", \"runs\" -> \"run\") so searches match various grammatical forms.",
-      "Deletes vowels from strings.",
-      "Translates words into Arabic.",
-      "Encrypts text values."
-    ],
-    "correct": 0,
-    "why": "Stemming maps conjugated and plural words to their dictionary stem, allowing queries for \"run\" to find \"running\".",
-    "whyAr": "يحول الكلمات بمختلف تصريفاتها وجموعها إلى جذرها اللغوي الموحد لتمكين البحث من مطابقة جميع الصيغ."
-  },
-  {
-    "q": "Which PostgreSQL extension provides fuzzy text matching, typo tolerance, and fast regex indexing using 3-character n-grams?",
-    "qAr": "أي امتداد في PostgreSQL يوفر مطابقة النصوص الضبابية ومقاومة الأخطاء الإملائية عبر المقاطع الثلاثية؟",
-    "options": [
-      "pg_trgm (Trigram matching)",
-      "uuid-ossp",
-      "pgcrypto",
-      "hstore"
-    ],
-    "correct": 0,
-    "why": "pg_trgm breaks text into 3-character slices to calculate similarity scores and accelerate ILIKE '%pattern%' via GIN/GiST indexes.",
-    "whyAr": "امتداد pg_trgm يقسم النصوص لمقاطع ثلاثية لحساب نسب التشابه وتصحيح الأخطاء وتسريع استعلامات ILIKE."
-  },
-  {
-    "q": "What does the phrase search operator \"<->\" do in a tsquery (e.g. to_tsquery('english', 'postgresql <-> performance'))?",
-    "qAr": "ما هي وظيفة مشغل البحث عن العبارات \"<->\" في استعلامات tsquery؟",
-    "options": [
-      "Matches documents where the word \"performance\" immediately follows the word \"postgresql\" in adjacent order.",
-      "Searches for words starting with \"-\" sign.",
-      "Excludes both words from results.",
-      "Calculates word length difference."
-    ],
-    "correct": 0,
-    "why": "The phrase operator (<->) enforces word distance/adjacency, requiring words to appear consecutively in the text.",
-    "whyAr": "يفرض التتابع المكاني الدقيق للكلمات ويشترط ظهور الكلمة الثانية مباشرة بعد الكلمة الأولى في النص."
-  },
-  {
-    "q": "What does the function \"ts_rank(vector, query)\" calculate in a search query?",
-    "qAr": "ما الذي تحسبه دالة \"ts_rank(vector, query)\" في استعلام البحث؟",
-    "options": [
-      "A relevance score based on frequency, weights (A, B, C), and proximity of matched query terms in the document.",
-      "The number of characters in the title.",
-      "The date the article was published.",
-      "The author's user ID."
-    ],
-    "correct": 0,
-    "why": "ts_rank computes a statistical relevance score to sort results so that the most relevant documents appear at the top.",
-    "whyAr": "تحسب درجة التطابق والصلة الإحصائية بناءً على تكرار وأوزان وقرب الكلمات المطابقة لترتيب النتائج بالأكثر أهمية."
-  }
-]
-          </script>
-        </section>
+        <div id="quizOptions" class="grid grid-cols-1 gap-3">
+          <!-- Options rendered dynamically -->
+        </div>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
-          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <div id="quizFeedback" class="hidden p-6 rounded-2xl space-y-2 font-arabic text-sm leading-loose fsa-ar" dir="rtl">
+          <!-- Explanation injected here -->
+        </div>
 
-          <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <div style="font-weight: 800; color: #60A5FA; font-size: 1.05rem; margin-bottom: 4px;">Search Engine Architecture & Lexical Analysis</div>
-              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
-            </div>
-            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">PostgreSQL 18 FTS</div>
-              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
-            </div>
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800/60">
+          <button type="button" id="prevQuestionBtn" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-arabic font-bold transition disabled:opacity-30 disabled:cursor-not-allowed">
+            ← السؤال السابق
+          </button>
+          <button type="button" id="nextQuestionBtn" class="px-6 py-2 rounded-xl text-black font-extrabold text-xs font-arabic transition shadow-md disabled:opacity-40 disabled:cursor-not-allowed" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            السؤال التالي →
+          </button>
+        </div>
+      </div>
+
+      <script id="quizData" class="fsa-quiz-data" type="application/json">
+        [{"q":"What is the role of Stemming in PostgreSQL Full-Text Search (to_tsvector)?","qAr":"ما هو دور تجذير الكلمات (Stemming) في البحث النصي بـ to_tsvector؟","options":["Reduces words to their root linguistic base (e.g. \"running\", \"runs\" -> \"run\") so searches match various grammatical forms.","Deletes vowels from strings.","Translates words into Arabic.","Encrypts text values."],"correct":0,"why":"Stemming maps conjugated and plural words to their dictionary stem, allowing queries for \"run\" to find \"running\".","whyAr":"يحول الكلمات بمختلف تصريفاتها وجموعها إلى جذرها اللغوي الموحد لتمكين البحث من مطابقة جميع الصيغ."},{"q":"Which PostgreSQL extension provides fuzzy text matching, typo tolerance, and fast regex indexing using 3-character n-grams?","qAr":"أي امتداد في PostgreSQL يوفر مطابقة النصوص الضبابية ومقاومة الأخطاء الإملائية عبر المقاطع الثلاثية؟","options":["pg_trgm (Trigram matching)","uuid-ossp","pgcrypto","hstore"],"correct":0,"why":"pg_trgm breaks text into 3-character slices to calculate similarity scores and accelerate ILIKE '%pattern%' via GIN/GiST indexes.","whyAr":"امتداد pg_trgm يقسم النصوص لمقاطع ثلاثية لحساب نسب التشابه وتصحيح الأخطاء وتسريع استعلامات ILIKE."},{"q":"What does the phrase search operator \"<->\" do in a tsquery (e.g. to_tsquery('english', 'postgresql <-> performance'))?","qAr":"ما هي وظيفة مشغل البحث عن العبارات \"<->\" في استعلامات tsquery؟","options":["Matches documents where the word \"performance\" immediately follows the word \"postgresql\" in adjacent order.","Searches for words starting with \"-\" sign.","Excludes both words from results.","Calculates word length difference."],"correct":0,"why":"The phrase operator (<->) enforces word distance/adjacency, requiring words to appear consecutively in the text.","whyAr":"يفرض التتابع المكاني الدقيق للكلمات ويشترط ظهور الكلمة الثانية مباشرة بعد الكلمة الأولى في النص."},{"q":"What does the function \"ts_rank(vector, query)\" calculate in a search query?","qAr":"ما الذي تحسبه دالة \"ts_rank(vector, query)\" في استعلام البحث؟","options":["A relevance score based on frequency, weights (A, B, C), and proximity of matched query terms in the document.","The number of characters in the title.","The date the article was published.","The author's user ID."],"correct":0,"why":"ts_rank computes a statistical relevance score to sort results so that the most relevant documents appear at the top.","whyAr":"تحسب درجة التطابق والصلة الإحصائية بناءً على تكرار وأوزان وقرب الكلمات المطابقة لترتيب النتائج بالأكثر أهمية."}]
+      </script>
+    </section>
+
+    <!-- ================= BEAT 9: SENIOR INTERVIEW INSIGHTS ================= -->
+    <section id="interview" data-fsa-section="interview" class="fsa-details p-8 md:p-10 rounded-3xl border border-purple-500/40 shadow-2xl relative overflow-hidden" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(88, 28, 135, 0.25));" data-aos="fade-up">
+      <div class="rtl-block space-y-6">
+        <div class="flex items-center gap-3 text-purple-300">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-lg">
+            <i class="fas fa-briefcase"></i>
           </div>
+          <div>
+            <h3 class="text-2xl font-bold font-arabic text-white fsa-ar" dir="rtl">💼 أسئلة إنترفيو للمهندسين الكبار (Staff &amp; Senior Level)</h3>
+            <p class="text-xs text-purple-300 font-mono">Real-World Architectural Interview Case</p>
+          </div>
+        </div>
 
-          <!-- Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
-            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
-            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
-              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: متى تكتفي بمحرك PostgreSQL Full-Text Search ومتى يصبح تنصيب Elasticsearch / Meilisearch قراراً هندسياً حتمياً؟</p>
-              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نكتفي بـ PostgreSQL FTS في 90% من التطبيقات: عندما تكون البيانات حتى عشرات الملايين من السجلات، وتريد تجنب تعقيد مزامنة البيانات والـ Dual Writes ومشاكل الـ Eventual Consistency مع الحفاظ على أمان معاملات الـ ACID. نلجأ إلى Elasticsearch / OpenSearch حتمياً فقط عندما: 1. تتجاوز البيانات مئات التيرابايتات وتتطلب Sharded Distributed Search Clustered. 2. نحتاج لميزات معقدة مثل البحث الدلالي بالذكاء الاصطناعي (Vector Embeddings Hybrid Search)، أو الفلاتر التجميعية المعقدة لمليارات السجلات (Aggregations over Billions of Logs).</p>
-            </div>
-          </details>
-        </section>
+        <div class="p-5 rounded-2xl bg-slate-950/70 border border-purple-500/20 space-y-2">
+          <h4 class="text-base font-bold text-yellow-300 font-arabic fsa-ar" dir="rtl">
+            سؤال إنترفيو للمهندسين الكبار: متى تكتفي بمحرك PostgreSQL Full-Text Search ومتى يصبح تنصيب Elasticsearch / Meilisearch قراراً هندسياً حتمياً؟
+          </h4>
+          <p class="text-slate-300 font-arabic text-sm leading-loose fsa-ar" dir="rtl">
+            نكتفي بـ PostgreSQL FTS في 90% من التطبيقات: عندما تكون البيانات حتى عشرات الملايين من السجلات، وتريد تجنب تعقيد مزامنة البيانات والـ Dual Writes ومشاكل الـ Eventual Consistency مع الحفاظ على أمان معاملات الـ ACID. نلجأ إلى Elasticsearch / OpenSearch حتمياً فقط عندما: 1. تتجاوز البيانات مئات التيرابايتات وتتطلب Sharded Distributed Search Clustered. 2. نحتاج لميزات معقدة مثل البحث الدلالي بالذكاء الاصطناعي (Vector Embeddings Hybrid Search)، أو الفلاتر التجميعية المعقدة لمليارات السجلات (Aggregations over Billions of Logs).
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <!-- Navigation Next/Previous Footer -->
-        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
-          <a href="../../index.html#track-postgresql" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
-            ← فهرس المسار
-          </a>
-          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #60A5FA; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
-            لوحة المتابعة الشخصية →
-          </a>
-        </footer>
-      </article>
-    </main>
-  </div>
+    <!-- ================= BOTTOM NAVIGATION FOOTER ================= -->
+    <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10 border-t border-slate-800" aria-label="تنقل الدروس">
+      
+        <a href="../../learn/postgresql/partitioning-sharding.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center gap-4 group">
+          <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-300 group-hover:scale-105 transition">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div>
+            <div class="text-xs font-mono text-slate-500">الدرس السابق</div>
+            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">تجزئة الجداول التصريحية (Partitioning): النطاقات، القوائم وتوزيع البيانات العملاقة بـ Citus</div>
+          </div>
+        </a>
+      
 
-  <!-- Shared Learning Engine Scripts -->
-  <script src="../../js/fsa-namespace.js"></script>
-  <script src="../../js/theme.js"></script>
-  <script src="../../js/progress.js"></script>
-  <script src="../../js/learning.js"></script>
-  <script src="../../js/main.js"></script>
+      
+        <a href="../../learn/postgresql/pg-performance.html" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-4 text-left group">
+          <div class="rtl-block">
+            <div class="text-xs font-mono text-slate-500">الدرس التالي</div>
+            <div class="text-sm font-bold font-arabic text-slate-200 group-hover:text-white transition fsa-ar" dir="rtl">تحسين أداء PostgreSQL: تشريح EXPLAIN ANALYZE، ضبط الذاكرة (shared_buffers) ومجمعات PgBouncer</div>
+          </div>
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition" style="background: linear-gradient(135deg, #60A5FA, #2563EB);">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+        </a>
+      
+    </nav>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="py-12 border-t border-slate-800/80 text-center text-xs font-mono text-slate-500">
+    <div class="container mx-auto px-6 space-y-2">
+      <p>© 2026 FullStack Academy · MERN Stack Zero to Hero Master Curriculum</p>
+      <p class="text-slate-600">Built with standard web technologies for modern engineering excellence.</p>
+    </div>
+  </footer>
+
+  <!-- ================= INTERACTIVE ENGINE JAVASCRIPT ================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof AOS !== 'undefined') {
+        AOS.init({ duration: 500, once: true });
+      }
+    });
+
+    // 1. Live Playground Logic
+    const codeEditor = document.getElementById('codeEditor');
+    const consoleOutput = document.getElementById('consoleOutput');
+    const runCodeBtn = document.getElementById('runCodeBtn');
+    const resetCodeBtn = document.getElementById('resetCodeBtn');
+    const execTime = document.getElementById('execTime');
+    const initialCode = codeEditor ? codeEditor.value : '';
+
+    if (runCodeBtn && codeEditor && consoleOutput) {
+      runCodeBtn.addEventListener('click', () => {
+        consoleOutput.textContent = '';
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+        const logs = [];
+
+        console.log = (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        console.warn = (...args) => logs.push('⚠️ ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+        console.error = (...args) => logs.push('🚨 ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '));
+
+        const startTime = performance.now();
+        try {
+          const runnable = new Function(codeEditor.value);
+          runnable();
+          const duration = (performance.now() - startTime).toFixed(1);
+          execTime.textContent = `Executed in ${duration}ms`;
+          consoleOutput.textContent = logs.length > 0 ? logs.join('\n') : '// تم تنفيذ الكود بنجاح دون طباعة مخرجات.';
+        } catch (err) {
+          consoleOutput.textContent = `❌ Runtime Error:\n${err.message}`;
+          execTime.textContent = 'Failed';
+        } finally {
+          console.log = originalLog;
+          console.warn = originalWarn;
+          console.error = originalError;
+        }
+      });
+
+      resetCodeBtn?.addEventListener('click', () => {
+        codeEditor.value = initialCode;
+        consoleOutput.textContent = '// تمت استعادة الكود الأولي. اضغط تشغيل لمشاهدة المخرجات.';
+        execTime.textContent = 'Reset';
+      });
+    }
+
+    // 2. Predict Box Toggle
+    const togglePredictBtn = document.getElementById('togglePredictBtn');
+    const predictAnswer = document.getElementById('predictAnswer');
+    togglePredictBtn?.addEventListener('click', () => {
+      if (predictAnswer.classList.contains('hidden')) {
+        predictAnswer.classList.remove('hidden');
+        togglePredictBtn.textContent = 'إخفاء الإجابة';
+      } else {
+        predictAnswer.classList.add('hidden');
+        togglePredictBtn.textContent = 'عرض الإجابة التحليلية';
+      }
+    });
+
+    // 3. Multi-Question Quiz Engine
+    const quizDataEl = document.getElementById('quizData');
+    let quizPool = [];
+    try {
+      quizPool = JSON.parse(quizDataEl.textContent.trim() || '[]');
+    } catch (e) {
+      quizPool = [];
+    }
+
+    let currentQuestionIdx = 0;
+    let userAnswers = {};
+
+    const quizQuestionAr = document.getElementById('quizQuestionAr');
+    const quizQuestionEn = document.getElementById('quizQuestionEn');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizCounter = document.getElementById('quizCounter');
+    const quizScore = document.getElementById('quizScore');
+    const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+    const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+
+    function renderCurrentQuestion() {
+      if (!quizPool || quizPool.length === 0) return;
+      const q = quizPool[currentQuestionIdx];
+      quizCounter.textContent = `السؤال ${currentQuestionIdx + 1} من ${quizPool.length}`;
+      quizQuestionAr.textContent = q.qAr || q.q;
+      quizQuestionEn.textContent = q.q;
+
+      quizOptions.innerHTML = '';
+      quizFeedback.classList.add('hidden');
+
+      const isAnswered = userAnswers[currentQuestionIdx] !== undefined;
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('div');
+        btn.className = 'quiz-option p-4 rounded-xl border border-slate-700/80 bg-slate-900/60 flex items-center justify-between';
+        btn.innerHTML = `
+          <span class="font-arabic text-sm text-slate-200 fsa-ar" dir="rtl">${optText}</span>
+          <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-mono text-xs text-slate-400 opt-badge">${['أ', 'ب', 'ج', 'د'][optIdx] || optIdx + 1}</span>
+        `;
+
+        if (isAnswered) {
+          btn.classList.add('disabled');
+          if (optIdx === q.correct) {
+            btn.classList.add('correct');
+          } else if (optIdx === userAnswers[currentQuestionIdx]) {
+            btn.classList.add('incorrect');
+          }
+        } else {
+          btn.addEventListener('click', () => handleSelectOption(optIdx));
+        }
+
+        quizOptions.appendChild(btn);
+      });
+
+      if (isAnswered) {
+        showExplanation(userAnswers[currentQuestionIdx] === q.correct);
+      }
+
+      prevQuestionBtn.disabled = currentQuestionIdx === 0;
+      nextQuestionBtn.textContent = currentQuestionIdx === quizPool.length - 1 ? 'إنهاء الاختبار 🏁' : 'السؤال التالي →';
+    }
+
+    function handleSelectOption(selectedIdx) {
+      const q = quizPool[currentQuestionIdx];
+      userAnswers[currentQuestionIdx] = selectedIdx;
+      const isCorrect = selectedIdx === q.correct;
+      renderCurrentQuestion();
+    }
+
+    function showExplanation(isCorrect) {
+      const q = quizPool[currentQuestionIdx];
+      quizFeedback.className = isCorrect 
+        ? 'p-6 rounded-2xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200' 
+        : 'p-6 rounded-2xl border border-red-500/40 bg-red-950/30 text-red-200';
+      quizFeedback.innerHTML = `
+        <div class="flex items-center gap-2 font-bold mb-2 text-base">
+          <i class="${isCorrect ? 'fas fa-check-circle text-emerald-400' : 'fas fa-times-circle text-red-400'}"></i>
+          <span>${isCorrect ? 'إجابة صحيحة وممتازة! 🎉' : 'إجابة غير دقيقة! راجع التوضيح الهندسي: 💡'}</span>
+        </div>
+        <p class="text-sm font-arabic leading-loose fsa-ar" dir="rtl">${q.whyAr || q.why}</p>
+        <p class="text-xs font-mono opacity-80 mt-2 ltr-block">${q.why || ''}</p>
+      `;
+      quizFeedback.classList.remove('hidden');
+    }
+
+    prevQuestionBtn?.addEventListener('click', () => {
+      if (currentQuestionIdx > 0) {
+        currentQuestionIdx--;
+        renderCurrentQuestion();
+      }
+    });
+
+    nextQuestionBtn?.addEventListener('click', () => {
+      if (currentQuestionIdx < quizPool.length - 1) {
+        currentQuestionIdx++;
+        renderCurrentQuestion();
+      } else {
+        let correctCount = 0;
+        quizPool.forEach((q, idx) => {
+          if (userAnswers[idx] === q.correct) correctCount++;
+        });
+        quizScore.textContent = `النتيجة: ${correctCount} / ${quizPool.length}`;
+        quizScore.classList.remove('hidden');
+        alert(`🎉 انتهى الاختبار بنجاح! نتيجتك: ${correctCount} من ${quizPool.length}`);
+      }
+    });
+
+    if (quizPool && quizPool.length > 0) {
+      renderCurrentQuestion();
+    }
+  </script>
 </body>
 </html>
