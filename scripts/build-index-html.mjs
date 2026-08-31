@@ -2,9 +2,9 @@
 /* ============================================================
    scripts/build-index-html.mjs
    ------------------------------------------------------------
-   Builds the complete index.html landing page containing ALL 106
-   interactive lessons across all 8 tracks, with live search filtering,
-   progress tracking, and responsive cyber-aurora styling.
+   Generates the ultra-premium, spacious, glassmorphic index.html
+   featuring all 106 interactive lessons across 8 dedicated track
+   sections with zero scroll traps, Google Fonts, and live search.
    ============================================================ */
 
 import fs from 'node:fs';
@@ -40,52 +40,108 @@ const iconMap = {
 
 const trackMetadata = {
   foundations: {
-    num: 1,
-    title: 'أساسيات الويب واللغة',
-    subtitle: 'Web & JS Foundations (ES2026)',
-    style: '--track-color: #F59E0B; --track-glow: rgba(245, 158, 11, 0.12); --track-shadow: rgba(245, 158, 11, 0.25); --track-gradient: linear-gradient(135deg, #F59E0B, #D97706); --track-icon-bg: rgba(245, 158, 11, 0.15); --track-icon-color: #FBBF24;'
+    num: '01',
+    id: 'foundations',
+    titleAr: 'أساسيات الويب والبرمجة الحديثة',
+    titleEn: 'Web & JS Foundations (ES2026)',
+    descAr: 'البنية المعمارية للإنترنت بروتوكولات HTTP/3 و DNS، والهيكل الدلالي للـ HTML ومعايير الوصول WCAG، ونماذج الصندوق CSS Box Model، ومحرك V8 ونطاقات المتغيرات Closures والبرمجة اللاتزامنية Async/Await.',
+    hours: '6.5 ساعات',
+    levelAr: 'تأسيسي إلى متقدم',
+    color: '#F59E0B',
+    accentClass: 'track-amber',
+    glowColor: 'rgba(245, 158, 11, 0.15)',
+    gradient: 'linear-gradient(135deg, #F59E0B, #D97706)'
   },
   react: {
-    num: 2,
-    title: 'ريآكت الحديثة',
-    subtitle: 'React.js 19.2 Architecture',
-    style: '--track-color: #38BDF8; --track-glow: rgba(56, 189, 248, 0.12); --track-shadow: rgba(56, 189, 248, 0.25); --track-gradient: linear-gradient(135deg, #0284C7, #0369A1); --track-icon-bg: rgba(56, 189, 248, 0.15); --track-icon-color: #38BDF8;'
+    num: '02',
+    id: 'react',
+    titleAr: 'ريآكت 19 وهندسة الواجهات التفاعلية',
+    titleEn: 'React.js 19.2 Architecture & Fiber',
+    descAr: 'التفكير بطريقة ريآكت، شجرة الألياف Fiber Tree ومطابقة الـ VDOM، إدارة الحالة بـ useState و useReducer، سياق التطبيق Context API، وبناء الـ Custom Hooks، وإدارة الحالة المتقدمة بـ Zustand والتوجيه بـ React Router 7.',
+    hours: '8 ساعات',
+    levelAr: 'متوسط إلى إنتاجي',
+    color: '#38BDF8',
+    accentClass: 'track-sky',
+    glowColor: 'rgba(56, 189, 248, 0.15)',
+    gradient: 'linear-gradient(135deg, #0284C7, #0369A1)'
   },
   nodejs: {
-    num: 3,
-    title: 'نود جي إس والبيئة',
-    subtitle: 'Node.js 24 LTS Runtime',
-    style: '--track-color: #84CC16; --track-glow: rgba(132, 204, 22, 0.12); --track-shadow: rgba(132, 204, 22, 0.25); --track-gradient: linear-gradient(135deg, #65A30D, #4D7C0F); --track-icon-bg: rgba(132, 204, 22, 0.15); --track-icon-color: #A3E635;'
+    num: '03',
+    id: 'nodejs',
+    titleAr: 'بيئة نود ومحرك العمليات عالي الأداء',
+    titleEn: 'Node.js 24 LTS Runtime & libuv',
+    descAr: 'تشريح محرك V8 وتفويض العمليات لمكتبة libuv، حلقة الأحداث ذات الـ 6 مراحل (6-Phase Event Loop)، التدفقات الثنائية Streams والـ Buffers مع التحكم في الـ Backpressure، والعمليات الفرعية Child Processes والأمان العالي.',
+    hours: '6 ساعات',
+    levelAr: 'متوسط إلى متقدم',
+    color: '#84CC16',
+    accentClass: 'track-lime',
+    glowColor: 'rgba(132, 204, 22, 0.15)',
+    gradient: 'linear-gradient(135deg, #65A30D, #4D7C0F)'
   },
   express: {
-    num: 4,
-    title: 'إكسبريس وبناء الـ APIs',
-    subtitle: 'Express.js 5.2 Server',
-    style: '--track-color: #A1A1AA; --track-glow: rgba(161, 161, 170, 0.12); --track-shadow: rgba(161, 161, 170, 0.25); --track-gradient: linear-gradient(135deg, #71717A, #52525B); --track-icon-bg: rgba(161, 161, 170, 0.15); --track-icon-color: #E4E4E7;'
+    num: '04',
+    id: 'express',
+    titleAr: 'إكسبريس وبناء خوادم الـ REST API',
+    titleEn: 'Express.js 5.2 Server & Production APIs',
+    descAr: 'خط معالجة الطلبات Middleware Pipeline، معايير RESTful CRUD المتقدمة، فحص المدخلات بـ Zod، التوثيق الأمني بـ JWT و Refresh Tokens، التحكم بالصلاحيات RBAC، رفع الملفات ومعالجة الأخطاء الشاملة.',
+    hours: '6 ساعات',
+    levelAr: 'متوسط إلى إنتاجي',
+    color: '#E4E4E7',
+    accentClass: 'track-zinc',
+    glowColor: 'rgba(228, 228, 231, 0.15)',
+    gradient: 'linear-gradient(135deg, #71717A, #52525B)'
   },
   mongodb: {
-    num: 5,
-    title: 'مونجو وقواعد المستندات',
-    subtitle: 'MongoDB 8.0 NoSQL Engine',
-    style: '--track-color: #22C55E; --track-glow: rgba(34, 197, 94, 0.12); --track-shadow: rgba(34, 197, 94, 0.25); --track-gradient: linear-gradient(135deg, #16A34A, #15803D); --track-icon-bg: rgba(34, 197, 94, 0.15); --track-icon-color: #4ADE80;'
+    num: '05',
+    id: 'mongodb',
+    titleAr: 'مونجو وقواعد البيانات الوثائقية الموزعة',
+    titleEn: 'MongoDB 8.0 NoSQL & WiredTiger',
+    descAr: 'نموذج مستندات BSON، استراتيجيات تضمين البيانات مقابل الإسناد (Embedding vs Referencing)، الفهارس المركبة وشرح خطة التنفيذ explain()، خطوط التجميع Aggregation Pipelines، والمعاملات الذرية ACID متعددة المستندات.',
+    hours: '4.5 ساعات',
+    levelAr: 'متوسط إلى متقدم',
+    color: '#22C55E',
+    accentClass: 'track-emerald',
+    glowColor: 'rgba(34, 197, 94, 0.15)',
+    gradient: 'linear-gradient(135deg, #16A34A, #15803D)'
   },
   postgresql: {
-    num: 6,
-    title: 'بوستجرس والأنظمة العلائقية',
-    subtitle: 'PostgreSQL 18.x Relational',
-    style: '--track-color: #60A5FA; --track-glow: rgba(96, 165, 250, 0.12); --track-shadow: rgba(96, 165, 250, 0.25); --track-gradient: linear-gradient(135deg, #2563EB, #1D4ED8); --track-icon-bg: rgba(96, 165, 250, 0.15); --track-icon-color: #93C5FD;'
+    num: '06',
+    id: 'postgresql',
+    titleAr: 'بوستجرس وقواعد البيانات العلائقية المعقدة',
+    titleEn: 'PostgreSQL 18.x Relational Engine & MVCC',
+    descAr: 'المعمارية العلائقية وسلامة المعاملات البنكية ACID، عمليات الربط المتقدمة Joins، فهارس B-Tree و GIN و GiST، استعلامات CTEs التكرارية، حقول JSONB الهجينة، وإدارة Concurrency Control عبر MVCC.',
+    hours: '5 ساعات',
+    levelAr: 'متوسط إلى متقدم',
+    color: '#60A5FA',
+    accentClass: 'track-blue',
+    glowColor: 'rgba(96, 165, 250, 0.15)',
+    gradient: 'linear-gradient(135deg, #2563EB, #1D4ED8)'
   },
   prisma: {
-    num: 7,
-    title: 'بريزما والتعامل الآمن',
-    subtitle: 'Prisma 7.x Type-Safe ORM',
-    style: '--track-color: #818CF8; --track-glow: rgba(129, 140, 248, 0.12); --track-shadow: rgba(129, 140, 248, 0.25); --track-gradient: linear-gradient(135deg, #6366F1, #4F46E5); --track-icon-bg: rgba(129, 140, 248, 0.15); --track-icon-color: #A5B4FC;'
+    num: '07',
+    id: 'prisma',
+    titleAr: 'بريزما والتعامل الآمن مع البيانات (Type-Safe)',
+    titleEn: 'Prisma 7.x ORM & Type Safety',
+    descAr: 'نمذجة البيانات بلغة Prisma Schema، دورة حياة الـ Migrations، استعلامات CRUD عالية الكفاءة مع منع N+1 Queries، المعاملات التفاعلية Interactive Transactions، وامتدادات Prisma Client Extensions.',
+    hours: '4.5 ساعات',
+    levelAr: 'متوسط إلى متقدم',
+    color: '#818CF8',
+    accentClass: 'track-indigo',
+    glowColor: 'rgba(129, 140, 248, 0.15)',
+    gradient: 'linear-gradient(135deg, #6366F1, #4F46E5)'
   },
   architecture: {
-    num: 8,
-    title: 'المعمارية وتصميم النظم',
-    subtitle: 'Full-Stack Architecture & Next.js',
-    style: '--track-color: #C084FC; --track-glow: rgba(192, 132, 252, 0.12); --track-shadow: rgba(192, 132, 252, 0.25); --track-gradient: linear-gradient(135deg, #9333EA, #7E22CE); --track-icon-bg: rgba(192, 132, 252, 0.15); --track-icon-color: #E9D5FF;'
+    num: '08',
+    id: 'architecture',
+    titleAr: 'العمارة الشاملة وتصميم النظم الكبرى',
+    titleEn: 'Full-Stack Architecture & System Design',
+    descAr: 'المعمارية ثلاثية الطبقات 3-Tier و Clean Architecture، التخزين المؤقت الموزع بـ Redis، التراسل الحي بـ WebSockets، طوابير الرسائل Message Queues، بوابات الـ API Gateway، وحالات دراسة حقيقية لتصميم النظم الكبرى.',
+    hours: '7.5 ساعات',
+    levelAr: 'متقدم إلى خبير',
+    color: '#C084FC',
+    accentClass: 'track-purple',
+    glowColor: 'rgba(192, 132, 252, 0.15)',
+    gradient: 'linear-gradient(135deg, #9333EA, #7E22CE)'
   }
 };
 
@@ -135,62 +191,98 @@ for (const track of Object.keys(lessonsByTrack)) {
 let totalCount = 0;
 for (const [t, list] of Object.entries(lessonsByTrack)) {
   totalCount += list.length;
-  console.log(`Track [${t}]: ${list.length} lessons`);
 }
-console.log(`\nTotal lessons cataloged: ${totalCount} / 106`);
+console.log(`\nVerified ${totalCount} / 106 lessons across all 8 tracks.`);
 
-// Render track cards HTML
-function renderTrackCard(trackKey, lessons) {
+// Render Track Nav Pills
+const trackNavPillsHtml = Object.keys(trackMetadata).map(trackKey => {
+  const meta = trackMetadata[trackKey];
+  const count = lessonsByTrack[trackKey]?.length || 0;
+  return `
+    <a href="#track-${meta.id}" class="track-nav-pill" style="--pill-color: ${meta.color};">
+      <span class="pill-dot"></span>
+      <span class="pill-title">${meta.titleAr.split(' ')[0]}</span>
+      <span class="pill-count">${count}</span>
+    </a>
+  `;
+}).join('\n');
+
+// Render Full-Width Track Sections
+function renderTrackSection(trackKey, lessons) {
   const meta = trackMetadata[trackKey];
   const icons = iconMap[trackKey] || ['fsa-icon-code'];
 
-  const lessonsHtml = lessons.map((lesson, idx) => {
+  const lessonCardsHtml = lessons.map((lesson, idx) => {
     const icon = icons[idx % icons.length];
+    const orderStr = String(idx + 1).padStart(2, '0');
     return `
-            <a href="${lesson.url}" class="lesson-item" data-lesson-slug="${lesson.slug}" data-level="${lesson.level}">
-              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#${icon}"></use></svg></div>
-              <div class="lesson-text">
-                <div class="lesson-name">${lesson.title}</div>
-                <div class="lesson-desc">${lesson.subtitle}</div>
-              </div>
-              <span class="lesson-time-chip">${lesson.estMinutes}m</span>
-              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-            </a>`;
-  }).join('');
+      <a href="${lesson.url}" class="ch-lesson-card" data-lesson-slug="${lesson.slug}" data-level="${lesson.level}">
+        <div class="ch-lesson-card__header">
+          <span class="ch-lesson-order">#${orderStr}</span>
+          <div class="ch-lesson-badges">
+            <span class="ch-badge ch-badge--level">Level ${lesson.level}</span>
+            <span class="ch-badge ch-badge--time">⏱️ ${lesson.estMinutes} دقيقة</span>
+          </div>
+        </div>
+
+        <div class="ch-lesson-card__body">
+          <div class="ch-lesson-icon">
+            <svg><use href="assets/icons.svg#${icon}"></use></svg>
+          </div>
+          <div class="ch-lesson-content">
+            <h3 class="ch-lesson-title">${lesson.title}</h3>
+            <p class="ch-lesson-desc">${lesson.subtitle}</p>
+          </div>
+        </div>
+
+        <div class="ch-lesson-card__footer">
+          <span class="ch-lesson-action">ابدأ الدرس الآن &larr;</span>
+          <svg class="ch-lesson-arrow"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+        </div>
+      </a>
+    `;
+  }).join('\n');
 
   return `
-        <!-- Track ${meta.num}: ${meta.title} -->
-        <div class="track-card" style="${meta.style}" data-track-id="${trackKey}">
-          <div class="track-header">
-            <div class="track-number">${meta.num}</div>
-            <div class="track-info">
-              <div class="track-title">${meta.title}</div>
-              <div class="track-subtitle">${meta.subtitle}</div>
-            </div>
-            <span class="track-badge-count">${lessons.length} درساً</span>
-          </div>
-          <div class="lessons-list">
-            ${lessonsHtml}
-          </div>
-          <div class="track-card-footer">
-            <a href="learn/${trackKey}/index.html" class="track-hub-link">
-              <span>استعراض مسار ${meta.title} بالكامل ←</span>
-            </a>
-          </div>
-        </div>`;
+    <!-- ==================== TRACK ${meta.num}: ${meta.titleEn} ==================== -->
+    <section class="ch-track-section" id="track-${meta.id}" style="--track-color: ${meta.color}; --track-glow: ${meta.glowColor};">
+      <div class="ch-track-header">
+        <div class="ch-track-meta-top">
+          <span class="ch-track-num-badge">مسار ${meta.num}</span>
+          <span class="ch-track-stat-pill">📚 ${lessons.length} درساً تفاعلياً</span>
+          <span class="ch-track-stat-pill">⏳ ${meta.hours}</span>
+          <span class="ch-track-stat-pill">🎯 ${meta.levelAr}</span>
+        </div>
+
+        <h2 class="ch-track-title">${meta.titleAr}</h2>
+        <div class="ch-track-subtitle">${meta.titleEn}</div>
+        <p class="ch-track-desc">${meta.descAr}</p>
+      </div>
+
+      <!-- Spacious Lesson Cards Grid (All ${lessons.length} lessons visible openly) -->
+      <div class="ch-lessons-grid">
+        ${lessonCardsHtml}
+      </div>
+    </section>
+  `;
 }
 
-const allTracksHtml = Object.keys(lessonsByTrack)
-  .map(trackKey => renderTrackCard(trackKey, lessonsByTrack[trackKey]))
-  .join('\n');
+const allTrackSectionsHtml = Object.keys(lessonsByTrack)
+  .map(trackKey => renderTrackSection(trackKey, lessonsByTrack[trackKey]))
+  .join('\n\n');
 
 const fullIndexHtml = `<!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة (106 درساً تفاعلياً)</title>
+  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة — 106 درساً تفاعلياً من الصفر للاحتراف</title>
   <meta name="description" content="تعلم هندسة الويب الشاملة (MERN & PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات مباشرة وتشريح الكود">
+
+  <!-- Google Fonts: Cairo (Arabic), Inter (Latin), Fira Code (Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="css/tokens.css">
@@ -201,7 +293,7 @@ const fullIndexHtml = `<!DOCTYPE html>
 
   <style>
     /* ============================================================
-       STYLE-REFERENCE HERO & PARTICLES ARCHITECTURE
+       CODEHUB MASTERPIECE PORTAL ARCHITECTURE
        ============================================================ */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -210,94 +302,72 @@ const fullIndexHtml = `<!DOCTYPE html>
     }
 
     body {
-      background: #07070d;
-      color: #e0e0e0;
+      background: #020617;
+      color: #F8FAFC;
       min-height: 100vh;
       overflow-x: hidden;
       font-family: var(--font-arabic);
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Hero Container with Deep Radial Glow */
+    /* Hero Section with Deep Aurora Radial Glows */
     .hero {
-      min-height: 100vh;
       width: 100%;
+      min-height: 85vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 24px 60px;
+      padding: 30px 24px 70px;
       position: relative;
       overflow: hidden;
-      background: radial-gradient(ellipse 120% 80% at 50% 0%, #0e1630 0%, #07070d 65%);
+      background: radial-gradient(ellipse 120% 80% at 50% 0%, #0e1630 0%, #020617 70%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    /* Floating Aurora Glow Blobs */
     .aurora {
       position: absolute;
       border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0;
-      animation: auroraIn 2s ease forwards;
+      filter: blur(120px);
+      opacity: 0.6;
       pointer-events: none;
     }
 
     .aurora-1 {
-      width: 550px;
-      height: 550px;
-      top: -10%;
-      left: -5%;
-      background: rgba(59, 130, 246, 0.14);
-      animation: auroraIn 2s ease forwards, auroraFloat1 20s ease-in-out infinite 2s;
+      width: 600px;
+      height: 600px;
+      top: -15%;
+      left: -10%;
+      background: rgba(59, 130, 246, 0.16);
+      animation: auroraFloat1 22s ease-in-out infinite alternate;
     }
 
     .aurora-2 {
-      width: 450px;
-      height: 450px;
-      bottom: 10%;
-      right: -5%;
-      background: rgba(139, 92, 246, 0.12);
-      animation: auroraIn 2s ease forwards, auroraFloat2 18s ease-in-out infinite 2.5s;
+      width: 550px;
+      height: 550px;
+      bottom: 5%;
+      right: -10%;
+      background: rgba(139, 92, 246, 0.14);
+      animation: auroraFloat2 18s ease-in-out infinite alternate;
     }
 
     .aurora-3 {
-      width: 400px;
-      height: 400px;
-      top: 35%;
+      width: 500px;
+      height: 500px;
+      top: 30%;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(16, 185, 129, 0.08);
-      animation: auroraIn 2s ease forwards, auroraFloat3 22s ease-in-out infinite 3s;
+      background: rgba(16, 185, 129, 0.10);
     }
 
-    @keyframes auroraIn { to { opacity: 1; } }
     @keyframes auroraFloat1 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(40px, 30px); }
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 40px); }
     }
     @keyframes auroraFloat2 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-30px, -40px); }
-    }
-    @keyframes auroraFloat3 {
-      0%, 100% { transform: translateX(-50%) translate(0, 0); }
-      50% { transform: translateX(-50%) translate(20px, -20px); }
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-40px, -50px); }
     }
 
-    /* Grid Overlay with Radial Fade */
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-      z-index: 0;
-      mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, black 30%, transparent 80%);
-      -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, black 30%, transparent 80%);
-      pointer-events: none;
-    }
-
-    /* Interactive Floating Particles Canvas */
     #particles {
       position: absolute;
       inset: 0;
@@ -309,644 +379,739 @@ const fullIndexHtml = `<!DOCTYPE html>
       position: relative;
       z-index: 10;
       width: 100%;
-      max-width: 1480px;
+      max-width: 1440px;
     }
 
-    /* =================== TOP BAR NAV =================== */
-    .fsa-nav-header {
+    /* Top Navigation Bar */
+    .ch-nav-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 20px;
+      padding: 14px 24px;
       margin-bottom: 40px;
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 100px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
 
-    .fsa-nav-brand {
+    .ch-nav-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
       color: #fff;
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-family: var(--font-sans);
     }
 
-    .fsa-nav-links {
+    .ch-nav-brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 900;
+      box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+    }
+
+    .ch-nav-links {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .fsa-nav-btn {
+    .ch-nav-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
+      gap: 8px;
+      padding: 8px 16px;
       border-radius: 100px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #94a3b8;
-      font-size: 0.85rem;
+      color: #94A3B8;
+      font-size: 0.9rem;
       text-decoration: none;
       transition: all 0.25s ease;
       cursor: pointer;
+      font-family: var(--font-arabic);
+      font-weight: 600;
     }
 
-    .fsa-nav-btn:hover {
-      background: rgba(255, 255, 255, 0.09);
-      border-color: rgba(255, 255, 255, 0.16);
+    .ch-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
       color: #fff;
       transform: translateY(-1px);
     }
 
-    /* =================== TITLE SECTION =================== */
-    .title-section {
+    /* Hero Titles */
+    .hero-title-box {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 40px;
     }
 
-    .title-badge {
+    .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 18px;
+      gap: 10px;
+      padding: 8px 22px;
       border-radius: 100px;
-      background: rgba(59, 130, 246, 0.10);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      color: #60a5fa;
-      font-size: 0.82rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeSlideUp 0.8s ease 0.2s forwards;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60A5FA;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 24px;
     }
 
-    .title-badge-dot {
-      width: 7px;
-      height: 7px;
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: #3b82f6;
-      box-shadow: 0 0 8px #3b82f6;
+      background: #10B981;
+      box-shadow: 0 0 10px #10B981;
       animation: fsa-status-pulse 2s infinite;
     }
 
-    .title-section h1 {
-      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-      font-weight: 800;
+    .hero-title-box h1 {
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      font-weight: 900;
       line-height: 1.25;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, #ffffff 0%, #60a5fa 35%, #c084fc 70%, #ffffff 100%);
-      background-size: 300% 100%;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #60A5FA 30%, #C084FC 70%, #FFFFFF 100%);
+      background-size: 250% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: gradientText 8s ease infinite, fadeSlideUp 0.8s ease 0.4s both;
+      animation: gradientShift 10s ease infinite;
     }
 
-    @keyframes gradientText {
+    @keyframes gradientShift {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
     }
 
-    .title-section p {
-      font-size: 1.15rem;
-      color: #94a3b8;
-      max-width: 720px;
+    .hero-title-box p {
+      font-size: 1.25rem;
+      color: #94A3B8;
+      max-width: 840px;
       margin: 0 auto;
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeSlideUp 0.8s ease 0.6s forwards;
+      line-height: 1.9;
     }
 
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* =================== STATS BAR =================== */
-    .stats-bar {
+    /* Stats Ribbon */
+    .hero-stats-ribbon {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 36px;
+      gap: 40px;
       flex-wrap: wrap;
-      margin-bottom: 35px;
-      opacity: 0;
-      animation: fadeSlideUp 0.8s ease 0.8s forwards;
+      margin-bottom: 40px;
     }
 
-    .stat-item {
+    .hero-stat {
       text-align: center;
     }
 
-    .stat-number {
+    .hero-stat-num {
       font-family: var(--font-mono);
-      font-size: 1.9rem;
+      font-size: 2.2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #60a5fa, #c084fc);
+      background: linear-gradient(135deg, #60A5FA, #C084FC);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      line-height: 1.2;
+      line-height: 1.1;
     }
 
-    .stat-label {
-      font-size: 0.82rem;
-      color: #64748b;
-      margin-top: 3px;
+    .hero-stat-label {
+      font-size: 0.88rem;
+      color: #64748B;
+      margin-top: 4px;
+      font-weight: 600;
     }
 
-    .stat-divider {
+    .hero-stat-sep {
       width: 1px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.08);
+      height: 36px;
+      background: rgba(255, 255, 255, 0.1);
     }
 
-    /* Interactive Live Search Box */
-    .curriculum-search-bar {
+    /* Live Search Header */
+    .hero-search-wrapper {
+      max-width: 720px;
       width: 100%;
-      max-width: 640px;
-      margin: 0 auto 35px;
+      margin: 0 auto;
       position: relative;
     }
 
-    .curriculum-search-input {
+    .hero-search-input {
       width: 100%;
-      padding: 14px 44px 14px 20px;
+      padding: 18px 54px 18px 24px;
       border-radius: 100px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(59, 130, 246, 0.35);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(59, 130, 246, 0.4);
       color: #fff;
       font-family: var(--font-arabic);
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       outline: none;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
-    .curriculum-search-input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
-      background: rgba(15, 23, 42, 0.95);
+    .hero-search-input:focus {
+      border-color: #60A5FA;
+      box-shadow: 0 0 35px rgba(59, 130, 246, 0.35);
+      background: rgba(15, 23, 42, 0.98);
     }
 
-    .curriculum-search-icon {
+    .hero-search-icon {
       position: absolute;
-      right: 18px;
+      right: 22px;
       top: 50%;
       transform: translateY(-50%);
-      color: #60a5fa;
+      color: #60A5FA;
       pointer-events: none;
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Sticky Track Quick-Jump Navigation */
+    .sticky-track-nav {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: rgba(2, 6, 23, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 24px;
+    }
+
+    .sticky-track-nav-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .sticky-track-nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .track-nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+    }
+
+    .track-nav-pill:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: var(--pill-color, #60A5FA);
+      transform: translateY(-1px);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--pill-color, #60A5FA);
+    }
+
+    .pill-count {
+      padding: 2px 6px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+    }
+
+    /* =================== FULL-WIDTH TRACK SECTIONS =================== */
+    .ch-main-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+
+    .ch-track-section {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      scroll-margin-top: 80px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ch-track-section:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 20px 60px -20px var(--track-glow, rgba(59, 130, 246, 0.2));
+    }
+
+    .ch-track-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--track-color, #3B82F6), transparent);
+    }
+
+    .ch-track-header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ch-track-meta-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .ch-track-num-badge {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fff;
+      background: var(--track-color, #3B82F6);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .ch-track-stat-pill {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #94A3B8;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ch-track-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .ch-track-subtitle {
+      font-size: 0.95rem;
+      font-family: var(--font-mono);
+      color: var(--track-color, #60A5FA);
+      margin-bottom: 14px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .ch-track-desc {
+      font-size: 1.05rem;
+      color: #94A3B8;
+      line-height: 1.8;
+      max-width: 1000px;
+    }
+
+    /* Spacious Lesson Cards Grid */
+    .ch-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    /* Individual Lesson Card */
+    .ch-lesson-card {
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 22px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ch-lesson-card:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: var(--track-color, #60A5FA);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+    }
+
+    .ch-lesson-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .ch-lesson-order {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--track-color, #60A5FA);
+    }
+
+    .ch-lesson-badges {
+      display: flex;
+      gap: 6px;
+    }
+
+    .ch-badge {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .ch-badge--level {
+      background: rgba(255, 255, 255, 0.05);
+      color: #94A3B8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ch-badge--time {
+      background: rgba(245, 158, 11, 0.1);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .ch-lesson-card__body {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .ch-lesson-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--track-color, #60A5FA);
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .ch-lesson-icon svg {
       width: 18px;
       height: 18px;
     }
 
-    /* Quick Resume Box */
-    .quick-resume-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 14px 24px;
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-radius: 16px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.15);
-      flex-wrap: wrap;
-    }
-
-    .quick-resume-info {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .quick-resume-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: rgba(59, 130, 246, 0.15);
-      color: #60a5fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-    }
-
-    /* =================== TRACKS 8-GRID CONTAINER =================== */
-    .tracks-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
-      width: 100%;
-    }
-
-    @media (max-width: 1300px) {
-      .tracks-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 680px) {
-      .tracks-container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* =================== TRACK CARD =================== */
-    .track-card {
-      background: rgba(15, 15, 25, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease;
-      opacity: 0;
-      transform: translateY(40px);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .track-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .track-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 15%;
-      right: 15%;
-      height: 1px;
-      border-radius: 1px;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      background: linear-gradient(90deg, transparent, var(--track-color, #3B82F6), transparent);
-    }
-
-    .track-card:hover::before {
-      opacity: 1;
-    }
-
-    .track-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255, 255, 255, 0.16);
-      box-shadow: 0 20px 50px -15px var(--track-shadow, rgba(59, 130, 246, 0.25));
-    }
-
-    /* Track Header */
-    .track-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      position: relative;
-      z-index: 1;
-    }
-
-    .track-number {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: white;
-      background: var(--track-gradient, linear-gradient(135deg, #3B82F6, #1D4ED8));
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .track-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .track-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .track-subtitle {
-      font-size: 0.70rem;
-      color: #64748b;
-      font-weight: 500;
-      font-family: var(--font-mono);
-      direction: ltr;
-      text-align: right;
-    }
-
-    .track-badge-count {
-      padding: 3px 8px;
-      border-radius: 100px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--track-color, #60a5fa);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      white-space: nowrap;
-    }
-
-    /* Lessons Scrollable List */
-    .lessons-list {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      max-height: 480px;
-      overflow-y: auto;
-      padding-inline-end: 4px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
-    }
-
-    .lessons-list::-webkit-scrollbar {
-      width: 4px;
-    }
-    .lessons-list::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
-    }
-    .lessons-list::-webkit-scrollbar-thumb:hover {
-      background: var(--track-color, #60a5fa);
-    }
-
-    .lesson-item {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 10px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 10px;
-      text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .lesson-item:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.14);
-      transform: translateX(-3px);
-    }
-
-    .lesson-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      flex-shrink: 0;
-      background: var(--track-icon-bg, rgba(59, 130, 246, 0.12));
-      color: var(--track-icon-color, #60a5fa);
-      transition: transform 0.3s ease;
-    }
-
-    .lesson-item:hover .lesson-icon {
+    .ch-lesson-card:hover .ch-lesson-icon {
       transform: scale(1.1) rotate(-4deg);
+      background: var(--track-color, #60A5FA);
+      color: #fff;
     }
 
-    .lesson-text {
+    .ch-lesson-content {
       flex: 1;
       min-width: 0;
     }
 
-    .lesson-name {
+    .ch-lesson-title {
       font-family: var(--font-sans);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #f1f5f9;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #F8FAFC;
+      margin-bottom: 6px;
+      line-height: 1.4;
       direction: ltr;
       text-align: left;
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: color 0.3s ease;
+      transition: color 0.2s ease;
     }
 
-    .lesson-item:hover .lesson-name {
-      color: var(--track-color, #60a5fa);
+    .ch-lesson-card:hover .ch-lesson-title {
+      color: var(--track-color, #60A5FA);
     }
 
-    .lesson-desc {
+    .ch-lesson-desc {
       font-family: var(--font-arabic);
-      font-size: 0.67rem;
-      color: #64748b;
-      direction: rtl;
-      text-align: right;
-      line-height: 1.3;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 0.88rem;
+      color: #94A3B8;
+      line-height: 1.6;
     }
 
-    .lesson-time-chip {
-      font-size: 0.62rem;
-      font-family: var(--font-mono);
+    .ch-lesson-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .ch-lesson-action {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #64748B;
+      transition: color 0.2s ease;
+    }
+
+    .ch-lesson-card:hover .ch-lesson-action {
+      color: #fff;
+    }
+
+    .ch-lesson-arrow {
+      width: 14px;
+      height: 14px;
       color: #475569;
-      padding: 1px 5px;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.03);
-      flex-shrink: 0;
+      transition: transform 0.2s ease, color 0.2s ease;
     }
 
-    .lesson-arrow {
-      color: #334155;
-      transition: transform 0.3s ease, color 0.3s ease;
-      flex-shrink: 0;
+    .ch-lesson-card:hover .ch-lesson-arrow {
+      transform: translateX(-4px);
+      color: var(--track-color, #60A5FA);
     }
 
-    .lesson-item:hover .lesson-arrow {
-      transform: translateX(-3px);
-      color: #94a3b8;
+    /* Capstones Hub Section */
+    .ch-capstones-section {
+      background: radial-gradient(ellipse 100% 60% at 50% 0%, rgba(59, 130, 246, 0.1) 0%, rgba(15, 23, 42, 0.6) 80%);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 28px;
+      padding: 44px 36px;
     }
 
-    .track-card-footer {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    /* Footer */
+    .ch-footer {
       text-align: center;
-    }
-
-    .track-hub-link {
-      font-size: 0.75rem;
-      color: var(--track-color, #60a5fa);
-      text-decoration: none;
-      font-weight: 600;
-      transition: opacity 0.25s ease;
-    }
-
-    .track-hub-link:hover {
-      opacity: 0.8;
-      text-decoration: underline;
-    }
-
-    /* Footer Note */
-    .footer-note {
-      text-align: center;
-      margin-top: 50px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      color: #64748b;
-      font-size: 0.85rem;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: #64748B;
+      font-size: 0.95rem;
+      line-height: 1.8;
     }
   </style>
 </head>
 
 <body>
   <!-- Accessible Skip Link -->
-  <a href="#main-content" class="fsa-skip-link">Skip to main content · الانتقال للمحتوى</a>
+  <a href="#tracksContainer" class="fsa-skip-link">تخطي إلى مسارات الدروس · Skip to Content</a>
 
-  <section class="hero" id="main-content">
-    <!-- Aurora glow blobs -->
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero">
     <div class="aurora aurora-1"></div>
     <div class="aurora aurora-2"></div>
     <div class="aurora aurora-3"></div>
-
-    <!-- Floating Canvas Particles -->
     <canvas id="particles"></canvas>
 
     <div class="hero-content">
-
-      <!-- Navigation Top Bar -->
-      <nav class="fsa-nav-header">
-        <a href="index.html" class="fsa-nav-brand">
-          <svg style="width: 22px; height: 22px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-code"></use></svg>
+      <!-- Navigation Header -->
+      <nav class="ch-nav-header">
+        <a href="index.html" class="ch-nav-brand">
+          <div class="ch-nav-brand-logo">⚡</div>
           <span>FullStack Academy</span>
         </a>
 
-        <div class="fsa-nav-links">
-          <button class="fsa-nav-btn" data-fsa-search-trigger>
-            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
+        <div class="ch-nav-links">
+          <button class="ch-nav-btn" data-fsa-search-trigger>
+            <svg style="width: 15px; height: 15px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
             <span>بحث شامل</span>
             <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
           </button>
 
-          <a href="dashboard.html" class="fsa-nav-btn">
-            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+          <a href="dashboard.html" class="ch-nav-btn">
+            <svg style="width: 15px; height: 15px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
             <span>لوحة المتابعة</span>
           </a>
 
-          <a href="playground.html" class="fsa-nav-btn">
-            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg>
-            <span>Playground</span>
+          <a href="projects/index.html" class="ch-nav-btn">
+            <svg style="width: 15px; height: 15px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg>
+            <span>مشاريع التخرج</span>
           </a>
 
-          <a href="reference/index.html" class="fsa-nav-btn">
-            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-book"></use></svg>
-            <span>المراجع</span>
-          </a>
-
-          <button id="themeToggleBtn" class="fsa-nav-btn" data-fsa-theme-toggle aria-label="Toggle Theme">
-            <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
+          <button id="themeToggleBtn" class="ch-nav-btn" data-fsa-theme-toggle aria-label="Toggle Theme">
+            <svg style="width: 15px; height: 15px;"><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
           </button>
         </div>
       </nav>
 
-      <!-- Title & Value Proposition -->
-      <div class="title-section">
-        <div class="title-badge">
-          <span class="title-badge-dot"></span>
-          <span>Zero-Build · Zero Dependencies · 100% Offline Platform · 106 Lessons</span>
+      <!-- Hero Title -->
+      <div class="hero-title-box">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Zero-Build · 100% Offline · 106 Interactive Masterclasses</span>
         </div>
 
         <h1>FullStack Academy · الخوارزميات وهندسة الويب</h1>
         <p>
-          تعلم هندسة الويب الشاملة (MERN &amp; PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات مباشرة، تشريح الكود سطراً بسطر، وتمارين تنفيذ داخل المتصفح بدون أي تثبيت.
+          تعلم هندسة الويب الشاملة (MERN &amp; PostgreSQL Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات تشغيل حية، تشريح الكود سطراً بسطر، واختبارات إتقان فورية بدون الحاجة لأي اتصال بالإنترنت.
         </p>
       </div>
 
-      <!-- Stats Bar -->
-      <div class="stats-bar">
-        <div class="stat-item">
-          <div class="stat-number">8</div>
-          <div class="stat-label">مسارات متكاملة</div>
+      <!-- Stats Ribbon -->
+      <div class="hero-stats-ribbon">
+        <div class="hero-stat">
+          <div class="hero-stat-num">8</div>
+          <div class="hero-stat-label">مسارات معمارية</div>
         </div>
-
-        <div class="stat-divider"></div>
-
-        <div class="stat-item">
-          <div class="stat-number">106</div>
-          <div class="stat-label">درساً تفاعلياً</div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">106</div>
+          <div class="hero-stat-label">درساً تفاعلياً شاملاً</div>
         </div>
-
-        <div class="stat-divider"></div>
-
-        <div class="stat-item">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">مستقل بدون نت</div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">أوفلاين مستقل بالكامل</div>
         </div>
-
-        <div class="stat-divider"></div>
-
-        <div class="stat-item">
-          <div class="stat-number">0 ms</div>
-          <div class="stat-label">إعداد بيئة العمل</div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">4</div>
+          <div class="hero-stat-label">مشاريع تخرج إنتاجية</div>
         </div>
       </div>
 
       <!-- Live Search Box Across All 106 Lessons -->
-      <div class="curriculum-search-bar">
-        <input type="text" id="curriculumLiveFilter" class="curriculum-search-input" placeholder="ابحث بين 106 دروس (مثال: useState, JWT, Docker, Redis, Prisma, BSON)..." aria-label="تصفية الدروس المباشرة">
-        <svg class="curriculum-search-icon"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
+      <div class="hero-search-wrapper">
+        <input type="text" id="curriculumLiveFilter" class="hero-search-input" placeholder="🔍 ابحث في 106 دروس (مثال: useState, JWT, Docker, Redis, Prisma, BSON, Event Loop)..." aria-label="تصفية الدروس المباشرة">
+        <svg class="hero-search-icon"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
       </div>
-
-      <!-- Quick Resume Box (Personalized from localStorage) -->
-      <div class="quick-resume-box" id="quickResumeBox">
-        <div class="quick-resume-info">
-          <div class="quick-resume-icon">
-            <svg style="width: 20px; height: 20px;"><use href="assets/icons.svg#fsa-icon-play"></use></svg>
-          </div>
-          <div>
-            <div style="font-size: 0.78rem; color: #60a5fa; font-weight: 700;" id="resumeTrackLabel">المسار الموصى به: الأساسيات</div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: #fff;" id="resumeLessonTitle">How the Web Works: HTTP/3 &amp; DNS Lifecycle</div>
-          </div>
-        </div>
-
-        <a href="learn/foundations/how-web-works.html" class="fsa-btn fsa-btn--primary fsa-btn--sm" id="resumeActionBtn">
-          <span>ابدأ الآن &larr;</span>
-        </a>
-      </div>
-
-      <!-- 8 Tracks Matrix Grid (All 106 Lessons) -->
-      <div class="tracks-container" id="tracksGrid">
-        ${allTracksHtml}
-      </div>
-
-      <!-- Footer Section -->
-      <footer class="footer-note">
-        <p>© 2026 FullStack Academy | 106 دروس تفاعلية تغطي MERN &amp; PostgreSQL بالكامل | صُممت كمعيار مفتوح ومستقل للتعليم البرمجي عالي الجودة باللغة العربية</p>
-      </footer>
-
     </div>
   </section>
+
+  <!-- ==================== STICKY TRACK QUICK JUMP ==================== -->
+  <nav class="sticky-track-nav" aria-label="Quick Jump to Track">
+    <div class="sticky-track-nav-inner">
+      ${trackNavPillsHtml}
+      <a href="#capstones" class="track-nav-pill" style="--pill-color: #10B981;">
+        <span class="pill-dot"></span>
+        <span class="pill-title">مشاريع التخرج</span>
+        <span class="pill-count">4</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ==================== MAIN 8 TRACKS CONTAINER ==================== -->
+  <main class="ch-main-container" id="tracksContainer">
+    ${allTrackSectionsHtml}
+
+    <!-- Capstones Section -->
+    <section class="ch-capstones-section" id="capstones">
+      <div class="ch-track-header" style="border: none; margin-bottom: 24px;">
+        <div class="ch-track-meta-top">
+          <span class="ch-track-num-badge" style="background: #10B981;">CAPSTONE GATES</span>
+          <span class="ch-track-stat-pill">💼 4 مشاريع كبرى</span>
+          <span class="ch-track-stat-pill">🚀 Portfolio Ready</span>
+        </div>
+        <h2 class="ch-track-title">مشاريع التخرج والتطبيقات الإنتاجية الكاملة</h2>
+        <p class="ch-track-desc">تطبيقات عملية متكاملة لترسيخ ما تعلمته في جميع المسارات مع قوائم مهام تفاعلية تُحفظ محلياً.</p>
+      </div>
+
+      <div class="ch-lessons-grid">
+        <a href="projects/kanban-board.html" class="ch-lesson-card" style="border-inline-start: 4px solid var(--track-react);">
+          <div class="ch-lesson-card__header">
+            <span class="ch-lesson-order">PROJECT 01</span>
+            <span class="ch-badge ch-badge--level">React 19 Gate</span>
+          </div>
+          <div class="ch-lesson-card__body">
+            <div class="ch-lesson-icon"><svg><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+            <div class="ch-lesson-content">
+              <h3 class="ch-lesson-title">React Kanban Task Board</h3>
+              <p class="ch-lesson-desc">تطبيق كانبان بالسحب والإفلات وحفظ الحالة محلياً وفلاتر بحث سريعة.</p>
+            </div>
+          </div>
+          <div class="ch-lesson-card__footer">
+            <span class="ch-lesson-action">استعراض المشروع &larr;</span>
+          </div>
+        </a>
+
+        <a href="projects/rest-api.html" class="ch-lesson-card" style="border-inline-start: 4px solid var(--track-express);">
+          <div class="ch-lesson-card__header">
+            <span class="ch-lesson-order">PROJECT 02</span>
+            <span class="ch-badge ch-badge--level">Backend Gate</span>
+          </div>
+          <div class="ch-lesson-card__body">
+            <div class="ch-lesson-icon"><svg><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+            <div class="ch-lesson-content">
+              <h3 class="ch-lesson-title">Production Auth &amp; REST API</h3>
+              <p class="ch-lesson-desc">خادم Express 5 + PostgreSQL + Prisma يدعم JWTs و RBAC ومكافحة الهجمات.</p>
+            </div>
+          </div>
+          <div class="ch-lesson-card__footer">
+            <span class="ch-lesson-action">استعراض المشروع &larr;</span>
+          </div>
+        </a>
+
+        <a href="projects/ecommerce-platform.html" class="ch-lesson-card" style="border-inline-start: 4px solid var(--track-arch);">
+          <div class="ch-lesson-card__header">
+            <span class="ch-lesson-order">PROJECT 03</span>
+            <span class="ch-badge ch-badge--level">Full-Stack Capstone</span>
+          </div>
+          <div class="ch-lesson-card__body">
+            <div class="ch-lesson-icon"><svg><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+            <div class="ch-lesson-content">
+              <h3 class="ch-lesson-title">MERN Production E-Commerce</h3>
+              <p class="ch-lesson-desc">متجر إلكتروني شامل مع كتالوج سريع وسلة شراء تفاعلية ودفع Stripe وكاش Redis.</p>
+            </div>
+          </div>
+          <div class="ch-lesson-card__footer">
+            <span class="ch-lesson-action">استعراض المشروع &larr;</span>
+          </div>
+        </a>
+
+        <a href="projects/realtime-chat.html" class="ch-lesson-card" style="border-inline-start: 4px solid var(--track-node);">
+          <div class="ch-lesson-card__header">
+            <span class="ch-lesson-order">PROJECT 04</span>
+            <span class="ch-badge ch-badge--level">Real-Time Gate</span>
+          </div>
+          <div class="ch-lesson-card__body">
+            <div class="ch-lesson-icon"><svg><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+            <div class="ch-lesson-content">
+              <h3 class="ch-lesson-title">Distributed WebSockets Chat</h3>
+              <p class="ch-lesson-desc">خادم محادثة موزع يدعم غرف الدردشة والتزامن عبر قنوات Redis Pub/Sub.</p>
+            </div>
+          </div>
+          <div class="ch-lesson-card__footer">
+            <span class="ch-lesson-action">استعراض المشروع &larr;</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer Note -->
+    <footer class="ch-footer">
+      <p>© 2026 FullStack Academy | صُممت كمعيار مفتوح ومستقل للتعليم البرمجي عالي الجودة باللغة العربية</p>
+      <p style="font-size: 0.85rem; color: #475569; margin-top: 6px;">106 دروس متكاملة · 8 مسارات متخصصة · 100% أوفلاين بدون خوادم خارجية</p>
+    </footer>
+  </main>
 
   <!-- Zero-Build Shared Scripts -->
   <script src="js/fsa-namespace.js"></script>
@@ -959,7 +1124,7 @@ const fullIndexHtml = `<!DOCTYPE html>
   <script src="js/app.js"></script>
 
   <script>
-    // =================== FLOATING PARTICLES ===================
+    // =================== FLOATING CANVAS PARTICLES ===================
     const canvas = document.getElementById('particles');
     const ctx = canvas ? canvas.getContext('2d') : null;
     let particles = [];
@@ -1021,7 +1186,7 @@ const fullIndexHtml = `<!DOCTYPE html>
             if (dist < 130) {
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.lineTo(particles[i].x, particles[j].y);
               ctx.strokeStyle = \`rgba(100, 140, 255, \${0.06 * (1 - dist / 130)})\`;
               ctx.lineWidth = 0.5;
               ctx.stroke();
@@ -1039,69 +1204,31 @@ const fullIndexHtml = `<!DOCTYPE html>
       animate();
     }
 
-    // =================== SCROLL REVEAL ===================
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          const card = entry.target;
-          const delay = Array.from(document.querySelectorAll('.track-card')).indexOf(card) * 90;
-          setTimeout(() => card.classList.add('visible'), delay);
-          observer.unobserve(card);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-
-    document.querySelectorAll('.track-card').forEach(card => observer.observe(card));
-
-    // =================== LIVE SEARCH FILTER ===================
+    // =================== INSTANT SEARCH FILTER ===================
     const filterInput = document.getElementById('curriculumLiveFilter');
     if (filterInput) {
       filterInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
-        const lessonItems = document.querySelectorAll('.lesson-item');
-        const trackCards = document.querySelectorAll('.track-card');
+        const lessonCards = document.querySelectorAll('.ch-lesson-card');
+        const trackSections = document.querySelectorAll('.ch-track-section');
 
-        lessonItems.forEach(item => {
-          const text = (item.innerText || '').toLowerCase();
-          const href = (item.getAttribute('href') || '').toLowerCase();
+        lessonCards.forEach(card => {
+          const text = (card.innerText || '').toLowerCase();
+          const href = (card.getAttribute('href') || '').toLowerCase();
           const matches = !query || text.includes(query) || href.includes(query);
-          item.style.display = matches ? 'flex' : 'none';
+          card.style.display = matches ? 'flex' : 'none';
         });
 
-        // Hide track card if zero lessons match
-        trackCards.forEach(card => {
-          const visibleLessons = card.querySelectorAll('.lesson-item:not([style*="display: none"])');
-          card.style.display = (visibleLessons.length > 0) ? 'flex' : 'none';
+        trackSections.forEach(section => {
+          const visibleLessons = section.querySelectorAll('.ch-lesson-card:not([style*="display: none"])');
+          section.style.display = (visibleLessons.length > 0) ? 'block' : 'none';
         });
       });
     }
-
-    // =================== DYNAMIC RESUME FROM LOCALSTORAGE ===================
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.FSA && window.FSA.progress && window.FSA.curriculum) {
-        const store = window.FSA.progress.getStore();
-        const curriculum = window.FSA.curriculum;
-        
-        const completedCount = Object.keys(store.lessons || {}).filter(k => store.lessons[k].status === 'completed').length;
-        const nextLesson = curriculum.flatList.find(l => !store.lessons[l.slug] || store.lessons[l.slug].status !== 'completed');
-
-        if (nextLesson && completedCount > 0) {
-          const trackLabel = document.getElementById('resumeTrackLabel');
-          const title = document.getElementById('resumeLessonTitle');
-          const btn = document.getElementById('resumeActionBtn');
-
-          if (trackLabel) trackLabel.textContent = \`متابعة الدراسة (\${completedCount} من 106 دروس مكتملة)\`;
-          if (title) title.textContent = nextLesson.title;
-          if (btn) {
-            btn.href = nextLesson.url;
-            btn.querySelector('span').textContent = 'أكمل الدرس ←';
-          }
-        }
-      }
-    });
   </script>
 </body>
-</html>`;
+</html>
+`;
 
 fs.writeFileSync(path.join(rootDir, 'index.html'), fullIndexHtml, 'utf-8');
-console.log('✅ Generated index.html with all 106 lessons successfully!');
+console.log('✅ Generated ultra-premium index.html with all 106 lessons successfully!');
