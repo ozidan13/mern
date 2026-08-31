@@ -7,20 +7,55 @@
   <meta name="fsa-lesson" content="process-env">
   <meta name="fsa-level" content="2">
   <meta name="fsa-order" content="8">
-  <meta name="fsa-title" content="The Process Object, Environment Variables, CLI Args & OS Signals">
-  <meta name="fsa-est-minutes" content="22">
-  <meta name="fsa-teaches-version" content="Node.js 24">
-  <meta name="fsa-pattern-label" content="Process Architecture">
+  <meta name="fsa-title" content="Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="Node.js 24 (.env native support)">
+  <meta name="fsa-pattern-label" content="Process Lifecycle & Graceful Shutdown">
   <meta name="fsa-root" content="../../">
 
-  <title>The Process Object, Environment Variables, CLI Args & OS Signals · CodeHub Interactive</title>
+  <title>Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM) · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #84CC16;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">Node.js · محرك الباك إند عالي الأداء</div>
+          <div class="fsa-sidebar__title">Node.js 24 · محرك الباك إند عالي الأداء</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #84CC16;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-nodejs" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,276 +97,368 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">nodejs</a>
+            <a href="../../index.html#track-nodejs">nodejs</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">process-env</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">NODEJS</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #84CC16; color: #000; font-weight: 800;">NODEJS</span>
             <span class="fsa-badge fsa-badge--info">Level 2</span>
-            <span class="fsa-badge fsa-badge--success">Node.js 24</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 22 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">Node.js 24 (.env native support)</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">The Process Object, Environment Variables, CLI Args & OS Signals</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">كائن Process وإدارة متغيرات البيئة وإشارات نظام التشغيل في Node.js</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">معمارية كائن Process، متغيرات البيئة (.env) والإيقاف النظيف للخادم (Graceful Shutdown)</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>قراءة وتوثيق متغيرات البيئة بأمان واستخدام ميزة --env-file المدمجة في Node.js 20+.</li>
-              <li>تحليل مدخلات سطر الأوامر باستخدام util.parseArgs.</li>
-              <li>تنفيذ الإيقاف الهادئ (Graceful Shutdown) عند استلام إشارات SIGTERM و SIGINT.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #84CC16; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم دورة حياة كائن process والتحكم في مؤشرات الأداء واستهلاك الذاكرة process.memoryUsage().</li>
+              <li>استخدام دعم ملفات .env الأصلي في Node.js 20+ و 24 دون الحاجة لمكتبات خارجية بـ --env-file.</li>
+              <li>تطبيق نمط الإيقاف النظيف والآمن (Graceful Shutdown) عند استقبال إشارات SIGTERM و SIGINT.</li>
+              <li>إدارة أخطاء uncaughtException و unhandledRejection ومنع انهيار الخوادم العشوائي.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              كائن <code dir="ltr">process</code> هو جسر التواصل المباشر بين تطبيقك ونظام التشغيل المضيف. من خلاله تقرأ متغيرات البيئة (<code dir="ltr">process.env</code>) وتستقبل مدخلات الأوامر (<code dir="ltr">process.argv</code>) وتلتقط إشارات الإيقاف (<code dir="ltr">SIGTERM</code>, <code dir="ltr">SIGINT</code>) لتنفيذ الإيقاف الهادئ النظيف (Graceful Shutdown) دون قطع اتصالات المستخدمين الحالية.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في بيئات السحاب الحديثة وحاويات Docker و Kubernetes، يتم تشغيل وإيقاف خوادم Node.js باستمرار استجابة لأحمال المستخدمين (Auto-scaling & Rolling Updates).
+      عندما يقرر Kubernetes إيقاف الـ Container، يقوم بإرسال إشارة <code dir="ltr">SIGTERM</code> للخادم ويمنحه مهلة 30 ثانية لإنهاء عمله.
+      المبرمج المبتدئ لا يكتب أي معالج لهذه الإشارات؛ فيتوقف الخادم فجأة في منتصف كتابة معاملة بنكية في قاعدة البيانات أو يقطع اتصال عميل يرفع ملفاً مهماً!
+      الحل المعماري الاحترافي هو تطبيق **الإيقاف النظيف (Graceful Shutdown)**:
+      1. إيقاف استقبال أي اتصالات جديدة على خادم HTTP.
+      2. إكمال ومعالجة جميع الطلبات الجارية الحالية للمستخدمين المتصلين بالفعل.
+      3. إغلاق مجمعات الاتصال بقواعد البيانات (Database Pools) والـ WebSockets بأمان.
+      4. إنهاء العملية بـ <code dir="ltr">process.exit(0)</code> بعد تفريغ كل الموارد.
+      في هذا الدرس، هنتعلم إزاي نبني معمارية دورة حياة متينة للخادم، ونفهم ميزة قراءة ملفات <code dir="ltr">.env</code> الأصلية المدمجة في Node.js 24.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التحميل الأصلي لملفات .env</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                تشغيل node --env-file=.env دون الحاجة لمكتبات خارجية كـ dotenv.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التحكم في متغيرات البيئة الأصلية (Native --env-file)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تشغيل التطبيق بـ node --env-file=.env app.js لقراءة الإعدادات في process.env بدون تثبيت مكتبة dotenv.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">تحليل المعاملات (util.parseArgs)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                استخراج الأعلام (Flags مثل --port=8080) تلقائياً بأنواعها الصحيحة.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مراقبة الذاكرة الحية (process.memoryUsage())</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فحص مؤشرات heapUsed و heapTotal و rss و external لاكتشاف تسريبات الذاكرة قبل حدوث الانهيار.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التقاط إشارات الإيقاف</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                الاستماع لـ process.on("SIGTERM") لإغلاق اتصالات قاعدة البيانات والخوادم بهدوء.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الاستماع لإشارات نظام التشغيل (SIGTERM & SIGINT)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الاعتراض المنظم لأوامر الإيقاف من نظام التشغيل (مثل Ctrl+C أو أوامر Docker Stop).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تنفيذ بروتوكول الـ Graceful Shutdown</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إغلاق الخادم server.close()، إغلاق اتصالات الـ Database، وتعيين مؤقت إجباري Force Timeout لمنع التعليق.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إدارة مخارج العملية بـ process.exit Codes</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام كود 0 للإنهاء الناجح النظيف، واستخدام كود 1 عند حدوث أعطال حرجة غير قابلة للإصلاح.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="process-envStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="The Process Object, Environment Variables, CLI Args & OS Signals Architecture Flow Diagram">
-              <title>The Process Object, Environment Variables, CLI Args & OS Signals Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for The Process Object, Environment Variables, CLI Args & OS Signals</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM) Architecture Flow Diagram">
+              <title>Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM) Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-process-env" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#84CC16" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#84CC16" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Process Architecture</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#84CC16" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-process-env)" stroke="#84CC16" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#84CC16" font-size="14" font-weight="800">Process Lifecycle & Graceful Shutdown</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="process-envPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Node.js 24 Runtime & API Tester</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #84CC16; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Graceful Shutdown Engine Simulation
-function initiateGracefulShutdown(signal) {
-  console.log(`🛑 Received signal [${signal}]. Starting graceful shutdown...`);
-  console.log("1. Stopping accepting new HTTP connections...");
-  console.log("2. Waiting for in-flight requests to complete...");
-  console.log("3. Closing PostgreSQL pool & Redis client...");
-  console.log("✅ Cleanup complete. Process exited safely with code 0.");
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي معمارية الإيقاف النظيف للخادم (Graceful Shutdown)
+class MockWebServer {
+  constructor() { this.activeRequests = 2; this.isAcceptingConnections = true; }
+  
+  close(callback) {
+    this.isAcceptingConnections = false;
+    console.log("🛑 Stopped accepting new connections. Draining active requests...");
+    setTimeout(() => {
+      this.activeRequests = 0;
+      console.log("✅ All active requests drained successfully.");
+      callback();
+    }, 150);
+  }
 }
-initiateGracefulShutdown("SIGTERM");</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+
+const server = new MockWebServer();
+
+function handleGracefulShutdown(signal) {
+  console.log(`Received signal [${signal}]. Starting Graceful Shutdown...`);
+  
+  server.close(() => {
+    console.log("📦 Closing Database Connection Pool...");
+    console.log("⚡ Releasing Redis Caches...");
+    console.log("👋 Process terminated cleanly with code (0).");
+  });
+}
+
+handleGracefulShutdown("SIGTERM");</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ما هو الفرق بين إشارة SIGINT وإشارة SIGTERM في إدارة عمليات Node.js؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">إشارة SIGINT تُرسل من لوحة المفاتيح عند ضغط Ctrl+C، بينما SIGTERM تُرسل من مديري العمليات (مثل Docker و Kubernetes و PM2) لمطالبة الخادم بالإغلاق المنظم.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يعتبر الاستمرار في تشغيل خادم Node.js بعد التقاط حدث uncaughtException أمراً خطيراً جداً، ولماذا يجب إنهاء العملية؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #84CC16;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">عند وقوع uncaughtException، يكون محرك جافاسكريبت في حالة غير مضمونة وغير مستقرة في الذاكرة (Corrupted Memory State): ربما علقت أقفال في قواعد البيانات، أو انقطعت دوال في منتصف التنفيذ. محاولة إبقاء السيرفر حياً ستؤدي لسلوكيات عشوائية خاطئة للمستخدمين الآخرين. القاعدة الذهبية هي: تسجيل الخطأ فوراً، ثم تنفيذ إيقاف نظيف سريع، وإنهاء العملية ليقوم مدير العمليات (مثل PM2 أو Kubernetes) بإنشاء نسخة جديدة نظيفة تماماً.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: process.on("SIGTERM", async () =&gt; {          // الاستماع لإشارة الإيقاف من Docker
-2:   await server.close();                         // إيقاف قبول طلبات جديدة
-3:   await db.disconnect();                        // إغلاق قاعدة البيانات بأمان
-4:   process.exit(0);                              // خروج نظيف
-5: });                                             // نهاية المعالج</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">import http from "node:http";                       </span> <span style="color: #64748B;">// وحدة خادم HTTP</span>
+<span style="color: #F8FAFC;">import { pool } from "./db.js";                     </span> <span style="color: #64748B;">// مجمع اتصالات قاعدة البيانات</span>
+<span style="color: #F8FAFC;">const server = http.createServer(app);              </span> <span style="color: #64748B;">// إنشاء الخادم</span>
+<span style="color: #F8FAFC;">function shutdown(signal) {                         </span> <span style="color: #64748B;">// معالج الإيقاف النظيف</span>
+<span style="color: #F8FAFC;">  console.log(`Received ${signal}, initiating graceful shutdown...`);</span> <span style="color: #64748B;">// تسجيل الإشارة</span>
+<span style="color: #F8FAFC;">  server.close(async () =&gt; {                     </span> <span style="color: #64748B;">// إيقاف استقبال طلبات جديدة وتصريف الطلبات الحالية</span>
+<span style="color: #F8FAFC;">    await pool.end(); // إغلاق اتصالات قاعدة البيانات</span> <span style="color: #64748B;">// تحرير اتصالات الداتابيز</span>
+<span style="color: #F8FAFC;">    process.exit(0); // الخروج النظيف               </span> <span style="color: #64748B;">// إنهاء العملية بنجاح</span>
+<span style="color: #F8FAFC;">  });                                               </span> <span style="color: #64748B;">// نهاية إغلاق السيرفر</span>
+<span style="color: #F8FAFC;">  setTimeout(() =&gt; process.exit(1), 10000).unref(); // Force kill after 10s</span> <span style="color: #64748B;">// صمام أمان إجباري</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الدالة</span>
+<span style="color: #F8FAFC;">process.on("SIGTERM", () =&gt; shutdown("SIGTERM"));</span> <span style="color: #64748B;">// الاستماع لأوامر Docker / Kubernetes</span>
+<span style="color: #F8FAFC;">process.on("SIGINT", () =&gt; shutdown("SIGINT"));  </span> <span style="color: #64748B;">// الاستماع لـ Ctrl+C</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>process.exit(1); /* إنهاء فوري يقطع طلبات المستخدمين الجارية ويفسد المعاملات */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: تجاهل أخطاء uncaughtException ومحاولة إبقاء السيرفر حياً
+process.on("uncaughtException", (err) =&gt; {
+  console.log("Error happened but keeping server alive:", err); // كارثة: الذاكرة تالفة وقد تسرب بيانات العملاء لبعضهم!
+});</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>server.close(() =&gt; process.exit(0)); /* إنهاء هادئ بعد اكتمال الطلبات */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: تسجيل الخطأ والخروج الفوري ليتم إعادة التشغيل النظيف
+process.on("uncaughtException", (err) =&gt; {
+  logger.fatal("Uncaught Exception: Terminating process immediately", err);
+  process.exit(1); // إنهاء فوري والاعتماد على PM2 / Kubernetes لإعادة التشغيل
+});</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> الخروج الفوري بـ process.exit دون إغلاق الخادم يقطع اتصالات الدفع وقواعد البيانات في منتصفها.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> تجاهل الأعطال غير المعالجة يبقي خادم الـ Node.js في حالة ذاكرة فاسدة وغير مستقرة، بينما الإيقاف وإعادة التشغيل يضمن استقرار المنظومة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="process-envCheckpoint" data-quiz-id="process-env-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Which built-in Node.js 20+ flag allows loading .env files without any npm dependencies?",
-    "qAr": "أي خيار مدمج في Node.js 20+ يتيح تحميل ملفات .env بدون أي مكتبات npm خارجية؟",
+    "q": "Which Node.js flag enables native reading of environment variables from a .env file without external packages in Node 20+ & 24?",
+    "qAr": "أي خيار في Node.js 20+ و 24 يفعل القراءة الأصلية لمتغيرات البيئة من ملف .env بدون مكاتب خارجية؟",
     "options": [
-      "--dotenv",
       "--env-file=.env",
+      "--dotenv",
       "--load-env",
-      "--config"
+      "--config-env"
     ],
-    "correct": 1,
-    "why": "Node.js introduced `--env-file` to natively parse configuration files into `process.env`.",
-    "whyAr": "أضافت Node.js خيار `--env-file` لتحميل الإعدادات مباشرة في `process.env`."
+    "correct": 0,
+    "why": "Node.js introduced native --env-file flag to load environment variables into process.env at launch.",
+    "whyAr": "أضافت Node.js خيار --env-file الرسمي لقراءة متغيرات البيئة وتحميلها في process.env تلقائياً عند الإقلاع."
+  },
+  {
+    "q": "What is the purpose of the Graceful Shutdown pattern in production backend systems?",
+    "qAr": "ما هو الغرض المعماري الأساسي لنمط الإيقاف النظيف (Graceful Shutdown) في الخوادم الإنتاجية؟",
+    "options": [
+      "Allows in-flight HTTP requests to complete, closes DB connections safely, and releases resources before process termination.",
+      "Deletes all log files to save disk space.",
+      "Restarts the server every hour automatically.",
+      "Backs up the database to S3."
+    ],
+    "correct": 0,
+    "why": "Graceful shutdown stops receiving new traffic while allowing pending requests to cleanly finish, preventing dropped connections.",
+    "whyAr": "يوقف استقبال الزيارات الجديدة ويسمح للطلبات الجارية باكتمال معالجتها ويغلق قواعد البيانات لمنع تلف البيانات."
+  },
+  {
+    "q": "Which operating system signal is standardly sent by Kubernetes/Docker when terminating a container?",
+    "qAr": "أي إشارة من نظام التشغيل يتم إرسالها قياسياً بواسطة Kubernetes أو Docker عند إيقاف الـ Container؟",
+    "options": [
+      "SIGTERM (Signal Terminate)",
+      "SIGKILL",
+      "SIGHUP",
+      "SIGSTOP"
+    ],
+    "correct": 0,
+    "why": "SIGTERM is the standard termination signal granting the application a grace period to shut down before a forced SIGKILL.",
+    "whyAr": "إشارة SIGTERM هي الإشارة القياسية المهذبة التي تمنح التطبيق مهلة زمنية لتنفيذ الإيقاف النظيف قبل استخدام SIGKILL الإجباري."
+  },
+  {
+    "q": "What does process.memoryUsage().heapUsed represent in Node.js?",
+    "qAr": "ماذا يمثل مؤشر heapUsed في دالة process.memoryUsage()؟",
+    "options": [
+      "The actual amount of memory currently occupied by JavaScript objects, strings, and closures in the V8 heap.",
+      "Total RAM installed on the server machine.",
+      "Size of the node_modules folder.",
+      "Total disk space available."
+    ],
+    "correct": 0,
+    "why": "heapUsed reflects the real-time memory currently used by active JavaScript objects in the V8 engine heap.",
+    "whyAr": "يمثل الحجم الفعلي للذاكرة المستهلكة حالياً بواسطة كائنات ونصوص ومتغيرات جافاسكريبت داخل V8 Heap."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Process Architecture</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #84CC16; font-size: 1.05rem; margin-bottom: 4px;">Process Lifecycle & Graceful Shutdown</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">Node.js 24</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Node.js 24 (.env native support)</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): كيف تكتشف استهلاك الذاكرة (Memory Usage) في كائن process لمنع انهيار الـ Heap؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">نستدعي دالة `process.memoryUsage()` التي تُرجع إحصائيات دقيقة: `heapUsed` (الذاكرة المستخدمة فعلياً)، `heapTotal` (إجمالي مساحة الـ Heap المحجوزة)، و `rss` (Resident Set Size الذاكرة الإجمالية المحجوزة من نظام التشغيل).</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحمي خادم Node.js من هجمات ReDoS (Regular Expression Denial of Service) التي تجمد الخيط الرئيسي وتمنعه من معالجة باقي الطلبات؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">هجمات ReDoS تستغل الـ Catastrophic Backtracking في محركات الـ Regex عند تمرير نصوص معقدة إلى تعبيرات غير محكمة. لحماية الخادم: 1. فحص التعبيرات بأدوات مثل safe-regex لتجنب التكرارات المتداخلة (a+)+. 2. استخدام مكتبة re2 التي تعتمد على محرك Google C++ الخطي O(n) وتضمن عدم حدوث Backtracking نهائياً. 3. تفويض معالجة النصوص الثقيلة إلى Worker Threads أو استخدام timeout صريح في عمليات المطابقة.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-nodejs" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #84CC16; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

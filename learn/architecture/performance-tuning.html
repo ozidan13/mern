@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="architecture">
   <meta name="fsa-lesson" content="performance-tuning">
   <meta name="fsa-level" content="3">
-  <meta name="fsa-order" content="12">
-  <meta name="fsa-title" content="Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits">
-  <meta name="fsa-est-minutes" content="26">
-  <meta name="fsa-teaches-version" content="Performance Standard">
-  <meta name="fsa-pattern-label" content="Performance Engineering">
+  <meta name="fsa-order" content="17">
+  <meta name="fsa-title" content="High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="Node.js 24 Performance Core">
+  <meta name="fsa-pattern-label" content="V8 Optimization & Low-Latency Systems">
   <meta name="fsa-root" content="../../">
 
-  <title>Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits · CodeHub Interactive</title>
+  <title>High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #C084FC;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Architecture & System Design · العمارة وتصميم النظم الكبرى</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #C084FC;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-architecture" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,279 +97,357 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">architecture</a>
+            <a href="../../index.html#track-architecture">architecture</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">performance-tuning</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">ARCHITECTURE</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #C084FC; color: #000; font-weight: 800;">ARCHITECTURE</span>
             <span class="fsa-badge fsa-badge--info">Level 3</span>
-            <span class="fsa-badge fsa-badge--success">Performance Standard</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">Node.js 24 Performance Core</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">تحسين الأداء الشامل: تحليل ذاكرة V8 Heap، فحص مسار الرسم الحرج واختناقات الشبكة</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">تحسين أداء الباك إند عالي الأحمال: تحسينات محرك V8، حلقة Libuv وكشف تسريبات الذاكرة</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>تشخيص تسريبات الذاكرة في Node.js باستخدام v8.writeHeapSnapshot وأدوات DevTools.</li>
-              <li>تحسين مسار العرض الحرج (Critical Rendering Path) لتحقيق أسرع Web Vitals (LCP, INP, CLS).</li>
-              <li>استخدام أدوات الحزم (Bundle Visualizers) لتقليص حجم كود الـ JavaScript المرسل للعميل بنسبة 60%.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #C084FC; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم كيفية قيام محرك V8 بترجمة وتحسين كود جافاسكريبت (Ignition Interpreter & Turbofan JIT Compiler).</li>
+              <li>تشريح مراحل ومراحل خيوط حلقة الأحداث (Libuv Event Loop Phases: Timers, Poll, Check, Close).</li>
+              <li>تحسين كود جافاسكريبت ليكون متوافقاً مع تحسينات V8 (Monomorphic vs Polymorphic Inline Caching).</li>
+              <li>تشخيص وعلاج اختناقات الذاكرة وظاهرة الـ Garbage Collection Pauses (Stop-The-World GC).</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              تحسين الأداء مش تخمين عشوائي؛ هو علم قياس وتحليل دقيق (Measurement & Profiling). عندما تلاحظ بطء الموقع، كيف تحدد السبب الحقيقي؟ هل هو تسريب في الـ V8 Heap؟ هل هو حجب للـ Main Thread بسبب كود متزامن ثقيل؟ هل هو حجم الـ JavaScript Bundles في الواجهة؟ أم هو استعلام SQL يفتقر للفهارس؟ في هذا الدرس سنتعلم أدوات التشخيص المتقدمة وكيفية فك الاختناقات في كل طبقة من طبقات الـ Full-Stack.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في خوادم معالجة ملايين المعاملات في الثانية (مثل خوادم الدفع الإلكتروني أو محركات الإعلانات في الوقت الحقيقي RTB Ad Exchanges)، كل ميكروثانية (Microsecond) فارقة!
+      المطور العادي يكتب كود جافاسكريبت دون أن يدري كيف يتعامل معه محرك **Google V8**:
+      - هل تعلم أن تمرير كائنات ذات أشكال مختلفة لنفس الدالة يكسر ميزة **Monomorphic Inline Caching** في V8، ويجبر المحرك على إسقاط الكود المحسن (Deoptimization) وتشغيله بسرعة بطيئة بـ 10 أضعاف؟
+      - هل تعلم أن إنشاء ملايين الكائنات المؤقتة داخل الحلقات يملأ مساحة **V8 Young Generation (Scavenge)** ويجبر مجمع القمامة (Garbage Collector) على إيقاف خيط الخادم بالكامل في وقفات دورية (**Stop-The-World GC Pauses**)?
+      في هذا الدرس العميق، هنغوص في أعماق محرك V8 ومكتبة Libuv، وهنتعلم القواعد الصارمة لكتابة كود فائق السرعة يستفيد من أقصى قدرات العتاد والمعالج.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">تحليل الذاكرة بـ Heap Snapshots</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                مقارنة الكائنات المحتجزة (Retained Objects) في الذاكرة لكشف الـ Closures والمستمعين غير المحذوفين.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مراحل محرك V8 (Ignition & Turbofan)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                يقوم Ignition بتوليد Bytecode سريع، وتقوم Turbofan بمراقبة الدوال الساخنة (Hot Functions) وتحويلها إلى لغة الآلة المباشرة (Machine Code).
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">تحسين مؤشر INP (Interaction to Next Paint)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                تفكيك المهام الطويلة (Long Tasks > 50ms) في الفرونت إند عبر setTimeout و requestIdleCallback.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الأشكال الخفية (Hidden Classes / Shapes)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                يقوم V8 بإنشاء خرائط بنية داخلية للكائنات؛ وتثبيت ترتيب تهيئة الخصائص يضمن بقاء الكود في النمط الأحادي المحسن Monomorphic.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الضغط والـ Tree-Shaking</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                تفعيل ضغط Brotli/Gzip وحذف الأكواد الميتة وتقسيم الحزم عبر Dynamic Imports.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إدارة الذاكرة ومجمع القمامة (Scavenge vs Mark-Sweep)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تنظيف كائنات الـ Young Generation سريعة الزوال بـ Scavenger، وتنظيف كائنات الـ Old Generation بـ Major GC التزايدي.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تشريح خيوط Libuv و UV_THREADPOOL_SIZE</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                ضبط حجم خيوط libuv الافتراضية (4 خيوط) بـ UV_THREADPOOL_SIZE=16 لتحسين أداء عمليات التشفير والملفات الثقيلة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تجنب تخصيص الذاكرة الزائدة بـ Object Pools</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إعادة استخدام كائنات الذاكرة والمصفوفات لتفادي إرهاق مجمع القمامة في المسارات فائقة التردد.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="performance-tuningStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits Architecture Flow Diagram">
-              <title>Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling Architecture Flow Diagram">
+              <title>High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-performance-tuning" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#C084FC" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#C084FC" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Performance Engineering</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#C084FC" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-performance-tuning)" stroke="#C084FC" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#C084FC" font-size="14" font-weight="800">V8 Optimization & Low-Latency Systems</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="performance-tuningPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Distributed System Architecture Simulator</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #C084FC; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Node.js Performance Timeline Measurement Simulation
-const { performance } = require("node:perf_hooks");
-
-function measureOperation(name, fn) {
-  const t0 = performance.now();
-  fn();
-  const t1 = performance.now();
-  console.log(`⏱️ Operation [${name}] took: ${(t1 - t0).toFixed(3)}ms`);
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي تأثير الأشكال الخفية (Hidden Classes) على تحسينات V8
+class FastUser {
+  constructor(id, name) {
+    this.id = id;
+    this.name = name; // دائماً نفس الترتيب ونفس البنية -> Monomorphic
+  }
 }
 
-measureOperation("Array Search", () => {
-  const arr = new Array(100000).fill(0).map((_, i) => i);
-  arr.includes(99999);
-});</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+function slowObjectCreation(id, name, randomize) {
+  const obj = {};
+  if (randomize) {
+    obj.name = name;
+    obj.id = id; // تغيير ترتيب الحقول يكسر الـ Hidden Class في V8!
+  } else {
+    obj.id = id;
+    obj.name = name;
+  }
+  return obj;
+}
+
+console.log("V8 Monomorphic Fast Object:", new FastUser("u1", "Sarah"));
+console.log("V8 Deoptimized Polymorphic Object:", slowObjectCreation("u2", "Ahmed", true));</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ما هو مؤشر INP (Interaction to Next Paint) الذي استبدل مؤشر FID في معايير جوجل لسرعة الويب؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">مؤشر INP يقيس زمن استجابة الصفحة لجميع تفاعلات المستخدم طوال مدة زيارته للموقع (النقرات وضغطات المفاتيح) والتأكد من عدم تجمد الواجهة، والحد المستهدف للإنتاج هو أقل من 200 ميلي ثانية.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يعتبر استخدام delete obj.prop نمطاً بطيئاً جداً في V8 ويجب استبداله بـ obj.prop = undefined؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #C084FC;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">استخدام عامل delete يغير البنية الهيكلية للكائن في الذاكرة بشكل جذري، مما يجبر V8 على تغيير الـ Hidden Class الخاصة به وتحويل الكائن إلى وضع القاموس البطيء (Slow Dictionary / Hash Mode)، مما يلغي كافة تحسينات Turbofan في الوصول السريع للخصائص. استبدال القيمة بـ obj.prop = undefined أو null يحافظ على نفس الـ Shape الثابت ويضمن استمرار التحسينات فائقة السرعة.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: import v8 from "node:v8";                       // مكتبة محرك V8
-2: const fileName = v8.writeHeapSnapshot();        // التقاط لقطة ذاكرة حية لتحليلها في Chrome DevTools
-3: console.log("Heap snapshot generated at:", fileName); // مسار الملف</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">// Optimized High-Performance Buffer Allocation in Node.js</span> <span style="color: #64748B;">// كود فائق السرعة</span>
+<span style="color: #F8FAFC;">import { Buffer } from "node:buffer";               </span> <span style="color: #64748B;">// وحدة الـ Buffer الأصلية</span>
+<span style="color: #F8FAFC;">export function processNetworkChunks(size: number) {</span> <span style="color: #64748B;">// دالة معالجة سريعة</span>
+<span style="color: #F8FAFC;">  // Buffer.allocUnsafe يخصص الذاكرة فوراً في الـ RAM دون ملئها بأصفار</span> <span style="color: #64748B;">// تخصيص فوري بدون تكلفة التصفير</span>
+<span style="color: #F8FAFC;">  const buf = Buffer.allocUnsafe(size); // 10x faster than Buffer.alloc</span> <span style="color: #64748B;">// أسرع بـ 10 أضعاف</span>
+<span style="color: #F8FAFC;">  // يجب كتابة البيانات فوراً لمنع تسريب بايتات قديمة من الذاكرة</span> <span style="color: #64748B;">// مراعاة الأمان</span>
+<span style="color: #F8FAFC;">  buf.fill(0, 0, size);                             </span> <span style="color: #64748B;">// ملء آمن</span>
+<span style="color: #F8FAFC;">  return buf;                                       </span> <span style="color: #64748B;">// إرجاع الـ Buffer</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الدالة</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>تخمين أسباب البطء وتعديل الكود عشوائياً دون قياسات فعلية (Profiling)!</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ مسبب لكسر تحسينات V8 (Deoptimization): إضافة خصائص ديناميكية عشوائية
+function createUser(name) {
+  const u = {};
+  if (name) u.name = name; // يغير الـ Hidden Class باستمرار!
+  return u;
+}</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>استخدام أداة Profiler لتحديد السطر الدقيق المسبب للبطء بالأرقام والنسب المئوية</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الأمثل لـ V8: تعريف وتثبيت كافة الخصائص في Constructor دائماً
+class User {
+  constructor(name = null) {
+    this.name = name; // دائماً نفس الـ Shape الثابت بنسبة 100%
+  }
+}</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> التحسين المبكر الأعمى (Premature Optimization) يضيع الوقت ويعقد الكود دون حل المشكلة الحقيقية.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> تغيير شكل وترتيب الخصائص يكسر تحسينات V8 Inline Caches، بينما تثبيت الـ Shapes يحافظ على سرعة لغة الآلة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="performance-tuningCheckpoint" data-quiz-id="performance-tuning-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Which tool built into Chrome DevTools allows inspecting Node.js V8 Heap Snapshots to find memory leaks?",
-    "qAr": "أي أداة في Chrome DevTools تتيح فحص لقطات الـ Heap Snapshots لكشف تسريبات الذاكرة في Node.js؟",
+    "q": "What is a \"Hidden Class\" (or Shape) in Google V8 Engine?",
+    "qAr": "ما هي \"الفئة الخفية\" (Hidden Class / Shape) في محرك Google V8؟",
     "options": [
-      "Network Panel",
-      "Memory Panel",
-      "Security Panel",
-      "Elements Panel"
+      "An internal V8 data structure representing object layout in memory, allowing fast property access offsets like statically-typed languages.",
+      "A class hidden in CSS.",
+      "An encrypted JavaScript class.",
+      "A private database table."
     ],
-    "correct": 1,
-    "why": "The Memory Panel allows loading and comparing Heap Snapshots taken from Node.js processes.",
-    "whyAr": "قسم الذاكرة (Memory Panel) يتيح تحميل ومقارنة لقطات الـ Heap لكشف الكائنات المتسربة بدقة."
+    "correct": 0,
+    "why": "V8 uses Hidden Classes to bypass slow dictionary lookups, computing fast fixed memory offsets when object shapes are identical.",
+    "whyAr": "بنية داخلية في V8 تمثل خريطة الكائن في الذاكرة وتتيح الوصول للخصائص بإزاحات ثابتة وسريعة مثل لغات C++ و Rust."
+  },
+  {
+    "q": "Why does \"delete obj.property\" degrade performance in V8 performance-critical code?",
+    "qAr": "لماذا يؤدي استخدام \"delete obj.property\" إلى تراجع أداء الكود الحرج في V8؟",
+    "options": [
+      "Forces V8 to alter the object's Hidden Class, deoptimizing the object into slow dictionary/hash-table mode.",
+      "Causes immediate memory leaks.",
+      "Terminates the Node.js process.",
+      "Deletes the variable from RAM."
+    ],
+    "correct": 0,
+    "why": "`delete` mutates the shape, throwing the object out of fast inline-cache optimizations into generic dictionary mode.",
+    "whyAr": "يغير بنية الكائن الهيكلية ويجبر V8 على تحويله لنمط القاموس البطيء وإلغاء تحسينات محرك Turbofan."
+  },
+  {
+    "q": "What is the default size of the Libuv Threadpool and how can it be adjusted for heavy crypto/fs workloads in Node.js?",
+    "qAr": "ما هو الحجم الافتراضي لمجمع خيوط Libuv وكيف يتم تعديله للعمليات الثقيلة في Node.js؟",
+    "options": [
+      "Default is 4 threads; adjusted by setting the UV_THREADPOOL_SIZE environment variable (e.g. UV_THREADPOOL_SIZE=16) before launch.",
+      "Default is 100 threads; adjusted in package.json.",
+      "Default is 1 thread; cannot be changed.",
+      "Threads are managed by the browser."
+    ],
+    "correct": 0,
+    "why": "Libuv defaults to 4 worker threads for async I/O/crypto; increasing UV_THREADPOOL_SIZE maximizes multi-core CPU utilization.",
+    "whyAr": "الافتراضي هو 4 خيوط فقط، وتعديله عبر UV_THREADPOOL_SIZE يتيح تشغيل عدد أكبر من عمليات التشفير والملفات بالتوازي."
+  },
+  {
+    "q": "What does a \"Stop-the-World\" Garbage Collection pause mean in Node.js?",
+    "qAr": "ماذا تعني وقفة \"Stop-the-World\" أثناء تنظيف الذاكرة في Node.js؟",
+    "options": [
+      "Execution of all JavaScript code is completely paused while the V8 garbage collector marks and sweeps old generation memory.",
+      "The server loses internet connection.",
+      "The CPU clock speed drops to 0.",
+      "All database connections are terminated."
+    ],
+    "correct": 0,
+    "why": "Major GC cycles temporarily freeze the JavaScript main thread to safely relocate and reclaim fragmented heap memory blocks.",
+    "whyAr": "توقف مؤقت لكامل تنفيذ كود جافاسكريبت على الخيط الرئيسي حتى ينتهي مجمع القمامة من فحص وتنظيف الذاكرة القديمة."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Performance Engineering</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #C084FC; font-size: 1.05rem; margin-bottom: 4px;">V8 Optimization & Low-Latency Systems</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">Performance Standard</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Node.js 24 Performance Core</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): كيف تقضي على مهام الـ Long Tasks في جافاسكربت لمنع تجمد الواجهة أثناء الحسابات الثقيلة؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">نستخدم استراتيجية تجزئة المهام (Task Chunking / Time-Slicing)؛ نقوم بتقسيم الحلقة التكرارية الضخمة إلى مصفوفات صغيرة، وبعد كل جزء نستخدم `await new Promise(res => setTimeout(res, 0))` أو `scheduler.yield()` لإعطاء المتصفح فرصة لرسم الإطار ومعالجة نقرات المستخدم بسلاسة.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تستخدم مصفوفات ArrayBuffer و TypedArrays لتنفيذ معالجة بيانات ثنائية فائقة السرعة مع تجنب الـ Garbage Collector تماماً في Node.js؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نحجز كتلة ذاكرة مسبقة الحجم بـ const buffer = new ArrayBuffer(1024 * 1024) (1MB) وننشئ عليها مناظر من الأنواع المحددة مثل new Int32Array(buffer) أو new Float64Array(buffer). هذه المصفوفات تتعامل مع الذاكرة الخام المباشرة بدون إنشاء أي كائنات جافاسكريبت وسيطة (Zero JavaScript Object Allocations)، مما يلغي أي عمل على مجمع القمامة (0% GC Overhead) ويتيح معالجة ملايين البايتات الحسابية بسرعة لغات C/C++ مباشرة.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-architecture" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #C084FC; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

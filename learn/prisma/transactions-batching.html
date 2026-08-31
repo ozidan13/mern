@@ -13,14 +13,49 @@
   <meta name="fsa-pattern-label" content="Data Integrity">
   <meta name="fsa-root" content="../../">
 
-  <title>Prisma Transactions: Sequential Batching vs Interactive $transaction · CodeHub Interactive</title>
+  <title>Prisma Transactions: Sequential Batching vs Interactive $transaction · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #818CF8;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">Prisma ORM · هندسة البيانات Type-Safe</div>
+          <div class="fsa-sidebar__title">Prisma 7 · هندسة البيانات Type-Safe</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #818CF8;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-prisma" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,24 +97,24 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">prisma</a>
+            <a href="../../index.html#track-prisma">prisma</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">transactions-batching</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">PRISMA</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #818CF8; color: #000; font-weight: 800;">PRISMA</span>
             <span class="fsa-badge fsa-badge--info">Level 2</span>
             <span class="fsa-badge fsa-badge--success">Prisma 5.x/6.x</span>
             <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Prisma Transactions: Sequential Batching vs Interactive $transaction</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">معاملات بريزما: التجميع المتسلسل والمعاملات التفاعلية ($transaction)</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Prisma Transactions: Sequential Batching vs Interactive $transaction</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">معاملات بريزما: التجميع المتسلسل والمعاملات التفاعلية ($transaction)</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #818CF8; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
               <li>استخدام مصفوفة prisma.$transaction([q1, q2]) للعمليات المستقلة السريعة.</li>
               <li>استخدام Interactive Transactions: prisma.$transaction(async (tx) => { ... }).</li>
               <li>ضبط خيارات المعاملة: timeout و maxWait ومستويات العزل (Isolation Levels).</li>
@@ -89,49 +124,49 @@
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              عند تنفيذ عمليات بنكية أو إنشاء طلب وشراء منتجات وتخفيض المخزون، يجب ضمان تنفيذ جميع العمليات معاً أو التراجع عنها بالكامل. يوفر بريزما نوعين من المعاملات: مصفوفة المعاملات المتسلسلة <code dir="ltr">Sequential $transaction</code> السريعة، والمعاملات التفاعلية <code dir="ltr">Interactive $transaction</code> التي تتيح قراءة البيانات واستخدامها في الشروط قبل اتخاذ قرار الحفظ أو التراجع.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">عند تنفيذ عمليات بنكية أو إنشاء طلب وشراء منتجات وتخفيض المخزون، يجب ضمان تنفيذ جميع العمليات معاً أو التراجع عنها بالكامل. يوفر بريزما نوعين من المعاملات: مصفوفة المعاملات المتسلسلة <code dir="ltr">Sequential $transaction</code> السريعة، والمعاملات التفاعلية <code dir="ltr">Interactive $transaction</code> التي تتيح قراءة البيانات واستخدامها في الشروط قبل اتخاذ قرار الحفظ أو التراجع.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">المعاملات المتسلسلة (Array Batching)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">1</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">المعاملات المتسلسلة (Array Batching)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
                 تمرير مصفوفة استعلامات تنفذ في معاملة SQL واحدة بأعلى سرعة.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">المعاملات التفاعلية (Interactive Callback)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">2</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">المعاملات التفاعلية (Interactive Callback)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
                 الحصول على كائن عميل مخصص (tx) لقراءة وتعديل البيانات بناءً على شروط منطقية.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التراجع التلقائي عند الخطأ</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">3</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التراجع التلقائي عند الخطأ</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
                 إذا رُمي أي استثناء داخل الدالة، يقوم بريزما بعمل ROLLBACK فوري وتحرير الأقفال.
               </p>
             </div>
@@ -139,54 +174,57 @@
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="transactions-batchingStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Prisma Transactions: Sequential Batching vs Interactive $transaction Architecture Flow Diagram">
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Prisma Transactions: Sequential Batching vs Interactive $transaction Architecture Flow Diagram">
               <title>Prisma Transactions: Sequential Batching vs Interactive $transaction Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Prisma Transactions: Sequential Batching vs Interactive $transaction</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+              <defs>
+                <linearGradient id="grad-transactions-batching" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#818CF8" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#818CF8" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Data Integrity</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#818CF8" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-transactions-batching)" stroke="#818CF8" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#818CF8" font-size="14" font-weight="800">Data Integrity</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="transactions-batchingPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #818CF8; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Simulating Prisma Interactive Transaction
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// Simulating Prisma Interactive Transaction
 async function executeOrderPayment(prisma, userId, amount) {
   return await prisma.$transaction(async (tx) => {
     // 1. Check User Balance
@@ -201,61 +239,63 @@ async function executeOrderPayment(prisma, userId, amount) {
   });
 }
 console.log("Transaction Engine Configured with automatic rollback on error.");</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ما هي مشكلة استخدام كائن prisma العام بدلاً من كائن tx داخل دالة Interactive Transaction؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">استخدام prisma العادي ينفذ الاستعلام خارج نطاق المعاملة في اتصال منفصل؛ لضمان شمول العملية داخل المعاملة والتراجع عند الفشل، يجب دائماً استخدام كائن tx الممرر للمعاملة.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ما هي مشكلة استخدام كائن prisma العام بدلاً من كائن tx داخل دالة Interactive Transaction؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #818CF8;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">استخدام prisma العادي ينفذ الاستعلام خارج نطاق المعاملة في اتصال منفصل؛ لضمان شمول العملية داخل المعاملة والتراجع عند الفشل، يجب دائماً استخدام كائن tx الممرر للمعاملة.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: await prisma.$transaction(async (tx) =&gt; {    // بدء معاملة تفاعلية
-2:   const sender = await tx.account.update({ ... }); // استخدام كائن tx الإلزامي
-3:   const receiver = await tx.account.update({ ... }); // استخدام كائن tx الإلزامي
-4: }, { maxWait: 5000, timeout: 10000 });          // ضبط مهلة الانتظار</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">1: await prisma.$transaction(async (tx) =&gt; {     </span> <span style="color: #64748B;">// بدء معاملة تفاعلية</span>
+<span style="color: #F8FAFC;">2:   const sender = await tx.account.update({ ... });</span> <span style="color: #64748B;">// استخدام كائن tx الإلزامي</span>
+<span style="color: #F8FAFC;">3:   const receiver = await tx.account.update({ ... });</span> <span style="color: #64748B;">// استخدام كائن tx الإلزامي</span>
+<span style="color: #F8FAFC;">4: }, { maxWait: 5000, timeout: 10000 });           </span> <span style="color: #64748B;">// ضبط مهلة الانتظار</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>await prisma.$transaction(async (tx) =&gt; { await prisma.user.update(...); }); /* خطأ: استخدام prisma بدلاً من tx */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>await prisma.$transaction(async (tx) =&gt; { await prisma.user.update(...); }); /* خطأ: استخدام prisma بدلاً من tx */</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>await prisma.$transaction(async (tx) =&gt; { await tx.user.update(...); }); /* صحيح ومشمول في المعاملة */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>await prisma.$transaction(async (tx) =&gt; { await tx.user.update(...); }); /* صحيح ومشمول في المعاملة */</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> استدعاء prisma العادي يخرج العملية من المعاملة ويفقد حماية التراجع التلقائي (Rollback).
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> استدعاء prisma العادي يخرج العملية من المعاملة ويفقد حماية التراجع التلقائي (Rollback).
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="transactions-batchingCheckpoint" data-quiz-id="transactions-batching-quiz"></div>
@@ -278,65 +318,50 @@ console.log("Transaction Engine Configured with automatic rollback on error.");<
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Data Integrity</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #818CF8; font-size: 1.05rem; margin-bottom: 4px;">Data Integrity</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">Prisma 5.x/6.x</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Prisma 5.x/6.x</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هي خيارات maxWait و timeout في معاملات بريزما وفيمَ تفيد؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">الـ `maxWait` هو أقصى وقت ينتظره بريزما للحصول على اتصال متاح من مجمع الاتصالات لبدء المعاملة (افتراضياً 2 ثانية). والـ `timeout` هو أقصى وقت مسموح به لتنفيذ كود المعاملة بالكامل قبل إلغائها وعمل Rollback تلقائي (افتراضياً 5 ثوانٍ) لمنع تعليق الأقفال في قاعدة البيانات.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">ما هي خيارات maxWait و timeout في معاملات بريزما وفيمَ تفيد؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">الـ `maxWait` هو أقصى وقت ينتظره بريزما للحصول على اتصال متاح من مجمع الاتصالات لبدء المعاملة (افتراضياً 2 ثانية). والـ `timeout` هو أقصى وقت مسموح به لتنفيذ كود المعاملة بالكامل قبل إلغائها وعمل Rollback تلقائي (افتراضياً 5 ثوانٍ) لمنع تعليق الأقفال في قاعدة البيانات.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-prisma" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #818CF8; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="react">
   <meta name="fsa-lesson" content="use-ref-dom">
   <meta name="fsa-level" content="2">
-  <meta name="fsa-order" content="12">
-  <meta name="fsa-title" content="useRef: Mutable Value Persistence & Direct DOM Node Access">
-  <meta name="fsa-est-minutes" content="22">
-  <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="DOM & Memory Escape Hatch">
+  <meta name="fsa-order" content="10">
+  <meta name="fsa-title" content="useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="React 19.x & ref as prop">
+  <meta name="fsa-pattern-label" content="Imperative Escape Hatch & Mutable Containers">
   <meta name="fsa-root" content="../../">
 
-  <title>useRef: Mutable Value Persistence & Direct DOM Node Access · CodeHub Interactive</title>
+  <title>useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #38BDF8;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">React.js · واجهات المستخدم التفاعلية</div>
+          <div class="fsa-sidebar__title">React.js 19 · واجهات المستخدم التفاعلية</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #38BDF8;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-react" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,272 +97,350 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">react</a>
+            <a href="../../index.html#track-react">react</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">use-ref-dom</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">REACT</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #38BDF8; color: #000; font-weight: 800;">REACT</span>
             <span class="fsa-badge fsa-badge--info">Level 2</span>
-            <span class="fsa-badge fsa-badge--success">React 19.2</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 22 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">React 19.x & ref as prop</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">useRef: Mutable Value Persistence & Direct DOM Node Access</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">هوك useRef: الاحتفاظ بالقيم المتغيرة والوصول المباشر للـ DOM</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">خطاف useRef: الهروب من دورة الـ Render، المراجع المتغيرة والتعامل المباشر مع الـ DOM</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>استخدام useRef كصندوق أمانات (Mutable Box) يحتفظ بالقيم دون إطلاق Re-renders.</li>
-              <li>الوصول لعناصر الـ DOM وتطبيق التركيز التلقائي والتمرير (Focus & Scroll).</li>
-              <li>تخزين معرفات المؤقتات (Timers & Intervals) وقيم الـ Previous Props.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #38BDF8; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم الفرق الجوهري بين useState (الذي يطلق Re-render) و useRef (صندوق الذاكرة الصامت).</li>
+              <li>الوصول والتحكم المباشر في عناصر الـ DOM (Focus, Scroll, Measurements, Media Playback).</li>
+              <li>تخزين المؤقتات (Timers) ومراجع الاتصال (WebSockets) والمؤشرات الحيوية دون إزعاج دورة الرسم.</li>
+              <li>فهم دعم React 19 لتمرير ref كـ prop عادي دون الحاجة لـ forwardRef القديم.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              هوك useRef في ريآكت له وظيفتان رئيسيتان: الأولى هي الوصول المباشر لعقد الـ DOM الحقيقية (للتركيز أو قياس الأبعاد)، والثانية والأهم هي الاحتفاظ بقيم متغيرة عبر عمليات إعادة الرسم (Renders) دون إطلاق إعادة رسم جديدة عند تعديلها!
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">القاعدة الأولى في ريآكت هي: "دع ريآكت تتولى التحكم في الـ DOM ولا تلمسه بيدك".
+      لكن في الواقع العملي، هناك مهام هندسية يستحيل تنفيذها بالطريقة التقريرية (Declarative): مثل عمل Focus تلقائي على حقل إدخال عند فتح النافذة، قياس أبعاد عنصر بصري بالبيكسل <code dir="ltr">getBoundingClientRect()</code>، التحكم في تشغيل وإيقاف فيديو HTML5، أو حفظ معرّف مؤقت <code dir="ltr">setInterval</code> لمسحه عند خروج المستخدم!
+      لو استخدمت <code dir="ltr">useState</code> لحفظ معرّف المؤقت، كلما حدثت الـ State سيعيد المكون رسم نفسه بالكامل بدون أي داعٍ بصري!
+      خطاف **useRef** هو "صندوق ذاكرة سري" (Mutable Container) يحتفظ بقيمة ثابتة المرجع طوال دورة حياة المكون دون أن يتسبب في أي Re-render عند تعديلها.
+      في هذا الدرس، هنتعلم متى وكيف نستخدم useRef كـ Escape Hatch آمن، وإزاي ريآكت 19 سهلت تمرير الـ refs للمكونات الفرعية كـ Props عادية وألغت الحاجة لـ <code dir="ltr">forwardRef</code>.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">كائن المرجع المستقر { current }</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                ريآكت تعيد دائماً نفس كائن المرجع بين كل عمليات الرسم.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">بنية كائن الـ Ref ({ current: initialValue })</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                useRef تُرجع كائناً عادياً يحمل خاصية واحدة .current قابلة للقراءة والتعديل في أي وقت دون إطلاق Re-render.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">تعديل current لا يطلق Render</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                تحديث ref.current = val يتم فورياً في الذاكرة دون المساس بجدولة المكون.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الربط بعناصر الـ DOM الحقيقية</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تمرير ref={inputRef} لوسم JSX يوجه ريآكت لتعيين عقدة الـ DOM الحقيقية في inputRef.current بمجرد اكتمال مرحلة الـ Commit.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">ربط العقدة عند الـ Commit Phase</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                ريآكت تسند عنصر الـ DOM لـ ref.current بمجرد رسمه وتسنده لـ null عند الحذف.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تخزين المراجع غير البصرية (Instance Variables)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام الـ Ref كحاوية لتخزين معرّفات المؤقتات، اشتراكات الـ WebSockets، وحالة المكون السابقة (Previous State).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تحديث React 19 الثوري (Ref as a Prop)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                في React 19، يمكنك استقبال ref كـ prop عادي في المكون الدالي function MyInput({ ref, ...props }) دون استخدام دالة forwardRef.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تجنب قراءة أو تعديل الـ Ref أثناء الـ Render</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                ممنوع قراءة أو تعديل ref.current أثناء تنفيذ جسم المكون؛ يتم التعديل فقط داخل معالجات الأحداث أو داخل useEffect.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="use-ref-domStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="useRef: Mutable Value Persistence & Direct DOM Node Access Architecture Flow Diagram">
-              <title>useRef: Mutable Value Persistence & Direct DOM Node Access Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for useRef: Mutable Value Persistence & Direct DOM Node Access</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation Architecture Flow Diagram">
+              <title>useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-use-ref-dom" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">DOM & Memory Escape Hatch</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-use-ref-dom)" stroke="#38BDF8" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#38BDF8" font-size="14" font-weight="800">Imperative Escape Hatch & Mutable Containers</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="use-ref-domPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #38BDF8; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Simulating Render Count without Infinite Loops
-let renderCountRef = { current: 0 };
-function simulateRender() {
-  renderCountRef.current++;
-  console.log("Component Render Count:", renderCountRef.current);
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي استخدام useRef لحفظ الـ Timers وتتبع الـ Render Count
+let componentRenderCount = 0;
+
+function simulateComponent() {
+  componentRenderCount++;
+  const renderCounterRef = { current: componentRenderCount };
+  const timerIdRef = { current: null };
+
+  console.log(`Component Rendered (Count: ${renderCounterRef.current})`);
+  
+  // محاكاة بدء مؤقت وحفظ معرّفه دون إطلاق Re-render
+  timerIdRef.current = 9921; // ID from setInterval
+  console.log("Timer stored silently in ref:", timerIdRef.current);
 }
-simulateRender(); simulateRender(); simulateRender();</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+
+simulateComponent();
+simulateComponent();</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">لماذا يحظر قراءة أو كتابة ref.current أثناء مرحلة الرسم (Render Phase) مباشرة؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">لأن مرحلة الرسم يجب أن تكون نقية 100% وبدون آثار جانبية؛ تعديل ref أثناء الـ Render يجعل سلوك المكون غير متوقع مع ميزات Concurrent Rendering.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ماذا يحدث لو قمت بتعديل قيمة ref.current أثناء مرحلة الـ Render مباشرة (خارج useEffect وخارج معالجات الأحداث)؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #38BDF8;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">تعديل ref.current أثناء مرحلة الـ Render يجعل المكون غير نقي (Impure Component) ويكسر توقعات ريآكت في بيئات Concurrent Mode، حيث قد تقوم ريآكت بإلغاء وإعادة تشغيل مرحلة الـ Render عدة مرات، مما يؤدي لقيم متضاربة وحالات تسريب ذاكرة يصعب تتبعها.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: const inputRef = useRef(null);                  // إنشاء المرجع
-2: useEffect(() =&gt; { inputRef.current?.focus(); }, []); // التركيز على الحقل بعد اكتمال الرسم
-3: return &lt;input ref={inputRef} /&gt;;          // ربط المرجع بالعنصر</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">function VideoPlayer({ src }) {                     </span> <span style="color: #64748B;">// مكون مشغل الفيديو</span>
+<span style="color: #F8FAFC;">  const videoRef = useRef(null);                    </span> <span style="color: #64748B;">// إنشاء مرجع لعنصر الـ DOM</span>
+<span style="color: #F8FAFC;">  const isPlayingRef = useRef(false);               </span> <span style="color: #64748B;">// حفظ متغير غير بصري</span>
+<span style="color: #F8FAFC;">  const handleToggle = () =&gt; {                   </span> <span style="color: #64748B;">// معالج الحدث التفاعلي</span>
+<span style="color: #F8FAFC;">    if (isPlayingRef.current) {                     </span> <span style="color: #64748B;">// قراءة المرجع الحالي</span>
+<span style="color: #F8FAFC;">      videoRef.current.pause();                     </span> <span style="color: #64748B;">// التحكم الإجرائي المباشر في الـ DOM</span>
+<span style="color: #F8FAFC;">    } else {                                        </span> <span style="color: #64748B;">// حالة التشغيل</span>
+<span style="color: #F8FAFC;">      videoRef.current.play();                      </span> <span style="color: #64748B;">// تشغيل الفيديو</span>
+<span style="color: #F8FAFC;">    }                                               </span> <span style="color: #64748B;">// نهاية الشرط</span>
+<span style="color: #F8FAFC;">    isPlayingRef.current = !isPlayingRef.current;   </span> <span style="color: #64748B;">// تحديث المرجع الصامت</span>
+<span style="color: #F8FAFC;">  };                                                </span> <span style="color: #64748B;">// نهاية المعالج</span>
+<span style="color: #F8FAFC;">  return &lt;video ref={videoRef} src={src} /&gt;;  </span> <span style="color: #64748B;">// ربط المرجع بالوسم</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية المكون</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>ref.current = 100; /* كتابة المرجع داخل جسم المكون مباشرة */ return &lt;div&gt;...&lt;/div&gt;;</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: استخدام useState لتخزين معرف مؤقت غير مرئي للمستخدم
+const [timerId, setTimerId] = useState(null);
+// كلما تم حفظ المؤقت، يعيد المكون رسم نفسه بدون أي داعٍ بصري!</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>useEffect(() =&gt; { ref.current = 100; }, []); /* كتابة المرجع داخل Effect أو Event Handler */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: استخدام useRef لتخزين المعرفات الصامتة
+const timerRef = useRef(null);
+timerRef.current = setInterval(tick, 1000); // تحديث صامت بدون أي Re-render</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> تعديل المراجع أثناء الـ Render يكسر نقاء المكونات ويسبب أخطاء في الـ Concurrent Mode.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> استخدام useState للمتغيرات التي لا تؤثر على الشكل البصري المعروض يستهلك موارد المعالج بإطلاق دورات Re-render غير ضرورية، بينما useRef مخصص لحفظ المتغيرات الصامتة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="use-ref-domCheckpoint" data-quiz-id="use-ref-dom-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Does updating `ref.current` trigger a component re-render in React?",
-    "qAr": "هل يؤدي تحديث `ref.current` إلى إعادة رسم المكون في ريآكت؟",
+    "q": "What is the primary behavioral difference between useState and useRef in React?",
+    "qAr": "ما هو الفرق السلوكي الأساسي بين useState و useRef في ريآكت؟",
     "options": [
-      "Yes, always",
-      "No, never",
-      "Only in Strict Mode",
-      "Only if passed to a child"
+      "Updating state triggers a component re-render; mutating ref.current does NOT trigger a re-render.",
+      "useRef can only store HTML DOM elements.",
+      "useState values are not preserved across renders.",
+      "useRef is asynchronous while useState is synchronous."
     ],
-    "correct": 1,
-    "why": "Mutating .current is a pure memory mutation that does not notify React to re-render.",
-    "whyAr": "تعديل current هو تعديل ذاكرة بسيط لا يخطر ريآكت بإعادة الرسم."
+    "correct": 0,
+    "why": "Mutating a ref object is a silent in-memory update that preserves values across renders without initiating the React render cycle.",
+    "whyAr": "تعديل قيمة ref.current هو تعديل صامت في الذاكرة يحافظ على القيمة بين دورات الرسم دون إطلاق دورة Re-render جديدة."
+  },
+  {
+    "q": "How does React 19 change the way refs are passed to custom child components?",
+    "qAr": "كيف غيرت ريآكت 19 طريقة تمرير الـ refs للمكونات الفرعية المخصصة؟",
+    "options": [
+      "Refs can now be accepted directly as standard props in function components, deprecating forwardRef.",
+      "Refs are now passed via React Context only.",
+      "Refs must be wrapped in useMemo.",
+      "Direct DOM access is no longer permitted."
+    ],
+    "correct": 0,
+    "why": "React 19 natively treats \"ref\" as a standard prop in function components, eliminating the boilerplate forwardRef wrapper.",
+    "whyAr": "ريآكت 19 تعامل خاصية ref كـ prop عادي مباشر في المكونات الدالية وتلغي الحاجة لتغليف المكون بـ forwardRef."
+  },
+  {
+    "q": "When is it safe and recommended to read or modify ref.current in a component lifecycle?",
+    "qAr": "متى يكون من الآمن والموصى به قراءة أو تعديل قيمة ref.current في دورة حياة المكون؟",
+    "options": [
+      "Inside event handlers (e.g. onClick) or inside useEffect callbacks, never during the render phase.",
+      "Directly inside the JSX return block.",
+      "At the very top of the component function before hooks.",
+      "Inside CSS stylesheets."
+    ],
+    "correct": 0,
+    "why": "Refs are imperative escape hatches; reading or mutating them during rendering breaks component purity and concurrent rendering safety.",
+    "whyAr": "يجب قراءة وتعديل الـ ref فقط داخل معالجات الأحداث أو داخل useEffect، وتجنب لمسها أثناء مرحلة الـ Render للحفاظ على نقاء المكون."
+  },
+  {
+    "q": "What does a DOM ref contain before the component is mounted to the screen?",
+    "qAr": "على ماذا يحتوي كائن الـ DOM ref قبل أن يتم تركيب المكون على الشاشة؟",
+    "options": [
+      "Its initial value, which is typically null.",
+      "An empty HTML div element.",
+      "undefined",
+      "A Promise that resolves to the DOM node."
+    ],
+    "correct": 0,
+    "why": "Before the initial commit phase mounts the DOM node, the ref.current property retains its initial argument (null).",
+    "whyAr": "قبل مرحلة الـ Commit الأولى وتركيب العنصر في الـ DOM، يحمل ref.current القيمة الابتدائية الممررة له (والتي تكون عادة null)."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">DOM & Memory Escape Hatch</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #38BDF8; font-size: 1.05rem; margin-bottom: 4px;">Imperative Escape Hatch & Mutable Containers</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">React 19.2</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">React 19.x & ref as prop</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): كيف تقيس قيمة الـ Prop السابقة (Previous Value) باستخدام useRef؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">نعرف `const prevValue = useRef()` وداخل `useEffect(() => { prevValue.current = val; }, [val])` نحدث المرجع؛ فيكون `prevValue.current` أثناء الـ Render يحمل القيمة السابقة دائماً.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هو خطاف useImperativeHandle وكيف تستخدمه مع المكونات الفرعية لتطبيق مبدأ الكبسلة (Encapsulation)؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">خطاف useImperativeHandle يتيح للمكون الفرعي تخصيص وتحديد الدوال والميثودز التي يسمح للمكون الأب باستدعائها عبر الـ ref، بدلاً من كشف عنصر الـ DOM بالكامل. على سبيل المثال، يمكن لمكون <CustomInput /> كشف ميثود focus() و clear() فقط للأب، ومنع المكون الأب من التلاعب المباشر بأنماط الـ CSS أو باقي خصائص عنصر الـ input الداخلي.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-react" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #38BDF8; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

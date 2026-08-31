@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="express">
+  <meta name="fsa-lesson" content="req-res-lifecycle">
+  <meta name="fsa-level" content="1">
+  <meta name="fsa-order" content="4">
+  <meta name="fsa-title" content="Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="Express 5.2">
+  <meta name="fsa-pattern-label" content="Lifecycle Pipeline & HTTP Protocols">
+  <meta name="fsa-root" content="../../">
+
+  <title>Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #E4E4E7;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Express.js 5 · خوادم الـ REST API المعيارية</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #E4E4E7;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-express" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-express">express</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">req-res-lifecycle</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #E4E4E7; color: #000; font-weight: 800;">EXPRESS</span>
+            <span class="fsa-badge fsa-badge--info">Level 1</span>
+            <span class="fsa-badge fsa-badge--success">Express 5.2</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">دورة حياة الطلب والاستجابة: الرؤوس، الكوكيز، التدفقات والتفاوض على المحتوى (Content Negotiation)</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #E4E4E7; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>تتبع الرحلة الكاملة لطلب HTTP منذ لحظة وصوله وحتى إرسال بايتات الرد وإغلاق الاتصال.</li>
+              <li>التحكم في رؤوس الأمان (Security Headers) ورؤوس الكاش (Cache-Control, ETag, 304 Not Modified).</li>
+              <li>إدارة ملفات تعريف الارتباط الآمنة (Secure Cookies) بخصائص HttpOnly و SameSite و Secure.</li>
+              <li>تطبيق التفاوض على المحتوى (Content Negotiation) عبر req.accepts() لدعم JSON و XML و CSV.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">الكثير من المطورين يعاملون إكسبريس كصندوق أسود: يكتب <code dir="ltr">app.get('/data', (req, res) => res.json(data))</code> ويفترض أن السحر ينتهي هنا.
+      لكن في الأنظمة الإنتاجية الكبرى، دورة حياة الطلب هي سلسلة دقيقة من المراحل:
+      1. مرحلة قراءة الرؤوس والتحقق من التشفير والـ Content-Type.
+      2. مرحلة التفاوض على المحتوى (Content Negotiation): هل يطلب العميل بيانات بصيغة JSON أم صفحة HTML أم ملف CSV؟
+      3. مرحلة الكوكيز والجلسات: هل الكوكيز محمية بـ <code dir="ltr">HttpOnly</code> لمنع سرقتها عبر ثغرات XSS، ومضبوطة بـ <code dir="ltr">SameSite=Strict</code> لمنع هجمات CSRF؟
+      4. مرحلة التحقق من الكاش عبر الـ ETag: لو لم تتغير البيانات، لماذا نرسل 500KB عبر الشبكة بينما يمكننا إرجاع كود <code dir="ltr">304 Not Modified</code> في 0 بايت؟
+      في هذا الدرس، هنفكك دورة حياة الطلب والاستجابة بالكامل، وهنتعلم إزاي نتحكم في كل بايت يخرج من الخادم.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #E4E4E7; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">استقبال وفك تغليف الرؤوس (Headers Parsing)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                قراءة الرؤوس القياسية عبر req.get("Authorization") والتعامل مع حالات الأحرف غير الحساسة (Case-Insensitive).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #E4E4E7; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التفاوض على المحتوى عبر req.accepts()</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فحص رأس Accept وإرجاع التنسيق المفضل للعميل (JSON/XML/HTML) تلقائياً.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #E4E4E7; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تعيين الكوكيز المؤمنة (HttpOnly, Secure, SameSite)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام res.cookie() مع تفعيل HttpOnly لمنع وصول JavaScript للكوكيز و SameSite=Strict لمنع الـ CSRF.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #E4E4E7; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إدارة الكاش الذكي بـ ETag و 304 Not Modified</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إكسبريس تولد بصمة ETag تلقائياً وتفحص If-None-Match لإرجاع 304 بدون إرسال جسم البيانات إذا لم تتغير.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #E4E4E7; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التدفق اللاتزامني وتفريغ الاستجابة (Stream Piping)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إرسال الملفات والتقارير الضخمة بـ stream.pipe(res) لمنع تراكم الذاكرة وإغلاق الاتصال بنظافة.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation Architecture Flow Diagram">
+              <title>Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-req-res-lifecycle" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#E4E4E7" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#E4E4E7" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#E4E4E7" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-req-res-lifecycle)" stroke="#E4E4E7" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#E4E4E7" font-size="14" font-weight="800">Lifecycle Pipeline & HTTP Protocols</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="req-res-lifecyclePlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Node.js 24 Runtime & API Tester</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #E4E4E7; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي التفاوض على المحتوى والكاش الذكي
+function handleContentNegotiation(req, res, data) {
+  const acceptHeader = req.headers["accept"] || "application/json";
+
+  if (acceptHeader.includes("application/json")) {
+    console.log("Serving JSON format to client");
+    res.type = "application/json";
+    res.body = JSON.stringify(data);
+  } else if (acceptHeader.includes("text/csv")) {
+    console.log("Serving CSV format to client");
+    res.type = "text/csv";
+    res.body = "id,name\n1,Sarah\n2,Ahmed";
+  }
+}
+
+const req = { headers: { accept: "text/csv" } };
+const res = {};
+handleContentNegotiation(req, res, [{ id: 1, name: "Sarah" }]);
+console.log("Response Content-Type:", res.type);</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يعتبر تخزين رموز المصادقة (JWT) في HttpOnly Cookies أكثر أماناً بمراحل من تخزينها في localStorage داخل المتصفح؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #E4E4E7;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">البيانات المخزنة في localStorage يمكن قراءتها وسرقتها بواسطة أي كود جافاسكريبت يعمل في الصفحة (مما يجعلها عرضة للسرقة فوراً عند حدوث أي ثغرة XSS). أما الـ HttpOnly Cookies، فإن المتصفح يمنع كود JavaScript تماماً من قراءتها (document.cookie لن يعيدها)، ويرسلها المتصفح تلقائياً ومباشرة مع طلبات الـ HTTP إلى الخادم بأمان تام.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">res.cookie("token", jwtToken, {                     </span> <span style="color: #64748B;">// تعيين كوكيز المصادقة</span>
+<span style="color: #F8FAFC;">  httpOnly: true, // حماية من هجمات XSS             </span> <span style="color: #64748B;">// منع قراءة الكوكيز عبر JavaScript</span>
+<span style="color: #F8FAFC;">  secure: process.env.NODE_ENV === "production",    </span> <span style="color: #64748B;">// الإرسال عبر اتصالات HTTPS المشفرة فقط</span>
+<span style="color: #F8FAFC;">  sameSite: "strict", // حماية من هجمات CSRF        </span> <span style="color: #64748B;">// حظر إرسال الكوكيز في الطلبات العابرة للمواقع</span>
+<span style="color: #F8FAFC;">  maxAge: 1000 * 60 * 60 * 24 * 7 // 7 أيام         </span> <span style="color: #64748B;">// تحديد فترة صلاحية الكوكيز</span>
+<span style="color: #F8FAFC;">});                                                 </span> <span style="color: #64748B;">// نهاية إعدادات الكوكيز</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ أمني فادح: تعيين كوكيز حساسة بدون حماية HttpOnly
+res.cookie("sessionId", id); // يمكن سرقتها بسهولة عبر كود XSS خبيث!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الأمني المعتمد
+res.cookie("sessionId", id, { httpOnly: true, secure: true, sameSite: "lax" });</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> الكوكيز غير المحمية بـ HttpOnly تكون مكشوفة لأي سكربت خبيث في الصفحة، مما يتيح للمهاجمين انتحال شخصية المستخدمين.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="req-res-lifecycleCheckpoint" data-quiz-id="req-res-lifecycle-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "What is the security purpose of the \"httpOnly: true\" cookie attribute?",
+    "qAr": "ما هو الغرض الأمني لخاصية \"httpOnly: true\" في ملفات الكوكيز؟",
+    "options": [
+      "Prevents client-side JavaScript (e.g. document.cookie) from accessing the cookie, mitigating XSS token theft.",
+      "Restricts cookie transmission to HTTP port 80 only.",
+      "Forces the cookie to expire when the browser tab closes.",
+      "Encrypts cookie contents with AES-256."
+    ],
+    "correct": 0,
+    "why": "HttpOnly prevents scripts from reading sensitive session cookies during Cross-Site Scripting (XSS) attacks.",
+    "whyAr": "تمنع كود جافاسكريبت في المتصفح من قراءة الكوكيز الحساسة لحمايتها من السرقة عند حدوث هجمات XSS."
+  },
+  {
+    "q": "What HTTP status code does Express return when ETag matches the client If-None-Match header?",
+    "qAr": "ما هو كود حالة HTTP الذي ترجعه إكسبريس عندما يتطابق الـ ETag مع رأس If-None-Match القادم من العميل؟",
+    "options": [
+      "304 Not Modified",
+      "200 OK",
+      "204 No Content",
+      "301 Moved Permanently"
+    ],
+    "correct": 0,
+    "why": "304 Not Modified tells the client that the cached copy is still valid, saving bandwidth by omitting response body.",
+    "whyAr": "كود 304 يخبر العميل بأن نسخته المخزنة في الكاش ما زالت صالحة ويوفر استهلاك الباندويث بعدم إرسال البيانات مجدداً."
+  },
+  {
+    "q": "How does Content Negotiation work using req.accepts() in Express?",
+    "qAr": "كيف تعمل ميزة التفاوض على المحتوى باستخدام req.accepts() في إكسبريس؟",
+    "options": [
+      "Checks the incoming Accept header and returns the best matching MIME type supported by the server.",
+      "Translates the response into Arabic automatically.",
+      "Forces the client to download a zip file.",
+      "Negotiates database passwords."
+    ],
+    "correct": 0,
+    "why": "req.accepts inspects the Accept header to allow single endpoints to serve multiple formats (JSON, HTML, CSV).",
+    "whyAr": "تفحص رأس Accept الممرر من العميل لتقديم البيانات بالصيغة المناسبة (JSON أو HTML أو CSV) من نفس المسار."
+  },
+  {
+    "q": "What does the SameSite=Strict cookie policy enforce?",
+    "qAr": "ما الذي تفرضه سياسة SameSite=Strict على ملفات الكوكيز؟",
+    "options": [
+      "Cookies are never sent on cross-site requests (e.g. following links from external websites), preventing CSRF.",
+      "Cookies can only be read on localhost.",
+      "Cookies expire after 1 minute.",
+      "Cookies must be uppercase."
+    ],
+    "correct": 0,
+    "why": "SameSite=Strict prevents the browser from attaching cookies on cross-origin requests, blocking CSRF attacks.",
+    "whyAr": "تمنع إرسال الكوكيز تماماً مع أي طلبات قادمة من مواقع خارجية مما يصد هجمات تزوير الطلبات CSRF."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #E4E4E7; font-size: 1.05rem; margin-bottom: 4px;">Lifecycle Pipeline & HTTP Protocols</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Express 5.2</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحمي خادم Express من هجمات Clickjacking وتتحكم في سياسات التحميل المضمن (Frames)؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نحمي الخادم بتكوين رأسين أمنيين: 1. Content-Security-Policy (CSP) مع تعيين frame-ancestors 'none' (أو تحديد الدومينات الموثوقة). 2. تعيين رأس X-Frame-Options: DENY لمنع تضمين صفحات التطبيق الحساسة داخل وسوم <iframe> في مواقع المهاجمين. نطبق هذه الرؤوس آلياً في إكسبريس باستخدام وسيط helmet().</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-express" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #E4E4E7; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -7,20 +7,55 @@
   <meta name="fsa-lesson" content="js-types-operators">
   <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="4">
-  <meta name="fsa-title" content="Primitive Types, Type Coercion & Symbols/BigInt">
-  <meta name="fsa-est-minutes" content="24">
-  <meta name="fsa-teaches-version" content="ECMAScript 2024">
-  <meta name="fsa-pattern-label" content="Type Safety & Core Engine">
+  <meta name="fsa-title" content="JavaScript Types, Coercion Quirks & Symbols/BigInt">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="ES2024+ Standard">
+  <meta name="fsa-pattern-label" content="Type System & Coercion Rules">
   <meta name="fsa-root" content="../../">
 
-  <title>Primitive Types, Type Coercion & Symbols/BigInt · CodeHub Interactive</title>
+  <title>JavaScript Types, Coercion Quirks & Symbols/BigInt · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #F59E0B;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Foundations · الأساسيات الصلبة</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #F59E0B;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-foundations" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,276 +97,348 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">foundations</a>
+            <a href="../../index.html#track-foundations">foundations</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">js-types-operators</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">FOUNDATIONS</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #F59E0B; color: #000; font-weight: 800;">FOUNDATIONS</span>
             <span class="fsa-badge fsa-badge--info">Level 1</span>
-            <span class="fsa-badge fsa-badge--success">ECMAScript 2024</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 24 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">ES2024+ Standard</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Primitive Types, Type Coercion & Symbols/BigInt</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">أنواع البيانات الأولية، فخاخ التحويل التلقائي (Coercion) والرموز</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">JavaScript Types, Coercion Quirks & Symbols/BigInt</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">أنواع البيانات في جافاسكريبت، غرائب التحويل التلقائي (Coercion) و Symbols/BigInt</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>إتقان الأنواع السبعة الأولية: string, number, bigint, boolean, undefined, symbol, null.</li>
-              <li>فهم قواعد التحويل الضمني (Coercion Algorithms: ToPrimitive, ToString, ToNumber).</li>
-              <li>تجنب ثغرات المقارنة الرخوة (==) والاعتماد الكامل على المساواة الصارمة (===).</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #F59E0B; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>التمييز بين الأنواع البدائية (7 Primitives) والأنواع المرجعية (Objects & Heap Memory).</li>
+              <li>فهم خوارزميات التحويل التلقائي للأنواع (Implicit vs Explicit Coercion) وقواعد ToPrimitive.</li>
+              <li>إتقان التعامل مع BigInt للعمليات الحسابية الدقيقة وتفادي كوارث تقريب الأعداد الكبيرة.</li>
+              <li>استخدام Symbols لإنشاء خصائص فريدة ومنع تصادم المفاتيح في المكتبات الكبرى.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              جافاسكربت لغة ذات كتابة نوعية ديناميكية (Dynamically Typed)، وده بيديها مرونة جبارة لكنه في نفس الوقت أكبر مصدر للكوارث البرمجية لو مش فاهم إزاي محرك V8 بيحول الأنواع تلقائياً (Implicit Coercion). حاجات زي <code dir="ltr">[] + {}</code> أو مقارنة <code dir="ltr">0 == false</code> ممكن توقع نظام دفع إلكتروني كامل بسبب مقارنة غير دقيقة. في هذا الدرس هنفكك الأنواع السبعة الأولية وأسرار الـ Memory Allocation الخاصة بها.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">جافاسكريبت لغة ديناميكية النوع (Dynamically Typed)، وده بيديها مرونة وسرعة كبيرة في التطوير، لكنه في نفس الوقت أكبر مصدر للكوارث البرمجية لو مش فاهم إزاي المحرك بيتعامل مع البيانات في الذاكرة.
+      كم مرة شفت كود بيعمل <code dir="ltr">[] + {}</code> ويطلع <code dir="ltr">"[object Object]"</code>، أو <code dir="ltr">{} + []</code> ويطلع <code dir="ltr">0</code>؟ أو عملية مقارنة مشهورة زي <code dir="ltr">0 == "0"</code> بتطلع <code dir="ltr">true</code> لكن <code dir="ltr">0 === "0"</code> بتطلع <code dir="ltr">false</code>؟
+      في بيئات الإنتاج، الأخطاء دي مش مجرد نكت برمجية — دي بتسبب أخطاء محاسبية كارثية لما تجمع أسعار منتجات كـ Strings بدل Numbers، أو تفقد دقة أرقام المعاملات البنكية ذات الـ 64 بت لأنها تخطت <code dir="ltr">Number.MAX_SAFE_INTEGER</code>!
+      في هذا الدرس، هنتعلم القواعد الصارمة لمحرك V8 في تمثيل الأنواع البدائية في الـ Stack والأنواع المرجعية في الـ Heap، وهنتقن العمل مع <code dir="ltr">BigInt</code> و <code dir="ltr">Symbol</code> لحماية تطبيقاتنا من أخطاء التحويل الخفية.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الذاكرة والقيم الأولية (Stack vs Heap)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                القيم الأولية تُخزن بالكامل بالـ Stack بالقيمة (By Value) بينما الكائنات تُخزن بالمرجع (By Reference) في الـ Heap.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الأنواع البدائية السبعة (The 7 Primitives)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                string, number, bigint, boolean, undefined, symbol, null. تُخزن بقيمتها الثابتة (Immutable) مباشرة في الـ Stack.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">خوارزمية التحويل التلقائي</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                محرك V8 يستدعي valueOf ثم toString عند الحاجة لتحويل الكائنات إلى قيم أولية.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الأنواع المرجعية والذاكرة (Reference Types & Heap)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الكائنات والمصفوفات والدوال تُخزن في الـ Heap، والمتغير يحمل فقط مؤشر الذاكرة (Memory Reference). المقارنة بـ === تقارن المرجع وليس المحتوى.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الأنواع الحديثة (BigInt & Symbol)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                BigInt للتعامل مع الأرقام بعد 2^53-1 و Symbol لإنشاء مفاتيح كائنات فريدة وغير قابلة للتصادم.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">خوارزمية ToPrimitive للتحويل التلقائي</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                عند إجراء عملية بين أنواع مختلفة، يستدعي المحرك Symbol.toPrimitive أو valueOf() ثم toString() لتحويل الكائن إلى قيمة بدائية.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">حدود الأمان الرقمي و BigInt</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الأرقام في JS تتبع معيار IEEE 754 Double Precision (53-bit mantissa). الأرقام فوق 2^53 - 1 تفقد دقتها ويجب تمثيلها باستخدام BigInt (123n).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">عالم الرموز الفريدة (Symbols & Well-Known Symbols)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الرمز Symbol() فريد ومضمون عدم تكراره حتى لو حمل نفس الوصف، ويستخدم لإنشاء خصائص كائنات خاصة وتخصيص سلوك اللغة مثل Symbol.iterator.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="js-types-operatorsStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Primitive Types, Type Coercion & Symbols/BigInt Architecture Flow Diagram">
-              <title>Primitive Types, Type Coercion & Symbols/BigInt Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Primitive Types, Type Coercion & Symbols/BigInt</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="JavaScript Types, Coercion Quirks & Symbols/BigInt Architecture Flow Diagram">
+              <title>JavaScript Types, Coercion Quirks & Symbols/BigInt Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-js-types-operators" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Type Safety & Core Engine</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-js-types-operators)" stroke="#F59E0B" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#F59E0B" font-size="14" font-weight="800">Type System & Coercion Rules</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="js-types-operatorsPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #F59E0B; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Coercion Quirks Visualizer
-console.log("1. '5' - 2 =", '5' - 2, "(String coerced to Number)");
-console.log("2. '5' + 2 =", '5' + 2, "(Number coerced to String)");
-console.log("3. Boolean([]) =", Boolean([]), "(Arrays are truthy objects)");
-console.log("4. null == undefined:", null == undefined);
-console.log("5. null === undefined:", null === undefined);
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي فحص الأنواع وغرائب الـ Coercion
+console.log("Type of null:", typeof null); // "object" (Legacy Bug in JS Engine)
+console.log("Type of NaN:", typeof NaN);   // "number"
+console.log("NaN === NaN:", NaN === NaN);   // false (Use Number.isNaN)
 
-// BigInt Precision Guarantee
-const maxSafe = Number.MAX_SAFE_INTEGER;
-console.log("Max Safe Int + 2 (Broken):", maxSafe + 2);
-console.log("BigInt Precision (Safe):", BigInt(maxSafe) + 2n);</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+// Safe Integer Boundary
+const max = Number.MAX_SAFE_INTEGER;
+console.log("Max Safe Int:", max);
+console.log("max + 1 === max + 2:", max + 1 === max + 2); // true (Precision Lost!)
+
+// BigInt Solution
+const big1 = BigInt(max) + 1n;
+const big2 = BigInt(max) + 2n;
+console.log("BigInt Correct Comparison:", big1 === big2); // false</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ما هي نتيجة typeof null في جافاسكربت ولماذا؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">نتيجة typeof null هي "object". هذا خطأ تاريخي شهير في تصميم لغة JS الأولى عام 1995 بسبب تمثيل القيم في الذاكرة بنظام 32-bit وكان مؤشر الكائنات يبدأ بـ 000 وهو نفس تمثيل null، وظل كما هو للتوافق العكسي.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا تنتج العملية typeof null القيمة "object" في جافاسكريبت، ولماذا لم يتم إصلاح هذا الخطأ حتى اليوم في مواصفات ECMAScript؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #F59E0B;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">في النسخة الأولى من جافاسكريبت عام 1995، كانت القيم تُخزن في وحدات 32-bit وكان أول 3 بتات (000) تعني أن القيمة هي Object. وبما أن قيمة null كانت تمثل مؤشر الذاكرة الفارغ (NULL pointer = 0x00)، اعتبرها المحرك تلقائياً Object. لم يتم إصلاح هذا الخطأ لأن تعديله الآن سيكسر ملايين المواقع القديمة العاملة على الإنترنت (Breaking Backwards Compatibility).</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: const idKey = Symbol("user_id");                // إنشاء رمز فريد لا يتكرر أبداً في الذاكرة
-2: const user = { [idKey]: 4091 };                 // استخدام الرمز كمفتاح خاص لا يظهر في حلقات for..in
-3: console.log(user[idKey]); // 4091               // الوصول للقيمة عبر نفس الرمز فقط</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">const id1 = Symbol("userId");                       </span> <span style="color: #64748B;">// إنشاء رمز فريد للمعرف</span>
+<span style="color: #F8FAFC;">const id2 = Symbol("userId");                       </span> <span style="color: #64748B;">// إنشاء رمز فريد آخر بنفس الوصف</span>
+<span style="color: #F8FAFC;">console.log(id1 === id2); // false                  </span> <span style="color: #64748B;">// كل رمز فريد تماماً في الذاكرة</span>
+<span style="color: #F8FAFC;">const user = {                                      </span> <span style="color: #64748B;">// إنشاء كائن مستخدم</span>
+<span style="color: #F8FAFC;">  name: "Sarah",                                    </span> <span style="color: #64748B;">// خاصية عادية قابلة للتكرار</span>
+<span style="color: #F8FAFC;">  [id1]: "USR-9921"                                 </span> <span style="color: #64748B;">// خاصية سرية باستخدام الرمز كمفتاح</span>
+<span style="color: #F8FAFC;">};                                                  </span> <span style="color: #64748B;">// نهاية الكائن</span>
+<span style="color: #F8FAFC;">console.log(Object.keys(user)); // ["name"]         </span> <span style="color: #64748B;">// خصائص Symbols لا تظهر في الحلقات العادية</span>
+<span style="color: #F8FAFC;">const bigValue = 9007199254740993n;                 </span> <span style="color: #64748B;">// تعريف BigInt بإضافة حرف n في النهاية</span>
+<span style="color: #F8FAFC;">const sum = bigValue + 100n;                        </span> <span style="color: #64748B;">// العمليات الحسابية مع BigInt تتطلب أطراف BigInt فقط</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>if (userId == false) { /* ثغرة أمنية إذا كان userId هو 0 */ }</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ فادح: استخدام parseInt بدون تحديد الـ Radix ومقارنة القيم بـ ==
+const input = "08";
+const num = parseInt(input); // في بعض البيئات القديمة قد يعامل كـ Octal
+if (num == false) { /* Coercion غير متوقع */ }</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>if (userId === false) { /* فحص دقيق للنوع والقيمة معاً */ }</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي الصارم
+const input = "08";
+const num = Number.parseInt(input, 10); // تحديد Base-10 صراحة
+if (Number.isNaN(num)) {
+  throw new TypeError("Invalid numerical input");
+}
+if (num === 0) { /* مقارنة صارمة للنوع والقيمة */ }</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> المقارنة الرخوة == تعتبر 0 مساوياً لـ false مما يسبب أخطاء منطقية قاتلة عند التعامل مع معرفات أو كميات رقمية.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> استخدام عوامل المقارنة المتساهلة == يجبر المحرك على تطبيق قواعد Coercion معقدة قد تؤدي لتحويل الصفر والنصوص الفارغة إلى false، بينما === تضمن التحقق الصارم من تطابق النوع والقيمة في خطوة واحدة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="js-types-operatorsCheckpoint" data-quiz-id="js-types-operators-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "What is the evaluation of `[] + []` in JavaScript?",
-    "qAr": "ما هي نتيجة تقييم `[] + []` في جافاسكربت؟",
+    "q": "Which of the following is NOT a JavaScript primitive data type?",
+    "qAr": "أي من الخيارات التالية لا يعتبر نوعاً بدائياً (Primitive Type) في جافاسكريبت؟",
     "options": [
-      "\"\" (Empty String)",
-      "[]",
-      "undefined",
-      "NaN"
+      "Array",
+      "Symbol",
+      "BigInt",
+      "Undefined"
     ],
     "correct": 0,
-    "why": "The plus operator converts both arrays to primitives via toString(), producing two empty strings joined as \"\".",
-    "whyAr": "المعامل + يحول المصفوفتين إلى نصوص أولية عبر toString() فتصبح سلسلتين فارغتين مدموجتين \"\"."
+    "why": "Arrays are objects (reference types) stored in heap memory, whereas Symbol, BigInt, and Undefined are primitives.",
+    "whyAr": "المصفوفات هي كائنات (Reference Types) تُخزن في الـ Heap، بينما Symbol و BigInt و Undefined هي أنواع بدائية."
+  },
+  {
+    "q": "How should you reliably check if a variable x is strictly NaN in modern JavaScript?",
+    "qAr": "كيف يمكنك التحقق بشكل موثوق مما إذا كانت القيمة x هي NaN في جافاسكريبت الحديثة؟",
+    "options": [
+      "Number.isNaN(x)",
+      "x === NaN",
+      "typeof x === \"nan\"",
+      "x.isNaN()"
+    ],
+    "correct": 0,
+    "why": "NaN is the only value in JavaScript that is not equal to itself (NaN === NaN is false). Number.isNaN(x) safely checks without coercion.",
+    "whyAr": "قيمة NaN هي القيمة الوحيدة في جافاسكريبت التي لا تساوي نفسها؛ لذلك يُستخدم Number.isNaN(x) للتحقق الموثوق."
+  },
+  {
+    "q": "What happens when you mix a BigInt with a standard Number in an arithmetic operation like 10n + 5?",
+    "qAr": "ماذا يحدث عند خلط BigInt مع Number عادي في عملية حسابية مثل 10n + 5؟",
+    "options": [
+      "A TypeError is thrown to prevent implicit precision loss.",
+      "The result automatically becomes a BigInt (15n).",
+      "The result automatically becomes a Number (15).",
+      "It concatenates them as strings (\"105\")."
+    ],
+    "correct": 0,
+    "why": "JavaScript prohibits implicit coercion between BigInt and Number to avoid silent precision errors; an explicit TypeError is thrown.",
+    "whyAr": "جافاسكريبت تمنع التحويل التلقائي بين BigInt و Number لتفادي فقدان الدقة وترمي خطأ TypeError صريحاً."
+  },
+  {
+    "q": "What is the return value of Symbol(\"app\") === Symbol(\"app\")?",
+    "qAr": "ما هي نتيجة المقارنة Symbol(\"app\") === Symbol(\"app\")؟",
+    "options": [
+      "false",
+      "true",
+      "TypeError",
+      "undefined"
+    ],
+    "correct": 0,
+    "why": "Every call to Symbol() generates a unique memory token, even if identical description strings are provided.",
+    "whyAr": "كل استدعاء لدالة Symbol() ينشئ رمزاً فريداً ومستقلاً تماماً في الذاكرة حتى لو تساوى الوصف."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Type Safety & Core Engine</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #F59E0B; font-size: 1.05rem; margin-bottom: 4px;">Type System & Coercion Rules</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">ECMAScript 2024</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">ES2024+ Standard</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هو الفرق الدقيق بين null و undefined في إدارة الذاكرة والتطوير العملي؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">الـ undefined تعني أن المتغير تم الإعلان عنه وحجز مكان له في الذاكرة لكن لم تُسند له أي قيمة بعد (الحالة الافتراضية للمحرك). بينما null هي قيمة مقصودة يُسندها المبرمج عمداً ليعبر عن "غياب متعمد للقيمة أو الكائن".</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: اشرح بالتفصيل كيف تنفذ خوارزمية Abstract Equality Comparison (==) المقارنة بين كائن وقيمة بدائية؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">عند مقارنة كائن بقيمة بدائية (مثل [1] == 1)، تطبق جافاسكريبت خوارزمية ToPrimitive على الكائن. تبحث أولاً عن ميثود [Symbol.toPrimitive](hint). إذا لم تكن موجودة، تستدعي valueOf()، وإذا لم ترجع قيمة بدائية، تستدعي toString(). في حالة [1]، ترجع toString() النص "1"، ثم تقارن "1" == 1، فتحول النص إلى رقم (1 == 1) فتكون النتيجة true! لتجنب هذا التعقيد غير المتوقع، يُنصح دائماً باستخدام ===.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-foundations" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #F59E0B; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

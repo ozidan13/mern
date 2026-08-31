@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="fs-promises">
+  <meta name="fsa-level" content="1">
+  <meta name="fsa-order" content="4">
+  <meta name="fsa-title" content="File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="Node.js 24 fs/promises">
+  <meta name="fsa-pattern-label" content="Non-blocking I/O & Atomic File Operations">
+  <meta name="fsa-root" content="../../">
+
+  <title>File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #84CC16;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Node.js 24 · محرك الباك إند عالي الأداء</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #84CC16;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-nodejs" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-nodejs">nodejs</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">fs-promises</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #84CC16; color: #000; font-weight: 800;">NODEJS</span>
+            <span class="fsa-badge fsa-badge--info">Level 1</span>
+            <span class="fsa-badge fsa-badge--success">Node.js 24 fs/promises</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">نظام الملفات fs/promises: عمليات الإدخال والإخراج اللاتزامنية والكتابة الذرية الآمنة (Atomic Writes)</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #84CC16; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>التمييز الصارم بين دوال fs المتزامنة (Sync: تحظر الـ Event Loop) واللاتزامنية (fs/promises).</li>
+              <li>تطبيق مبدأ الكتابة الذرية للملفات (Atomic File Writes) لمنع تلف البيانات وتفريغ الملفات عند انقطاع الكهرباء.</li>
+              <li>إدارة أذونات الملفات (File Permissions & POSIX Modes) والمجلدات التكرارية recursive mkdir.</li>
+              <li>استخدام FileHandle لإدارة تدفقات الملفات الكبيرة وإغلاق الموارد بأمان.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في خادم Node.js يستقبل 2000 طلب في الثانية، تخيل أن هناك مطوراً كتب داخل مسار تسجيل المستخدمين:
+      <code dir="ltr">fs.writeFileSync('users.json', JSON.stringify(users))</code>!
+      ماذا يحدث للسيرفر في هذه اللحظة؟
+      دالة <code dir="ltr">writeFileSync</code> تحظر خيط التنفيذ الرئيسي بالكامل (Blocking the Event Loop) حتى ينتهي القرص الصلب الميكانيكي أو الـ SSD من كتابة الملف. خلال هذه الميلي ثواني، لن يستطيع السيرفر الرد على أي مستخدم آخر، وسترتفع مؤشرات الـ Latency إلى السماء!
+      الكارثة الأكبر هي تلف الملفات (Data Corruption): لو انقطع التيار الكهربائي أو توقف الخادم في منتصف عملية الكتابة، سيتحول الملف إلى ملف تالف بحجم 0 بايت وتفقد كل بيانات المستخدمين للأبد!
+      الحل المعماري هو الانتقال الكامل إلى **fs/promises** واستخدام تقنية **الكتابة الذرية (Atomic File Writes)** عبر كتابة ملف مؤقت ثم استبداله بـ <code dir="ltr">fs.rename()</code> في عملية POSIX ذرية لا تقبل التجزئة.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التفويض لمكتبة libuv Thread Pool</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                عمليات fs/promises لا تحظر الـ Event Loop؛ بل تفوض العمليات الثقيلة لـ 4 خيوط عمل داخلية في libuv.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إنشاء المجلدات التكرارية الآمنة (mkdir with recursive)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام await fs.mkdir(dirPath, { recursive: true }) لإنشاء شجرة المجلدات المتداخلة دون الحاجة لفحص وجودها مسبقاً.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">استراتيجية الكتابة الذرية (Atomic Write Pattern)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                كتابة البيانات في ملف مؤقت .tmp.json ثم استخدام await fs.rename() لاستبدال الملف الأصلي فورياً في عملية ذرية مدعومة بنظام التشغيل.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إدارة مؤشرات الملفات عبر FileHandle</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فتح الملف بـ fs.open() والحصول على FileHandle للقراءة أو الكتابة المجزأة، مع ضمان إغلاقه دائماً بـ handle.close() داخل كتلة finally.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مراقبة تغييرات الملفات (File Watchers)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام fs.watch() مع معالجة أحداث التعديل والحذف لمراقبة ملفات الإعدادات وتحديثها في الذاكرة تلقائياً.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes Architecture Flow Diagram">
+              <title>File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-fs-promises" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#84CC16" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#84CC16" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#84CC16" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-fs-promises)" stroke="#84CC16" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#84CC16" font-size="14" font-weight="800">Non-blocking I/O & Atomic File Operations</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="fs-promisesPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Node.js 24 Runtime & API Tester</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #84CC16; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي استراتيجية الكتابة الذرية الآمنة للملفات
+class SafeJsonStore {
+  constructor(filePath) { this.filePath = filePath; this.storage = new Map(); }
+
+  async atomicWrite(data) {
+    const tempPath = `${this.filePath}.tmp.${Date.now()}`;
+    console.log(`1. Writing data safely to temporary file: [${tempPath}]`);
+    this.storage.set(tempPath, JSON.stringify(data));
+
+    console.log(`2. Renaming temporary file to target: [${this.filePath}] (Atomic Operation)`);
+    const content = this.storage.get(tempPath);
+    this.storage.set(this.filePath, content);
+    this.storage.delete(tempPath);
+    console.log("✅ File written atomically with zero corruption risk!");
+  }
+}
+
+const store = new SafeJsonStore("/data/users.json");
+await store.atomicWrite({ totalUsers: 1420, activeSession: "ADMIN_ROOT" });</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يعتبر فحص وجود الملف بـ fs.access() قبل محاولة قراءته بـ fs.readFile() نمطاً سيئاً (Race Condition Anti-Pattern)؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #84CC16;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">هذا ما يعرف هندسياً بـ Time-of-Check to Time-of-Use (TOCTOU Race Condition). بين لحظة فحص وجود الملف بـ fs.access ولحظة استدعاء fs.readFile، قد تقوم عملية أخرى في نظام التشغيل بحذف الملف أو تعديل أذوناته! الحل السليم هو محاولة قراءة الملف مباشرة والتقاط خطأ ENOENT داخل كتلة try/catch.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">import fs from "node:fs/promises";                  </span> <span style="color: #64748B;">// استيراد واجهة الوعود اللاتزامنية الأصلية</span>
+<span style="color: #F8FAFC;">import path from "node:path";                       </span> <span style="color: #64748B;">// وحدة معالجة المسارات</span>
+<span style="color: #F8FAFC;">export async function saveConfigAtomically(filePath, data) {</span> <span style="color: #64748B;">// دالة الكتابة الذرية</span>
+<span style="color: #F8FAFC;">  const dir = path.dirname(filePath);               </span> <span style="color: #64748B;">// استخراج مسار المجلد</span>
+<span style="color: #F8FAFC;">  await fs.mkdir(dir, { recursive: true });         </span> <span style="color: #64748B;">// ضمان وجود المجلدات المتداخلة</span>
+<span style="color: #F8FAFC;">  const tempFile = `${filePath}.tmp.${Date.now()}`; </span> <span style="color: #64748B;">// مسار الملف المؤقت</span>
+<span style="color: #F8FAFC;">  await fs.writeFile(tempFile, JSON.stringify(data, null, 2), "utf-8");</span> <span style="color: #64748B;">// كتابة البيانات في الملف المؤقت</span>
+<span style="color: #F8FAFC;">  await fs.rename(tempFile, filePath);              </span> <span style="color: #64748B;">// استبدال ذري POSIX مضمون بنسبة 100%</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الدالة</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ كارثي في خوادم الإنتاج: استخدام الدوال المتزامنة في المسارات
+app.get("/data", (req, res) =&gt; {
+  const file = fs.readFileSync("./large-database.json"); // يوقف السيرفر بالكامل عن استقبال اتصالات جديدة!
+  res.send(file);
+});</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: استخدام fs/promises اللاتزامني بالكامل
+app.get("/data", async (req, res) =&gt; {
+  const file = await fs.readFile("./large-database.json", "utf-8"); // غير حاجب للـ Event Loop
+  res.send(file);
+});</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> استخدام readFileSync أو writeFileSync يحظر الخيط الرئيسي في Node.js ويشل قدرة الخادم على معالجة الطلبات المتزامنة الأخرى، مما يرفع زمن الـ Response Time لثوانٍ معدودة.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="fs-promisesCheckpoint" data-quiz-id="fs-promises-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "Why should you avoid using synchronous fs methods (e.g. fs.readFileSync) in a production web server?",
+    "qAr": "لماذا يجب تجنب استخدام دوال fs المتزامنة (مثل readFileSync) داخل خوادم الويب الإنتاجية؟",
+    "options": [
+      "They block the single JavaScript Event Loop thread, freezing the server for all concurrent user requests during disk I/O.",
+      "They are not supported on Linux operating systems.",
+      "They consume more internet bandwidth.",
+      "They automatically delete files after reading."
+    ],
+    "correct": 0,
+    "why": "Synchronous I/O halts the entire Node.js main thread until the disk returns data, creating catastrophic latency spikes.",
+    "whyAr": "العمليات المتزامنة تحظر الخيط الرئيسي الوحيد لـ Node.js بالكامل وتجمد الخادم عن الرد على أي طلبات أخرى أثناء قراءة القرص."
+  },
+  {
+    "q": "What is the primary guarantee provided by the Atomic File Write pattern (Write Temp -> fs.rename)?",
+    "qAr": "ما هو الضمان الأساسي الذي يوفره نمط الكتابة الذرية (كتابة مؤقتة ثم fs.rename)؟",
+    "options": [
+      "Prevents file corruption and zero-byte files if the process crashes midway through writing.",
+      "Encrypts file data using AES-256 automatically.",
+      "Compresses the file size on disk.",
+      "Bypasses disk space limits."
+    ],
+    "correct": 0,
+    "why": "fs.rename is an atomic filesystem operation on POSIX systems; if writing fails midway, the original file remains completely intact and uncorrupted.",
+    "whyAr": "عملية rename ذرية ولا تقبل التجزئة؛ إذا تعطل الخادم أثناء الكتابة، يظل الملف الأصلي سليماً تماماً ولا يتلف."
+  },
+  {
+    "q": "Which error code is thrown by fs.promises.readFile when attempting to open a non-existent file path?",
+    "qAr": "ما هو كود الخطأ الذي ترميه fs.promises.readFile عند محاولة قراءة ملف غير موجود في المسار؟",
+    "options": [
+      "ENOENT (Error No Entry)",
+      "EACCES (Permission Denied)",
+      "EISDIR (Is a Directory)",
+      "EBUSY (Device Busy)"
+    ],
+    "correct": 0,
+    "why": "ENOENT is the standard POSIX error indicating that no such file or directory exists at the specified target path.",
+    "whyAr": "كود ENOENT هو الخطأ القياسي الذي يشير إلى عدم وجود ملف أو مجلد في المسار المستهدف المحدد."
+  },
+  {
+    "q": "How should you safely manage FileHandle instances obtained via fs.promises.open()?",
+    "qAr": "كيف يجب إدارة كائنات FileHandle التي تم الحصول عليها عبر fs.promises.open() بأمان؟",
+    "options": [
+      "Always invoke handle.close() within a finally block to guarantee system file descriptors are released.",
+      "Leave them open for faster memory access.",
+      "Delete the handle variable with delete keyword.",
+      "FileHandles close automatically after 5 seconds."
+    ],
+    "correct": 0,
+    "why": "Unclosed FileHandles leak Operating System file descriptors, eventually causing EMFILE (Too many open files) crashes.",
+    "whyAr": "عدم إغلاق الـ FileHandles يسبب تسريب واصفات الملفات في نظام التشغيل ويؤدي لانهيار الخادم بخطأ EMFILE."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #84CC16; font-size: 1.05rem; margin-bottom: 4px;">Non-blocking I/O & Atomic File Operations</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Node.js 24 fs/promises</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هو الفرق بين قراءة ملف بحجم 2GB بـ fs.readFile وبين قراءته عبر fs.createReadStream وماذا يحدث للـ RAM في الحالتين؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">دالة fs.readFile تحاول تحميل محتوى الملف بالكامل (2GB) دفعة واحدة داخل ذاكرة الـ RAM المخصصة لـ V8 Heap Memory، مما يؤدي لتجاوز حد الذاكرة الافتراضي (Old Space Limit) وانهيار الخادم فوراً بخطأ JavaScript heap out of memory! أما fs.createReadStream فتقوم بقراءة الملف على أجزاء صغيرة (Chunks بحجم 64KB افتراضياً)، وتمريرها في خط أنابيب (Pipeline) دون أن يتجاوز استهلاك الذاكرة أكثر من بضعة ميجابايتات مهما كان حجم الملف ضخماً.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-nodejs" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #84CC16; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

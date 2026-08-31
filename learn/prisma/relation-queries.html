@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="prisma">
+  <meta name="fsa-lesson" content="relation-queries">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="8">
+  <meta name="fsa-title" content="Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="Prisma 7 Relations">
+  <meta name="fsa-pattern-label" content="Relational Graph Traversal & Atomic Nested Mutations">
+  <meta name="fsa-root" content="../../">
+
+  <title>Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #818CF8;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Prisma 7 · هندسة البيانات Type-Safe</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #818CF8;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-prisma" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-prisma">prisma</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">relation-queries</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #818CF8; color: #000; font-weight: 800;">PRISMA</span>
+            <span class="fsa-badge fsa-badge--info">Level 2</span>
+            <span class="fsa-badge fsa-badge--success">Prisma 7 Relations</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">الاستعلامات العلائقية: الكتابة المتداخلة (Nested Writes)، واجهة Fluent API والفلترة العميقة</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #818CF8; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>إتقان علاقات 1-to-1, 1-to-Many, و Many-to-Many الصريحة والضمنية (Implicit vs Explicit Many-to-Many).</li>
+              <li>تطبيق عمليات الكتابة المتداخلة الذرية (Nested Writes: create, connect, connectOrCreate, disconnect).</li>
+              <li>فهم الفرق الجوهري بين include و select في جلب العلاقات وتفادي استهلاك الذاكرة.</li>
+              <li>تصفية وفرز السجلات بناءً على علاقاتها الفرعية (Filtering on Relations بـ some, every, none).</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في أطر العمل التقليدية، لإنشاء مستخدم جديد ومعه مقال جديد وثلاثة وسوم (Tags) في خطوة واحدة، كنت تضطر لكتابة 4 استعلامات SQL منفصلة وربط الـ IDs يدوياً وإدارتها داخل Transaction معقدة!
+      **Prisma Nested Writes** أحدثت نقلة نوعية في تجربة المطور:
+      تتيح لك إنشاء المستخدم، ومقالاته، وربطه بوسوم موجودة بالفعل بـ <code dir="ltr">connect</code>، وإنشاء وسوم غير موجودة بـ <code dir="ltr">connectOrCreate</code>، كل ذلك في استدعاء دالة واحدة فائقة الأناقة والجمال، ويقوم Prisma بتنفيذها تلقائياً داخل **ACID Transaction** ذرية خلف الكواليس!
+      بالإضافة إلى ذلك، توفر ميزة **Relation Filters** القدرة على كتابة استعلامات مذهلة مثل:
+      "هات لي كل المستخدمين الذين يملكون على الأقل مقالاً واحداً منشوراَ (<code dir="ltr">some: { isPublished: true }</code>) ولا يملكون أي تعليقات محظورة (<code dir="ltr">none: { isBanned: true }</code>)"!
+      في هذا الدرس، هنفكك المعمارية العلائقية في Prisma، وهنتعلم إزاي نبني علاقات Many-to-Many احترافية.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">العلاقات المتعددة الضمنية (Implicit Many-to-Many)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تعريف علاقات متعددة إلى متعددة دون الحاجة لإنشاء جدول وسيط يدوياً؛ يقوم Prisma بإنشاء وإدارة جدول الربط _PostToTag تلقائياً.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الكتابة المتداخلة الذرية (Nested Writes)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إنشاء المستند الرئيسي ومستنداته التابعة في عملية واحدة create: { posts: { create: [...] } } داخل معاملة ذرية موحدة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الربط الذكي بـ connect و connectOrCreate</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                ربط السجل بكيان موجود مسبقاً عبر مفتاحه الفريد، أو إنشاؤه تلقائياً إذا لم يكن موجوداً.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التصفية العلائقية العميقة بـ some, every, none</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فحص شروط العلاقات الفرعية: some (تحقق شرط واحد على الأقل)، every (انطباق الشرط على الجميع)، none (عدم وجود أي تطابق).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #818CF8; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التنقل بالسلاسل عبر Fluent API</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الوصول للعلاقات الفردية بأسلوب السلاسل المباشر prisma.user.findUnique({ where }).profile().settings() بسرعة فائقة.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations Architecture Flow Diagram">
+              <title>Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-relation-queries" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#818CF8" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#818CF8" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#818CF8" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-relation-queries)" stroke="#818CF8" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#818CF8" font-size="14" font-weight="800">Relational Graph Traversal & Atomic Nested Mutations</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="relation-queriesPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #818CF8; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي عمليات الكتابة المتداخلة (Nested Writes) في Prisma
+const mockDb = { users: [], posts: [], tags: new Map([["tech", { id: "t1", name: "tech" }]]) };
+
+function mockCreateUserWithPost(email, postTitle, tagName) {
+  console.log("1. Starting Atomic Transaction for Nested Write...");
+  
+  // إنشاء المستخدم
+  const user = { id: `u_${Date.now()}`, email };
+  mockDb.users.push(user);
+  
+  // connectOrCreate للوسم
+  let tag = mockDb.tags.get(tagName);
+  if (!tag) {
+    tag = { id: `t_${Date.now()}`, name: tagName };
+    mockDb.tags.set(tagName, tag);
+    console.log(`📦 Created new Tag via connectOrCreate: [${tagName}]`);
+  } else {
+    console.log(`🔗 Connected to existing Tag: [${tagName}]`);
+  }
+
+  // إنشاء المنشور المرتبط
+  const post = { id: `p_${Date.now()}`, title: postTitle, authorId: user.id, tagId: tag.id };
+  mockDb.posts.push(post);
+
+  console.log("✅ Nested Write completed atomically across 3 tables!");
+  return { user, post, tag };
+}
+
+mockCreateUserWithPost("sara@codehub.dev", "Prisma 7 Architecture", "tech");</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا لا يسمح لك Prisma Client باستخدام خاصيتي "select" و "include" معاً في نفس مستوى الاستعلام؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #818CF8;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">لأن select تحدد بدقة الأعمدة التي يجب إرجاعها (Explicit Projection)، بينما include تجلب جميع أعمدة الجدول الرئيسي وتضيف إليها العلاقات المحددة. الجمع بينهما يخلق تناقضاً منطقياً في الـ Type Inference الخاص بـ TypeScript! الحل إذا أردت جلب حقول معينة مع علاقات فرعية هو وضع العلاقات داخل select نفسها: select: { id: true, posts: { select: { title: true } } }.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">await prisma.user.create({                          </span> <span style="color: #64748B;">// إنشاء مستخدم مع علاقات متداخلة</span>
+<span style="color: #F8FAFC;">  data: {                                           </span> <span style="color: #64748B;">// بيانات السجل</span>
+<span style="color: #F8FAFC;">    email: "sarah@codehub.dev",                     </span> <span style="color: #64748B;">// بريد المستخدم</span>
+<span style="color: #F8FAFC;">    profile: { create: { bio: "Senior Backend Engineer" } }, // 1-to-1</span> <span style="color: #64748B;">// إنشاء الملف الشخصي</span>
+<span style="color: #F8FAFC;">    posts: {                                        </span> <span style="color: #64748B;">// 1-to-Many</span>
+<span style="color: #F8FAFC;">      create: [{                                    </span> <span style="color: #64748B;">// إنشاء مقال متداخل</span>
+<span style="color: #F8FAFC;">        title: "Mastering Prisma 7",                </span> <span style="color: #64748B;">// عنوان المقال</span>
+<span style="color: #F8FAFC;">        tags: {                                     </span> <span style="color: #64748B;">// Many-to-Many</span>
+<span style="color: #F8FAFC;">          connectOrCreate: {                        </span> <span style="color: #64748B;">// الربط أو الإنشاء الذري للوسم</span>
+<span style="color: #F8FAFC;">            where: { slug: "database" },            </span> <span style="color: #64748B;">// شرط البحث الفريد</span>
+<span style="color: #F8FAFC;">            create: { name: "Database", slug: "database" }</span> <span style="color: #64748B;">// بيانات الإنشاء عند الغياب</span>
+<span style="color: #F8FAFC;">          }                                         </span> <span style="color: #64748B;">// نهاية connectOrCreate</span>
+<span style="color: #F8FAFC;">        }                                           </span> <span style="color: #64748B;">// نهاية الوسوم</span>
+<span style="color: #F8FAFC;">      }]                                            </span> <span style="color: #64748B;">// نهاية المقالات</span>
+<span style="color: #F8FAFC;">    }                                               </span> <span style="color: #64748B;">// نهاية المنشورات</span>
+<span style="color: #F8FAFC;">  }                                                 </span> <span style="color: #64748B;">// نهاية البيانات</span>
+<span style="color: #F8FAFC;">});                                                 </span> <span style="color: #64748B;">// نهاية الاستعلام الذري</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: محاولة دمج select و include في نفس المستوى
+await prisma.user.findMany({
+  select: { id: true, email: true },
+  include: { posts: true } // خطأ TypeScript: Cannot use both 'select' and 'include' at the same level!
+});</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الصحيح: تضمين العلاقات داخل select مباشرة
+await prisma.user.findMany({
+  select: {
+    id: true,
+    email: true,
+    posts: { select: { id: true, title: true } } // Type-Safe Nested Select
+  }
+});</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> الجمع بين select و include يسبب تعارضاً في تحديد شكل الكائن، واستخدام Nested Select يوفر أعلى درجات النقاء والدقة.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="relation-queriesCheckpoint" data-quiz-id="relation-queries-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "What is the atomic behavior of Prisma Nested Writes (e.g. creating a user and their posts in one mutation)?",
+    "qAr": "ما هو السلوك الذري لعمليات الكتابة المتداخلة (Nested Writes) في Prisma؟",
+    "options": [
+      "Executes all nested operations inside a single automatic ACID transaction; if any sub-operation fails, the entire mutation rolls back.",
+      "Executes operations in parallel without transaction protection.",
+      "Saves data to a temporary file.",
+      "Deletes existing records first."
+    ],
+    "correct": 0,
+    "why": "Nested writes automatically wrap operations in a database transaction, guaranteeing all-or-nothing atomicity.",
+    "whyAr": "تغلف كافة العمليات المتداخلة تلقائياً داخل معاملة ACID موحدة تضمن التراجع الكامل في حال فشل أي عملية فرعية."
+  },
+  {
+    "q": "How does the \"connectOrCreate\" nested mutation operator function in Prisma?",
+    "qAr": "كيف يعمل مشغل \"connectOrCreate\" في عمليات الكتابة المتداخلة بـ Prisma؟",
+    "options": [
+      "Attempts to find and link an existing record matching a unique condition; if not found, inserts a new record with the create payload.",
+      "Deletes the record if it exists.",
+      "Throws an error if the record already exists.",
+      "Creates a duplicate copy of the record."
+    ],
+    "correct": 0,
+    "why": "connectOrCreate provides idempotent relationship linking, seamlessly connecting existing records or generating new ones.",
+    "whyAr": "يوفر ربطاً آمناً: يبحث عن السجل لربطه، وإذا لم يجده ينشئه تلقائياً دون تكرار أو أخطاء تعارض."
+  },
+  {
+    "q": "Which relation filter quantifier matches parent records where EVERY related child satisfies a given condition?",
+    "qAr": "أي محدد كمي في الفلاتر العلائقية يطابق السجلات التي تحقق فيها كُل العناصر الفرعية شرطاً محدداً؟",
+    "options": [
+      "every",
+      "some",
+      "none",
+      "all_match"
+    ],
+    "correct": 0,
+    "why": "The `every` quantifier ensures that all related records for a relation satisfy the specified criteria.",
+    "whyAr": "المشغل `every` يضمن انطباق الشرط المحدد على جميع السجلات المرتبطة بلا استثناء."
+  },
+  {
+    "q": "What is an Implicit Many-to-Many relation in Prisma Schema?",
+    "qAr": "ما هي العلاقة المتعددة إلى متعددة الضمنية (Implicit Many-to-Many) في Prisma؟",
+    "options": [
+      "A many-to-many relationship where Prisma automatically manages the underlying join table without requiring an explicit join model.",
+      "A relation without foreign keys.",
+      "A relation between different databases.",
+      "A relation that expires after 24 hours."
+    ],
+    "correct": 0,
+    "why": "Implicit relations let Prisma handle join table schema generation and maintenance behind the scenes automatically.",
+    "whyAr": "علاقة تدير فيها Prisma جدول الربط الوسيط تلقائياً في قاعدة البيانات دون الحاجة لتعريف نموذج وسيط يدوي."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #818CF8; font-size: 1.05rem; margin-bottom: 4px;">Relational Graph Traversal & Atomic Nested Mutations</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Prisma 7 Relations</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: متى يجب عليك التخلي عن Implicit Many-to-Many والتحول إلى Explicit Many-to-Many مع نموذج وسيط مخصص في Prisma؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">الـ Implicit Many-to-Many ممتازة عندما لا تحتاج لتخزين أي بيانات إضافية في علاقة الربط سوى الـ Foreign Keys (مثل User و Tag). لكن عندما يتطلب نظامك تخزين بيانات وصفية على العلاقة نفسها (مثل: تاريخ انضمام العضو للمجموعة role: "admin", joinedAt: DateTime, assignedBy: String داخل نموذج UserGroup)، يصبح إنشاء Explicit Join Model أمراً حتمياً لتتمكن من الوصول لهذه الحقول الإضافية وتعديلها.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-prisma" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #818CF8; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

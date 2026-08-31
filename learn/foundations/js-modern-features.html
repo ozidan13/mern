@@ -5,22 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="fsa-track" content="foundations">
   <meta name="fsa-lesson" content="js-modern-features">
-  <meta name="fsa-level" content="2">
+  <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="16">
-  <meta name="fsa-title" content="Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal">
-  <meta name="fsa-est-minutes" content="22">
-  <meta name="fsa-teaches-version" content="ES2024 Standard">
-  <meta name="fsa-pattern-label" content="Modern Language Features">
+  <meta name="fsa-title" content="Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="ES2024+ / ESNext">
+  <meta name="fsa-pattern-label" content="Modern Language Features & Memory Management">
   <meta name="fsa-root" content="../../">
 
-  <title>Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal · CodeHub Interactive</title>
+  <title>Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #F59E0B;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Foundations · الأساسيات الصلبة</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #F59E0B;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-foundations" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,287 +97,344 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">foundations</a>
+            <a href="../../index.html#track-foundations">foundations</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">js-modern-features</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">FOUNDATIONS</span>
-            <span class="fsa-badge fsa-badge--info">Level 2</span>
-            <span class="fsa-badge fsa-badge--success">ES2024 Standard</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 22 دقيقة تفاعلية</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #F59E0B; color: #000; font-weight: 800;">FOUNDATIONS</span>
+            <span class="fsa-badge fsa-badge--info">Level 1</span>
+            <span class="fsa-badge fsa-badge--success">ES2024+ / ESNext</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">جافاسكربت الحديثة: الروابط الاختيارية، دمج الـ Null والذاكرة الضعيفة</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">جافاسكريبت الحديثة (ES2020–ES2026+): Nullish Coalescing، الروابط الضعيفة WeakRefs والزمن بـ Temporal</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>استخدام الروابط الاختيارية Optional Chaining (?.) في قراءة الكائنات واستدعاء الدوال والمصفوفات بأمان.</li>
-              <li>التمييز الصارم بين المعامل المنطقي (||) ومعامل الـ Nullish Coalescing (??).</li>
-              <li>فهم إدارة الذاكرة المتقدمة باستخدام WeakMap و WeakSet والـ Structured Clone.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #F59E0B; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>استخدام Nullish Coalescing (??) و Optional Chaining (?.) لتفادي أخطاء Falsy Values و TypeErrors.</li>
+              <li>إدارة الذاكرة وتحسين الأداء باستخدام WeakMap و WeakSet و WeakRef لمنع تسريبات الذاكرة (Memory Leaks).</li>
+              <li>فهم واجهة التاريخ والوقت الحديثة Temporal API كبديل متفوق لمشاكل Date القديمة.</li>
+              <li>تطبيق ميزات ES2023+ مثل Array.prototype.with و Object.groupBy و Promise.withResolvers.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              قبل معايير ECMAScript الحديثة، عشان تقرأ خاصية متداخلة داخل كائن عميق كنت بتضطر تكتب سطر معقد زي <code dir="ltr">user &amp;&amp; user.profile &amp;&amp; user.profile.address &amp;&amp; user.profile.address.city</code> عشان تتجنب الخطأ الشهير <code dir="ltr">Cannot read properties of undefined</code>! المعايير الحديثة قدمت حلولاً جذرية زي الـ Optional Chaining (<code dir="ltr">?.</code>) والـ Nullish Coalescing (<code dir="ltr">??</code>) اللي بيفرق بدقة بين الـ null/undefined وبين القيم الصحيحة زي الصفر والـ false.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">لغة جافاسكريبت تتطور بسرعة هائلة كل عام عبر مقترحات لجنة TC39. الميزات التي كانت تتطلب مكتبات خارجية ضخمة مثل Moment.js لإدارة التواريخ أو Lodash للتنقل في الكائنات المعقدة أصبحت الآن مدمجة في صلب المحرك وبأعلى أداء ممكن.
+      كم مرة كتبت كود للتحقق من قيمة افتراضية مثل <code dir="ltr">const port = process.env.PORT || 3000</code> وتفاجأت بمشكلة لما القيمة كانت <code dir="ltr">0</code> أو <code dir="ltr">false</code> أو <code dir="ltr">""</code> لأن عامل <code dir="ltr">||</code> يعتبرها Falsy؟
+      أو كم مرة واجهت تسريب ذاكرة (Memory Leak) في خادمك لأنك خزنت كائنات DOM أو بيانات جلسات مستخدمين في Map عادية منعت جامع القمامة (Garbage Collector) من حذفها؟
+      في هذا الدرس الختامي لمسار الأساسيات، هنستكشف أحدث وأقوى ميزات جافاسكريبت الحديثة (ES2020 حتى ES2026+)، وهنتعلم إزاي نكتب كود نظيف، عصري، فائق السرعة، ومحمي ضد تسريبات الذاكرة.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الربط الاختياري الآمن (?.)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                إيقاف تقييم التعبير فوراً وإرجاع undefined إذا كانت القيمة السابقة له null أو undefined.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التحقق الآمن بـ Optional Chaining (?.)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                قراءة الخصائص واستدعاء الدوال المتداخلة بأمان user?.profile?.getAddress?.() بدون التسبب في TypeError إذا كانت أي حلقة undefined أو null.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الدمج مع القيم الفارغة (??)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                إرجاع القيمة البديلة فقط إذا كانت القيمة الأولى null أو undefined (دون استبعاد 0 أو false أو السلسلة الفارغة).
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">القيم الافتراضية الدقيقة بـ Nullish Coalescing (??)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                التعامل مع null و undefined فقط كقيم مفقودة، مع الحفاظ على القيم الصالحة مثل 0 و false و "" دون استبدالها بالقيمة الافتراضية.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الاستنساخ العميق (structuredClone)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                الدالة المدمجة الأصلية في المتصفحات لعمل Deep Clone للكائنات مع الحفاظ على الأنواع الدقيقة وتجنب مراجع الذاكرة.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إدارة الذاكرة المعزولة بـ WeakMap و WeakRef</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الروابط الضعيفة تسمح لمجمع القمامة (Garbage Collector) بحذف الكائنات عند زوال مراجعها الأخرى، مما يمنع تسريبات الذاكرة في أنظمة الـ Caching.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">ثورة إدارة التواريخ بـ Temporal API</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                واجهة Temporal الحديثة توفر كائنات غير قابلة للتعديل تدعم المناطق الزمنية والتقاويم المختلفة بدقة متناهية وبدون أخطاء كائن Date التاريخية.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الميزات الحديثة: Promise.withResolvers و Object.groupBy</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إنشاء وعود والتحكم في resolve/reject من الخارج مباشرة، وتجميع مصفوفات البيانات بـ Object.groupBy في خطوة واحدة.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="js-modern-featuresStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal Architecture Flow Diagram">
-              <title>Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal Architecture Flow Diagram">
+              <title>Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-js-modern-features" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Modern Language Features</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-js-modern-features)" stroke="#F59E0B" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#F59E0B" font-size="14" font-weight="800">Modern Language Features & Memory Management</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="js-modern-featuresPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #F59E0B; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Modern ES2024 Features in Action
-const apiResponse = {
-  user: {
-    name: "Karim",
-    settings: {
-      itemsPerPage: 0, // Valid setting that equals 0!
-      theme: "dark"
-    }
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي ميزات جافاسكريبت الحديثة
+const serverConfig = {
+  port: 0, // قيمة صفرية صالحة
+  database: {
+    host: "localhost"
   }
 };
 
-// Logical OR (||) bug: treats 0 as falsy!
-const limitWithOr = apiResponse.user.settings.itemsPerPage || 25;
+// مقارنة || مقابل ??
+console.log("With OR (||):", serverConfig.port || 8080);   // 8080 (خطأ: تجاهل الصفر!)
+console.log("With Nullish (??):", serverConfig.port ?? 8080); // 0 (صحيح: احترم الصفر)
 
-// Nullish Coalescing (??) fix: preserves 0!
-const limitWithNullish = apiResponse.user.settings.itemsPerPage ?? 25;
+// Optional Chaining الآمن
+console.log("Db Password:", serverConfig.database?.credentials?.password ?? "No password set");
 
-console.log("Buggy OR result (Wrongly fallback to 25):", limitWithOr);
-console.log("Correct Nullish result (Preserves 0):", limitWithNullish);
-
-// Safe Optional Chaining on missing properties
-console.log("Safe Deep Access:", apiResponse.user?.profile?.address?.zipCode); // undefined (No Crash!)</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+// تجربة Promise.withResolvers (ES2024)
+const { promise, resolve, reject } = Promise.withResolvers();
+promise.then(msg => console.log("Promise Resolved from outside:", msg));
+resolve("Async Success via withResolvers!");</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">لماذا تعتبر دالة structuredClone() أفضل بمراحل من JSON.parse(JSON.stringify(obj)) للاستنساخ العميق؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">لأن structuredClone تدعم نسخ الأنواع المتقدمة كـ Dates و RegExps و Maps و Sets و ArrayBuffers والـ Circular References التي تفشل تماماً وتتحول لبيانات مشوهة مع JSON.stringify.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا لا يمكن تكرار مفاتيح WeakMap باستخدام حلقة for..of أو معرفة عدد عناصرها بـ .size؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #F59E0B;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">لأن مراجع المفاتيح في WeakMap ضعيفة (Weak References). مجمع القمامة (Garbage Collector) قد يقوم بحذف أي مفتاح في أي أجزاء من الألف من الثانية بمجرد زوال مرجعه في التطبيق. ولأن عملية التنظيف غير محددة التوقيت (Non-deterministic)، تمنع مواصفات اللغة تكرار المفاتيح أو حساب عددها لضمان استقرار وسلوك الكود.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: const clonedUser = structuredClone(user);       // استنساخ عميق أصلي 100% دون أي مكتبات خارجية
-2: const port = process.env.PORT ?? 3000;          // تعيين المنفذ الافتراضي فقط إذا كان PORT غير معرف
-3: const callbackResult = config.onComplete?.();   // استدعاء الدالة فقط إذا كانت موجودة ومعرفة</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">const userCity = user?.address?.city ?? "Cairo";    </span> <span style="color: #64748B;">// دمج Optional Chaining مع Nullish Coalescing</span>
+<span style="color: #F8FAFC;">const cache = new WeakMap();                        </span> <span style="color: #64748B;">// تخزين كاش مرتبط بدورة حياة الكائن لتفادي Memory Leaks</span>
+<span style="color: #F8FAFC;">const { promise, resolve } = Promise.withResolvers();</span> <span style="color: #64748B;">// إنشاء Promise مع وحدات تحكم خارجية (ES2024)</span>
+<span style="color: #F8FAFC;">const grouped = Object.groupBy(products, p =&gt; p.category);</span> <span style="color: #64748B;">// تجميع العناصر حسب الفئة أصلياً (ES2024)</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>const score = user.score || 10; /* لو درجة الطالب 0 ستتحول لـ 10 بالخطأ! */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: استخدام || لتحديد قيم افتراضية لخيارات منطقية أو عددية
+function setupTimeout(delay) {
+  const timeout = delay || 1000; // لو مررت 0 سيتم تجاهلها وتطبيق 1000ms!
+}</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>const score = user.score ?? 10; /* تحافظ على قيمة 0 كدرجة صحيحة */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي الصحيح
+function setupTimeout(delay) {
+  const timeout = delay ?? 1000; // الصفر قيمة صالحة ومقبولة
+}</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> المعامل || يختبر الـ Falsy Values (ومنها 0 و false و "") بينما ?? يختبر الـ Nullish فقط (null و undefined).
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> عامل || يعتبر الأرقام الصفرية والنصوص الفارغة وقيم false بمثابة قيم غير صالحة ويستبدلها بالقيمة الافتراضية، بينما ?? يتحقق حصراً من null و undefined.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="js-modern-featuresCheckpoint" data-quiz-id="js-modern-features-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "What will `null ?? \"default\"` evaluate to?",
-    "qAr": "ما هي نتيجة تقييم `null ?? \"default\"`؟",
+    "q": "What will the expression (0 ?? 42) evaluate to in JavaScript?",
+    "qAr": "ما هي نتيجة تقييم التعبير (0 ?? 42) في جافاسكريبت؟",
     "options": [
-      "null",
-      "\"default\"",
+      "0",
+      "42",
       "undefined",
-      "false"
+      "TypeError"
     ],
-    "correct": 1,
-    "why": "The nullish coalescing operator returns its right-hand operand when its left-hand operand is null or undefined.",
-    "whyAr": "المعامل ?? يُرجع القيمة في الجانب الأيمن إذا كانت القيمة في الجانب الأيسر null أو undefined."
+    "correct": 0,
+    "why": "The nullish coalescing operator (??) only falls back if the left operand is null or undefined. Since 0 is defined, it returns 0.",
+    "whyAr": "عامل Nullish Coalescing يتحقق فقط من null و undefined؛ وبما أن 0 قيمة معرّفة فإنه يُرجع 0."
+  },
+  {
+    "q": "What is the main purpose of WeakMap compared to standard Map?",
+    "qAr": "ما هي الفائدة الأساسية لـ WeakMap مقارنة بـ Map العادية؟",
+    "options": [
+      "Keys are held weakly, allowing the garbage collector to reclaim objects when no other references exist.",
+      "WeakMap keys can be primitives like strings and numbers.",
+      "WeakMap is faster for iterating over all keys.",
+      "WeakMap automatically syncs with localStorage."
+    ],
+    "correct": 0,
+    "why": "WeakMap holds weak references to object keys, preventing memory leaks when objects are deleted elsewhere in the app.",
+    "whyAr": "تحتفظ بروابط ضعيفة لمفاتيح الكائنات مما يسمح لمجمع القمامة بحذفها ومنع تسريبات الذاكرة."
+  },
+  {
+    "q": "What is the advantage of the upcoming Temporal API over the legacy Date object?",
+    "qAr": "ما هي الميزة الأساسية لواجهة Temporal الحديثة مقارنة بكائن Date القديم؟",
+    "options": [
+      "Immutable data structures, precise timezone and calendar support, and prevention of parsing bugs.",
+      "It is written in WebAssembly.",
+      "It only works for Gregorian calendar.",
+      "It replaces the setTimeout function."
+    ],
+    "correct": 0,
+    "why": "Temporal provides modern immutable APIs with built-in timezone awareness, eliminating decades of Date quirks.",
+    "whyAr": "توفر واجهات غير قابلة للتعديل تدعم المناطق الزمنية والتقاويم المتعددة وتتخلص من أخطاء كائن Date التاريخية."
+  },
+  {
+    "q": "What does Promise.withResolvers() return?",
+    "qAr": "ما الذي تُرجعه دالة Promise.withResolvers() المضافة في ES2024؟",
+    "options": [
+      "An object containing { promise, resolve, reject } exposed for external control.",
+      "An array of resolved promises.",
+      "A synchronous Promise executor.",
+      "A web worker wrapper."
+    ],
+    "correct": 0,
+    "why": "Promise.withResolvers provides direct access to the promise instance alongside its resolve and reject trigger functions.",
+    "whyAr": "تُرجع كائناً يحتوي على Promise مع دالتي resolve و reject الخاصة به للتحكم فيه من الخارج مباشرة."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Modern Language Features</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #F59E0B; font-size: 1.05rem; margin-bottom: 4px;">Modern Language Features & Memory Management</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">ES2024 Standard</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">ES2024+ / ESNext</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هي الـ WeakMap وفيمَ تختلف عن الـ Map العادية في إدارة الذاكرة؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">الـ `WeakMap` تقبل فقط كائنات كمفاتيح وتحتفظ بها كـ "مراجع ضعيفة" (Weak References). هذا يعني أنه إذا لم يعد هناك أي مرجع آخر يشير للكائن المفتاح، يقوم محرك الـ Garbage Collector بحذفه وتحرير ذاكرته تلقائياً، وتُستخدم لمنع تسريب الذاكرة عند تخزين بيانات خاصة بالكائنات.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تستخدم WeakRef و FinalizationRegistry لبناء نظام كاش متقدم (Advanced In-Memory Cache) دون التسبب في OOM (Out Of Memory) Crashes؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">باستخدام WeakRef، يمكنك تخزين كائنات ضخمة كـ Weak References في الكاش. إذا احتاج التطبيق الكائن وكان لا يزال موجوداً في الذاكرة، يتم قراءته عبر ref.deref() بسرعة. وإذا نفدت الذاكرة، يستطيع محرك V8 تحريره وحذفه بدون أن يمنعه الكاش من ذلك. ومن خلال FinalizationRegistry، يمكن تسجيل دالة تنظيف تلقائية تُنفذ بمجرد حذف الكائن لتطهير المفاتيح المرتبطة به من الـ Cache Metadata.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-foundations" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #F59E0B; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

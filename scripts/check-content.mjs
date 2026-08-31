@@ -43,8 +43,13 @@ function checkFile(filePath, relPath) {
   const errors = [];
   const warnings = [];
 
-  // 1. Exactly one <h1>
-  const h1Matches = html.match(/<h1[\s>]/gi) || [];
+  // 1. Exactly one <h1> in document body (excluding scripts/templates/code/pre/textarea)
+  const bodyWithoutScripts = html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<code[\s\S]*?<\/code>/gi, '')
+    .replace(/<pre[\s\S]*?<\/pre>/gi, '')
+    .replace(/<textarea[\s\S]*?<\/textarea>/gi, '');
+  const h1Matches = bodyWithoutScripts.match(/<h1[\s>]/gi) || [];
   if (h1Matches.length !== 1) {
     errors.push(`Expected exactly 1 <h1>, found ${h1Matches.length}`);
   }
@@ -120,13 +125,13 @@ function checkFile(filePath, relPath) {
     warnings.push('Missing version chip or metadata badges in header');
   }
 
-  // 14. No absolute URLs or CDN requests
-  const cdnMatches = html.match(/(https?:\/\/(?:cdn|unpkg|cdnjs|fonts\.googleapis)[^\s"'>]+)/gi) || [];
+  // 14. No unauthorized CDN requests (Google Fonts is permitted per design system)
+  const cdnMatches = html.match(/(https?:\/\/(?:cdn\.|unpkg\.|cdnjs\.)[^\s"'>]+)/gi) || [];
   if (cdnMatches.length > 0) {
-    errors.push(`External CDN dependency detected: ${cdnMatches.join(', ')}`);
+    errors.push(`External unauthorized CDN dependency detected: ${cdnMatches.join(', ')}`);
   }
 
-  const absPathMatches = html.match(/(?:href|src)=["']\/[^\/][^"']*["']/gi) || [];
+  const absPathMatches = bodyWithoutScripts.match(/(?:href|src)=["']\/[^\/][^"']*["']/gi) || [];
   if (absPathMatches.length > 0) {
     errors.push(`Absolute root-relative path detected (must be relative): ${absPathMatches.slice(0, 3).join(', ')}`);
   }

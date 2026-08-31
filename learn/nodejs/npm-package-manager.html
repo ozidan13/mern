@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="npm-package-manager">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="12">
+  <meta name="fsa-title" content="NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="NPM 10.x & Node.js 24">
+  <meta name="fsa-pattern-label" content="Dependency Management & Monorepo Architecture">
+  <meta name="fsa-root" content="../../">
+
+  <title>NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #84CC16;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Node.js 24 · محرك الباك إند عالي الأداء</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #84CC16;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-nodejs" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-nodejs">nodejs</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">npm-package-manager</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #84CC16; color: #000; font-weight: 800;">NODEJS</span>
+            <span class="fsa-badge fsa-badge--info">Level 2</span>
+            <span class="fsa-badge fsa-badge--success">NPM 10.x & Node.js 24</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">إدارة الحزم بـ NPM والـ Monorepos: نظام Semantic Versioning، ملف package-lock والـ Workspaces</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #84CC16; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم قواعد نظام الترقيم الدلالي (Semantic Versioning: SemVer - Major.Minor.Patch) وفك رموز ^ و ~.</li>
+              <li>تشريح الدور الأمني الحاسم لملف package-lock.json والفرق بين npm install و npm ci في خطوط الـ CI/CD.</li>
+              <li>إدارة المشاريع المتعددة الحزم (Monorepos) باستخدام NPM Workspaces ومشاركة الحزم المحلية.</li>
+              <li>تأمين الاعتماديات ضد هجمات سلاسل الإمداد (Supply Chain Attacks) وفحص الثغرات بـ npm audit.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في أي مشروع برمجيات، أول أمر يكتبه أي مطور هو <code dir="ltr">npm install</code>.
+      لكن القليل فقط يفهم ما الذي يحدث وراء الكواليس داخل مجلد <code dir="ltr">node_modules</code> وملف <code dir="ltr">package-lock.json</code>!
+      تخيل أن مشروعك يعمل بنجاح تام على جهازك، وعندما قمت برفعه لخادم الإنتاج، انهار الخادم بالكامل في الـ Build! ما السبب؟
+      السبب أن حزمة فرعية في أعماق شجرة الاعتماديات كانت محددة بـ <code dir="ltr">^1.2.0</code>، وقام مطور الحزمة بإطلاق تحديث فرعي كسر التوافقية (Breaking Change)، فقام <code dir="ltr">npm install</code> بتحميل النسخة الجديدة المعطوبة على الخادم!
+      ملف **package-lock.json** صُمم ليكون "بصمة جينية مشفرة" تثبت أرقام النسخ الدقيقة وشجرة الاعتماديات ومفاتيح التجزئة (Integrity Hashes) بنسبة 100% بين كل أجهزة الفريق وخوادم الإنتاج.
+      في هذا الدرس، هنتعلم أسرار الـ SemVer، إزاي نستخدم أمر <code dir="ltr">npm ci</code> لتسريع الـ CI/CD، وإزاي نبني **NPM Workspaces** لمشاركة الأكواد بين الـ Frontend والـ Backend في Monorepo واحد.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">قواعد الترقيم الدلالي (SemVer: MAJOR.MINOR.PATCH)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                MAJOR للتغييرات الكاسرة للتوافقية، MINOR للميزات الجديدة المتوافقة، و PATCH للإصلاحات الأمنية وسد الثغرات.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">فك شفرات رموز الترقية (^ مقابل ~)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                علامة ^ تسمح بتحديثات Minor و Patch (^1.2.3 تقبل حتى 1.9.9)، بينما ~ تسمح بتحديثات Patch فقط (~1.2.3 تقبل حتى 1.2.9).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الاستقرار الحتمي بـ npm ci (Clean Install)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام npm ci في خوادم الـ CI/CD لقراءة package-lock.json الصارم وحذف node_modules السابقة لتثبيت نقي وفائق السرعة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إدارة الـ Monorepos عبر NPM Workspaces</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تكوين "workspaces": ["packages/*"] لربط حزم الواجهة والباك إند والمكتبات المشتركة بأوامر تثبيت واحدة وبدون تكرار.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التدقيق الأمني وسلاسل الإمداد (Security Auditing)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تشغيل npm audit و npm audit fix للكشف عن الثغرات المعروفة في قواعد بيانات CVE ومنع الحزم الضارة.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces Architecture Flow Diagram">
+              <title>NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-npm-package-manager" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#84CC16" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#84CC16" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#84CC16" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-npm-package-manager)" stroke="#84CC16" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#84CC16" font-size="14" font-weight="800">Dependency Management & Monorepo Architecture</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="npm-package-managerPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Node.js 24 Runtime & API Tester</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #84CC16; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي قواعد SemVer وحساب الإصدار المقبول
+function checkSemVerMatch(declaredVersion, targetVersion) {
+  if (declaredVersion.startsWith("^")) {
+    const base = declaredVersion.slice(1).split(".")[0];
+    const target = targetVersion.split(".")[0];
+    const isCompatible = base === target;
+    console.log(`Caret (^): Declared [${declaredVersion}] -> Testing [${targetVersion}] Compatible: ${isCompatible}`);
+    return isCompatible;
+  }
+}
+
+checkSemVerMatch("^1.2.3", "1.9.4"); // true (Minor update allowed)
+checkSemVerMatch("^1.2.3", "2.0.0"); // false (Major breaking update blocked!)</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يجب عليك دائماً رفع ملف package-lock.json إلى مستودع Git وتجنب إضافته لـ .gitignore نهائياً؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #84CC16;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">ملف package-lock.json هو الضمان الوحيد لتثبيت نفس شجرة الاعتماديات الدقيقة بجميع حزمها الفرعية ومفاتيح التجزئة (Integrity Hashes) المتطابقة عبر كل أجهزة المطورين وخوادم الـ CI/CD والإنتاج. تجاهله في gitignore يؤدي إلى تثبيت نسخ مختلفة لكل مطور وحدوث أخطاء "It works on my machine" الشهيرة.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">// package.json (Root Monorepo)                     </span> <span style="color: #64748B;">// ملف التكوين الجذري للـ Monorepo</span>
+<span style="color: #F8FAFC;">{                                                   </span> <span style="color: #64748B;">// بداية الإعدادات</span>
+<span style="color: #F8FAFC;">  "name": "codehub-monorepo",                       </span> <span style="color: #64748B;">// اسم المشروع العام</span>
+<span style="color: #F8FAFC;">  "private": true,                                  </span> <span style="color: #64748B;">// منع نشر الحاوية كحزمة عامة</span>
+<span style="color: #F8FAFC;">  "workspaces": [                                   </span> <span style="color: #64748B;">// تفعيل NPM Workspaces</span>
+<span style="color: #F8FAFC;">    "apps/web",                                     </span> <span style="color: #64748B;">// تطبيق ريآكت</span>
+<span style="color: #F8FAFC;">    "apps/api",                                     </span> <span style="color: #64748B;">// خادم Node/Express</span>
+<span style="color: #F8FAFC;">    "packages/shared-types"                         </span> <span style="color: #64748B;">// مكتبة الأنواع المشتركة</span>
+<span style="color: #F8FAFC;">  ]                                                 </span> <span style="color: #64748B;">// نهاية مسارات الـ Workspaces</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الملف</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع في خوادم الـ CI/CD والإنتاج: تشغيل npm install
+// RUN npm install
+// قد يقوم بتحميل إصدارات أحدث غير متوافقة تكسر الـ Build!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي الصارم: استخدام npm ci
+// RUN npm ci --omit=dev
+// تثبيت حتمي ومطابق لـ package-lock.json بنسبة 100% وبسرعة مضاعفة</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> أمر npm install قد يعدل ملف package-lock.json ويثبت نسخاً مختلفة، بينما npm ci يرفض التعديل ويلتزم بالبصمة المثبتة الصارمة.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="npm-package-managerCheckpoint" data-quiz-id="npm-package-manager-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "What is the primary difference between \"npm install\" and \"npm ci\"?",
+    "qAr": "ما هو الفرق الأساسي بين أمر \"npm install\" وأمر \"npm ci\"؟",
+    "options": [
+      "\"npm ci\" installs directly from package-lock.json, deletes existing node_modules, and never modifies lockfiles; ideal for CI/CD.",
+      "\"npm ci\" is only for local development.",
+      "\"npm install\" is faster than \"npm ci\".",
+      "\"npm ci\" only installs devDependencies."
+    ],
+    "correct": 0,
+    "why": "npm ci provides fast, deterministic, clean builds for continuous integration by strictly enforcing the exact lockfile tree.",
+    "whyAr": "أمر npm ci ينفذ تثبيتاً حتمياً ونظيفاً وسريعاً لبيئات الـ CI بالاعتماد الصارم على package-lock.json بدون أي تعديل."
+  },
+  {
+    "q": "Under Semantic Versioning (SemVer), which version part must be incremented when introducing a Breaking API Change?",
+    "qAr": "وفق معايير SemVer، أي جزء من رقم الإصدار يجب زيادته عند إطلاق تغيير يكسر التوافقية (Breaking Change)؟",
+    "options": [
+      "MAJOR version (X.y.z)",
+      "MINOR version (x.Y.z)",
+      "PATCH version (x.y.Z)",
+      "BUILD metadata"
+    ],
+    "correct": 0,
+    "why": "Major version bumps indicate breaking changes that require downstream consumers to update their code.",
+    "whyAr": "الرقم الرئيسي MAJOR هو المخصص للإشارة للتغييرات الكاسرة للتوافقية التي تتطلب تعديل كود المستهلكين."
+  },
+  {
+    "q": "What does the caret prefix (^) in \"^2.4.1\" allow during dependency resolution?",
+    "qAr": "ما الذي تسمح به علامة (^) في رقم النسخة \"^2.4.1\" أثناء تحديث الحزم؟",
+    "options": [
+      "Allows minor and patch updates (e.g. >= 2.4.1 and < 3.0.0), but blocks major breaking updates.",
+      "Allows patch updates only.",
+      "Allows any version including major updates.",
+      "Freezes the exact version."
+    ],
+    "correct": 0,
+    "why": "The caret (^) allows updates that do not modify the left-most non-zero digit, accommodating minor and patch releases safely.",
+    "whyAr": "العلامة ^ تسمح بتحديثات الـ Minor والـ Patch المتوافقة مع منع التحديثات الرئيسية Major ذات التغييرات الكاسرة."
+  },
+  {
+    "q": "What is the primary purpose of NPM Workspaces?",
+    "qAr": "ما هي الفائدة الأساسية لخاصية NPM Workspaces؟",
+    "options": [
+      "Managing multiple interconnected packages within a single top-level Monorepo repository with shared dependency symlinks.",
+      "Running Node.js in the cloud.",
+      "Compiling TypeScript to JavaScript.",
+      "Managing database migrations."
+    ],
+    "correct": 0,
+    "why": "Workspaces enable managing multi-package monorepos with single npm install and local package cross-linking.",
+    "whyAr": "تمكن من إدارة مشاريع الـ Monorepo التي تحتوي على حزم متعددة ومترابطة مع مشاركة التبعيات وتسهيل الربط المحلي."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #84CC16; font-size: 1.05rem; margin-bottom: 4px;">Dependency Management & Monorepo Architecture</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">NPM 10.x & Node.js 24</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحمي منظومة الـ Backend من هجمات الـ Dependency Confusion والـ Typosquatting في حزم الـ NPM؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">1. استخدام Scoped Packages بأسماء مؤسسية محددة مثل @mycompany/auth. 2. تكوين ملف .npmrc لحصر وتوجيه الحزم الداخلية للمستودع الخاص (Private Registry مثل Nexus أو Verdaccio) ومنع البحث عنها في الـ Public NPM Registry (تجنب Dependency Confusion). 3. تفعيل npm audit و Snyk في خط الـ CI لحظر أي حزمة تحمل ثغرات معروفة، وتثبيت النسخ الصارمة بـ package-lock.json مع فحص مفاتيح الـ SHA Integrity.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-nodejs" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #84CC16; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="architecture">
   <meta name="fsa-lesson" content="api-gateway">
   <meta name="fsa-level" content="3">
-  <meta name="fsa-order" content="9">
-  <meta name="fsa-title" content="API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing">
-  <meta name="fsa-est-minutes" content="26">
-  <meta name="fsa-teaches-version" content="Enterprise Architecture">
-  <meta name="fsa-pattern-label" content="Edge Infrastructure">
+  <meta name="fsa-order" content="14">
+  <meta name="fsa-title" content="API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="Enterprise API Gateway">
+  <meta name="fsa-pattern-label" content="API Gateway Pattern & Backend for Frontend (BFF)">
   <meta name="fsa-root" content="../../">
 
-  <title>API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing · CodeHub Interactive</title>
+  <title>API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #C084FC;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Architecture & System Design · العمارة وتصميم النظم الكبرى</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #C084FC;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-architecture" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,284 +97,365 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">architecture</a>
+            <a href="../../index.html#track-architecture">architecture</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">api-gateway</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">ARCHITECTURE</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #C084FC; color: #000; font-weight: 800;">ARCHITECTURE</span>
             <span class="fsa-badge fsa-badge--info">Level 3</span>
-            <span class="fsa-badge fsa-badge--success">Enterprise Architecture</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">Enterprise API Gateway</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">نمط بوابة الـ API، الخوادم العكسية وإنهاء تشفير SSL وتوزيع الأحمال</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">معمارية بوابات الـ API (API Gateways): البروكسي العكسي، دمج الطلبات وحماية الخدمات بـ Kong و NGINX</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>فهم وظائف بوابة الـ API: Routing, Authentication, Rate Limiting, SSL Termination, Caching.</li>
-              <li>إتقان خوارزميات توزيع الأحمال: Round Robin, Least Connections, IP Hash.</li>
-              <li>تطبيق نمط Backend-For-Frontend (BFF Pattern) لتخصيص الردود للويب والموبايل.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #C084FC; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم الدور المحوري لبوابة الـ API Gateway كنقطة دخول مركزية موحدة (Single Entrypoint) لكافة خدمات النظام.</li>
+              <li>تطبيق الوظائف المركزية المشتركة: إنهاء التشفير (SSL Termination)، التحقق المركزي من الـ JWT، وتحديد معدل الطلبات (Rate Limiting).</li>
+              <li>بناء نمط Backend-for-Frontend (BFF) لتوفير نقاط نهاية مخصصة لتطبيقات الموبايل والويب والـ IoT.</li>
+              <li>تطبيق ميزة دمج الطلبات (Request Aggregation) لتقليص عدد استدعاءات الشبكة للهواتف المحمولة.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              عندما يتكون نظامك من عدة خدمات خلفية، إجبار العميل (تطبيق الفرونت إند أو الموبايل) على الاتصال بكل خدمة على حدة يسبب تعقيداً في التوثيق ومشاكل CORS وبطء في النقل الشبكي. نمط <code dir="ltr">API Gateway</code> يضع نقطة دخول مركزية موحدة (Single Entry Point) في حافة النظام تتولى توجيه المسارات، إنهاء تشفير SSL، التحقق من التوثيق، وتوزيع الأحمال (Load Balancing) عبر خوارزميات مثل Round Robin.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">لو كان لديك نظام يحتوي على 15 خدمة مايكروسيرفس (خدمة المستخدمين، خدمة الطلبات، خدمة المدفوعات، خدمة التقييمات...) وقام تطبيق الموبايل بالاتصال المباشر بكل خدمة على حدة:
+      1. تطبيق الموبايل سيضطر لإرسال 15 طلب HTTP منفصل لعرض صفحة واحدة للمستخدم، مما يستهلك بطارية الهاتف وباقة الإنترنت!
+      2. كل خدمة مايكروسيرفس ستضطر لإعادة كتابة كود التحقق من الـ JWT، وتطبيق CORS، وحماية الـ Rate Limiting بشكل مكرر!
+      3. كشف عناوين الـ IP الداخلية للخدمات على الإنترنت يمثل خطراً أمنياً داهماً!
+      الحل المعماري العالمي هو وضع **بوابة الـ API (API Gateway)** في مقدمة النظام:
+      بوابة مركزية فائقة السرعة (مثل Kong أو KrakenD أو NGINX):
+      - تنهي اتصالات الـ SSL وتقوم بمصادقة الـ JWT مركزياً في 0.5ms قبل تمرير الطلب للخدمات الداخلية.
+      - تدمج بيانات 5 خدمات داخل رد JSON واحد (**Request Aggregation**).
+      - تطبق نمط **BFF (Backend for Frontend)** لتفصيل الردود بدقة لكل شاشة.
+      في هذا الدرس، هنبني معمارية Gateway متكاملة، وهنتعلم أسرار الـ **Reverse Proxy Routing**.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">نقطة الدخول الموحدة (Single Entry Point)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                العميل يتصل بـ api.codehub.dev فقط والبوابة توجه الطلبات للخدمات الداخلية المعنية.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">نقطة الدخول المركزية الموحدة (Unified Routing)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استقبال جميع زيارات الدومين api.codehub.dev وتوجيهها داخلياً للخدمات المعنية عبر شبكة خاصة معزولة.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">إنهاء تشفير SSL في الحافة</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                فك تشفير الـ HTTPS في البوابة وتمرير الطلبات للشبكة الداخلية المعزولة بسرعة فائقة.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">المصادقة المركزية (Centralized Authentication Offloading)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                التحقق من صحة رموز الـ JWT في الـ Gateway وحقن معرف المستخدم في رأس x-user-id للخدمات الداخلية.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">توزيع الأحمال (Load Balancing)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                توزيع آلاف الطلبات بالتساوي عبر 10 خوادم متطابقة مع عزل الخوادم المعطلة تلقائياً.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">دمج الطلبات (Request Aggregation)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استقبال طلب واحد من الموبايل /api/dashboard واستدعاء 4 خدمات بالتوازي داخلياً ودمج النتائج في رد واحد.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">نمط Backend for Frontend (BFF)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                بناء بوابات مخصصة: Mobile BFF يرجع بيانات مختصرة ومضغوطة، و Web BFF يرجع بيانات غنية وتفصيلية.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #C084FC; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">صمامات الأمان وقواطع الدوائر (Circuit Breakers)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                عزل الخدمات المتعطلة وإرجاع ردود كاش بديلة فوراً لمنع انهيار باقي المنظومة المتسلسل.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="api-gatewayStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing Architecture Flow Diagram">
-              <title>API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration Architecture Flow Diagram">
+              <title>API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-api-gateway" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#C084FC" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#C084FC" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Edge Infrastructure</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#C084FC" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-api-gateway)" stroke="#C084FC" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#C084FC" font-size="14" font-weight="800">API Gateway Pattern & Backend for Frontend (BFF)</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="api-gatewayPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Distributed System Architecture Simulator</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #C084FC; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Round-Robin Load Balancer Algorithm Simulator
-class LoadBalancer {
-  constructor(servers) {
-    this.servers = servers;
-    this.currentIndex = 0;
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي بوابة الـ API ونمط دمج الطلبات (Request Aggregation)
+class MockApiGateway {
+  constructor() {
+    this.services = {
+      user: async (id) => ({ id, name: "Amr Zidan", tier: "VIP" }),
+      orders: async (id) => [{ id: "o1", total: 150 }, { id: "o2", total: 320 }],
+      notifications: async (id) => ({ unread: 3 })
+    };
   }
-  getNextServer() {
-    const server = this.servers[this.currentIndex];
-    this.currentIndex = (this.currentIndex + 1) % this.servers.length;
-    return server;
+
+  async handleClientRequest(endpoint, userId) {
+    if (endpoint === "/api/mobile/dashboard") {
+      console.log("🚀 API Gateway: Aggregating 3 internal microservices in parallel...");
+      
+      const [user, orders, notifs] = await Promise.all([
+        this.services.user(userId),
+        this.services.orders(userId),
+        this.services.notifications(userId)
+      ]);
+
+      const aggregatedResponse = { user, recentOrders: orders, unreadCount: notifs.unread };
+      console.log("✅ Unified Payload dispatched to mobile client in single round-trip!");
+      return aggregatedResponse;
+    }
   }
 }
 
-const lb = new LoadBalancer(["App-Server-1 (10.0.0.1)", "App-Server-2 (10.0.0.2)", "App-Server-3 (10.0.0.3)"]);
-console.log("Request 1 Routed to:", lb.getNextServer());
-console.log("Request 2 Routed to:", lb.getNextServer());
-console.log("Request 3 Routed to:", lb.getNextServer());
-console.log("Request 4 Routed to (Wrap around):", lb.getNextServer());</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+const gateway = new MockApiGateway();
+await gateway.handleClientRequest("/api/mobile/dashboard", "usr_101");</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ما هو نمط Backend-For-Frontend (BFF Pattern) وما المشكلة التي يحلها؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">هو نمط يتم فيه إنشاء بوابة API مخصصة لكل نوع عميل (بوابة لتطبيق الموبايل ترجع ردوداً خفيفة مدمجة ومضغوطة، وبوابة لتطبيق الويب ترجع بيانات تفصيلية واسعة) بدلاً من بناء API عام واحد ضخم لا يلبي احتياجات أي منهما بكفاءة.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يعتبر نمط Backend for Frontend (BFF) أفضل من وجود API Gateway عملاقة وحيدة مشتركة لجميع تطبيقات الشركة (Web, iOS, Android, Smart TVs)؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #C084FC;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">البوابة العملاقة الموحدة تصبح مع الوقت عنق زجاجة للتطوير (Team Bottleneck) وتنتج ردود JSON ضخمة ممتلئة بحقول لا يحتاجها تطبيق الموبايل. نمط BFF يخصص بوابة مستقلة خفيفة لكل نوع واجهة (Mobile BFF يرجع بيانات مصغرة لشبكات 4G البطيئة، و Web BFF يرجع بيانات تحليلية واسعة للشاشات الكبيرة)، مما يمنح كل فريق استقلالية تامة في تطوير واجهته وسرعة قصوى للعميل.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: # Nginx Reverse Proxy / API Gateway Routing Spec // إعدادات البوابة
-2: upstream backend_cluster { server 10.0.0.1; server 10.0.0.2; } // تحديد خوادم الباك إند
-3: location /api/v1/auth/ { proxy_pass http://auth_service:3000/; } // توجيه خدمة التوثيق
-4: location /api/v1/orders/ { proxy_pass http://orders_service:4000/; } // توجيه خدمة الطلبات</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">// Enterprise API Gateway Authentication &amp; Routing Middleware</span> <span style="color: #64748B;">// بوابة الـ API المركزية</span>
+<span style="color: #F8FAFC;">export const gatewayAuth = async (req, res, next) =&gt; {</span> <span style="color: #64748B;">// فحص المصادقة المركزي</span>
+<span style="color: #F8FAFC;">  const token = req.headers.authorization?.split(" ")[1];</span> <span style="color: #64748B;">// استخراج الرمز</span>
+<span style="color: #F8FAFC;">  if (!token) return res.status(401).json({ error: "Gateway: Missing Bearer Token" });</span> <span style="color: #64748B;">// حظر فوري</span>
+<span style="color: #F8FAFC;">  try {                                             </span> <span style="color: #64748B;">// التحقق الرياضي السريع</span>
+<span style="color: #F8FAFC;">    const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY);</span> <span style="color: #64748B;">// فك التشفير بالـ Public Key</span>
+<span style="color: #F8FAFC;">    req.headers["x-user-id"] = decoded.sub; // حقن الهوية للخدمات الداخلية</span> <span style="color: #64748B;">// تمرير الهوية الموثقة</span>
+<span style="color: #F8FAFC;">    req.headers["x-user-roles"] = decoded.roles.join(",");</span> <span style="color: #64748B;">// تمرير الصلاحيات</span>
+<span style="color: #F8FAFC;">    next();                                         </span> <span style="color: #64748B;">// توجيه الطلب داخلياً</span>
+<span style="color: #F8FAFC;">  } catch {                                         </span> <span style="color: #64748B;">// فشل الرمز</span>
+<span style="color: #F8FAFC;">    return res.status(401).json({ error: "Gateway: Invalid Token Signature" });</span> <span style="color: #64748B;">// رفض الطلب</span>
+<span style="color: #F8FAFC;">  }                                                 </span> <span style="color: #64748B;">// نهاية الفحص</span>
+<span style="color: #F8FAFC;">};                                                  </span> <span style="color: #64748B;">// نهاية البوابة</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>ربط كل خدمات الباك إند الداخلية بالإنترنت العام مباشرة دون بوابة API مركزية</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ كارثي: جعل تطبيقات الموبايل تتصل مباشرة بعشرات المايكروسيرفس الداخلية
+// يستنزف باقة الإنترنت والبطارية ويكشف عناوين الخدمات الداخلية للاختراق!</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>عزل جميع الخدمات في شبكة VPC خاصة خلف API Gateway مؤمنة بالكامل</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل المعماري: بوابة API Gateway مركزية أو BFF
+// نقطة دخول واحدة محصنة بـ SSL و Rate Limiting و Request Aggregation</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> فتح الخدمات للعامة يضاعف المساحة المعرضة للهجمات ويجعل تتبع التوثيق مستحيلاً.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> الاتصال المباشر بالخدمات الداخلية يضاعف زمن الاستجابة ويهدد الأمان، بينما البوابة توفر درعاً دفاعياً ونقطة تجميع موحدة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="api-gatewayCheckpoint" data-quiz-id="api-gateway-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Which load balancing algorithm distributes incoming requests sequentially across a list of available healthy servers?",
-    "qAr": "أي خوارزمية لتوزيع الأحمال توزع الطلبات الواردة بالتتابع الدوري المنتظم على قائمة الخوادم المتاحة؟",
+    "q": "What is the primary architectural purpose of an API Gateway in a microservices system?",
+    "qAr": "ما هو الغرض المعماري الأساسي لبوابة الـ API Gateway في أنظمة المايكروسيرفس؟",
     "options": [
-      "Least Response Time",
-      "Round Robin",
-      "Random Selection",
-      "Consistent Hashing"
+      "Acts as a single reverse proxy entrypoint that centralizes cross-cutting concerns (authentication, SSL, rate limiting, routing, aggregation) for client applications.",
+      "Stores database tables.",
+      "Compiles TypeScript to JavaScript.",
+      "Replaces mobile operating systems."
     ],
-    "correct": 1,
-    "why": "Round Robin distributes requests evenly and sequentially down the server list.",
-    "whyAr": "خوارزمية Round Robin توزع الطلبات بالتتابع الدوري الدائري على كل الخوادم بالتساوي."
+    "correct": 0,
+    "why": "API Gateways decouple clients from internal service topologies, consolidating security, routing, and protocol translation at the edge.",
+    "whyAr": "تعمل كنقطة دخول مركزية موحدة تعزل الخدمات الداخلية وتوحد معالجة الأمان والمصادقة والـ Rate Limiting وتوجيه الطلبات."
+  },
+  {
+    "q": "What is the Backend-for-Frontend (BFF) design pattern?",
+    "qAr": "ما هو نمط التصميم المعماري Backend-for-Frontend (BFF)؟",
+    "options": [
+      "Creating dedicated, tailored gateway layers for specific client interfaces (e.g. separate BFFs for Mobile iOS, Web Desktop, and IoT).",
+      "Writing CSS styles in the backend.",
+      "Running Node.js inside the browser.",
+      "A database backup tool."
+    ],
+    "correct": 0,
+    "why": "BFF creates tailored client-specific backend adapters, optimizing payloads and network trips for distinct device form-factors.",
+    "whyAr": "إنشاء بوابات خلفية مخصصة لكل نوع واجهة (مثل BFF مخصص للموبايل وآخر للويب) لتحسين أحجام البيانات وسرعة العرض."
+  },
+  {
+    "q": "What problem does Request Aggregation solve in mobile application development?",
+    "qAr": "ما هي المشكلة التي تعالجها ميزة دمج الطلبات (Request Aggregation) في تطبيقات الموبايل؟",
+    "options": [
+      "Reduces mobile battery and network latency by combining multiple backend service calls into a single client HTTP round-trip.",
+      "Increases mobile screen brightness.",
+      "Compresses audio files.",
+      "Deletes duplicate contacts."
+    ],
+    "correct": 0,
+    "why": "Aggregating backend requests at the gateway reduces high-latency cellular network round-trips for mobile devices.",
+    "whyAr": "تقلل عدد استدعاءات الشبكة واستهلاك البطارية عبر دمج نتائج عدة خدمات مايكروسيرفس في رد واحد خفيف للموبايل."
+  },
+  {
+    "q": "What is SSL Termination at the API Gateway level?",
+    "qAr": "ماذا يعني مصطلح \"SSL Termination\" على مستوى بوابة الـ API Gateway؟",
+    "options": [
+      "Decrypting incoming HTTPS traffic at the gateway edge and forwarding unencrypted (or internally secured) traffic to private backend services.",
+      "Deleting SSL certificates.",
+      "Blocking all encrypted traffic.",
+      "Restarting the web server."
+    ],
+    "correct": 0,
+    "why": "SSL termination offloads CPU-intensive cryptographic handshakes from downstream microservices to dedicated edge gateway proxies.",
+    "whyAr": "فك تشفير اتصالات HTTPS على حافة البوابة وتمرير البيانات داخلياً للخدمات لتوفير استهلاك الـ CPU في السيرفرات الداخلية."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Edge Infrastructure</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #C084FC; font-size: 1.05rem; margin-bottom: 4px;">API Gateway Pattern & Backend for Frontend (BFF)</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">Enterprise Architecture</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Enterprise API Gateway</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هو نمط Circuit Breaker في بوابات الـ API وفيمَ يفيد؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">هو نمط حماية يمنع الانهيار المتسلسل للنظام (Cascading Failures)؛ عندما تتعطل خدمة داخلية وتفشل 50% من طلباتها، تفتح البوابة قاطع الدائرة (Open Circuit) وترد على المستخدم فوراً برد بديل (Fallback) دون إرسال طلبات للخدمة المتعطلة، مما يمنع تراكم الطلبات المعلقة ويعطي الخدمة وقتاً للتعافي.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحمي منظومة الـ Microservices من الـ Cascading Failure (الانهيار المتسلسل) عندما تتعطل خدمة فرعية داخلية باستخدام نمط Circuit Breaker؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نطبق نمط Circuit Breaker (بمكتبات مثل Opossum): القاطع يمتلك 3 حالات: 1. Closed: الطلبات تمر طبيعياً. يتم حساب نسبة الفشل ومعدل الـ Latency. 2. Open: إذا تجاوزت نسبة الأخطاء 50% في آخر 10 ثوانٍ، يفتح القاطع فوراً ويحظر إرسال أي طلبات جديدة للخدمة المتعطلة، ويرجع استجابة كاش بديلة فورية (Fallback) في 1ms، مما يمنع تعليق الخيوط واستهلاك الاتصالات. 3. Half-Open: بعد مهلة (e.g. 30s)، يمرر القاطع نسبة ضئيلة من الطلبات التجريبية (Canary Requests)؛ فإذا نجحت يُغلق القاطع وتعود الخدمة للعمل، وإذا فشلت يعود لحالة Open لحماية المنظومة.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-architecture" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #C084FC; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

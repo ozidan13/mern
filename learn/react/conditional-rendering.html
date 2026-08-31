@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="react">
   <meta name="fsa-lesson" content="conditional-rendering">
   <meta name="fsa-level" content="1">
-  <meta name="fsa-order" content="6">
-  <meta name="fsa-title" content="Conditional Rendering Patterns, Short-Circuits & Early Returns">
-  <meta name="fsa-est-minutes" content="20">
-  <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="UI Logic Flow">
+  <meta name="fsa-order" content="5">
+  <meta name="fsa-title" content="Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns">
+  <meta name="fsa-est-minutes" content="28">
+  <meta name="fsa-teaches-version" content="React 19.x">
+  <meta name="fsa-pattern-label" content="Declarative Branching & Guard Clauses">
   <meta name="fsa-root" content="../../">
 
-  <title>Conditional Rendering Patterns, Short-Circuits & Early Returns · CodeHub Interactive</title>
+  <title>Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #38BDF8;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">React.js · واجهات المستخدم التفاعلية</div>
+          <div class="fsa-sidebar__title">React.js 19 · واجهات المستخدم التفاعلية</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #38BDF8;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-react" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,267 +97,360 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">react</a>
+            <a href="../../index.html#track-react">react</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">conditional-rendering</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">REACT</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #38BDF8; color: #000; font-weight: 800;">REACT</span>
             <span class="fsa-badge fsa-badge--info">Level 1</span>
-            <span class="fsa-badge fsa-badge--success">React 19.2</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 20 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">React 19.x</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 28 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Conditional Rendering Patterns, Short-Circuits & Early Returns</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">أنماط العرض الشرطي، فخاخ الدوائر القصيرة (&amp;&amp;) والعودة المبكرة</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">أنماط العرض الشرطي في ريآكت: فخ الرقم صفر (0 && Trap)، المكونات المتعددة الأشكال والـ Early Returns</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>إتقان أنماط العرض الشرطي: Guard Clauses, Ternary, Boolean &&, و Enum Mapping.</li>
-              <li>تجنب فخ طباعة الصفر الناتج عن التقصير المنطقي الخاطئ.</li>
-              <li>بناء حالات التحميل والأخطاء والشاشات الفارغة باحترافية.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #38BDF8; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>تجنب الفخ الكارثي الشهير 0 && <Component /> وظهور الرقم 0 على الشاشة للمستخدم.</li>
+              <li>إتقان استخدام نمط الإرجاع المبكر (Early Returns / Guard Clauses) لتنظيف شجرة الـ JSX.</li>
+              <li>بناء مكونات متعددة الأشكال (Polymorphic Components) تدعم حالات Loading و Error و Empty و Success.</li>
+              <li>استخدام الجداول الشرطية (Lookup Tables / Object Maps) كبديل متفوق لسلاسل Ternary المتشعبة.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              أشهر فخ في العرض الشرطي هو استخدام && مع مصفوفة فارغة length = 0 حيث ترسم ريآكت رقم 0 على الشاشة للمستخدم بدلاً من إخفاء العنصر.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">العرض الشرطي (Conditional Rendering) هو عصب بناء التطبيقات الديناميكية: "لو المستخدم مسجل دخول اعرض صورته، لو التطبيق بيحمل اعرض Skeleton، لو مفيش بيانات اعرض Empty State".
+      لكن في ريآكت، هناك خطأ كلاسيكي يقع فيه حتى المطورون المحترفون وهو ما يعرف بـ "The Zero Bug":
+      تخيل أنك كتبت كود لعرض قائمة الرسائل:
+      <pre dir="ltr"><code>{messages.length && &lt;MessagesList items={messages} /&gt;}</code></pre>
+      لو مصفوفة الرسائل فارغة (<code dir="ltr">messages.length = 0</code>)، المتصفح مش هيخفي القائمة ويسكت... المتصفح هيعرض رقم <code dir="ltr">0</code> قبيح جداً في منتصف الصفحة للمستخدمين!
+      السبب أن عامل <code dir="ltr">&amp;&amp;</code> في جافاسكريبت يرجع القيمة اليسرى مباشرة إذا كانت Falsy، وبما أن الرقم 0 هو قيمة صالحة للرسم في JSX، فإن ريآكت تقوم برسمه كنص!
+      في هذا الدرس، هنتعلم القواعد الذهبية لتفادي أخطاء العرض الشرطي، إزاي نكتب Guard Clauses نظيفة، وإزاي نبني State Machines بصرية باستخدام Lookup Tables.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التقييم المنطقي في JSX</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                ريآكت تتجاهل boolean و null و undefined بينما ترسم الأرقام بما فيها 0.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">قاعدة البوليان الصارمة لعامل &&</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                حول الطرف الأيسر دائماً إلى قيمة منطقية حقيقية Boolean(items.length) أو items.length > 0 قبل استخدام && لمنع رسم الأصفار والنصوص الفارغة.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التحويل المنطقي الصريح</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                استخدام Boolean(val) أو count > 0 قبل استخدام &&.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">نمط الإرجاع المبكر (Early Return Pattern)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                معالجة حالات التحميل والأخطاء في بداية الدالة وإرجاع JSX مخصص قبل الدخول في المنطق الرئيسي للمكون.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">نمط الـ Component Mapping</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                كائنات جدولية لاختيار المكون المناسب بناءً على الحالة.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">العامل الثلاثي للتبديل الثنائي (Ternary Operator)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام condition ? <A /> : <B /> عندما يكون هناك مساران إجباريان متبادلان مع الحفاظ على مقروئية الكود.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">خريطة الكائنات للحالات المتعددة (Lookup Map Pattern)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تخزين المكونات في كائن { idle: <Idle />, loading: <Spinner />, error: <Error /> } كبديل نظيف لسلاسل switch المتشعبة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إخفاء العناصر بصرياً مقابل إلغاء تركيبها (Display None vs Unmounting)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فهم متى تفرغ المكون من الذاكرة (Unmount لحذف الـ State) ومتى تخفيه بـ CSS (للاحتفاظ بمدخلات المستخدم).
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="conditional-renderingStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Conditional Rendering Patterns, Short-Circuits & Early Returns Architecture Flow Diagram">
-              <title>Conditional Rendering Patterns, Short-Circuits & Early Returns Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Conditional Rendering Patterns, Short-Circuits & Early Returns</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns Architecture Flow Diagram">
+              <title>Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-conditional-rendering" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">UI Logic Flow</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-conditional-rendering)" stroke="#38BDF8" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#38BDF8" font-size="14" font-weight="800">Declarative Branching & Guard Clauses</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="conditional-renderingPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #38BDF8; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">const items = [];
-console.log("Buggy && output:", items.length && "Found"); // 0 (Renders!)
-console.log("Safe Boolean output:", items.length > 0 && "Found"); // false (Hidden!)</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي أنماط العرض الشرطي
+const state = {
+  unreadCount: 0,
+  status: "success", // idle | loading | error | success
+  data: ["Notification 1", "Notification 2"]
+};
+
+// فخ الصفر: 0 && <UI> يطبع 0
+const buggyRender = state.unreadCount && "Bad: You have unread items!";
+console.log("Buggy render output:", buggyRender); // 0!
+
+// الحل الهندسي الآمن:
+const safeRender = state.unreadCount > 0 ? `${state.unreadCount} unread` : null;
+console.log("Safe render output:", safeRender); // null (لن يرسم شيء)
+
+// نمط Lookup Table للحالات المتعددة
+const stateViews = {
+  idle: "⚪ Ready",
+  loading: "⏳ Loading data...",
+  error: "❌ Failed to load",
+  success: `✅ Data loaded: ${state.data.join(", ")}`
+};
+
+console.log("Lookup view for current status:", stateViews[state.status]);</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ماذا ترسم ريآكت إذا كان ناتج التعبير داخل JSX هو undefined؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">تتجاهله ولا ترسم أي شيء على الشاشة (Empty View).</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ما الفرق في سلوك الـ Component State عندما تخفي مكوناً باستخدام CSS display: none مقارنة بإخفائه عبر العرض الشرطي condition && <Component />؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #38BDF8;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">مع display: none، يظل المكون مركباً في الـ DOM وشجرة الـ Fiber، ويحتفظ بجميع حالاته (useState, input values, timers). أما مع العرض الشرطي، تقوم ريآكت بإلغاء تركيب المكون بالكامل (Unmounting)، مما يحذف الـ State الخاص به من الذاكرة ويعيد تهيئته من الصفر عند ظهوره مجدداً.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: if (isLoading) return &lt;Spinner /&gt;;        // حارس التحميل
-2: return items.length &gt; 0 ? &lt;List /&gt; : &lt;Empty /&gt;; // عرض آمن</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">function ProductList({ products, isLoading, error }) {</span> <span style="color: #64748B;">// مكون يستقبل حالات متعددة</span>
+<span style="color: #F8FAFC;">  if (isLoading) return &lt;SkeletonLoader /&gt;;   </span> <span style="color: #64748B;">// حارس الإرجاع المبكر للتحميل</span>
+<span style="color: #F8FAFC;">  if (error) return &lt;ErrorMessage error={error} /&gt;;</span> <span style="color: #64748B;">// حارس الإرجاع المبكر للأخطاء</span>
+<span style="color: #F8FAFC;">  if (products.length === 0) return &lt;EmptyState /&gt;;</span> <span style="color: #64748B;">// حارس الحالة الفارغة</span>
+<span style="color: #F8FAFC;">  return (                                          </span> <span style="color: #64748B;">// العرض الرئيسي الناجح</span>
+<span style="color: #F8FAFC;">    &lt;ul className="product-grid"&gt;             </span> <span style="color: #64748B;">// قائمة المنتجات</span>
+<span style="color: #F8FAFC;">      {products.map(p =&gt; &lt;ProductCard key={p.id} item={p} /&gt;)}</span> <span style="color: #64748B;">// رسم العناصر</span>
+<span style="color: #F8FAFC;">    &lt;/ul&gt;                                     </span> <span style="color: #64748B;">// إغلاق القائمة</span>
+<span style="color: #F8FAFC;">  );                                                </span> <span style="color: #64748B;">// نهاية الـ JSX</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية المكون</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>{count &amp;&amp; &lt;Badge /&gt;} /* لو count = 0 يطبع 0 */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع مسبب لظهور الرقم صفر على الشاشة
+&lt;div&gt;
+  {cartItems.length &amp;&amp; &lt;CheckoutButton count={cartItems.length} /&gt;}
+&lt;/div&gt;</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>{count &gt; 0 &amp;&amp; &lt;Badge /&gt;} /* آمن */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحلول الهندسية الصحيحة:
+&lt;div&gt;
+  {cartItems.length &gt; 0 &amp;&amp; &lt;CheckoutButton count={cartItems.length} /&gt;}
+  {/* أو باستخدام التحويل المنطقي: */}
+  {Boolean(cartItems.length) &amp;&amp; &lt;CheckoutButton count={cartItems.length} /&gt;}
+&lt;/div&gt;</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> عندما يكون الجانب الأيسر لـ && هو 0 تعيده JS كما هو فيُرسم بالـ DOM.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> عندما تكون قيمة cartItems.length = 0، فإن التعبير 0 && <UI> يُرجع 0 مباشرة. ورغم أن boolean false لا يُرسم في JSX، فإن الرقم 0 يُعامل كنص صالح ويظهر على الشاشة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="conditional-renderingCheckpoint" data-quiz-id="conditional-rendering-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Which value is NOT rendered to the DOM inside JSX?",
-    "qAr": "أي قيمة لا ترسم شيئاً في الـ DOM داخل JSX؟",
+    "q": "Why does {items.length && <List />} render the number 0 when items is an empty array []?",
+    "qAr": "لماذا يظهر الرقم 0 على الشاشة عند كتابة {items.length && <List />} إذا كانت المصفوفة فارغة []؟",
     "options": [
-      "0",
-      "\"\"",
-      "NaN",
-      "false"
+      "JavaScript evaluates 0 && <List /> to 0, and React treats numbers as valid renderable content.",
+      "React converts empty arrays into the number 0.",
+      "It is a bug in the Chrome V8 engine.",
+      "The length property returns false in React."
     ],
-    "correct": 3,
-    "why": "React ignores boolean values.",
-    "whyAr": "ريآكت تتجاهل القيم المنطقية false و true."
+    "correct": 0,
+    "why": "In JS logical AND (&&), if the left operand is falsy, it is returned directly. 0 is a valid number, which React renders as text.",
+    "whyAr": "عامل && يرجع الطرف الأيسر مباشرة إذا كان Falsy؛ وبما أن 0 رقم صالح فإن ريآكت ترسمه كنص على الشاشة."
+  },
+  {
+    "q": "What is the primary benefit of the Early Return pattern in React components?",
+    "qAr": "ما هي الفائدة الأساسية لنمط الإرجاع المبكر (Early Return) في مكونات ريآكت؟",
+    "options": [
+      "Simplifies code by eliminating deeply nested ternary expressions and handling edge cases upfront.",
+      "Makes the component render faster in WebAssembly.",
+      "Prevents React from re-rendering the component.",
+      "Automatically logs errors to the console."
+    ],
+    "correct": 0,
+    "why": "Early returns act as clean guard clauses, preventing pyramid-of-doom ternary nesting in JSX.",
+    "whyAr": "يعمل كحراس نظيفة تعزل حالات التحميل والخطأ في بداية الدالة وتمنع التداخل المعقد للعوامل الثلاثية."
+  },
+  {
+    "q": "Which values will React completely ignore and NOT render to the DOM when returned inside JSX?",
+    "qAr": "ما هي القيم التي تتجاهلها ريآكت تماماً ولا ترسم أي شيء لها في الـ DOM داخل JSX؟",
+    "options": [
+      "null, undefined, true, and false.",
+      "The number 0 and empty strings \"\".",
+      "Empty arrays [].",
+      "Negative numbers -1."
+    ],
+    "correct": 0,
+    "why": "React ignores boolean values (true/false), null, and undefined, rendering nothing to the screen.",
+    "whyAr": "ريآكت تتجاهل القيم المنطقية true و false وقيمتي null و undefined ولا تعرض أي شيء في المتصفح."
+  },
+  {
+    "q": "When should you use a Lookup Table object instead of nested ternary operators in JSX?",
+    "qAr": "متى يفضل استخدام نمط كائن القاموس (Lookup Table) بدلاً من العوامل الثلاثية المتداخلة؟",
+    "options": [
+      "When switching between 3 or more distinct UI states (e.g. status: idle, loading, error, success).",
+      "Only for rendering static text without JSX.",
+      "To bypass TypeScript type checking.",
+      "When components have no props."
+    ],
+    "correct": 0,
+    "why": "Object lookup tables provide readable O(1) declarative dispatch for multi-state rendering without ternary nesting.",
+    "whyAr": "توفر خريطة الكائنات وسيلة تقريرية واضحة ونظيفة للتبديل بين 3 حالات أو أكثر دون تعقيد التداخل."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">UI Logic Flow</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #38BDF8; font-size: 1.05rem; margin-bottom: 4px;">Declarative Branching & Guard Clauses</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">React 19.2</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">React 19.x</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): كيف تصمم نظام عرض شرطي يدعم حالات متعددة معقدة؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">باستخدام نمط Object Record Mapping: كائن يربط مفاتيح الحالات بالمكونات المطابقة لها.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تؤثر تقنية Conditional Rendering على دقة حسابات مؤشر أداء الويب Cumulative Layout Shift (CLS)؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">التبديل المفاجئ بين المكونات (مثلاً من Loading Spinner صغير إلى بطاقة بيانات ضخمة بعد اكتمال الـ Fetch) يؤدي إلى قفزات بصرية في تخطيط الصفحة (Layout Shifts) مما يضر بدرجة الـ CLS في معايير جوجل Core Web Vitals. لتفادي ذلك معمارياً، نستخدم Skeleton Loaders تحاكي أبعاد ومساحة المكون النهائي بالضبط، أو نثبت ارتفاع الحاوية min-height مسبقاً.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-react" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #38BDF8; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

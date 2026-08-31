@@ -5,22 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="fsa-track" content="postgresql">
   <meta name="fsa-lesson" content="joins-relations">
-  <meta name="fsa-level" content="2">
-  <meta name="fsa-order" content="3">
-  <meta name="fsa-title" content="Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics">
-  <meta name="fsa-est-minutes" content="26">
-  <meta name="fsa-teaches-version" content="PostgreSQL 16+">
-  <meta name="fsa-pattern-label" content="Relational Theory">
+  <meta name="fsa-level" content="1">
+  <meta name="fsa-order" content="4">
+  <meta name="fsa-title" content="Relational Joins, CTEs & Complex Query Optimization">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="PostgreSQL 18 Joins">
+  <meta name="fsa-pattern-label" content="Relational Algebra & Recursive Queries">
   <meta name="fsa-root" content="../../">
 
-  <title>Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics · CodeHub Interactive</title>
+  <title>Relational Joins, CTEs & Complex Query Optimization · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #60A5FA;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">PostgreSQL · القواعد العلائقية المتقدمة</div>
+          <div class="fsa-sidebar__title">PostgreSQL 18 · القواعد العلائقية المتقدمة</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #60A5FA;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-postgresql" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,279 +97,357 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">postgresql</a>
+            <a href="../../index.html#track-postgresql">postgresql</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">joins-relations</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">POSTGRESQL</span>
-            <span class="fsa-badge fsa-badge--info">Level 2</span>
-            <span class="fsa-badge fsa-badge--success">PostgreSQL 16+</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #60A5FA; color: #000; font-weight: 800;">POSTGRESQL</span>
+            <span class="fsa-badge fsa-badge--info">Level 1</span>
+            <span class="fsa-badge fsa-badge--success">PostgreSQL 18 Joins</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">تطبيع قواعد البيانات (1NF إلى 3NF)، المفاتيح الأجنبية وكواليس الـ SQL Joins</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Relational Joins, CTEs & Complex Query Optimization</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">الربط العلائقي (Joins)، التعبيرات الجدولية العامة (CTEs) وتحسين الاستعلامات المعقدة</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>تطبيق مراحل التطبيع الثلاث: 1NF (الذرية)، 2NF (الاعتماد التام على المفتاح)، 3NF (إزالة الاعتماديات الانتقالية).</li>
-              <li>إدارة سلوكيات الحذف المرجعي: ON DELETE CASCADE, RESTRICT, SET NULL.</li>
-              <li>فهم خوارزميات الـ Joins الداخلية في محرك PostgreSQL (Nested Loop, Hash Join, Merge Join).</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #60A5FA; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>إتقان جميع أنواع الـ Joins: INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, و CROSS JOIN.</li>
+              <li>فهم خوارزميات الربط الثلاث في محرك بوستجريس: Nested Loop, Hash Join, و Merge Join.</li>
+              <li>بناء استعلامات متقدمة ونظيفة باستخدام Common Table Expressions (CTEs بـ WITH).</li>
+              <li>استخدام الـ Recursive CTEs لمعالجة الهياكل الشجرية المتداخلة (مثل التعليقات الشجرية والشجرة الوظيفية).</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              في قواعد البيانات العلائقية، تكرار البيانات في أكثر من جدول (Data Redundancy) يسبب كوابيس التحديث والتعديل (Update Anomalies) وتضارب المعلومات. تطبيق معايير التطبيع (Database Normalization من 1NF إلى 3NF) مع المفاتيح الأجنبية (Foreign Keys) يضمن الاتساق التام وسلامة العلاقات المرجعية، مع إتقان خوارزميات الربط (Inner, Left, Full Outer, Cross Joins).
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في قواعد البيانات العلائقية، البيانات موزعة على جداول متعددة خاضعة لقواعد الـ Normalization (3NF).
+      لكن عندما تحتاج لاستخراج تقرير يجمع بيانات المستخدم مع طلباته وفواتيره وتفاصيل الشحن، تبدأ المعركة الحقيقية:
+      كيف يقوم محرك بوستجريس بربط هذه الجداول معاً تحت الغطاء؟
+      محرك استعلامات PostgreSQL يمتلك 3 خوارزميات ربط فيزيائية مختلفة تماماً:
+      1. **Nested Loop Join**: مثالية للجداول الصغيرة ذات الفهارس الدقيقة.
+      2. **Hash Join**: تقوم ببناء جدول Hash في الـ RAM للجداول المتوسطة والكبيرة.
+      3. **Merge Join**: عندما تكون الجداول مرتبة مسبقاً على مفاتيح الربط بالفهارس.
+      لو كتبت استعلاماً يربط 6 جداول بدون فهم هذه الخوارزميات، سيقوم المحرك بعمل مسح تكراري بطيء يستغرق 15 ثانية!
+      في هذا الدرس، هنتعلم إزاي نبني استعلامات ربط فائقة السرعة، إزاي نستخدم **Common Table Expressions (CTEs)** لتنظيم الأكواد المعقدة، وإزاي نعالج الهياكل الشجرية بـ **WITH RECURSIVE**.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الذرية التامة (1NF)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                كل عمود يحتوي على قيمة واحدة غير قابلة للتجزئة مع وجود مفتاح أساسي فريد.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الربط الداخلي والخارجي (INNER vs LEFT JOIN)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام INNER JOIN عند اشتراط وجود السجل في الجدولين، و LEFT JOIN لجلب السجلات الرئيسية حتى لو لم تكن تملك سجلات فرعية.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التطبيع الثالث (3NF)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                فصل البيانات التي تعتمد على أعمدة غير المفتاح الأساسي في جداول مستقلة (مثل فصل تفاصيل المدينة عن جدول الموظف).
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">خوارزمية Hash Join الفيزيائية</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                يقوم المحرك ببناء Hash Table في ذاكرة work_mem للجدول الأصغر ثم يمسح الجدول الأكبر لمطابقة المفاتيح في دورة واحدة.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">خوارزمية Hash Join السريعة</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                يقوم المحرك ببناء جدول تجزئة في الذاكرة للجدول الصغير ومطابقة الجدول الكبير في ممر واحد O(M+N).
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التعبيرات الجدولية العامة (CTEs بـ WITH)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تقسيم الاستعلامات العملاقة إلى خطوات وسيطة منطقية معزولة تزيد من قابلية القراءة وتحسين خطة التنفيذ.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الاستعلامات التكرارية الشجرية بـ WITH RECURSIVE</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                معالجة الشجرة التنظيمية والهياكل متعددة المستويات (مثل التعليقات المتداخلة) في استعلام SQL واحد.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تجنب فخ الكارتيزيان (Accidental CROSS JOIN)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                ضمان وجود شرط الربط ON في جميع جمل الـ JOIN لمنع ضرب صفوف الجدولين في بعضهما وانفجار الذاكرة.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="joins-relationsStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics Architecture Flow Diagram">
-              <title>Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Relational Joins, CTEs & Complex Query Optimization Architecture Flow Diagram">
+              <title>Relational Joins, CTEs & Complex Query Optimization Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-joins-relations" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Relational Theory</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-joins-relations)" stroke="#60A5FA" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="800">Relational Algebra & Recursive Queries</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="joins-relationsPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #60A5FA; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Relational Join Algorithm Simulator
-const users = [{ id: 1, name: "Amr" }, { id: 2, name: "Sara" }];
-const orders = [{ id: 101, userId: 1, total: 250 }, { id: 102, userId: 1, total: 400 }];
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي استعلام التكرار الشجري (Recursive CTE) في SQL
+const recursiveCteQuery = `
+WITH RECURSIVE OrgChart AS (
+  -- 1. Base Query: Root Managers
+  SELECT id, name, manager_id, 1 as depth
+  FROM employees
+  WHERE manager_id IS NULL
+  
+  UNION ALL
+  
+  -- 2. Recursive Query: Subordinates
+  SELECT e.id, e.name, e.manager_id, o.depth + 1
+  FROM employees e
+  INNER JOIN OrgChart o ON e.manager_id = o.id
+)
+SELECT * FROM OrgChart ORDER BY depth, name;
+`;
 
-// Simulating INNER JOIN users u ON u.id = o.userId
-const innerJoinResult = orders.map(order => {
-  const user = users.find(u => u.id === order.userId);
-  return { orderId: order.id, customer: user.name, total: order.total };
-});
-
-console.log("SQL Inner Join Output Table:");
-console.log(JSON.stringify(innerJoinResult, null, 2));</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+console.log("PostgreSQL Recursive CTE Structure:");
+console.log(recursiveCteQuery);</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ماذا يحدث إذا حذفت سجلاً من جدول الأب مرتبط بسجلات فرعية معرفة بـ ON DELETE RESTRICT؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">سيرفض محرك PostgreSQL تنفيذ عملية الحذف ويلقي خطأ فورياً من نوع foreign key violation لمنع حدوث سجلات أيتام (Orphan Rows).</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ماذا يحدث إذا نسيت كتابة شرط ON عند الربط بين جدولين يحتوي كل منهما على 10,000 صف؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #60A5FA;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">سيتحول الاستعلام فوراً إلى Cross Join (Cartesian Product)، وسيقوم محرك قاعدة البيانات بضرب كل صف من الجدول الأول في كل صف من الجدول الثاني، مما ينتج عنه 100,000,000 صف (مائة مليون صف!) في الذاكرة! هذا يتسبب في اختناق ذاكرة الخادم، وتجمد الـ CPU، وتوقف قاعدة البيانات عن العمل.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: CREATE TABLE orders (                           // جدول الطلبات
-2:   id SERIAL PRIMARY KEY,                        // المفتاح الأساسي
-3:   user_id UUID REFERENCES users(id) ON DELETE CASCADE, // حذف الطلبات تلقائياً عند حذف المستخدم
-4:   total NUMERIC(10, 2) NOT NULL                 // المبلغ الإجمالي
-5: );                                              // نهاية الجدول</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">WITH MonthlyRevenue AS (                            </span> <span style="color: #64748B;">// 1. CTE لعزل حسابات الأرباح</span>
+<span style="color: #F8FAFC;">  SELECT customer_id, SUM(total_amount) as spent    </span> <span style="color: #64748B;">// تجميع إجمالي الإنفاق</span>
+<span style="color: #F8FAFC;">  FROM orders                                       </span> <span style="color: #64748B;">// جدول الطلبات</span>
+<span style="color: #F8FAFC;">  WHERE ordered_at &gt;= CURRENT_DATE - INTERVAL '30 days'</span> <span style="color: #64748B;">// تصفية آخر 30 يوماً</span>
+<span style="color: #F8FAFC;">  GROUP BY customer_id                              </span> <span style="color: #64748B;">// تجميع حسب العميل</span>
+<span style="color: #F8FAFC;">)                                                   </span> <span style="color: #64748B;">// نهاية الـ CTE</span>
+<span style="color: #F8FAFC;">SELECT c.id, c.name, c.email, COALESCE(mr.spent, 0) as total_spent</span> <span style="color: #64748B;">// 2. الاستعلام الرئيسي</span>
+<span style="color: #F8FAFC;">FROM customers c                                    </span> <span style="color: #64748B;">// جدول العملاء</span>
+<span style="color: #F8FAFC;">LEFT JOIN MonthlyRevenue mr ON c.id = mr.customer_id</span> <span style="color: #64748B;">// ربط خارجي آمن</span>
+<span style="color: #F8FAFC;">ORDER BY total_spent DESC;                          </span> <span style="color: #64748B;">// فرز بالأعلى إنفاقاً</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>user_id UUID REFERENCES users(id); /* الحذف الافتراضي قد يمنع حذف الحساب أو يترك أخطاء غير معالجة */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: استخدام Subqueries متكررة في جملة SELECT لكل صف
+SELECT c.name,
+  (SELECT COUNT(*) FROM orders WHERE customer_id = c.id) as order_count // ينفذ استعلاماً مستقلاً لكل صف (N+1 Query Problem in SQL)!
+FROM customers c;</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>user_id UUID REFERENCES users(id) ON DELETE CASCADE; /* سلوك مرجعي واضح وصريح */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: استخدام LEFT JOIN مع GROUP BY أو CTE
+SELECT c.name, COUNT(o.id) as order_count
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id
+GROUP BY c.id, c.name;</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> عدم تحديد سلوك ON DELETE صراحة يجعل النظام يتصرف بالسلوك الافتراضي الذي يربك معالجات الحذف.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> الـ Correlated Subqueries في جملة SELECT تجبر المحرك على تنفيذ استعلام فرعي لكل صف على حدة، بينما JOIN يدمج البيانات في عملية مجمعة واحدة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="joins-relationsCheckpoint" data-quiz-id="joins-relations-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Which type of SQL JOIN returns all records from the left table, and the matched records from the right table (with NULLs for unmatched)?",
-    "qAr": "أي نوع من أنواع الـ SQL JOIN يُرجع جميع السجلات من الجدول الأيسر والسجلات المطابقة فقط من الجدول الأيمن؟",
+    "q": "Which physical join algorithm does PostgreSQL typically choose when joining two large unindexed tables?",
+    "qAr": "أي خوارزمية ربط فيزيائية يختارها محرك PostgreSQL عادة عند ربط جدولين كبيرين غير مفهرسين؟",
     "options": [
-      "INNER JOIN",
-      "LEFT OUTER JOIN",
-      "RIGHT OUTER JOIN",
-      "CROSS JOIN"
+      "Hash Join",
+      "Nested Loop Join",
+      "Bubble Join",
+      "Binary Search Join"
     ],
-    "correct": 1,
-    "why": "LEFT JOIN returns all rows from the left table, even if there are no matches in the right table.",
-    "whyAr": "الـ LEFT JOIN يضمن بقاء جميع سجلات الجدول الأيسر حتى لو لم تجد أي مطابقة في الجدول الأيمن."
+    "correct": 0,
+    "why": "Hash Join builds an in-memory hash table on the smaller table and probes it with the larger table, optimal for large unindexed joins.",
+    "whyAr": "خوارزمية Hash Join تبني جدول تجزئة في الذاكرة للجدول الأصغر ثم تفحص الجدول الأكبر بكفاءة عالية في عملية واحدة."
+  },
+  {
+    "q": "What is the primary architectural use case for WITH RECURSIVE CTEs in PostgreSQL?",
+    "qAr": "ما هي الفائدة المعمارية الأساسية لـ WITH RECURSIVE CTEs في PostgreSQL؟",
+    "options": [
+      "Traversing hierarchical, tree-structured, or graph data (e.g. organizational charts, threaded comments, bill of materials).",
+      "Encrypting database backups.",
+      "Creating database users.",
+      "Compressing log tables."
+    ],
+    "correct": 0,
+    "why": "Recursive CTEs execute iterative loops in SQL, making them the standard solution for navigating deep hierarchical data structures.",
+    "whyAr": "تتيح معالجة البيانات الشجرية والهياكل الهرمية المتداخلة مثل التعليقات المتفرعة والشجرة الوظيفية في استعلام SQL واحد."
+  },
+  {
+    "q": "What is the key difference between INNER JOIN and LEFT OUTER JOIN?",
+    "qAr": "ما هو الفرق الجوهري بين INNER JOIN و LEFT OUTER JOIN؟",
+    "options": [
+      "INNER JOIN returns only rows with matches in both tables; LEFT JOIN returns ALL rows from the left table regardless of matches in the right.",
+      "INNER JOIN is only for numbers; LEFT JOIN is for strings.",
+      "LEFT JOIN deletes unmatched rows.",
+      "There is no difference."
+    ],
+    "correct": 0,
+    "why": "LEFT JOIN preserves all records from the left side, filling missing right-side columns with NULL if no match exists.",
+    "whyAr": "الـ INNER يرجع الصفوف المتطابقة في الجدولين فقط، بينما LEFT يرجع كافة صفوف الجدول الأيسر حتى لو لم تكن تملك مطابقات في الأيمن."
+  },
+  {
+    "q": "How does COALESCE(column, fallbackValue) function in PostgreSQL?",
+    "qAr": "كيف تعمل دالة COALESCE(column, fallbackValue) في PostgreSQL؟",
+    "options": [
+      "Returns the first non-null argument in its parameter list, safely handling NULL values in expressions and joins.",
+      "Rounds numbers to 2 decimal places.",
+      "Converts strings to uppercase.",
+      "Deletes null rows."
+    ],
+    "correct": 0,
+    "why": "COALESCE evaluates arguments in sequence and returns the first non-null value, preventing NULL propagation in outputs.",
+    "whyAr": "ترجع أول قيمة غير خالية (Non-null) من معاملاتها، مما يمنع ظهور قيم NULL واستبدالها بقيم افتراضية نظيفة."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Relational Theory</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #60A5FA; font-size: 1.05rem; margin-bottom: 4px;">Relational Algebra & Recursive Queries</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">PostgreSQL 16+</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">PostgreSQL 18 Joins</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هي خوارزميات الربط الثلاث (Join Strategies) التي يستخدمها مخطط الاستعلامات في PostgreSQL؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">1. `Nested Loop Join`: للمجموعات الصغيرة والمفهرسة. 2. `Hash Join`: للمجموعات الكبيرة غير المرتبة؛ حيث يبني Hash Table في الذاكرة. 3. `Merge Join`: عندما يكون الجدولان مرتبين مسبقاً بناءً على مفتاح الربط (عبر فهارس B-Tree).</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هو الفرق بين CTEs العادية و Subqueries بعد إصدار PostgreSQL 12 بخصوص ميزة CTE Inlining؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">قبل PostgreSQL 12، كانت جملة CTE (WITH query AS (...)) تعامل كـ "Optimization Barrier" صلب: كان المحرك يقوم بتنفيذ الـ CTE أولاً وتخزين ناتجها بالكامل في الذاكرة كمصفوفة مؤقتة ثم تطبيق باقي الشروط. منذ PostgreSQL 12+، أضافت بوستجريس ميزة CTE Inlining: يقوم مفسر الاستعلامات بدمج الـ CTE تلقائياً داخل الاستعلام الرئيسي وتمرير شروط الـ WHERE إليها (Predicate Pushdown) لاستخدام الفهارس ما لم تحدد صراحة WITH name AS MATERIALIZED (...).</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-postgresql" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #60A5FA; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

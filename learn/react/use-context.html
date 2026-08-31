@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="react">
   <meta name="fsa-lesson" content="use-context">
   <meta name="fsa-level" content="2">
-  <meta name="fsa-order" content="11">
-  <meta name="fsa-title" content="Context API: Eliminating Prop Drilling & Context Splitting">
-  <meta name="fsa-est-minutes" content="24">
-  <meta name="fsa-teaches-version" content="React 19.2">
-  <meta name="fsa-pattern-label" content="Global Data Sharing">
+  <meta name="fsa-order" content="9">
+  <meta name="fsa-title" content="Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="React 19.x">
+  <meta name="fsa-pattern-label" content="Dependency Injection & Context Splitting">
   <meta name="fsa-root" content="../../">
 
-  <title>Context API: Eliminating Prop Drilling & Context Splitting · CodeHub Interactive</title>
+  <title>Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #38BDF8;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
-          <div class="fsa-sidebar__title">React.js · واجهات المستخدم التفاعلية</div>
+          <div class="fsa-sidebar__title">React.js 19 · واجهات المستخدم التفاعلية</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #38BDF8;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-react" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,271 +97,354 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">react</a>
+            <a href="../../index.html#track-react">react</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">use-context</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">REACT</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #38BDF8; color: #000; font-weight: 800;">REACT</span>
             <span class="fsa-badge fsa-badge--info">Level 2</span>
-            <span class="fsa-badge fsa-badge--success">React 19.2</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 24 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">React 19.x</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Context API: Eliminating Prop Drilling & Context Splitting</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">واجهة Context API: القضاء على تمرير الخصائص المضني وتقسيم السياقات</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">واجهة Context API: القضاء على تمرير الخصائص المضني (Prop Drilling) وتقسيم السياقات للأداء العالي</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>استخدام createContext و useContext و Provider لمشاركة البيانات العامة.</li>
-              <li>تجنب إعادة الرسم غير الضرورية عبر تقسيم السياقات (State vs Dispatch Contexts).</li>
-              <li>بناء Custom Context Hooks مع حراس التأكد من وجود الـ Provider.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #38BDF8; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>حل مشكلة تمرير الخصائص عبر طبقات متعددة (Prop Drilling) بطريقة معمارية منضبطة.</li>
+              <li>تجنب فخ إعادة الرسم الشامل (Re-render Cascade Trap) وتطبيق نمط تقسيم السياقات (Context Splitting).</li>
+              <li>فهم واجهة use() الجديدة في React 19 لقراءة السياق شرطياً داخل الدوال والحلقات.</li>
+              <li>التمييز بين البيانات المناسبة لـ Context (مثل Theme, Auth, Locale) والبيانات سريعة التغير (High-frequency state).</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              تمرير البيانات عبر 6 أو 7 مستويات من المكونات الوسيطة التي لا تحتاج هذه البيانات يُسمى كابوس Prop Drilling. سياق Context API يتيح بث البيانات لجميع المكونات الفرعية مباشرة. لكن الفخ الأكبر هو وضع كل البيانات في Context واحد مما يجبر كل المكونات على إعادة الرسم عند تغير أي حقل تافه! الحل الهندسي هو تقسيم السياقات (Context Splitting).
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في أي تطبيق ريآكت حقيقي، تجد أن بيانات المستخدم المسجل (Auth User) أو الثيم المختار (Dark/Light) تحتاجها عشرات المكونات المنتشرة في أطراف شجرة الواجهة: في النافبار، في السايدبار، في كروت المقالات، وفي الفوتر.
+      المبرمج المبتدئ يبدأ بتمرير <code dir="ltr">user={user}</code> من المكون الجذري App عبر 6 طبقات من المكونات الوسيطة التي لا تحتاج هذه البيانات على الإطلاق لمجرد إيصالها للمكون النهائي في الأسفل! هذه المعاناة البرمجية تُعرف بـ **Prop Drilling**.
+      واجهة **Context API** صُممت لتكون "مصعداً فضائياً" ينقل البيانات مباشرة من المزود (Provider) إلى أي مكون مستهلك (Consumer) في أي عمق من الشجرة بضغطة زر.
+      لكن استخدام Context بطريقة عشوائية قد يدمر أداء التطبيق: كلما تغيرت قيمة واحدة في كائن الـ Context الضخم، ستجبر ريآكت كل المكونات المشتركة في هذا السياق على إعادة الرسم (Re-render) حتى لو كانت لا تستخدم القيمة المتغيرة!
+      في هذا الدرس، هنتعلم إزاي نبني Custom Context Providers احترافية، إزاي نطبق نمط **Context Splitting** لفصل الحالة عن دوال التحديث، وإزاي نستخدم خطاف <code dir="ltr">use()</code> الجديد في ريآكت 19.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">إنشاء السياق والـ Provider</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                تغليف الشجرة الفرعية بـ Context.Provider وتمرير القيمة.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إنشاء السياق وتحديد القيمة الافتراضية</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام createContext(defaultValue) لتعريف شكل البيانات وتوفير قيمة احتياطية آمنة للاختبارات المعزولة.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الاستهلاك المباشر بـ useContext</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                أي مكون فرعي يصل للبيانات مباشرة O(1) دون إزعاج المكونات الوسيطة.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تغليف الشجرة بالـ Provider المخصص</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إنشاء Custom Provider يغلف الحالة ومنطق التحديث ويوفر واجهة برمجية واضحة ومحمية للمستهلكين.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">فصل سياق الحالة عن سياق التحديث</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                سياق لقراءة الـ State وسياق لدوال الـ Dispatch لمنع إعادة الرسم العشوائي.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">استهلاك السياق عبر Custom Hooks</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                بناء Hook مثل useAuth() يفحص وجود الـ Provider ويرمي خطأ واضحاً إذا تم استدعاؤه في مكان خاطئ.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تقسيم السياق لتحسين الأداء (Context Splitting Pattern)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فصل السياق إلى اثنين: StateContext للبيانات و DispatchContext للدوال لضمان عدم إعادة رسم أزرار الإجراءات عند تغير البيانات.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #38BDF8; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">استخدام دالة use() في React 19</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                قراءة السياق بمرونة فائقة باستخدام use(ThemeContext) مع دعم الاستدعاء الشرطي داخل جمل if.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="use-contextStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Context API: Eliminating Prop Drilling & Context Splitting Architecture Flow Diagram">
-              <title>Context API: Eliminating Prop Drilling & Context Splitting Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Context API: Eliminating Prop Drilling & Context Splitting</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps Architecture Flow Diagram">
+              <title>Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-use-context" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Global Data Sharing</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-use-context)" stroke="#38BDF8" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#38BDF8" font-size="14" font-weight="800">Dependency Injection & Context Splitting</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="use-contextPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #38BDF8; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Simulating Context Dispatcher Pattern
-const AuthContext = { user: null };
-function login(name) { AuthContext.user = { name, role: 'admin' }; console.log("Logged In:", AuthContext.user); }
-login("Amr Zidan");</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي نمط Context Splitting
+const stateContext = { user: "Amr", theme: "dark" };
+const dispatchContext = {
+  login: () => console.log("Login dispatched"),
+  toggleTheme: () => console.log("Theme toggled")
+};
+
+function NavUser() {
+  console.log("NavUser consumed StateContext:", stateContext.user);
+}
+
+function ThemeButton() {
+  // يستهلك الـ dispatchContext فقط ولن يعيد الرسم عند تغير بيانات المستخدم!
+  console.log("ThemeButton consumed DispatchContext only (Optimal Performance).");
+  dispatchContext.toggleTheme();
+}
+
+NavUser();
+ThemeButton();</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ماذا ترجع useContext(MyContext) إذا تم استدعاؤها خارج الـ Provider؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">تُرجع القيمة الافتراضية (defaultValue) الممررة أثناء إنشاء createContext(defaultValue).</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يعتبر تخزين حالة سريعة التغير (مثل إحداثيات مؤشر الفأرة mouse coordinates أو مدخلات حقل نصي keystrokes) داخل React Context خطأً فادحاً في الأداء؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #38BDF8;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">لأن React Context يفتقر إلى ميزة الانتقاء الدقيق (Fine-grained Selectors). أي تحديث يطرأ على قيمة الـ Provider يؤدي قسراً إلى إعادة تشغيل دالة الرسم (Re-render) لجميع المكونات التي تستدعي useContext لهذا السياق، مما يتسبب في تجميد الواجهة والـ Frame Drops عند حدوث 60 تحديثاً في الثانية.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: export function useAuth() {                     // هوك مخصص لاستهلاك السياق
-2:   const ctx = useContext(AuthContext);          // قراءة السياق
-3:   if (!ctx) throw new Error("useAuth must be used inside AuthProvider"); // حارس أمان للمطور
-4:   return ctx;                                   // إرجاع القيمة
-5: }                                               // نهاية الهوك</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">const AuthStateContext = createContext(null);       </span> <span style="color: #64748B;">// سياق لحفظ بيانات الحالة فقط</span>
+<span style="color: #F8FAFC;">const AuthDispatchContext = createContext(null);    </span> <span style="color: #64748B;">// سياق لحفظ دوال الإجراءات فقط</span>
+<span style="color: #F8FAFC;">export function AuthProvider({ children }) {        </span> <span style="color: #64748B;">// المزود المخصص</span>
+<span style="color: #F8FAFC;">  const [state, dispatch] = useReducer(authReducer, initial);</span> <span style="color: #64748B;">// إدارة الحالة بـ Reducer</span>
+<span style="color: #F8FAFC;">  return (                                          </span> <span style="color: #64748B;">// توفير السياقين المنفصلين</span>
+<span style="color: #F8FAFC;">    &lt;AuthStateContext.Provider value={state}&gt; </span> <span style="color: #64748B;">// توزيع بيانات الحالة</span>
+<span style="color: #F8FAFC;">      &lt;AuthDispatchContext.Provider value={dispatch}&gt;</span> <span style="color: #64748B;">// توزيع دوال الإرسال الثابتة</span>
+<span style="color: #F8FAFC;">        {children}                                  </span> <span style="color: #64748B;">// رسم الشجرة الفرعية</span>
+<span style="color: #F8FAFC;">      &lt;/AuthDispatchContext.Provider&gt;         </span> <span style="color: #64748B;">// إغلاق مزود الإرسال</span>
+<span style="color: #F8FAFC;">    &lt;/AuthStateContext.Provider&gt;              </span> <span style="color: #64748B;">// إغلاق مزود الحالة</span>
+<span style="color: #F8FAFC;">  );                                                </span> <span style="color: #64748B;">// نهاية المزود</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الدالة</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>&lt;AppContext.Provider value={{ user, theme, cart, settings, logs }}&gt; /* أي تغيير يعيد رسم كل شيء! */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: تمرير كائن جديد مباشرة في خاصية value مع كل Render
+&lt;ThemeContext.Provider value={{ theme, setTheme }}&gt;
+  &lt;App /&gt;
+&lt;/ThemeContext.Provider&gt; // يعيد رسم كل المستهلكين في كل دورة لأن المرجع كائن جديد!</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>&lt;UserContext.Provider value={user}&gt;&lt;CartContext.Provider value={cart}&gt;...&lt;/CartContext.Provider&gt;&lt;/UserContext.Provider&gt;</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الأمثل: تثبيت مرجع الكائن باستخدام useMemo
+const contextValue = useMemo(() =&gt; ({ theme, setTheme }), [theme]);
+&lt;ThemeContext.Provider value={contextValue}&gt;
+  &lt;App /&gt;
+&lt;/ThemeContext.Provider&gt;</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> دمج كل حالات التطبيق في سياق واحد يسبب بطء شديد وإعادة رسم غير مبررة لكل مكونات الشاشة.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> تمرير كائن literal مباشرة value={{ ... }} ينشئ مرجعاً جديداً في الذاكرة مع كل Render حتى لو لم تتغير القيم الداخلية، مما يبطل تحسينات React.memo في المكونات المستهلكة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="use-contextCheckpoint" data-quiz-id="use-context-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "What triggers a re-render in components subscribed via `useContext`?",
-    "qAr": "ما الذي يطلق إعادة الرسم في المكونات المشتركة في سياق عبر useContext؟",
+    "q": "What is the primary motivation behind the Context Splitting pattern?",
+    "qAr": "ما هو الدافع المعماري الأساسي لتطبيق نمط تقسيم السياقات (Context Splitting)؟",
     "options": [
-      "Only DOM changes",
-      "Whenever the Provider value prop changes by reference (Object.is)",
-      "Component unmounting",
-      "Page reload"
+      "Separating state from dispatch functions so components only subscribing to actions do not re-render when state changes.",
+      "To support multiple themes simultaneously.",
+      "It is required by TypeScript.",
+      "To make Context work on mobile devices."
     ],
-    "correct": 1,
-    "why": "Components re-render whenever the value prop of their Provider changes.",
-    "whyAr": "يعاد رسم المكون عندما يتغير مرجع خاصية value في الـ Provider."
+    "correct": 0,
+    "why": "Splitting state and dispatch into separate contexts prevents dispatch-only consumers from re-rendering on every state update.",
+    "whyAr": "فصل الحالة عن دوال الإرسال يمنع المكونات التي تحتاج إرسال الأفعال فقط من إعادة الرسم غير المبرر عند تغير البيانات."
+  },
+  {
+    "q": "What capability does the new use() API in React 19 introduce for reading Context?",
+    "qAr": "ما هي الإمكانية الجديدة التي يقدمها خطاف use() في ريآكت 19 لقراءة الـ Context؟",
+    "options": [
+      "It can be called conditionally inside if-blocks and loops, unlike traditional hooks.",
+      "It automatically converts Context data into JSON.",
+      "It bypasses Provider validation.",
+      "It caches data in Redis."
+    ],
+    "correct": 0,
+    "why": "The React 19 use() API can be invoked conditionally within branches, unlike standard React hooks governed by rigid call-order rules.",
+    "whyAr": "واجهة use() في ريآكت 19 يمكن استدعاؤها شرطياً داخل الشروط والحلقات على عكس الـ Hooks التقليدية المقيدة بقواعد الترتيب."
+  },
+  {
+    "q": "Which type of application state is LEAST suitable for React Context?",
+    "qAr": "أي نوع من حالات التطبيق يعتبر الأقل ملائمة للتخزين في React Context؟",
+    "options": [
+      "High-frequency rapidly changing state (e.g. mouse position, rapid keyboard typing, animations).",
+      "Current authenticated user session.",
+      "Global color theme (Dark/Light).",
+      "Current UI localization language (Arabic/English)."
+    ],
+    "correct": 0,
+    "why": "Context triggers cascade re-renders across all consumers on update; high-frequency state causes severe UI lag.",
+    "whyAr": "السياق يطلق موجات إعادة رسم لكل المستهلكين عند كل تعديل؛ الحالات فائقة التكرار ستسبب بطئاً وتجميداً للواجهة."
+  },
+  {
+    "q": "What is the purpose of wrapping a Context lookup in a custom hook like useAuth()?",
+    "qAr": "ما هي الفائدة من تغليف استهلاك السياق داخل Custom Hook مخصص مثل useAuth()؟",
+    "options": [
+      "Encapsulates context lookup and provides an upfront fail-fast error if used outside of its Provider.",
+      "Increases download speed of the component.",
+      "Encrypts the authentication tokens.",
+      "Allows Context to work without a Provider."
+    ],
+    "correct": 0,
+    "why": "Custom hook wrappers validate that the context is not null/undefined and deliver immediate actionable developer feedback.",
+    "whyAr": "يتحقق الـ Custom Hook من أن السياق ليس فارغاً ويرمي تنبيهاً فورياً للمطور إذا نسي تغليف المكون بالمزود المطلوب."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Global Data Sharing</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #38BDF8; font-size: 1.05rem; margin-bottom: 4px;">Dependency Injection & Context Splitting</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">React 19.2</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">React 19.x</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): هل يغني Context API عن مكتبات إدارة الحالة مثل Zustand أو Redux؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">لا، Context هو أداة لحقن التبعيات (Dependency Injection) وليس محرك إدارة حالة كامل؛ لا يدعم الـ Selectors الدقيقة وإعادة الرسم الجزئي عالي الكفاءة للحالات سريعة التغير.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحل مشكلة Re-renders غير الضرورية في React Context دون اللجوء إلى مكتبة خارجية مثل Zustand أو Redux؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نحلها معمارياً عبر 3 تقنيات: 1. تطبيق نمط Context Splitting بفصل State عن Dispatch. 2. تثبيت قيمة الـ value الممررة للمزود بـ useMemo. 3. استخدام نمط الـ Component Composition بتمرير المكونات الثقيلة كـ children للمزود بدلاً من بنائها داخله، لأن ريآكت لا تعيد رسم الـ children الممررين مسبقاً طالما أن المرجع لم يتغير.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-react" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #38BDF8; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

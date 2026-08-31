@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="foundations">
   <meta name="fsa-lesson" content="js-classes-oop">
   <meta name="fsa-level" content="1">
-  <meta name="fsa-order" content="9">
-  <meta name="fsa-title" content="ES6 Classes, Private Fields (#), Inheritance & Static Methods">
-  <meta name="fsa-est-minutes" content="22">
-  <meta name="fsa-teaches-version" content="ES2024 Standard">
-  <meta name="fsa-pattern-label" content="Object-Oriented Programming">
+  <meta name="fsa-order" content="10">
+  <meta name="fsa-title" content="ES6 Classes, Private Fields (#), Inheritance & Mixins">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="ES2024+ Standard">
+  <meta name="fsa-pattern-label" content="Object-Oriented Architecture & Encapsulation">
   <meta name="fsa-root" content="../../">
 
-  <title>ES6 Classes, Private Fields (#), Inheritance & Static Methods · CodeHub Interactive</title>
+  <title>ES6 Classes, Private Fields (#), Inheritance & Mixins · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #F59E0B;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Foundations · الأساسيات الصلبة</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #F59E0B;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-foundations" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,299 +97,364 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">foundations</a>
+            <a href="../../index.html#track-foundations">foundations</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">js-classes-oop</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">FOUNDATIONS</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #F59E0B; color: #000; font-weight: 800;">FOUNDATIONS</span>
             <span class="fsa-badge fsa-badge--info">Level 1</span>
-            <span class="fsa-badge fsa-badge--success">ES2024 Standard</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 22 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">ES2024+ Standard</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">ES6 Classes, Private Fields (#), Inheritance & Static Methods</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">الفئات الكلاسيكية في ES6، الحقول الخاصة (#) والوراثة في V8</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">ES6 Classes, Private Fields (#), Inheritance & Mixins</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">فئات ES6 Classes، الحقول الخاصة (#)، التوريث ومزج السلوكيات (Mixins)</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>فهم كيفية تحويل ES6 Classes داخلياً إلى Prototype Functions.</li>
-              <li>تطبيق الكبسلة الحقيقية باستخدام Private Fields و Methods (#).</li>
-              <li>إتقان الوراثة عبر extends و super() والخصائص الساكنة (Static).</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #F59E0B; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم كيف تُترجم فئات ES6 Classes إلى Prototypal Inheritance تحت الغطاء (Syntactic Sugar).</li>
+              <li>تطبيق الكبسلة الصارمة (True Encapsulation) باستخدام الحقول والأساليب الخاصة بالرمز #.</li>
+              <li>إتقان التوريث عبر extends واستدعاء المشيد الأب عبر super().</li>
+              <li>تطبيق نمط Mixins لتجميع السلوكيات وتفادي مشاكل التوريث المتعدد الصلب.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              فئات ES6 Classes في جافاسكربت هي في الأساس "سكر تركيبي" (Syntactic Sugar) فوق نموذج الـ Prototypes، لكنها أضافت معايير هندسية صارمة زي الحقول والأساليب الخاصة الحقيقية المنفذة على مستوى المحرك (<code dir="ltr">#privateField</code>) والدوال الساكنة (<code dir="ltr">static</code>) وكتل التهيئة الساكنة. محاولة الوصول للحقول الخاصة من خارج الفئة تفشل على مستوى المحرك، مما يوفر كبسلة (Encapsulation) حقيقية 100%.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">عندما أضافت لجنة TC39 كلمة <code dir="ltr">class</code> في معيار ES6، رحب مبرمجو لغات OOP التقليدية بالخطوة واعتبروا أن جافاسكريبت أصبحت لغة كلاسيكية. لكن الحقيقة أن Classes في جافاسكريبت هي مجرد "غلاف جمالي" (Syntactic Sugar) فوق نموذج الـ Prototypal Inheritance!
+      ومع ذلك، التطورات الحديثة في ES2022+ أضافت ميزات ثورية حقيقية لم تكن موجودة من قبل: الحقول الخاصة الصارمة (Private Fields) باستخدام رمز الـ <code dir="ltr">#</code>، والـ Static Blocks للتهيئة المعقدة.
+      قبل إضافة <code dir="ltr">#privateField</code>، كان المبرمجون يضعون شرطة سفلية <code dir="ltr">_password</code> كتحذير شكلي فقط، لكن أي كود خارجي كان يستطيع قراءتها وتعديلها بسهولة.
+      في هذا الدرس، هنتعلم إزاي نبني معمارية كلاسات قوية ونظيفة، إزاي نحمي البيانات الحساسة بكبسلة حقيقية على مستوى الـ Bytecode، وإزاي نستخدم نمط الـ Mixins لبناء كائنات مرنة متعددة القدرات.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">دالة البناء constructor واستدعاء super()</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                عند وراثة فئة، يجب استدعاء super() أولاً قبل لمس this لحجز مثيل الفئة الأب.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تشريح الـ Constructor والتهيئة</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                دالة constructor() هي المكان الوحيد المخصص لتهيئة النسخة (Instance Initialization) وربط الخصائص المبدئية.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الحقول الخاصة الحقيقية (#)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                الحقول التي تبدأ بعلامة # غير قابلة للوصول من خارج الفئة حتى عبر Object.keys أو reflection.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الحقول الخاصة الحقيقية (#Private Identifiers)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الحقول والأساليب التي تبدأ بـ # يتم حظر الوصول إليها تماماً من خارج الـ Class على مستوى محرك V8 ولا يمكن قراءتها حتى بـ bracket notation.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الخصائص الساكنة (Static Properties)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                خصائص ترتبط بالفئة نفسها كـ Blueprint ولا تتكرر في النسخ المُنشأة (Instances).
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التوريث واستدعاء super()</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                عند وراثة كلاس بـ extends، يجب استدعاء super() قبل استخدام كلمة this في المشيد الفرعي لتهيئة الـ Prototype الأب.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الخصائص والكتل الساكنة (Static Fields & Blocks)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الخصائص الساكنة static تتبع الكلاس نفسه ولا تتكرر على كل Instance، وتستخدم للـ Factory Methods والإعدادات العامة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">نمط Mixins لتركيب السلوكيات (Composition over Inheritance)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                دوال تستقبل فئة كمدخل وتُرجع فئة جديدة مضافاً إليها أساليب وسلوكيات محددة بدون التقيد بشجرة توريث أحادية.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="js-classes-oopStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="ES6 Classes, Private Fields (#), Inheritance & Static Methods Architecture Flow Diagram">
-              <title>ES6 Classes, Private Fields (#), Inheritance & Static Methods Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for ES6 Classes, Private Fields (#), Inheritance & Static Methods</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="ES6 Classes, Private Fields (#), Inheritance & Mixins Architecture Flow Diagram">
+              <title>ES6 Classes, Private Fields (#), Inheritance & Mixins Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-js-classes-oop" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Object-Oriented Programming</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-js-classes-oop)" stroke="#F59E0B" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#F59E0B" font-size="14" font-weight="800">Object-Oriented Architecture & Encapsulation</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="js-classes-oopPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #F59E0B; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Production BankAccount with Hard Private Fields
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي الفئات والكبسلة الخاصة
 class BankAccount {
-  #balance = 0; // Truly private field in V8 engine
+  // حقل خاص حقيقي محمي على مستوى المحرك
+  #balance = 0;
+  #accountNumber;
 
-  constructor(owner, initialDeposit) {
-    this.owner = owner;
+  constructor(accountNumber, initialDeposit = 0) {
+    this.#accountNumber = accountNumber;
     this.#balance = initialDeposit;
   }
 
   deposit(amount) {
-    if (amount <= 0) throw new Error("Invalid deposit amount");
+    if (amount <= 0) throw new Error("Deposit must be positive");
     this.#balance += amount;
     return this.#balance;
   }
 
   getBalance() {
-    return `Balance: $${this.#balance}`;
+    return `Account ${this.#accountNumber}: $${this.#balance}`;
   }
 }
 
-const account = new BankAccount("Amr", 500);
+const account = new BankAccount("ACC-9011", 500);
 account.deposit(250);
-console.log(account.getBalance()); // Balance: $750
+console.log(account.getBalance());
 
-// Attempting to read private field directly:
+// محاولة اختراق الحقل الخاص
 try {
-  console.log(account.#balance);
-} catch (err) {
-  console.log("🔒 Security Guard: Private field '#balance' is not accessible outside class!");
+  eval("account.#balance = 1000000;"); // Syntax Error
+} catch (e) {
+  console.log("Private field successfully protected from external tampering!");
 }</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ماذا يحدث إذا حاولت استدعاء this قبل super() داخل constructor فئة فرعية؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">محرك V8 سيلقي خطأ فورياً من نوع ReferenceError: Must call super constructor in derived class before accessing 'this'.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ماذا يحدث إذا حاولت استخدام كلمة this في constructor كلاس فرعي (Derived Class) قبل استدعاء دالة super()؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #F59E0B;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">سيرمي المحرك خطأ ReferenceError: Must call super constructor in derived class before accessing "this". في جافاسكريبت، الكلاس الأب هو المسؤول عن تخصيص الذاكرة لكائن this، ولا يتم ربط this بالكلاس الفرعي إلا بعد اكتمال تنفيذ مشيد الأب عبر super().</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: class AdminUser extends User {                  // وراثة فئة AdminUser من فئة User الأساسية
-2:   #permissions = [];                            // حقل خاص مشفر على مستوى المحرك
-3:   constructor(name, perms) {                    // دالة البناء
-4:     super(name);                                // تهيئة الفئة الأب أولاً (إجباري)
-5:     this.#permissions = perms;                  // إسناد الحقل الخاص
-6:   }                                             // نهاية البناء
-7: }                                               // نهاية الفئة</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">class Service {                                     </span> <span style="color: #64748B;">// تعريف الفئة الأساسية</span>
+<span style="color: #F8FAFC;">  #apiKey;                                          </span> <span style="color: #64748B;">// حقل خاص حقيقي لا يمكن قراءته خارج الكلاس</span>
+<span style="color: #F8FAFC;">  static instanceCount = 0;                         </span> <span style="color: #64748B;">// خاصية ساكنة مشتركة على مستوى الفئة</span>
+<span style="color: #F8FAFC;">  constructor(apiKey) {                             </span> <span style="color: #64748B;">// مشيد الفئة</span>
+<span style="color: #F8FAFC;">    this.#apiKey = apiKey;                          </span> <span style="color: #64748B;">// تعيين الحقل الخاص</span>
+<span style="color: #F8FAFC;">    Service.instanceCount++;                        </span> <span style="color: #64748B;">// تحديث العداد الساكن</span>
+<span style="color: #F8FAFC;">  }                                                 </span> <span style="color: #64748B;">// نهاية المشيد</span>
+<span style="color: #F8FAFC;">  get key() { return this.#apiKey.slice(0, 4) + "****"; }</span> <span style="color: #64748B;">// Getter لتوفير قراءة مقنعة وآمنة</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الفئة</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>class User { _password = "123"; } /* مجرد اتفاقية شكلية ويمكن قراءتها وتعديلها بسهولة! */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: الاعتماد على التوريث الصلب العميق متعدد الطبقات
+class Animal {}
+class Mammal extends Animal {}
+class FlyingMammal extends Mammal {}
+class Bat extends FlyingMammal {} // شجرة توريث صلبة تنكسر عند إضافة خفاش لا يطير!</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>class User { #password = "123"; } /* كبسلة خاصة حقيقية محمية بالـ V8 */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: استخدام التركيب (Composition &amp; Mixins)
+const CanFly = (Base) =&gt; class extends Base { fly() { return "Flying!"; } };
+const CanEcho = (Base) =&gt; class extends Base { echo() { return "Sonar active!"; } };
+
+class Bat extends CanFly(CanEcho(Object)) {} // دمج السلوكيات بمرونة</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> البادئة _ هي مجرد اتفاق بين المطورين ولا تمنع أي شخص أو كود خارجي من قراءة الحقل الحساس، بينما # محمية برمجياً.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> التوريث الطبقي العميق (Deep Inheritance Hierarchy) يربط الكود بصلابة ويجعل التعديلات المستقبلية مستحيلة (Fragile Base Class Problem)، بينما Composition يتيح مرونة فائقة.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="js-classes-oopCheckpoint" data-quiz-id="js-classes-oop-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "How do you define a private instance method in an ES2022+ JavaScript class?",
-    "qAr": "كيف تُعرّف دالة مثيل خاصة (Private Method) في فئات جافاسكربت الحديثة؟",
+    "q": "What is the runtime enforcement mechanism for JavaScript private fields declared with #?",
+    "qAr": "ما هي آلية الحماية وقت التشغيل للحقول الخاصة المعلنة برمز # في جافاسكريبت؟",
     "options": [
-      "private myMethod() {}",
-      "#myMethod() {}",
-      "_myMethod() {}",
-      "static myMethod() {}"
+      "Hard private encapsulation enforced by the JS engine; attempting access outside throws a SyntaxError.",
+      "Soft naming convention that can still be accessed via brackets.",
+      "They are transpiled into Symbols that can be read via Object.getOwnPropertySymbols.",
+      "They only work in TypeScript."
     ],
-    "correct": 1,
-    "why": "Prefixing a method name with a hash `#` creates a private method accessible only within the class body.",
-    "whyAr": "وضع علامة الهاش # قبل اسم الدالة ينشئ دالة خاصة محصنة داخل الفئة فقط."
+    "correct": 0,
+    "why": "Private identifiers with # are truly private at engine level; external access is a parse-time SyntaxError.",
+    "whyAr": "الحقول الخاصة برمز # محمية برمجياً على مستوى المحرك، ومحاولة الوصول إليها خارج الفئة ترمي خطأ SyntaxError."
+  },
+  {
+    "q": "Why must super() be called before accessing this in a derived class constructor?",
+    "qAr": "لماذا يجب استدعاء super() قبل استخدام this في مشيد الكلاس الفرعي؟",
+    "options": [
+      "The parent constructor is responsible for initializing the instance object bound to this.",
+      "super() clears the call stack.",
+      "It is an optional style choice.",
+      "super() prevents memory leaks."
+    ],
+    "correct": 0,
+    "why": "In derived classes, the instance object is created by the base constructor, so this is uninitialized until super() finishes.",
+    "whyAr": "في الكلاسات الفرعية، كائن this يتم إنشاؤه بواسطة مشيد الأساس الأب، وبالتالي يظل غير مهيأ حتى ينتهي super()."
+  },
+  {
+    "q": "What does a static method on an ES6 class belong to?",
+    "qAr": "إلى ماذا ينتمي الأسلوب الساكن (Static Method) في فئات ES6؟",
+    "options": [
+      "Directly to the class constructor function itself, not to individual instances.",
+      "To all child instances through prototype.",
+      "To the global window object.",
+      "To Object.prototype."
+    ],
+    "correct": 0,
+    "why": "Static methods and properties are stored directly on the constructor object, not on its prototype.",
+    "whyAr": "الأساليب والخصائص الساكنة تُخزن مباشرة على كائن المشيد نفسه وليس على الـ prototype الخاص بالنسخ."
+  },
+  {
+    "q": "How does a Mixin pattern operate in modern JavaScript?",
+    "qAr": "كيف يعمل نمط الـ Mixin في جافاسكريبت الحديثة؟",
+    "options": [
+      "A factory function that takes a superclass and returns a new subclass extending it with specific behaviors.",
+      "By deep cloning prototype properties using Object.assign.",
+      "Through multiple inheritance syntax: class A extends B, C.",
+      "Using web workers for parallel class execution."
+    ],
+    "correct": 0,
+    "why": "Mixins are parameterized class factories allowing modular behavior composition without rigid inheritance trees.",
+    "whyAr": "الـ Mixins هي دوال مصنعية تستقبل فئة وترجع فئة فرعية جديدة موسعة بسلوكيات محددة لتسهيل التركيب."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Object-Oriented Programming</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #F59E0B; font-size: 1.05rem; margin-bottom: 4px;">Object-Oriented Architecture & Encapsulation</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">ES2024 Standard</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">ES2024+ Standard</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هو الفرق الجوهري بين الدوال العادية المعرفة داخل Class والـ Static Methods؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">الدوال العادية (Instance Methods) يتم وضعها على `ClassName.prototype` وتكون متاحة لكل كائن تم إنشاؤه عبر `new`. بينما الـ `static methods` يتم وضعها مباشرة على كائن الفئة نفسه `ClassName` ولا ترثها النسخ، وتُستخدم كـ Utility Functions مثل `Array.from()` أو `Object.keys()`.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هي الكتل الساكنة (Static Initialization Blocks) المضافة في ES2022 وما هي المشكلة التي حلتها؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">الكتل الساكنة static { ... } تسمح بكتابة كود تنفيذي معقد (مثل try/catch أو التحقق من البيئة أو مشاركة بيانات خاصة مع دوال خارجية) أثناء مرحلة تحميل الفئة (Class Evaluation). قبل ES2022، كان لا يمكن تنفيذ أكثر من سطر تهيئة واحد لكل خاصية ساكنة، ولم يكن ممكناً مشاركة الحقول الخاصة #private مع دوال مساعدة خارج الكلاس دون كشفها للعامة.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-foundations" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #F59E0B; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="postgresql">
+  <meta name="fsa-lesson" content="indexing-btree-gin">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="6">
+  <meta name="fsa-title" content="PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="PostgreSQL 18 Indexes">
+  <meta name="fsa-pattern-label" content="Multi-Engine Index Structures & Spatial Indexing">
+  <meta name="fsa-root" content="../../">
+
+  <title>PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #60A5FA;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">PostgreSQL 18 · القواعد العلائقية المتقدمة</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #60A5FA;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-postgresql" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-postgresql">postgresql</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">indexing-btree-gin</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #60A5FA; color: #000; font-weight: 800;">POSTGRESQL</span>
+            <span class="fsa-badge fsa-badge--info">Level 2</span>
+            <span class="fsa-badge fsa-badge--success">PostgreSQL 18 Indexes</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">معمارية الفهارس في PostgreSQL: فهارس B-Tree، فهارس GIN لمستندات JSONB، وفهارس BRIN</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #60A5FA; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم الفروق المعمارية بين أنواع الفهارس الكبرى في بوستجريس: B-Tree, GIN, GiST, و BRIN.</li>
+              <li>استخدام فهارس GIN (Generalized Inverted Index) لتسريع استعلامات JSONB والمصفوفات النصية بنسبة 100x.</li>
+              <li>تطبيق فهارس BRIN (Block Range Index) للجداول الزمنية الضخمة (Time-Series) لتوفير 99% من مساحة الـ RAM.</li>
+              <li>تشريح خطة الاستعلام بـ EXPLAIN (ANALYZE, BUFFERS) ومقارنة Seq Scan مقابل Index Scan.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">أغلب المطورين يعرفون نوعاً واحداً فقط من الفهارس: **B-Tree**.
+      فهارس B-Tree ممتازة لمطابقة القيم الفردية والمقارنات العادية (<code dir="ltr">=, &lt;, &gt;</code>)، لكنها تفشل تماماً في السيناريوهات المتقدمة:
+      - ماذا لو كنت تخزن كائنات <code dir="ltr">JSONB</code> وتريد البحث عن المنتجات التي تحتوي على خاصية <code dir="ltr">{"color": "red", "size": "XL"}</code> داخل مصفوفة؟ فهارس B-Tree عاجزة عن فهرسة ما بداخل الـ JSON!
+      - ماذا لو كان لديك جدول سجلات (Logs) يحتوي على 500 مليون صف مرتبة زمنياً، وفهرس B-Tree يستهلك 40GB من الـ RAM؟
+      قوة PostgreSQL الحقيقية تكمن في تنوع محركات الفهارس:
+      1. **GIN (Generalized Inverted Index)**: يقسم كائنات الـ JSONB والمصفوفات إلى كلمات ومفاتيح مفككة ويفهرس كل عنصر فرعي، مما يوفر سرعة استعلام خيالية في أجزاء من الميلي ثانية!
+      2. **BRIN (Block Range Index)**: يستهلك بضعة كيلوبايتات فقط (0.01% من حجم B-Tree) لتغطية مئات ملايين السجلات المرتبة فيزيائياً على القرص!
+      في هذا الدرس، هنتعلم متى نستخدم كل محرك فهارس، وهنتعلم قراءة تقارير **EXPLAIN (ANALYZE, BUFFERS)** بدقة جراحية.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">فهارس B-Tree الافتراضية</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                شجرة بحث ثنائية متوازنة ممتازة للمفاتيح الأساسية، المقارنات، والترتيب التصاعدي والتنازلي (Equality & Range queries).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الفهارس المعكوسة بـ GIN (Generalized Inverted Index)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                مثالية لمستندات JSONB ومصفوفات النصوص؛ تقوم بتفكيك المحتوى وفهرسة كل كلمة ومفتاح بشكل منفصل.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">فهارس نطاق الكتل بـ BRIN (Block Range Indexes)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                فهرسة الحدود الدنيا والعليا (Min/Max) لكل نطاق كتل على القرص؛ فائقة التوفير في الذاكرة للجداول الضخمة المرتبة زمنياً.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الفهارس المكانية بـ GiST (Generalized Search Tree)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                مخصصة للبيانات الهندسية والجغرافية (PostGIS) والبحث عن النقاط القريبة ومطابقة الأشكال الهندسية.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">بناء الفهارس في الإنتاج بدون قفل الجداول (CONCURRENTLY)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام CREATE INDEX CONCURRENTLY لإنشاء الفهارس في الخلفية دون حظر عمليات الـ INSERT والـ UPDATE للمستخدمين.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data Architecture Flow Diagram">
+              <title>PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-indexing-btree-gin" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-indexing-btree-gin)" stroke="#60A5FA" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="800">Multi-Engine Index Structures & Spatial Indexing</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="indexing-btree-ginPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #60A5FA; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي مقارنة استهلاك الذاكرة وكفاءة الفهارس في PostgreSQL
+function compareIndexEngines(totalRows) {
+  const btreeSizeMB = (totalRows * 32) / (1024 * 1024);
+  const brinSizeMB = btreeSizeMB * 0.005; // BRIN يستهلك 0.5% فقط من حجم B-Tree!
+  
+  console.log(`Table Size: ${totalRows.toLocaleString()} Rows`);
+  console.log(`1. B-Tree Index RAM Usage: ~${btreeSizeMB.toFixed(1)} MB (Fastest for point queries)`);
+  console.log(`2. BRIN Index RAM Usage:   ~${brinSizeMB.toFixed(2)} MB (99.5% RAM saved for time-series logs!)`);
+  console.log(`3. GIN Index: Essential for JSONB containment operator (@>)`);
+}
+
+compareIndexEngines(50000000); // 50 مليون صف</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا يجب عليك دائماً استخدام خيار CONCURRENTLY عند إنشاء فهرس جديد على جدول ضخم في بيئة الإنتاج؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #60A5FA;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">أمر CREATE INDEX العادي يقوم بفرض قفل حصري للكتابة (SHARE Lock) على الجدول بالكامل طوال فترة بناء الفهرس (التي قد تستغرق 20 دقيقة على جدول يحتوي على ملايين الصفوف). خلال هذه الفترة، ستتعطل وتفشل جميع عمليات INSERT و UPDATE و DELETE للمستخدمين! استخدام CREATE INDEX CONCURRENTLY يقوم ببناء الفهرس في الخلفية دون قفل الجدول ودون أي تأثير على تجربة المستخدمين.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">// 1. إنشاء فهرس GIN فائق السرعة لمستندات JSONB     </span> <span style="color: #64748B;">// فهرس معكوس</span>
+<span style="color: #F8FAFC;">CREATE INDEX idx_products_metadata_gin ON products USING GIN (metadata jsonb_path_ops);</span> <span style="color: #64748B;">// فهرسة مسارات JSONB</span>
+<span style="color: #F8FAFC;">// 2. إنشاء فهرس BRIN للجداول الزمنية الضخمة في الإنتاج</span> <span style="color: #64748B;">// فهرس كتل موفر للذاكرة</span>
+<span style="color: #F8FAFC;">CREATE INDEX CONCURRENTLY idx_logs_created_brin ON logs USING BRIN (created_at);</span> <span style="color: #64748B;">// بناء في الخلفية بدون قفل</span>
+<span style="color: #F8FAFC;">// 3. استعلام البحث بالاحتواء المستفيد من فهرس GIN  </span> <span style="color: #64748B;">// استعلام سريع بـ @></span>
+<span style="color: #F8FAFC;">SELECT * FROM products WHERE metadata @&gt; '{"brand": "Apple", "inStock": true}';</span> <span style="color: #64748B;">// مطابقة في 0.5ms</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ كارثي في الإنتاج: بناء فهرس على جدول يحتوي على 10 ملايين صف بدون CONCURRENTLY
+CREATE INDEX idx_orders_user ON orders(user_id); // يجمد الموقع بالكامل ويمنع الشراء حتى ينتهي البناء!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي المعتمد في أنظمة الإنتاج
+CREATE INDEX CONCURRENTLY idx_orders_user ON orders(user_id);</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> بناء الفهارس المتزامنة يمنع حظر جداول الإنتاج ويسمح باستمرار عمليات القراءة والكتابة بسلاسة.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="indexing-btree-ginCheckpoint" data-quiz-id="indexing-btree-gin-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "Which PostgreSQL index type is purpose-built for querying inside JSONB documents and array columns using the containment operator (@>)?",
+    "qAr": "أي نوع فهرس في PostgreSQL مخصص للاستعلام داخل مستندات JSONB وأعمدة المصفوفات باستخدام مشغل الاحتواء (@>)؟",
+    "options": [
+      "GIN (Generalized Inverted Index)",
+      "B-Tree",
+      "Hash Index",
+      "BRIN"
+    ],
+    "correct": 0,
+    "why": "GIN decomposes composite JSONB structures into individual key/value components, providing ultra-fast containment lookups.",
+    "whyAr": "فهارس GIN تفكك مستندات JSONB إلى مكونات مفردة مما يوفر سرعة فائقة في استعلامات البحث والاحتواء."
+  },
+  {
+    "q": "When should you choose a BRIN (Block Range Index) over a B-Tree index in PostgreSQL?",
+    "qAr": "متى يجب اختيار فهرس BRIN بدلاً من فهرس B-Tree في PostgreSQL؟",
+    "options": [
+      "For massive tables (millions of rows) where data is physically ordered on disk by the indexed column (e.g. append-only timestamps/logs).",
+      "For small tables with 50 rows.",
+      "For primary key UUID columns with random distributions.",
+      "To enforce unique constraints."
+    ],
+    "correct": 0,
+    "why": "BRIN summarizes min/max block ranges, consuming a tiny fraction of RAM (~1%) compared to B-Tree on naturally sorted time-series data.",
+    "whyAr": "للجداول الضخمة المرتبة زمنياً على القرص حيث يوفر 99% من استهلاك الـ RAM مقارنة بفهارس B-Tree."
+  },
+  {
+    "q": "What is the critical purpose of the \"CREATE INDEX CONCURRENTLY\" syntax in production environments?",
+    "qAr": "ما هي الفائدة الحيوية لعبارة \"CREATE INDEX CONCURRENTLY\" في بيئات الإنتاج؟",
+    "options": [
+      "Builds the index without acquiring an exclusive write-lock, allowing concurrent INSERTs and UPDATEs to continue normally.",
+      "Encrypts the index data.",
+      "Compresses the table.",
+      "Forces the query to run in parallel threads."
+    ],
+    "correct": 0,
+    "why": "CONCURRENTLY avoids table write locks during lengthy index generation, preventing application downtime.",
+    "whyAr": "يبني الفهرس في الخلفية دون حظر عمليات الكتابة على الجدول مما يمنع انقطاع الخدمة عن المستخدمين."
+  },
+  {
+    "q": "What does \"Seq Scan\" mean in an EXPLAIN ANALYZE execution plan in PostgreSQL?",
+    "qAr": "ماذا يعني \"Seq Scan\" في تقرير خطة التنفيذ EXPLAIN ANALYZE؟",
+    "options": [
+      "Sequential Scan (reading the entire table row-by-row from disk because no index was utilized).",
+      "Sequential execution of TypeScript code.",
+      "Optimal index search.",
+      "Encrypted SSL connection."
+    ],
+    "correct": 0,
+    "why": "Seq Scan indicates that PostgreSQL read the table sequentially from start to finish, indicating a potential missing index.",
+    "whyAr": "يشير إلى مسح الجدول بالكامل صفاً بصف من القرص لعدم توفر أو عدم جدوى استخدام الفهرس في هذا الاستعلام."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #60A5FA; font-size: 1.05rem; margin-bottom: 4px;">Multi-Engine Index Structures & Spatial Indexing</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">PostgreSQL 18 Indexes</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هو الفرق بين GIN jsonb_ops الافتراضي و GIN jsonb_path_ops في حجم الفهرس وسرعة الاستعلام؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">النمط الافتراضي jsonb_ops يقوم بفهرسة كل مفتاح وقيمة ومسار بشكل منفصل (يدعم مشغلات متنوعة مثل ? و ?| و @>) ولكنه يستهلك حجماً كبيراً في الـ RAM. أما النمط المتخصص jsonb_path_ops فيقوم بحساب تجزئة (Hash) للمسار الكامل مع القيمة معاً (Path-Value Hash). النتيجة: يكون حجم الفهرس أصغر بنسبة تصل إلى 60% وأسرع في استعلامات الاحتواء @>، ولكنه لا يدعم فحص وجود المفاتيح المجردة (مشغل ?)، وهو الخيار الأفضل لمعظم استعلامات الـ API.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-postgresql" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #60A5FA; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

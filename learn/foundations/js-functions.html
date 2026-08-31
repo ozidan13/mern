@@ -7,20 +7,55 @@
   <meta name="fsa-lesson" content="js-functions">
   <meta name="fsa-level" content="1">
   <meta name="fsa-order" content="6">
-  <meta name="fsa-title" content="Functions, Arrow Mechanics, Rest/Spread & Currying">
-  <meta name="fsa-est-minutes" content="25">
-  <meta name="fsa-teaches-version" content="ES2024 Standard">
-  <meta name="fsa-pattern-label" content="Functional Mechanics">
+  <meta name="fsa-title" content="Function Declarations, Expressions, Arrow Functions & Hoisting">
+  <meta name="fsa-est-minutes" content="32">
+  <meta name="fsa-teaches-version" content="ES2024+ Standard">
+  <meta name="fsa-pattern-label" content="Function Mechanics & Lexical this">
   <meta name="fsa-root" content="../../">
 
-  <title>Functions, Arrow Mechanics, Rest/Spread & Currying · CodeHub Interactive</title>
+  <title>Function Declarations, Expressions, Arrow Functions & Hoisting · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #F59E0B;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Foundations · الأساسيات الصلبة</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #F59E0B;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-foundations" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,286 +97,360 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">foundations</a>
+            <a href="../../index.html#track-foundations">foundations</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">js-functions</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">FOUNDATIONS</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #F59E0B; color: #000; font-weight: 800;">FOUNDATIONS</span>
             <span class="fsa-badge fsa-badge--info">Level 1</span>
-            <span class="fsa-badge fsa-badge--success">ES2024 Standard</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 25 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">ES2024+ Standard</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 32 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Functions, Arrow Mechanics, Rest/Spread & Currying</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">الدوال البرمجية، كواليس الدوال السهمية، المعاملات المتبقية والـ Currying</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Function Declarations, Expressions, Arrow Functions & Hoisting</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">دوال جافاسكريبت: الإعلانات، التعبيرات، الدوال السهمية ورفع المتغيرات (Hoisting)</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>فهم الفرق الجذري في ربط this المعجمي (Lexical This) في الدوال السهمية مقابل الديناميكي.</li>
-              <li>إتقان معاملات Rest (...) والـ Spread Operator في استنساخ البيانات وتمريرها.</li>
-              <li>تطبيق تقنية الـ Currying و Higher-Order Functions لإنشاء دوال قابلة لإعادة التركيب.</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #F59E0B; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم سلوك الـ Hoisting الدقيق بين Function Declarations و Function Expressions و let/const.</li>
+              <li>تشريح كلمة this والفرق الجوهري بين الربط الديناميكي (Dynamic this) والربط المعجمي (Lexical this) في الدوال السهمية.</li>
+              <li>إتقان استخدام call(), apply(), و bind() للتحكم في سياق التنفيذ وتمرير المعاملات.</li>
+              <li>تطبيق مبادئ الدوال النقية (Pure Functions) وتفادي الآثار الجانبية (Side Effects).</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              في جافاسكربت، الدوال هي "مواطنون من الدرجة الأولى" (First-Class Citizens)، يعني تقدر تمررها كمعاملات، وتخزنها في متغيرات، وترجعها من دوال تانية. لكن الخلط بين إعلان الدالة العادي (<code dir="ltr">function</code>) والدالة السهمية (<code dir="ltr">=&gt;</code>) في ربط كلمة <code dir="ltr">this</code> وكائن <code dir="ltr">arguments</code> هو السبب الرئيسي لتعطل الـ Event Handlers ومكونات ريآكت الكلاسيكية.
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">الدوال في جافاسكريبت تُعامل كـ "مواطنين من الدرجة الأولى" (First-Class Citizens)، يعني تقدر تخزن دالة في متغير، تمررها كمعامل لدالة تانية، أو ترجعها من دالة تانية كـ Closure.
+      لكن مع هذه القوة الهائلة، بتظهر واحدة من أكثر النقاط المسببة للإحباط: "هو كلمة <code dir="ltr">this</code> بتشير لمين دلوقتي؟".
+      كم مرة كتبت Event Handler في زرار، واستدعيت جواه <code dir="ltr">this.setState()</code> أو <code dir="ltr">this.userName</code> وتفاجأت بـ <code dir="ltr">Cannot read properties of undefined</code>؟
+      أو كم مرة حاولت تستدعي دالة قبل سطر تعريفها ولقيتها اشتغلت في حالة Function Declaration، لكن ضربت خطأ <code dir="ltr">ReferenceError: Cannot access before initialization</code> لما حولتها لـ Arrow Function؟
+      في هذا الدرس، هنفكك سياق التنفيذ (Execution Context)، وهنعرف بالمللي إزاي محرك V8 بيتعامل مع الـ Memory Allocation أثناء مرحلة الـ Creation Phase، والفرق القاطع بين أنواع الدوال المختلفة.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">سياق التنفيذ وربط This</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                الدالة العادية تحدد this بناءً على كيفية استدعائها وقت التشغيل (Dynamic Binding)، بينما السهمية ترث this من مكان كتابتها في الكود (Lexical Binding).
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مرحلة الرفع وإنشاء السياق (Creation Phase & Hoisting)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                يتم رفع Function Declarations بجسمها الكامل للذاكرة. المتغيرات المعرفة بـ var ترفع بقيمة undefined، بينما let و const توضع في منطقة Temporal Dead Zone (TDZ).
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الدوال النقية (Pure Functions)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                دالة تعطي دائماً نفس المخرجات لنفس المدخلات ولا تحدث أي آثار جانبية (Side Effects) خارج نطاقها.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الربط الديناميكي لكلمة this</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                في الدوال العادية، قيمة this تتحدد عند لحظة الاستدعاء (Call-Site) وليس لحظة الكتابة، وتعتمد على الكائن الموجود قبل النقطة user.getName().
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">تقنية الـ Currying</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                تحويل دالة تستقبل عدة معاملات f(a,b,c) إلى سلسلة دوال تستقبل معاملاً واحداً في كل مرة f(a)(b)(c).
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الربط المعجمي في الدوال السهمية (Lexical this)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الدوال السهمية Arrow Functions لا تملك this أو arguments خاصة بها؛ بل ترثها تلقائياً من النطاق الخارجي المعجمي المحيط بها.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التحكم الصريح في السياق: call, apply, bind</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                call تمرر المعاملات مفصولة، apply تمرر المعاملات في مصفوفة، و bind تنشئ دالة جديدة تماماً مربوطة بالسياق المحدد للاستدعاء المستقبلي.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">المعاملات الافتراضية والـ Rest Parameters</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام ...args لتجميع المعاملات غير المحدودة في مصفوفة حقيقية بدلاً من كائن arguments القديم.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="js-functionsStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Functions, Arrow Mechanics, Rest/Spread & Currying Architecture Flow Diagram">
-              <title>Functions, Arrow Mechanics, Rest/Spread & Currying Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Functions, Arrow Mechanics, Rest/Spread & Currying</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Function Declarations, Expressions, Arrow Functions & Hoisting Architecture Flow Diagram">
+              <title>Function Declarations, Expressions, Arrow Functions & Hoisting Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-js-functions" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Functional Mechanics</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-js-functions)" stroke="#F59E0B" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#F59E0B" font-size="14" font-weight="800">Function Mechanics & Lexical this</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="js-functionsPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #F59E0B; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Function Currying & Pipeline
-const multiply = (a) => (b) => a * b;
-const double = multiply(2);
-const triple = multiply(3);
-
-console.log("Double 10:", double(10)); // 20
-console.log("Triple 10:", triple(10)); // 30
-
-// Lexical This Demonstration
-const team = {
-  name: "CodeHub Engineers",
-  members: ["Amr", "Sara", "Karim"],
-  printMembers() {
-    this.members.forEach(member => {
-      // Arrow function captures 'this' from printMembers
-      console.log(`${member} is part of ${this.name}`);
-    });
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي سياق this والـ Arrow Functions
+const engineer = {
+  name: "Omar",
+  skills: ["React", "Node.js", "Postgres"],
+  
+  // دالة عادية: this ديناميكية تشير للـ engineer
+  printSkillsRegular() {
+    console.log("Regular function this.name:", this.name);
+    // Callback عادي: this ستفقد سياقها وتصبح undefined في strict mode!
+    setTimeout(function() {
+      console.log("Regular timeout this.name:", this ? this.name : "Lost this!");
+    }, 100);
+  },
+  
+  // دالة سهمية: this معجمية ترث السياق الخارجي
+  printSkillsArrow() {
+    setTimeout(() => {
+      console.log("Arrow timeout this.name:", this.name); // تحافظ على Omar
+    }, 200);
   }
 };
 
-team.printMembers();</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+engineer.printSkillsRegular();
+engineer.printSkillsArrow();</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">هل تمتلك الدوال السهمية (Arrow Functions) كائن arguments خاص بها؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">لا، الدوال السهمية لا تمتلك كائن arguments خاص بها ولا تمتلك prototype؛ إذا حاولت الوصول لـ arguments داخل دالة سهمية فستأخذها من النطاق الأبوي الأقرب (Lexical Scope)، ولجمع المعاملات نستخدم Rest Parameters (...args).</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا لا يمكن استخدام الدالة السهمية (Arrow Function) كـ Constructor مع الكلمة المفتاحية new؟ وماذا يحدث إذا حاولت تنفيذ new (() => {})؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #F59E0B;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">الدوال السهمية لا تملك خاصية الـ prototype ولا تملك دالة بناء داخلية [[Construct]] في مواصفات محرك جافاسكريبت. محاولة استدعائها مع new ستؤدي فوراً لرمي خطأ TypeError: (intermediate value) is not a constructor.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: const createLogger = (prefix) =&gt; (message) =&gt; { // دالة Curried تستقبل البادئة وتُرجع دالة الرسائل
-2:   console.log(`[${prefix}] ${message}`);        // طباعة الرسالة مع البادئة المغلقة في الـ Closure
-3: };                                              // نهاية تعريف الدالة السهمية</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">function regularAdd(a, b = 0) {                     </span> <span style="color: #64748B;">// Function Declaration مع معامل افتراضي</span>
+<span style="color: #F8FAFC;">  return a + b;                                     </span> <span style="color: #64748B;">// إرجاع القيمة صراحة</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// تخضع للـ Hoisting بالكامل</span>
+<span style="color: #F8FAFC;">const arrowAdd = (a, b) =&gt; a + b;                </span> <span style="color: #64748B;">// Arrow function مع Implicit Return</span>
+<span style="color: #F8FAFC;">const boundFunction = regularAdd.bind(null, 5);     </span> <span style="color: #64748B;">// تثبيت المعامل الأول جزئياً (Currying/Partial App)</span>
+<span style="color: #F8FAFC;">const logAll = (...args) =&gt; {                    </span> <span style="color: #64748B;">// استخدام Rest Parameters لتجميع المعاملات</span>
+<span style="color: #F8FAFC;">  args.forEach(arg =&gt; console.log(arg));         </span> <span style="color: #64748B;">// المعاملات مصفوفة حقيقية تدعم forEach</span>
+<span style="color: #F8FAFC;">};                                                  </span> <span style="color: #64748B;">// نهاية الدالة</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>const obj = { count: 0, inc: () =&gt; { this.count++; } }; /* this تشير للـ Window/Global! */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: استخدام Arrow Function كـ Method داخل Object Literal
+const profile = {
+  username: "Zidan",
+  sayHi: () =&gt; {
+    console.log("Hi, " + this.username); // this هنا تشير للـ Window أو Global وليس profile!
+  }
+};</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>const obj = { count: 0, inc() { this.count++; } }; /* this تشير لـ obj بنجاح */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الصحيح: استخدام Method Shorthand العادي
+const profile = {
+  username: "Zidan",
+  sayHi() {
+    console.log("Hi, " + this.username); // this تشير لكائن profile بنجاح
+  }
+};</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> استخدام دالة سهمية كـ method داخل كائن يجعل this ترتبط بالنطاق الخارجي وليس بالكائن نفسه.
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> الدوال السهمية لا تنشئ سياق this خاص بها، بل تأخذ السياق المحيط بالـ Object Literal (والذي يكون غالباً النطاق العام Global/Window).
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="js-functionsCheckpoint" data-quiz-id="js-functions-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Which of the following is NOT a feature of Arrow Functions?",
-    "qAr": "أي مما يلي ليس من خصائص الدوال السهمية (Arrow Functions)؟",
+    "q": "How does this behave inside an Arrow Function compared to a regular function?",
+    "qAr": "كيف تتصرف كلمة this داخل الدالة السهمية (Arrow Function) مقارنة بالدالة العادية؟",
     "options": [
-      "Lexical this binding",
-      "Can be used as constructors with new",
-      "No own arguments object",
-      "Implicit return for single expressions"
+      "It lexically captures this from the enclosing scope and cannot be rebound.",
+      "It dynamically binds to the object calling the function.",
+      "It is always undefined in all environments.",
+      "It points to the global window object in strict mode."
     ],
-    "correct": 1,
-    "why": "Arrow functions do not have a [[Construct]] internal method and cannot be called with new.",
-    "whyAr": "الدوال السهمية لا تحتوي على طريقة البناء الداخلية ولا يمكن استدعاؤها باستخدام new كـ Constructor."
+    "correct": 0,
+    "why": "Arrow functions do not have their own this binding; they inherit this lexically from the scope in which they were defined.",
+    "whyAr": "الدوال السهمية لا تملك سياق this خاصاً بها، بل ترث السياق معجمياً من النطاق الذي كُتبت بداخله."
+  },
+  {
+    "q": "What happens when calling a Function Declaration before its line of definition in code?",
+    "qAr": "ماذا يحدث عند استدعاء Function Declaration قبل السطر الذي تم تعريفها فيه؟",
+    "options": [
+      "It executes successfully because function declarations are fully hoisted with their body.",
+      "A ReferenceError is thrown due to TDZ.",
+      "A TypeError is thrown because it is undefined.",
+      "The code fails to compile."
+    ],
+    "correct": 0,
+    "why": "Function declarations are hoisted in their entirety to the top of their enclosing scope during the creation phase.",
+    "whyAr": "يتم رفع إعلانات الدوال بالكامل مع جسمها البرمجي إلى أعلى النطاق أثناء مرحلة تهيئة الذاكرة في المحرك."
+  },
+  {
+    "q": "What is the key difference between Function.prototype.call() and Function.prototype.bind()?",
+    "qAr": "ما هو الفرق الجوهري بين call() و bind() في جافاسكريبت؟",
+    "options": [
+      "call() executes the function immediately with the provided this; bind() returns a new bound function for later execution.",
+      "call() accepts an array of arguments; bind() accepts comma-separated arguments.",
+      "bind() executes immediately; call() returns a promise.",
+      "There is no difference."
+    ],
+    "correct": 0,
+    "why": "call/apply invoke immediately; bind creates and returns a new function with fixed context.",
+    "whyAr": "دالة call تنفذ الدالة فوراً مع السياق المحدد، بينما bind تُرجع دالة جديدة مربوطة بالسياق لتنفيذها لاحقاً."
+  },
+  {
+    "q": "What does the rest parameter syntax (...args) produce inside a function?",
+    "qAr": "ما الذي تُنتجه صيغة المعاملات المتبقية (...args) داخل الدالة؟",
+    "options": [
+      "A genuine JavaScript Array containing all remaining arguments passed to the function.",
+      "An array-like object missing array methods.",
+      "A string joined by commas.",
+      "A Set of unique arguments."
+    ],
+    "correct": 0,
+    "why": "Rest parameters collect arguments into a genuine Array instance with full access to methods like .map(), .filter(), etc.",
+    "whyAr": "تجمع المعاملات المتبقية في مصفوفة Array حقيقية تدعم جميع ميثودز المصفوفات مثل map و filter."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Functional Mechanics</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #F59E0B; font-size: 1.05rem; margin-bottom: 4px;">Function Mechanics & Lexical this</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">ES2024 Standard</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">ES2024+ Standard</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هي الـ Higher-Order Function وكيف تُستخدم في تصميم البرمجيات؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">هي دالة تستقبل دالة أخرى كمعامل (Callback) أو تُرجع دالة جديدة كمخرج (أو كلاهما). أشهر الأمثلة هي دوال المصفوفات (map, filter, reduce) و middleware في Express و HOCs في React.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هي المنطقة الميتة الزمنية (Temporal Dead Zone - TDZ) وكيف تؤثر على الدوال المعرفة بـ let و const؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">الـ TDZ هي الفترة الزمنية بين دخول النطاق (Scope Entry) وسطر التنفيذ الفعلي الذي يتم فيه الإعلان عن المتغير وتهيئته. المتغيرات المعرفة بـ let و const يتم حجز مكان لها في الذاكرة أثناء الـ Creation Phase، لكن لا يُسمح بالوصول إليها مطلقاً قبل سطر تعريفها، ومحاولة قراءتها ترمي ReferenceError. لذلك فإن الدوال المعرفة كـ Function Expressions عبر const myFn = () => {} لا يمكن استدعاؤها قبل سطر تعريفها لأنها تكون محاصرة داخل الـ TDZ.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-foundations" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #F59E0B; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

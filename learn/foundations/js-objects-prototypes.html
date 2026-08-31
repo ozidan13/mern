@@ -6,21 +6,56 @@
   <meta name="fsa-track" content="foundations">
   <meta name="fsa-lesson" content="js-objects-prototypes">
   <meta name="fsa-level" content="1">
-  <meta name="fsa-order" content="8">
-  <meta name="fsa-title" content="Objects, Prototypes, Descriptors & Property Shadowing">
-  <meta name="fsa-est-minutes" content="26">
-  <meta name="fsa-teaches-version" content="V8 Engine Standard">
-  <meta name="fsa-pattern-label" content="Object-Oriented Core">
+  <meta name="fsa-order" content="9">
+  <meta name="fsa-title" content="Objects, Property Descriptors & Prototype Inheritance">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="ES2024+ Standard">
+  <meta name="fsa-pattern-label" content="Prototypal Inheritance & Memory Sharing">
   <meta name="fsa-root" content="../../">
 
-  <title>Objects, Prototypes, Descriptors & Property Shadowing · CodeHub Interactive</title>
+  <title>Objects, Property Descriptors & Prototype Inheritance · FullStack Academy</title>
 
-  <!-- Critical Theme & Offline Fonts -->
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #F59E0B;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -37,18 +72,18 @@
       <div class="fsa-sidebar__header">
         <a href="../../index.html" class="fsa-logo">
           <span class="fsa-logo__mark">⚡</span>
-          <span class="fsa-logo__text">CodeHub</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
         </a>
       </div>
       <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
         <div class="fsa-sidebar__section">
           <div class="fsa-sidebar__title">Foundations · الأساسيات الصلبة</div>
           <div class="fsa-progress" style="margin-block: var(--space-2);">
-            <div class="fsa-progress__bar" style="width: 75%;"></div>
+            <div class="fsa-progress__bar" style="width: 70%; background: #F59E0B;"></div>
           </div>
           <ul class="fsa-nav-list" id="trackNavList">
-            <!-- Populated dynamically or statically -->
-            <li class="fsa-nav-item"><a href="index.html" class="fsa-nav-link">← العودة لنظرة عامة على المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../index.html#track-foundations" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
           </ul>
         </div>
       </nav>
@@ -62,284 +97,349 @@
           <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
             <a href="../../index.html">الرئيسية</a>
             <span class="fsa-breadcrumbs__sep">/</span>
-            <a href="index.html">foundations</a>
+            <a href="../../index.html#track-foundations">foundations</a>
             <span class="fsa-breadcrumbs__sep">/</span>
             <span aria-current="page">js-objects-prototypes</span>
           </div>
 
-          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3); flex-wrap: wrap;">
-            <span class="fsa-chip fsa-chip--track">FOUNDATIONS</span>
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #F59E0B; color: #000; font-weight: 800;">FOUNDATIONS</span>
             <span class="fsa-badge fsa-badge--info">Level 1</span>
-            <span class="fsa-badge fsa-badge--success">V8 Engine Standard</span>
-            <span class="fsa-badge fsa-badge--warning">⏱️ 26 دقيقة تفاعلية</span>
+            <span class="fsa-badge fsa-badge--success">ES2024+ Standard</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
           </div>
 
-          <h1 class="fsa-title">Objects, Prototypes, Descriptors & Property Shadowing</h1>
-          <p class="fsa-subtitle fsa-ar" dir="rtl">الكائنات البرمجية، الـ Prototypes وواصفات الخصائص في V8</p>
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Objects, Property Descriptors & Prototype Inheritance</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">الكائنات، واصفات الخصائص (Property Descriptors) وسلسلة التوريث عبر الـ Prototype</p>
 
-          <div class="fsa-objectives" style="margin-block-start: var(--space-6);">
-            <h3 style="margin-block-end: var(--space-2); font-size: var(--fs-md);">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
-            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.8;">
-              <li>فهم سلسلة الوراثة Prototype Chain وكيف يبحث محرك V8 عن الخصائص.</li>
-              <li>التحكم في واصفات الخصائص عبر Object.defineProperty (writable, enumerable, configurable).</li>
-              <li>حماية الكائنات من التعديل عبر Object.freeze() و Object.seal().</li>
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #F59E0B; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم نموذج التوريث القائم على الـ Prototype (Prototypal Inheritance) ومقارنته بالتوريث الكلاسيكي في اللغات الأخرى.</li>
+              <li>التحكم في خصائص الكائنات عبر Object.defineProperty و واصفات الخصائص (writable, enumerable, configurable).</li>
+              <li>تجميد الكائنات وحمايتها من التعديل عبر Object.freeze() و Object.seal().</li>
+              <li>التحقق من سلسلة التوريث باستخدام Object.getPrototypeOf() و instanceof.</li>
             </ul>
           </div>
         </header>
 
         <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
         <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
-          <h2>المشكلة الهندسية والسياق الواقعي</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
 
-          <div class="fsa-callout" data-kind="analogy">
-            <div class="fsa-callout__title">
-              <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
-              <span>رؤية الواقع العملي · Real-World Context &amp; Mental Model</span>
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
             </div>
-            <p class="fsa-ar" dir="rtl">
-              كل شيء تقريباً في جافاسكربت هو كائن (Object) مرتبط بسلسلة وراثة ممتدة تُسمى <code dir="ltr">Prototype Chain</code>. عدم فهمك لكيفية عمل الـ Prototype يعني أنك قد تنشئ آلاف النسخ من الدوال في الذاكرة لكل كائن بدلاً من مشاركتها عبر الـ Prototype، أو تفاجأ بخاصية تم تعديلها في كائن أثرت على كل الكائنات في النظام بسبب التعديل المباشر على <code dir="ltr">Object.prototype</code> (Prototype Pollution).
-            </p>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في لغات زي Java أو C++، التوريث مبني على الـ Classes كقوالب ثابتة تُبنى منها الكائنات. لكن في جافاسكريبت، الأمر مختلف تماماً: الكائنات ترث مباشرة من كائنات أخرى عن طريق رابط خفي اسمه الـ Prototype Chain!
+      هل تساءلت يوماً: لما بتنشئ مصفوفة جديدة <code dir="ltr">const arr = []</code>، ميثود <code dir="ltr">arr.push()</code> و <code dir="ltr">arr.map()</code> بتيجي منين؟ هل كل مصفوفة بتاخد نسخة خاصة من الدوال دي في الذاكرة؟
+      بالتأكيد لا! كل مصفوفة تحمل رابطاً سرياً <code dir="ltr">[[Prototype]]</code> يشير إلى <code dir="ltr">Array.prototype</code> في الذاكرة المشتركة.
+      فهم واصفات الخصائص (Property Descriptors) وسلسلة الـ Prototype هو المفتاح لحماية كائناتك من التعديلات الخبيثة، وبناء مكتبات برمجية خفيفة تستهلك أقل قدر ممكن من الـ RAM عن طريق مشاركة الدوال بدلاً من تكرارها.</p>
           </div>
         </section>
 
         <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics">
-          <h2>كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
           
-          
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">1</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">الرابط السري __proto__ والـ Prototype</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                كل كائن يمتلك مؤشراً داخلياً [[Prototype]] يشير إلى الكائن الأب الذي يرث منه الخصائص والدوال.
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">رابط التوريث الداخلي ([[Prototype]] vs prototype)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                خاصية prototype توجد فقط على الدوال البانية (Constructor Functions)، بينما [[Prototype]] أو __proto__ هو الرابط الفعلي الموجود على كل كائن.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">2</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">حجب الخصائص (Property Shadowing)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                عند إضافة خاصية بنفس اسم خاصية في الـ Prototype، يتم قراءتها من الكائن نفسه وحجب النسخة الأبوية.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">رحلة البحث في الـ Prototype Chain</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                عند قراءة خاصية من كائن، يبحث المحرك في الكائن نفسه؛ وإذا لم يجدها يصعد للـ Prototype الخاص به، ويستمر حتى يصل إلى Object.prototype ثم null.
               </p>
             </div>
-          </div>
 
-          <div class="fsa-step-card" style="margin-block-end: var(--space-4);">
-            <div class="fsa-step-card__badge">3</div>
-            <div class="fsa-step-card__content">
-              <div class="fsa-step-card__title">التجميد والختم (Freeze & Seal)</div>
-              <p class="fsa-ar" dir="rtl" style="margin: 0; color: var(--text-secondary); font-size: var(--fs-sm);">
-                Object.freeze يمنع إضافة أو حذف أو تعديل الخصائص نهائياً ويجعل الكائن Immutable.
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">واصفات الخصائص (Property Descriptors)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                كل خاصية لها 3 أعلام: writable (هل يمكن تغيير قيمتها؟)، enumerable (هل تظهر في الحلقات؟)، و configurable (هل يمكن حذفها أو تغيير واصفاتها؟).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">حماية الكائنات: Object.freeze مقابل Object.seal</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                Object.seal تمنع إضافة أو حذف الخصائص ولكن تسمح بتعديل القيم الحالية. Object.freeze تجعل الكائن غير قابل للتعديل تماماً (Shallow Immutability).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #F59E0B; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إنشاء كائنات بدون Prototype (Object.create(null))</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إنشاء قواميس بيانات فائقة النقاء لا ترث خصائص Object.prototype لمنع هجمات Prototype Pollution.
               </p>
             </div>
           </div>
         </section>
 
         <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see">
-          <h2>المحاكي البصري التفاعلي · Interactive Architecture</h2>
-          <p class="fsa-ar" dir="rtl">
-            تتبع تدفق البيانات ومسار التنفيذ داخل المحرك:
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
           </p>
 
-          <div class="fsa-stepper" id="js-objects-prototypesStepper" style="margin-block: var(--space-4);"></div>
-
-          <div class="fsa-diagram">
-            <svg viewBox="0 0 700 120" width="100%" height="120" aria-label="Objects, Prototypes, Descriptors & Property Shadowing Architecture Flow Diagram">
-              <title>Objects, Prototypes, Descriptors & Property Shadowing Conceptual Architecture Flow</title>
-              <desc>Visual pipeline describing step-by-step execution for Objects, Prototypes, Descriptors & Property Shadowing</desc>
-              <g transform="translate(20, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--border-default)" stroke-width="1.5" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-weight="600">Client / Trigger</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Input Parameters</text>
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Objects, Property Descriptors & Prototype Inheritance Architecture Flow Diagram">
+              <title>Objects, Property Descriptors & Prototype Inheritance Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-js-objects-prototypes" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
               </g>
-              <path d="M 210 55 L 260 55" stroke="var(--accent-primary)" stroke-width="2" marker-end="url(#arrow)" />
-              <g transform="translate(270, 20)">
-                <rect width="180" height="70" rx="8" fill="var(--tint-primary)" stroke="var(--accent-primary)" stroke-width="2" />
-                <text x="90" y="35" text-anchor="middle" fill="var(--accent-primary)" font-size="13" font-weight="700">Object-Oriented Core</text>
-                <text x="90" y="55" text-anchor="middle" fill="var(--text-secondary)" font-size="11">Execution Pipeline</text>
+              <path d="M 220 62 L 270 62" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-js-objects-prototypes)" stroke="#F59E0B" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#F59E0B" font-size="14" font-weight="800">Prototypal Inheritance & Memory Sharing</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
               </g>
-              <path d="M 460 55 L 510 55" stroke="var(--accent-success)" stroke-width="2" />
-              <g transform="translate(520, 20)">
-                <rect width="160" height="70" rx="8" fill="var(--surface-sunken)" stroke="var(--accent-success)" stroke-width="1.5" />
-                <text x="80" y="35" text-anchor="middle" fill="var(--accent-success)" font-size="13" font-weight="600">Verified Output</text>
-                <text x="80" y="55" text-anchor="middle" fill="var(--text-tertiary)" font-size="11">Deterministic Result</text>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
               </g>
             </svg>
           </div>
         </section>
 
         <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
-        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try">
-          <h2>محرر التجارب الحية · Live Interactive Playground</h2>
-          <p class="fsa-ar" dir="rtl">
-            جرب الكود بنفسك وشاهد المخرجات الفورية في الـ Console المعزول:
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
           </p>
 
           <div class="fsa-playground" id="js-objects-prototypesPlayground">
-            <div class="fsa-playground__toolbar">
-              <span class="fsa-badge fsa-badge--info">JavaScript Console Mode</span>
-              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">JavaScript Engine Mode</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #F59E0B; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
                 <span>تشغيل الكود · Run</span>
               </button>
             </div>
-            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false">// Prototype Inheritance Pipeline
-function User(name, role) {
-  this.name = name;
-  this.role = role;
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي واصفات الخصائص وسلسلة الـ Prototype
+const config = { apiEndpoint: "https://api.codehub.dev/v1" };
+
+// جعل الخاصية للقراءة فقط وغير قابلة للحذف
+Object.defineProperty(config, "apiKey", {
+  value: "SEC-998811",
+  writable: false,     // ممنوع تعديل القيمة
+  enumerable: true,    // تظهر في JSON.stringify
+  configurable: false  // ممنوع الحذف أو إعادة التعريف
+});
+
+console.log("API Key Defined:", config.apiKey);
+try {
+  config.apiKey = "HACKED"; // سيفشل في strict mode
+} catch (e) {
+  console.error("Write prevented:", e.message);
 }
 
-// Method shared on Prototype (O(1) memory for all instances)
-User.prototype.getBadge = function() {
-  return `[${this.role.toUpperCase()}] ${this.name}`;
-};
-
-const user1 = new User("Amr", "admin");
-const user2 = new User("Sara", "developer");
-
-console.log(user1.getBadge());
-console.log(user2.getBadge());
-console.log("Are methods strictly equal?", user1.getBadge === user2.getBadge); // true!</textarea>
-            <div class="fsa-playground__output" aria-live="polite">اضغط تشغيل الكود لمعاينة النتيجة...</div>
+// فحص سلسلة الـ Prototype
+const child = Object.create(config);
+console.log("Child inherits apiEndpoint:", child.apiEndpoint);
+console.log("Has own property apiKey:", child.hasOwnProperty("apiKey")); // false (موروثة)</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
           </div>
         </section>
 
         <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore">
-          <h2>تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
-          <div class="fsa-challenge-box">
-            <div class="fsa-challenge-box__title">🤔 سؤال تحدي المهندسين:</div>
-            <p class="fsa-ar" dir="rtl">ماذا يحدث إذا حاولت تعديل خاصية في كائن تم تجميده باستخدام Object.freeze() في Strict Mode؟</p>
-            <details class="fsa-details" style="margin-block-start: var(--space-3);">
-              <summary>اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
-              <div class="fsa-details__body">
-                <p class="fsa-ar" dir="rtl">في نمط Strict Mode ("use strict")، محاولة تعديل أو إضافة أي خاصية لكائن مجمد ستُلقي استثناءً فورياً من نوع TypeError: Cannot assign to read only property.</p>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ما هو خطر الـ Prototype Pollution في خوادم Node.js وكيف يمكن لمهاجم السيطرة على الخادم من خلال دمج كائنات JSON غير مفحوصة؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #F59E0B;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">إذا قام الخادم بدمج كائن خبيث يحتوي على الخاصية "__proto__" في كائن عام (Deep Merge)، سيتم تعديل Object.prototype الخاص بجميع الكائنات في التطبيق! هذا قد يؤدي لتجاوز فحوصات الصلاحيات (مثل isAdmin: true) على مستوى كل المستخدمين. الحل هو استخدام Map أو كائنات معزولة بـ Object.create(null) أو فحص المفاتيح المدخلة وتطهيرها.</p>
               </div>
             </details>
           </div>
         </section>
 
         <!-- ================= BEAT 7: CODE ANATOMY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy">
-          <h2>تشريح الكود سطراً بسطر · Code Anatomy</h2>
-          <div class="fsa-code-block" dir="ltr" style="text-align: left;">
-            <pre><code>1: Object.defineProperty(user, "id", {             // تعريف خاصية مع واصفات تحكم مخصصة
-2:   value: 101,                                   // القيمة الثابتة
-3:   writable: false,                              // منع تغيير القيمة نهائياً (Read-Only)
-4:   enumerable: true                              // السماح بظهور الخاصية في الـ Loops و Object.keys
-5: });                                             // تطبيق الواصفات</code></pre>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">const proto = { greet() { return `Hi, ${this.name}`; } };</span> <span style="color: #64748B;">// كائن الأساس المشترك</span>
+<span style="color: #F8FAFC;">const user = Object.create(proto);                  </span> <span style="color: #64748B;">// إنشاء كائن جديد يرث من proto مباشرة</span>
+<span style="color: #F8FAFC;">user.name = "Farah";                                </span> <span style="color: #64748B;">// خاصية خاصة بالكائن user</span>
+<span style="color: #F8FAFC;">console.log(user.greet()); // "Hi, Farah"           </span> <span style="color: #64748B;">// تنفيذ ميثود greet الموروثة من الـ prototype</span>
+<span style="color: #F8FAFC;">Object.freeze(user);                                </span> <span style="color: #64748B;">// تجميد الكائن لمنع التعديل والإضافة</span>
+<span style="color: #F8FAFC;">console.log(Object.isFrozen(user)); // true         </span> <span style="color: #64748B;">// التحقق من حالة التجميد</span></code></pre>
           </div>
         </section>
 
         <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice">
-          <h2>معرض الأخطاء الشائعة والحل النموذجي · Mistakes Gallery</h2>
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
           
-          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
-            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid var(--accent-danger); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-danger); font-weight: 700; margin-block-end: var(--space-2);">❌ الكود الخاطئ المسبب للكوارث (Anti-Pattern)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>for (let key in obj) { console.log(key); } /* يطبع خصائص موروثة من الـ Prototype! */</code></pre>
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: تعديل الـ Native Prototypes مباشرة (Monkey Patching)
+Array.prototype.last = function() {
+  return this[this.length - 1];
+}; // كارثة: يسبب تصادم مع مكاتب أخرى ومعايير جافاسكريبت المستقبلية!</code></pre>
             </div>
 
-            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid var(--accent-success); border-radius: var(--radius-md); padding: var(--space-4); background: var(--surface-sunken);">
-              <div style="color: var(--accent-success); font-weight: 700; margin-block-end: var(--space-2);">✅ الحل الهندسي الصحيح (Best Practice)</div>
-              <pre dir="ltr" style="background: var(--surface-base); padding: var(--space-3); border-radius: var(--radius-sm); font-size: var(--fs-xs);"><code>for (let key of Object.keys(obj)) { console.log(key); } /* يطبع خصائص الكائن الخاصة فقط */</code></pre>
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: استخدام دوال مساعدة مستقلة أو ميثودز قياسية حديثة
+function getLastItem(array) {
+  return array.at(-1); // ES2022 Native Standard Method
+}</code></pre>
             </div>
           </div>
-          <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-sm);">
-            <strong>التشخيص الهندسي:</strong> حلقة for..in تمر على جميع الخصائص في سلسلة الـ Prototype ما لم يتم فحصها بـ Object.hasOwn(obj, key).
-          </p>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> تعديل الـ Native Prototypes (مثل Array.prototype أو Object.prototype) يلوث البيئة العامة وقد يكسر التوافقية عند إضافة مواصفات جديدة للغة بواسطة لجنة TC39.
+            </p>
+          </div>
         </section>
 
         <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
-        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove">
-          <h2>اختبار الإتقان الهندسي · Mastery Checkpoint</h2>
-          <p class="fsa-ar" dir="rtl">
-            أجب على أسئلة التقييم لتثبيت فهمك العميق للمفاهيم:
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
           </p>
 
           <div class="fsa-checkpoint" id="js-objects-prototypesCheckpoint" data-quiz-id="js-objects-prototypes-quiz"></div>
           <script type="application/json" class="fsa-quiz-data">
 [
   {
-    "q": "Where does the Prototype Chain end in JavaScript?",
-    "qAr": "أين تنتهي سلسلة الـ Prototype Chain في جافاسكربت؟",
+    "q": "What is the end of the prototype chain for almost all standard JavaScript objects?",
+    "qAr": "ما هي نهاية سلسلة الـ Prototype لمعظم كائنات جافاسكريبت القياسية؟",
     "options": [
-      "Object.prototype",
-      "null",
-      "undefined",
-      "Function.prototype"
+      "Object.prototype (whose prototype is null)",
+      "Function.prototype",
+      "window",
+      "undefined"
     ],
-    "correct": 1,
-    "why": "Object.prototype.__proto__ points directly to null, which is the terminal point of the prototype chain.",
-    "whyAr": "نهاية سلسلة الوراثة هي null، حيث يشير Object.prototype.__proto__ مباشرة إلى null."
+    "correct": 0,
+    "why": "The top of the prototype chain is Object.prototype, and its [[Prototype]] is null, which terminates the lookup.",
+    "whyAr": "قمة سلسلة الـ Prototype هي Object.prototype، ورابط الـ [[Prototype]] الخاص به هو null الذي ينهي عملية البحث."
+  },
+  {
+    "q": "How does Object.freeze() differ from Object.seal()?",
+    "qAr": "كيف تختلف دالة Object.freeze() عن دالة Object.seal()؟",
+    "options": [
+      "Object.freeze() makes existing properties read-only; Object.seal() still allows modifying existing writable properties.",
+      "Object.seal() freezes prototype lookup while freeze does not.",
+      "Object.freeze() performs deep recursive freezing.",
+      "There is no difference in ES6."
+    ],
+    "correct": 0,
+    "why": "Object.seal prevents adding/deleting keys but allows values to change. Object.freeze additionally sets writable: false on all properties.",
+    "whyAr": "دالة Object.seal تمنع الإضافة والحذف لكن تسمح بتعديل القيم الحالية، بينما Object.freeze تمنع تعديل القيم أيضاً بجعل writable: false."
+  },
+  {
+    "q": "How can you create a completely pure dictionary object with no prototype chain?",
+    "qAr": "كيف يمكنك إنشاء كائن قاموس نقي تماماً بدون أي سلسلة Prototype موروثة؟",
+    "options": [
+      "Object.create(null)",
+      "new Object()",
+      "{}",
+      "Object.freeze({})"
+    ],
+    "correct": 0,
+    "why": "Object.create(null) creates an object with a [[Prototype]] of null, free from inherited Object.prototype properties.",
+    "whyAr": "دالة Object.create(null) تنشئ كائناً مؤشر الـ [[Prototype]] الخاص به هو null ولا يرث أي خصائص مسبقة."
+  },
+  {
+    "q": "Which property descriptor flag controls whether a property appears in for..in loops and Object.keys()?",
+    "qAr": "أي علم في واصفات الخصائص يتحكم في ظهور الخاصية في حلقات for..in و Object.keys()؟",
+    "options": [
+      "enumerable",
+      "writable",
+      "configurable",
+      "iterable"
+    ],
+    "correct": 0,
+    "why": "The enumerable descriptor flag specifies if the property is exposed during property enumeration loops.",
+    "whyAr": "علم enumerable يحدد ما إذا كانت الخاصية ستظهر أثناء المرور على الكائن بالحلقات ودوال استخراج المفاتيح."
   }
 ]
           </script>
         </section>
 
-        <!-- ================= BEAT 10: PRODUCTION RECAP & GLOSSARY ================= -->
-        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production">
-          <h2>خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
 
           <!-- Mini Glossary Term Cards -->
-          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); margin-block: var(--space-4);">
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-primary);">Object-Oriented Core</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">النمط المعماري الأساسي المعتمد في المنظومة.</div>
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #F59E0B; font-size: 1.05rem; margin-bottom: 4px;">Prototypal Inheritance & Memory Sharing</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
             </div>
-            <div class="fsa-term-card" style="padding: var(--space-3); background: var(--surface-sunken); border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
-              <div style="font-weight: 700; color: var(--accent-success);">V8 Engine Standard</div>
-              <div style="font-size: var(--fs-xs); color: var(--text-secondary); margin-block-start: 4px;">المعيار الإنتاجي المعتمد لبيئات العمل الحديثة.</div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">ES2024+ Standard</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
             </div>
           </div>
 
-          <!-- Senior Interview Accordion -->
-          <details class="fsa-details" style="margin-block-start: var(--space-4);">
-            <summary>💬 سؤال إنترفيو للمهندسين الكبار (Senior Interview Q&amp;A): ما هي ثغرة Prototype Pollution وكيف تحمي تطبيقات Node.js منها؟</summary>
-            <div class="fsa-details__body">
-              <p class="fsa-ar" dir="rtl">هي ثغرة تحدث عندما يتم دمج كائنات غير مفحوصة (Unsanitized JSON Merge) قادمة من المستخدم تحتوي على مفاتيح مثل `__proto__` أو `constructor.prototype`، مما يسمح للمخترق بتعديل سلوك كل كائنات التطبيق. الحماية تكون بتطهير المدخلات واستخدام `Object.create(null)` أو تجميد الـ Prototypes.</p>
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: هل دالة Object.freeze() تقوم بتجميد عميق (Deep Freeze) للكائنات المتداخلة؟ وكيف تنفذ Deep Freeze آمن؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">دالة Object.freeze() تنفذ تجميداً سطحياً فقط (Shallow Freeze). هذا يعني أنه إذا كان الكائن يحتوي على كائن فرعي، فإن الكائن الفرعي يظل قابلاً للتعديل! لتنفيذ Deep Freeze آمن، يجب كتابة دالة تفحص كل خاصية تكرارياً (Recursively)، فإذا كانت كائناً غير مجمد يتم استدعاء Object.freeze عليها، مع تجنب الدخول في دوائر مرجعية (Circular References) باستخدام WeakSet.</p>
             </div>
           </details>
         </section>
 
-        <!-- Navigation Buttons -->
-        <nav class="fsa-lesson-nav" style="display: flex; justify-content: space-between; margin-block-start: var(--space-8); padding-block: var(--space-4); border-block-start: 1px solid var(--border-default);">
-          <a href="index.html" class="fsa-btn fsa-btn--secondary">← نظرة عامة على المسار</a>
-          <a href="#main-content" class="fsa-btn fsa-btn--ghost">الرجوع لأعلى الصفحة ↑</a>
-        </nav>
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-foundations" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #F59E0B; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
       </article>
     </main>
-
-    <!-- Right Sticky Table of Contents -->
-    <aside class="fsa-toc">
-      <div class="fsa-toc__title">محتويات الدرس · In this lesson</div>
-      <nav class="fsa-toc__nav" aria-label="Table of Contents">
-        <ul class="fsa-toc__list">
-          <li class="fsa-toc__item"><a href="#story" class="fsa-toc__link">1. السياق والمشكلة الواقعية</a></li>
-          <li class="fsa-toc__item"><a href="#mechanics" class="fsa-toc__link">2. خطوات التنفيذ</a></li>
-          <li class="fsa-toc__item"><a href="#see" class="fsa-toc__link">3. المحاكي البصري التفاعلي</a></li>
-          <li class="fsa-toc__item"><a href="#try" class="fsa-toc__link">4. محرر التجارب الحية</a></li>
-          <li class="fsa-toc__item"><a href="#explore" class="fsa-toc__link">5. تحدي التوقع قبل التشغيل</a></li>
-          <li class="fsa-toc__item"><a href="#anatomy" class="fsa-toc__link">6. تشريح الكود</a></li>
-          <li class="fsa-toc__item"><a href="#practice" class="fsa-toc__link">7. الأخطاء الشائعة والحل</a></li>
-          <li class="fsa-toc__item"><a href="#prove" class="fsa-toc__link">8. اختبار الإتقان النهائي</a></li>
-          <li class="fsa-toc__item"><a href="#production" class="fsa-toc__link">9. أسئلة المقابلات وخلاصة الإنتاج</a></li>
-        </ul>
-      </nav>
-    </aside>
   </div>
 
-  <!-- Core JavaScript Frameworks -->
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
   <script src="../../js/theme.js"></script>
-  <script src="../../js/search.js"></script>
-  <script src="../../js/sections.js"></script>
-  <script src="../../js/stepper.js"></script>
-  <script src="../../js/playground.js"></script>
-  <script src="../../js/quiz.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
   <script src="../../js/main.js"></script>
 </body>
 </html>

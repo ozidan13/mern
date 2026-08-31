@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="debugging-profiling">
+  <meta name="fsa-level" content="3">
+  <meta name="fsa-order" content="13">
+  <meta name="fsa-title" content="Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="Node.js 24 Inspector V8">
+  <meta name="fsa-pattern-label" content="Performance Diagnostics & Heap Profiling">
+  <meta name="fsa-root" content="../../">
+
+  <title>Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #84CC16;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Node.js 24 · محرك الباك إند عالي الأداء</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #84CC16;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-nodejs" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-nodejs">nodejs</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">debugging-profiling</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #84CC16; color: #000; font-weight: 800;">NODEJS</span>
+            <span class="fsa-badge fsa-badge--info">Level 3</span>
+            <span class="fsa-badge fsa-badge--success">Node.js 24 Inspector V8</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">تشخيص وتصحيح خوادم Node.js: الربط مع Chrome DevTools، كشف تسريبات الذاكرة والـ CPU Profiling</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #84CC16; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>ربط خادم Node.js المباشر بـ Chrome DevTools عبر خيار --inspect لتصحيح الكود بالـ Breakpoints.</li>
+              <li>أخذ لقطات الذاكرة (Heap Snapshots) والمقارنة بينها لكشف تسريبات الذاكرة (Memory Leaks).</li>
+              <li>تسجيل ملفات أداء المعالج (CPU Profiles) ومخططات اللهب (Flamegraphs) لتحديد الدوال البطيئة.</li>
+              <li>تشخيص تعليق الـ Event Loop باستخدام وحدة node:perf_hooks ومقاييس ELD (Event Loop Delay).</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في بيئة التطوير، عندما يحدث خطأ، يضع المطور <code dir="ltr">console.log()</code> في كل مكان.
+      لكن في بيئة الإنتاج عندما يبدأ الخادم باستهلاك 100% من الـ CPU فجأة، أو عندما يرتفع استهلاك الـ RAM من 200MB إلى 4GB حتى ينهار الخادم بـ Out of Memory (OOM Crash) كل 3 ساعات... الـ <code dir="ltr">console.log</code> لن يفيدك بشيء!
+      أنت بحاجة لأدوات جراحية دقيقة لفحص ما بداخل محرك V8 أثناء عمل الخادم الحقيقي.
+      يوفر Node.js بروتوكول فحص متقدم **V8 Inspector Protocol**:
+      - يمكنك تشغيل الخادم بـ <code dir="ltr">node --inspect</code> والاتصال به من متصفح كروم وتفعيل الـ Breakpoints الحية.
+      - يمكنك تسجيل **CPU Profile** وتوليد **Flame Graph** يوضح بالمللي ثانية أين يقضي المعالج وقته.
+      - يمكنك أخذ **Heap Snapshots** ومقارنتها عبر الزمن لمعرفة أي كائنات ومصفوفات يتم حبسها في الذاكرة وتتسبب في تسريب الـ RAM.
+      في هذا الدرس الختامي لمسار Node.js 24، هنتعلم إزاي ننقذ الخوادم المنهارة في بيئات الإنتاج ونشخص أسباب بطء المعالج واختناق الذاكرة.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تفعيل بروتوكول الفحص المباشر (node --inspect)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تشغيل الخادم مع فتح منفذ WebSocket مخصص (افتراضياً 9229) للاتصال بـ Chrome DevTools عبر chrome://inspect.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">أخذ لقطات الذاكرة (Heap Snapshot Analysis)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تسجيل لقطتين للذاكرة والمقارنة بينهما (Comparison View) لتحديد الكائنات التي زاد عددها ولم تُحذف بـ Garbage Collector.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مخططات اللهب وتحليل المعالج (CPU Flamegraphs)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تسجيل CPU Profile لتوليد مخطط بصري يوضح تسلسل استدعاءات الدوال، حيث تمثل الدوال العريضة عنق الزجاجة (Bottlenecks).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">قياس تأخير الـ Event Loop بـ perf_hooks</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام monitorEventLoopDelay() لقياس زمن تأخر الخيط الرئيسي بالنانوثانية عند معالجة المهام الثقيلة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التشخيص بدون إيقاف الخادم (Production Diagnostic Reports)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                توليد تقارير JSON تشخيصية فورية بـ process.report.writeReport() تحتوي على تفاصيل الـ Heap والـ OS Threads.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling Architecture Flow Diagram">
+              <title>Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-debugging-profiling" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#84CC16" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#84CC16" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#84CC16" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-debugging-profiling)" stroke="#84CC16" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#84CC16" font-size="14" font-weight="800">Performance Diagnostics & Heap Profiling</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="debugging-profilingPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Node.js 24 Runtime & API Tester</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #84CC16; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي قياس تأخير الـ Event Loop باستخدام perf_hooks
+import { monitorEventLoopDelay } from "node:perf_hooks";
+
+const histogram = monitorEventLoopDelay({ resolution: 20 });
+histogram.enable();
+
+// محاكاة تشغيل مهمة حسابية تؤخر الخيط الرئيسي
+const start = Date.now();
+while (Date.now() - start < 100) { /* Busy wait 100ms */ }
+
+console.log("Event Loop Latency Metrics:");
+console.log("Min Delay (ms):", (histogram.min / 1e6).toFixed(2));
+console.log("Max Delay (ms):", (histogram.max / 1e6).toFixed(2));
+console.log("Mean Delay (ms):", (histogram.mean / 1e6).toFixed(2));
+histogram.disable();</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ما هو الفرق بين Retained Size و Shallow Size عند تحليل كائنات لقطة الذاكرة (Heap Snapshot) في Chrome DevTools؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #84CC16;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">الـ Shallow Size هو حجم الذاكرة التي يحجزها الكائن نفسه فقط في الـ Heap (مثل بنية الكائن ومؤشراته). أما الـ Retained Size فهو الحجم الإجمالي للذاكرة التي ستتحرر تلقائياً إذا تم حذف هذا الكائن مع جميع الكائنات الفرعية التابعة له والتي لا يمكن الوصول إليها إلا من خلاله (Dominator Tree). عند البحث عن تسريبات الذاكرة، يتم الفرز دائماً حسب Retained Size.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">import { monitorEventLoopDelay } from "node:perf_hooks";</span> <span style="color: #64748B;">// استيراد وحدة مقاييس الأداء</span>
+<span style="color: #F8FAFC;">export const eldHistogram = monitorEventLoopDelay({ resolution: 10 });</span> <span style="color: #64748B;">// إنشاء مدرج تكراري دقيق للـ Event Loop</span>
+<span style="color: #F8FAFC;">eldHistogram.enable();                              </span> <span style="color: #64748B;">// بدء التسجيل الفعلي</span>
+<span style="color: #F8FAFC;">export function getEventLoopHealth() {              </span> <span style="color: #64748B;">// دالة فحص صحة الخادم</span>
+<span style="color: #F8FAFC;">  const p99LatencyMs = eldHistogram.percentile(99) / 1e6;</span> <span style="color: #64748B;">// حساب زمن التأخير للنسبة 99%</span>
+<span style="color: #F8FAFC;">  return {                                          </span> <span style="color: #64748B;">// إرجاع التقرير</span>
+<span style="color: #F8FAFC;">    healthy: p99LatencyMs &lt; 50, // صحي إذا كان التأخير أقل من 50ms</span> <span style="color: #64748B;">// معيار الصحة</span>
+<span style="color: #F8FAFC;">    p99DelayMs: p99LatencyMs.toFixed(2)             </span> <span style="color: #64748B;">// قيمة التأخير</span>
+<span style="color: #F8FAFC;">  };                                                </span> <span style="color: #64748B;">// نهاية التقرير</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية الدالة</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع في الإنتاج: تشغيل الخادم بـ node --inspect=0.0.0.0:9229
+// فتح منفذ الفحص على كل العناوين العامة يتيح لأي شخص على الإنترنت الاتصال بالخادم والتحكم فيه بالكامل!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الأمني المعتمد: الربط بـ 127.0.0.1 واستخدام SSH Tunneling
+// node --inspect=127.0.0.1:9229 server.js
+// ثم الاتصال عبر SSH Tunnel: ssh -L 9229:localhost:9229 user@server</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> بروتوكول V8 Inspector لا يوفر مصادقة أمنية؛ فتح المنفذ للعامة يعادل منح صلاحيات Root كاملة لأي مهاجم على الإنترنت.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="debugging-profilingCheckpoint" data-quiz-id="debugging-profiling-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "Which Chrome DevTools view is most effective for diagnosing JavaScript memory leaks in a Heap Snapshot?",
+    "qAr": "أي واجهة في Chrome DevTools هي الأكثر فعالية لتشخيص تسريبات الذاكرة في لقطة الـ Heap Snapshot؟",
+    "options": [
+      "Comparison View between two snapshots taken before and after the suspected leaking operation, sorted by Retained Size.",
+      "Console Log View.",
+      "Network Waterfall View.",
+      "Elements Tree View."
+    ],
+    "correct": 0,
+    "why": "Comparison view highlights newly allocated objects that failed to be collected, sorted by Retained Size to pinpoint root dominators.",
+    "whyAr": "واجهة المقارنة تبرز الكائنات التي تمت إضافتها ولم يتم تحريرها بين اللقطتين، وفرزها بـ Retained Size يكشف الكائن الجذري المتسبب في التسريب."
+  },
+  {
+    "q": "What does a wide horizontal block in a CPU Flamegraph represent?",
+    "qAr": "ماذا يمثل المستطيل الأفقي العريض في مخطط اللهب (CPU Flamegraph)؟",
+    "options": [
+      "A function that spent a large amount of time on the CPU (potential performance bottleneck).",
+      "A file with large disk size.",
+      "A network error.",
+      "A database table with many rows."
+    ],
+    "correct": 0,
+    "why": "In flame graphs, width is proportional to total time spent on CPU; wider frames indicate heavy resource consumption.",
+    "whyAr": "عرض المستطيل في مخطط اللهب يتناسب طردياً مع إجمالي الوقت الذي استهلكته الدالة على المعالج مما يدل على وجود عنق زجاجة."
+  },
+  {
+    "q": "What metric does node:perf_hooks monitorEventLoopDelay() measure?",
+    "qAr": "ما هو المقياس الذي ترصده دالة monitorEventLoopDelay() في وحدة perf_hooks؟",
+    "options": [
+      "The delay and latency between event loop iterations, indicating main-thread responsiveness and blocking tasks.",
+      "Internet download speed.",
+      "Hard drive read speed.",
+      "Database query execution time."
+    ],
+    "correct": 0,
+    "why": "Event loop delay measures the lag in processing timers and tasks, reflecting whether the main thread is blocked by heavy synchronous work.",
+    "whyAr": "ترصد مقدار التأخير في دوران الـ Event Loop بالنانوثانية مما يكشف ما إذا كان الخيط الرئيسي معطلاً بمهام متزامنة ثقيلة."
+  },
+  {
+    "q": "Why should Node.js --inspect port NEVER be exposed to public network interfaces (0.0.0.0) in production?",
+    "qAr": "لماذا يجب عدم فتح منفذ --inspect على العناوين العامة 0.0.0.0 في خوادم الإنتاج نهائياً؟",
+    "options": [
+      "The V8 inspector protocol lacks authentication and allows arbitrary code execution, granting attackers full remote control.",
+      "It slows down internet connections.",
+      "It prevents database connections.",
+      "It deletes the node_modules folder."
+    ],
+    "correct": 0,
+    "why": "V8 inspector is an unauthenticated control protocol; exposing it allows remote attackers to execute arbitrary commands as the node process.",
+    "whyAr": "بروتوكول الفحص V8 غير محمي بكلمة سر ويتيح تنفيذ أي كود جافاسكريبت عشوائي، وفتحه للعامة يمنح المخترق سيطرة كاملة على الخادم."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #84CC16; font-size: 1.05rem; margin-bottom: 4px;">Performance Diagnostics & Heap Profiling</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Node.js 24 Inspector V8</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تشخص مشكلة Memory Leak حية في خادم إنتاج داخل Kubernetes Cluster دون التسبب في إيقاف الخدمة أو إعادة تشغيل الـ Pod؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">1. نستخدم أمر kubectl port-forward pod-name 9229:9229 لإنشاء نفق آمن لمنفذ الفحص المفتوح على localhost داخل الـ Pod. 2. نفتح Chrome DevTools عبر chrome://inspect للاتصال بالخادم. 3. نأخذ Heap Snapshot أولي. 4. نرسل دفعة طلبات اختبارية ثم نأخذ Snapshot ثانٍ. 5. ننتقل إلى Comparison View ونفرز بـ # Delta و Retained Size للبحث عن كائنات (مثل Closures أو Timers أو Arrays) التي زاد عددها ولم تُحرر، مما يكشف السطر المسبب للتسريب بدقة بيكسلية بدون التأثير على مستخدمي الموقع.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-nodejs" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #84CC16; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

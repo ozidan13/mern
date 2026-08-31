@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="postgresql">
+  <meta name="fsa-lesson" content="window-functions">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="10">
+  <meta name="fsa-title" content="Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="PostgreSQL 18 Analytics">
+  <meta name="fsa-pattern-label" content="Analytical SQL & Data Warehousing">
+  <meta name="fsa-root" content="../../">
+
+  <title>Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #60A5FA;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">PostgreSQL 18 · القواعد العلائقية المتقدمة</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #60A5FA;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-postgresql" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-postgresql">postgresql</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">window-functions</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #60A5FA; color: #000; font-weight: 800;">POSTGRESQL</span>
+            <span class="fsa-badge fsa-badge--info">Level 2</span>
+            <span class="fsa-badge fsa-badge--success">PostgreSQL 18 Analytics</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">الدوال التحليلية المتقدمة (Window Functions): جمل OVER، التقسيم بـ PARTITION BY و LEAD/LAG</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #60A5FA; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم الفرق الجوهري بين دوال التجميع (GROUP BY: تقلص الصفوف) والدوال التحليلية (Window Functions: تحافظ على كل الصفوف).</li>
+              <li>إتقان جملة OVER() وتقسيم النوافذ الحسابية بـ PARTITION BY والترتيب بـ ORDER BY.</li>
+              <li>استخدام دوال الترتيب والتصنيف: ROW_NUMBER(), RANK(), و DENSE_RANK().</li>
+              <li>استخراج قيم الصفوف السابقة والتالية للمقارنة الزمنية باستخدام LEAD() و LAG().</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في تقارير الأعمال وتحليلات البيانات، يطلب منك المدراء أسئلة مثل:
+      - "اعرض لي كل موظف، مع راتبه، ومتوسط راتب القسم التابع له، وترتيبه داخل قسمه، والفرق بين راتبه وراتب الموظف الذي يسبقه مباشرة"!
+      لو حاولت حل هذه المسألة بـ <code dir="ltr">GROUP BY</code> العادية، ستفشل لأن <code dir="ltr">GROUP BY</code> تقوم بدمج الصفوف وتقليصها إلى صف واحد لكل قسم، وتخفي تفاصيل الموظفين الأفراد!
+      الحل المعماري السحري في SQL هو **الدوال التحليلية (Window Functions)**.
+      الـ Window Functions تجري عمليات حسابية معقدة عبر مجموعة من الصفوف المرتبطة بالصف الحالي (نافذة حسابية Window Frame)، **مع الحفاظ على كافة صفوف الجدول الأصلية كاملة بدون أي تقليص**!
+      في هذا الدرس، هنتعلم إزاي نبني لوحات تحليلات مالية متقدمة، إزاي نستخدم **LEAD** و **LAG** لحساب نسب النمو، ولماذا تعتبر هذه الدوال الأهم في مقابلات العمل لكبار المهندسين.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تشريح جملة OVER (PARTITION BY ... ORDER BY ...)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تقسيم البيانات إلى مجموعات مستقلة (Partitions) وتطبيق الحسابات الرياضية داخل كل قسم مع الاحتفاظ بالصفوف الفردية.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">الترتيب والتصنيف بـ ROW_NUMBER() و DENSE_RANK()</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إعطاء تسلسل فريد لكل صف أو ترتيب مالي دقيق لا يترك فجوات عند تساوي القيم (DENSE_RANK).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">المقارنة الزمنية ونسب النمو بـ LAG() و LEAD()</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الوصول لقيمة الصف السابق (LAG) أو الصف التالي (LEAD) لحساب فارق المبيعات اليومية أو الشهرية بدون أي Self-Join.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">المجموع التراكمي المتحرك (Running Totals)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                حساب الرصيد التراكمي المستمر SUM(amount) OVER (ORDER BY date) عبر مسح النافذة الزمنية تدريجياً.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تحديد أفضل N عناصر لكل فئة (Top-N Per Group)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام ROW_NUMBER() داخل CTE لجلب أعلى 3 منتجات مبيعاً داخل كل فئة في استعلام واحد فائق الكفاءة.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG Architecture Flow Diagram">
+              <title>Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-window-functions" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-window-functions)" stroke="#60A5FA" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="800">Analytical SQL & Data Warehousing</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="window-functionsPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #60A5FA; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي الدوال التحليلية Window Functions في SQL
+const windowFunctionSql = `
+SELECT 
+  employee_id,
+  department,
+  salary,
+  -- 1. متوسط راتب القسم لكل موظف
+  AVG(salary) OVER (PARTITION BY department) as dept_avg_salary,
+  -- 2. ترتيب الموظف داخل قسمه حسب الراتب
+  DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) as rank_in_dept,
+  -- 3. راتب الموظف السابق للمقارنة
+  LAG(salary, 1) OVER (PARTITION BY department ORDER BY salary DESC) as previous_higher_salary
+FROM employees;
+`;
+
+console.log("PostgreSQL Analytical Window Query:");
+console.log(windowFunctionSql);</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ما هو الفرق بين RANK() و DENSE_RANK() عندما يتساوى موظفان في نفس الراتب بالمركز الثاني؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #60A5FA;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">إذا تساوى موظفان في المركز الثاني (المرتبة 2)، فإن دالة RANK() ستعطي الموظف التالي المرتبة 4 (تترك فجوة في الترقيم 1, 2, 2, 4). أما دالة DENSE_RANK() فلا تترك أي فجوات وتعطي الموظف التالي المرتبة 3 مباشرة (1, 2, 2, 3).</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">WITH RankedProducts AS (                            </span> <span style="color: #64748B;">// 1. CTE لتصنيف المنتجات</span>
+<span style="color: #F8FAFC;">  SELECT id, name, category, sales_count,           </span> <span style="color: #64748B;">// حقول المنتج</span>
+<span style="color: #F8FAFC;">    ROW_NUMBER() OVER (                             </span> <span style="color: #64748B;">// ترقيم ترتيبي داخل كل فئة</span>
+<span style="color: #F8FAFC;">      PARTITION BY category                         </span> <span style="color: #64748B;">// تقسيم النوافذ حسب الفئة</span>
+<span style="color: #F8FAFC;">      ORDER BY sales_count DESC                     </span> <span style="color: #64748B;">// فرز بالأعلى مبيعاً</span>
+<span style="color: #F8FAFC;">    ) as rank                                       </span> <span style="color: #64748B;">// اسم عمود الترتيب</span>
+<span style="color: #F8FAFC;">  FROM products                                     </span> <span style="color: #64748B;">// جدول المنتجات</span>
+<span style="color: #F8FAFC;">)                                                   </span> <span style="color: #64748B;">// نهاية الـ CTE</span>
+<span style="color: #F8FAFC;">SELECT * FROM RankedProducts WHERE rank &lt;= 3; // 2. جلب أفضل 3 في كل قسم</span> <span style="color: #64748B;">// استخراج Top-3 لكل فئة</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: محاولة وضع Window Function داخل جملة WHERE مباشرة
+SELECT name, salary FROM employees WHERE ROW_NUMBER() OVER (ORDER BY salary) &lt;= 5;
+// خطأ Syntax Error: Window functions غير مسموحة في WHERE لأنها تنفذ بعد تصفية الصفوف!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: تغليف الاستعلام داخل CTE أو Subquery
+WITH Ranked AS (
+  SELECT name, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) as rn FROM employees
+)
+SELECT * FROM Ranked WHERE rn &lt;= 5;</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> محرك SQL ينفذ جملة WHERE قبل حساب الـ Window Functions، ولذلك يجب استخدام CTE لتصفية النتائج بناءً على قيم النوافذ.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="window-functionsCheckpoint" data-quiz-id="window-functions-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "What is the primary conceptual difference between GROUP BY and Window Functions (OVER)?",
+    "qAr": "ما هو الفرق المفاهيمي الأساسي بين GROUP BY والدوال التحليلية (Window Functions)?",
+    "options": [
+      "GROUP BY collapses multiple rows into a single summary row; Window Functions compute aggregates while retaining all individual rows.",
+      "GROUP BY is only for PostgreSQL; Window Functions are for MySQL.",
+      "Window functions delete duplicate rows.",
+      "There is no difference."
+    ],
+    "correct": 0,
+    "why": "Window functions perform calculations across a set of table rows related to the current row without collapsing the result set.",
+    "whyAr": "تجري الـ Window Functions حسابات تجميعية ومقارنات عبر النوافذ مع الحفاظ على كافة صفوف الجدول كاملة دون دمجها."
+  },
+  {
+    "q": "What does the LAG(column, 1) window function return?",
+    "qAr": "ما الذي تُرجعه الدالة التحليلية LAG(column, 1)؟",
+    "options": [
+      "The value of the specified column from the preceding row within the current partition/window frame.",
+      "The average of all previous rows.",
+      "The last row of the entire table.",
+      "A random number."
+    ],
+    "correct": 0,
+    "why": "LAG accesses data from a previous row at a specified offset within the partition without requiring a self-join.",
+    "whyAr": "تصل لقيمة الصف السابق مباشرة داخل نفس المجموعة مما يسهل حساب الفروق الزمنية ومعدلات النمو."
+  },
+  {
+    "q": "Why can Window Functions NOT be used directly inside a SQL WHERE clause?",
+    "qAr": "لماذا لا يمكن استخدام الدوال التحليلية مباشرة داخل جملة WHERE؟",
+    "options": [
+      "In SQL logical query processing, WHERE executes BEFORE window functions are evaluated; wrapping in a CTE/subquery is required.",
+      "Because of missing table indexes.",
+      "To prevent SQL injection.",
+      "Window functions are only for SELECT statements."
+    ],
+    "correct": 0,
+    "why": "SQL evaluation order processes FROM -> WHERE -> GROUP BY -> HAVING -> WINDOW -> SELECT, meaning window values do not exist during WHERE filtering.",
+    "whyAr": "في تسلسل معالجة SQL، تنفذ جملة WHERE قبل تقييم دوال النوافذ ولذلك يجب تغليفها في CTE لتصفيتها."
+  },
+  {
+    "q": "What does \"SUM(amount) OVER (ORDER BY transaction_date)\" compute in PostgreSQL?",
+    "qAr": "ما الذي تحسبه عبارة \"SUM(amount) OVER (ORDER BY transaction_date)\" في PostgreSQL؟",
+    "options": [
+      "A running (cumulative) total of amount ordered chronologically up to the current row.",
+      "The overall grand total for the whole table in every row.",
+      "The average transaction amount.",
+      "The difference between min and max."
+    ],
+    "correct": 0,
+    "why": "An ORDER BY inside OVER defaults the frame to UNBOUNDED PRECEDING TO CURRENT ROW, generating a running cumulative sum.",
+    "whyAr": "تحسب المجموع التراكمي المتحرك للمبالغ بالترتيب الزمني حتى الصف الحالي لحظة بلحظة."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #60A5FA; font-size: 1.05rem; margin-bottom: 4px;">Analytical SQL & Data Warehousing</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">PostgreSQL 18 Analytics</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحل مشكلة "Gaps and Islands" الشهيرة في SQL لحساب أطول سلسلة أيام متتالية قام فيها المستخدم بتسجيل الدخول؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نحلها باستخدام دمج ROW_NUMBER مع التواريخ: 1. نقوم بحساب log_date - (ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY log_date) * INTERVAL '1 day') as grp_date. 2. إذا كانت الأيام متتالية، فإن فارق الطرح سينتج نفس التاريخ الثابت تماماً لجميع الأيام المتتالية (Island). 3. نقوم بعد ذلك بعمل GROUP BY user_id, grp_date مع حساب COUNT(*) لحساب أطول سلسلة أيام متصلة في استعلام قياسي فائق السرعة.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-postgresql" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #60A5FA; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

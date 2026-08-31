@@ -9,8 +9,8 @@
   window.FSA = window.FSA || {};
   window.FSA.curriculum = {
   "version": "1.0.0",
-  "generatedAt": "2026-08-31T10:42:40.384Z",
-  "totalLessons": 106,
+  "generatedAt": "2026-08-31T11:02:12.350Z",
+  "totalLessons": 140,
   "tracks": [
     {
       "id": "foundations",
@@ -47,9 +47,9 @@
               "title": "Semantic HTML, Document Outlines & Accessibility (a11y)",
               "level": 1,
               "order": 2,
-              "estMinutes": 20,
+              "estMinutes": 30,
               "teachesVersion": "HTML5 Living Standard",
-              "patternLabel": "Semantic Architecture",
+              "patternLabel": "Semantic Landmark Architecture",
               "prereqs": [],
               "url": "learn/foundations/html-semantic.html",
               "slug": "foundations/html-semantic",
@@ -83,19 +83,19 @@
               },
               "next": {
                 "slug": "foundations/css-box-model",
-                "title": "CSS Box Model, Flexbox Axis & Modern CSS Grid",
+                "title": "CSS Box Model, Flexbox Axis & Modern Grid Layouts",
                 "url": "learn/foundations/css-box-model.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "css-box-model",
-              "title": "CSS Box Model, Flexbox Axis & Modern CSS Grid",
+              "title": "CSS Box Model, Flexbox Axis & Modern Grid Layouts",
               "level": 1,
               "order": 3,
-              "estMinutes": 22,
-              "teachesVersion": "CSS3 / CSS Grid Level 2",
-              "patternLabel": "Layout Engine",
+              "estMinutes": 35,
+              "teachesVersion": "CSS3 / CSS Box Model Module Level 4",
+              "patternLabel": "Layout Engine & Formatting Contexts",
               "prereqs": [],
               "url": "learn/foundations/css-box-model.html",
               "slug": "foundations/css-box-model",
@@ -106,141 +106,233 @@
               },
               "next": {
                 "slug": "foundations/js-types-operators",
-                "title": "Primitive Types, Type Coercion & Symbols/BigInt",
+                "title": "JavaScript Types, Coercion Quirks & Symbols/BigInt",
                 "url": "learn/foundations/js-types-operators.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-types-operators",
-              "title": "Primitive Types, Type Coercion & Symbols/BigInt",
+              "title": "JavaScript Types, Coercion Quirks & Symbols/BigInt",
               "level": 1,
               "order": 4,
-              "estMinutes": 24,
-              "teachesVersion": "ECMAScript 2024",
-              "patternLabel": "Type Safety & Core Engine",
+              "estMinutes": 30,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Type System & Coercion Rules",
               "prereqs": [],
               "url": "learn/foundations/js-types-operators.html",
               "slug": "foundations/js-types-operators",
               "prev": {
                 "slug": "foundations/css-box-model",
-                "title": "CSS Box Model, Flexbox Axis & Modern CSS Grid",
+                "title": "CSS Box Model, Flexbox Axis & Modern Grid Layouts",
                 "url": "learn/foundations/css-box-model.html"
               },
               "next": {
                 "slug": "foundations/js-control-flow",
-                "title": "Control Flow, Iteration Protocols & Labeled Statements",
+                "title": "Control Flow, Iterators, Labeled Loops & Break/Continue",
                 "url": "learn/foundations/js-control-flow.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-control-flow",
-              "title": "Control Flow, Iteration Protocols & Labeled Statements",
+              "title": "Control Flow, Iterators, Labeled Loops & Break/Continue",
               "level": 1,
               "order": 5,
-              "estMinutes": 20,
-              "teachesVersion": "Modern JS ES2024",
-              "patternLabel": "Control Flow & Logic",
+              "estMinutes": 28,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Control Flow & Iterable Protocol",
               "prereqs": [],
               "url": "learn/foundations/js-control-flow.html",
               "slug": "foundations/js-control-flow",
               "prev": {
                 "slug": "foundations/js-types-operators",
-                "title": "Primitive Types, Type Coercion & Symbols/BigInt",
+                "title": "JavaScript Types, Coercion Quirks & Symbols/BigInt",
                 "url": "learn/foundations/js-types-operators.html"
               },
               "next": {
                 "slug": "foundations/js-functions",
-                "title": "Functions, Arrow Mechanics, Rest/Spread & Currying",
+                "title": "Function Declarations, Expressions, Arrow Functions & Hoisting",
                 "url": "learn/foundations/js-functions.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-functions",
-              "title": "Functions, Arrow Mechanics, Rest/Spread & Currying",
+              "title": "Function Declarations, Expressions, Arrow Functions & Hoisting",
               "level": 1,
               "order": 6,
-              "estMinutes": 25,
-              "teachesVersion": "ES2024 Standard",
-              "patternLabel": "Functional Mechanics",
+              "estMinutes": 32,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Function Mechanics & Lexical this",
               "prereqs": [],
               "url": "learn/foundations/js-functions.html",
               "slug": "foundations/js-functions",
               "prev": {
                 "slug": "foundations/js-control-flow",
-                "title": "Control Flow, Iteration Protocols & Labeled Statements",
+                "title": "Control Flow, Iterators, Labeled Loops & Break/Continue",
                 "url": "learn/foundations/js-control-flow.html"
               },
               "next": {
                 "slug": "foundations/js-arrays-methods",
-                "title": "Array Pipeline: Map, Filter, Reduce, FlatMap & Performance",
+                "title": "Functional Array Pipelines: Map, Filter, Reduce & FlatMap",
                 "url": "learn/foundations/js-arrays-methods.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-arrays-methods",
-              "title": "Array Pipeline: Map, Filter, Reduce, FlatMap & Performance",
+              "title": "Functional Array Pipelines: Map, Filter, Reduce & FlatMap",
               "level": 1,
-              "order": 7,
-              "estMinutes": 24,
-              "teachesVersion": "ES2024 Standard",
-              "patternLabel": "Data Transformations",
+              "order": 8,
+              "estMinutes": 35,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Declarative & Immutable Data Pipelines",
               "prereqs": [],
               "url": "learn/foundations/js-arrays-methods.html",
               "slug": "foundations/js-arrays-methods",
               "prev": {
                 "slug": "foundations/js-functions",
-                "title": "Functions, Arrow Mechanics, Rest/Spread & Currying",
+                "title": "Function Declarations, Expressions, Arrow Functions & Hoisting",
                 "url": "learn/foundations/js-functions.html"
               },
               "next": {
                 "slug": "foundations/js-objects-prototypes",
-                "title": "Objects, Prototypes, Descriptors & Property Shadowing",
+                "title": "Objects, Property Descriptors & Prototype Inheritance",
                 "url": "learn/foundations/js-objects-prototypes.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-objects-prototypes",
-              "title": "Objects, Prototypes, Descriptors & Property Shadowing",
+              "title": "Objects, Property Descriptors & Prototype Inheritance",
               "level": 1,
-              "order": 8,
-              "estMinutes": 26,
-              "teachesVersion": "V8 Engine Standard",
-              "patternLabel": "Object-Oriented Core",
+              "order": 9,
+              "estMinutes": 35,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Prototypal Inheritance & Memory Sharing",
               "prereqs": [],
               "url": "learn/foundations/js-objects-prototypes.html",
               "slug": "foundations/js-objects-prototypes",
               "prev": {
                 "slug": "foundations/js-arrays-methods",
-                "title": "Array Pipeline: Map, Filter, Reduce, FlatMap & Performance",
+                "title": "Functional Array Pipelines: Map, Filter, Reduce & FlatMap",
                 "url": "learn/foundations/js-arrays-methods.html"
               },
               "next": {
                 "slug": "foundations/js-classes-oop",
-                "title": "ES6 Classes, Private Fields (#), Inheritance & Static Methods",
+                "title": "ES6 Classes, Private Fields (#), Inheritance & Mixins",
                 "url": "learn/foundations/js-classes-oop.html"
               }
             },
             {
               "track": "foundations",
               "lesson": "js-classes-oop",
-              "title": "ES6 Classes, Private Fields (#), Inheritance & Static Methods",
+              "title": "ES6 Classes, Private Fields (#), Inheritance & Mixins",
               "level": 1,
-              "order": 9,
-              "estMinutes": 22,
-              "teachesVersion": "ES2024 Standard",
-              "patternLabel": "Object-Oriented Programming",
+              "order": 10,
+              "estMinutes": 30,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Object-Oriented Architecture & Encapsulation",
               "prereqs": [],
               "url": "learn/foundations/js-classes-oop.html",
               "slug": "foundations/js-classes-oop",
               "prev": {
                 "slug": "foundations/js-objects-prototypes",
-                "title": "Objects, Prototypes, Descriptors & Property Shadowing",
+                "title": "Objects, Property Descriptors & Prototype Inheritance",
                 "url": "learn/foundations/js-objects-prototypes.html"
+              },
+              "next": {
+                "slug": "foundations/js-async-await",
+                "title": "Async/Await Control Flow, Sequential vs Parallel & Error Boundaries",
+                "url": "learn/foundations/js-async-await.html"
+              }
+            },
+            {
+              "track": "foundations",
+              "lesson": "js-async-await",
+              "title": "Async/Await Control Flow, Sequential vs Parallel & Error Boundaries",
+              "level": 1,
+              "order": 12,
+              "estMinutes": 35,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Asynchronous Concurrency & Promise Combinators",
+              "prereqs": [],
+              "url": "learn/foundations/js-async-await.html",
+              "slug": "foundations/js-async-await",
+              "prev": {
+                "slug": "foundations/js-classes-oop",
+                "title": "ES6 Classes, Private Fields (#), Inheritance & Mixins",
+                "url": "learn/foundations/js-classes-oop.html"
+              },
+              "next": {
+                "slug": "foundations/js-modules",
+                "title": "ES Modules (ESM) vs CommonJS (CJS), Dynamic Imports & Tree-Shaking",
+                "url": "learn/foundations/js-modules.html"
+              }
+            },
+            {
+              "track": "foundations",
+              "lesson": "js-modules",
+              "title": "ES Modules (ESM) vs CommonJS (CJS), Dynamic Imports & Tree-Shaking",
+              "level": 1,
+              "order": 14,
+              "estMinutes": 30,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Modular Architecture & Static Analysis",
+              "prereqs": [],
+              "url": "learn/foundations/js-modules.html",
+              "slug": "foundations/js-modules",
+              "prev": {
+                "slug": "foundations/js-async-await",
+                "title": "Async/Await Control Flow, Sequential vs Parallel & Error Boundaries",
+                "url": "learn/foundations/js-async-await.html"
+              },
+              "next": {
+                "slug": "foundations/js-error-handling",
+                "title": "Custom Error Hierarchies, Stack Traces & Defensive Coding",
+                "url": "learn/foundations/js-error-handling.html"
+              }
+            },
+            {
+              "track": "foundations",
+              "lesson": "js-error-handling",
+              "title": "Custom Error Hierarchies, Stack Traces & Defensive Coding",
+              "level": 1,
+              "order": 15,
+              "estMinutes": 30,
+              "teachesVersion": "ES2024+ Standard",
+              "patternLabel": "Error Handling Architecture & Fault Tolerance",
+              "prereqs": [],
+              "url": "learn/foundations/js-error-handling.html",
+              "slug": "foundations/js-error-handling",
+              "prev": {
+                "slug": "foundations/js-modules",
+                "title": "ES Modules (ESM) vs CommonJS (CJS), Dynamic Imports & Tree-Shaking",
+                "url": "learn/foundations/js-modules.html"
+              },
+              "next": {
+                "slug": "foundations/js-modern-features",
+                "title": "Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal",
+                "url": "learn/foundations/js-modern-features.html"
+              }
+            },
+            {
+              "track": "foundations",
+              "lesson": "js-modern-features",
+              "title": "Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal",
+              "level": 1,
+              "order": 16,
+              "estMinutes": 30,
+              "teachesVersion": "ES2024+ / ESNext",
+              "patternLabel": "Modern Language Features & Memory Management",
+              "prereqs": [],
+              "url": "learn/foundations/js-modern-features.html",
+              "slug": "foundations/js-modern-features",
+              "prev": {
+                "slug": "foundations/js-error-handling",
+                "title": "Custom Error Hierarchies, Stack Traces & Defensive Coding",
+                "url": "learn/foundations/js-error-handling.html"
               },
               "next": {
                 "slug": "foundations/async-js",
@@ -266,9 +358,9 @@
               "url": "learn/foundations/async-js.html",
               "slug": "foundations/async-js",
               "prev": {
-                "slug": "foundations/js-classes-oop",
-                "title": "ES6 Classes, Private Fields (#), Inheritance & Static Methods",
-                "url": "learn/foundations/js-classes-oop.html"
+                "slug": "foundations/js-modern-features",
+                "title": "Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal",
+                "url": "learn/foundations/js-modern-features.html"
               },
               "next": {
                 "slug": "foundations/fetch-api",
@@ -292,98 +384,6 @@
                 "slug": "foundations/async-js",
                 "title": "Asynchronous JS: Event Loop & Promises",
                 "url": "learn/foundations/async-js.html"
-              },
-              "next": {
-                "slug": "foundations/js-async-await",
-                "title": "Async/Await Control Flow, Sequential vs Parallel & Error Guards",
-                "url": "learn/foundations/js-async-await.html"
-              }
-            },
-            {
-              "track": "foundations",
-              "lesson": "js-async-await",
-              "title": "Async/Await Control Flow, Sequential vs Parallel & Error Guards",
-              "level": 2,
-              "order": 12,
-              "estMinutes": 25,
-              "teachesVersion": "ES2024 Standard",
-              "patternLabel": "Async Architecture",
-              "prereqs": [],
-              "url": "learn/foundations/js-async-await.html",
-              "slug": "foundations/js-async-await",
-              "prev": {
-                "slug": "foundations/fetch-api",
-                "title": "Fetch API, Streams & AbortController",
-                "url": "learn/foundations/fetch-api.html"
-              },
-              "next": {
-                "slug": "foundations/js-modules",
-                "title": "ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports",
-                "url": "learn/foundations/js-modules.html"
-              }
-            },
-            {
-              "track": "foundations",
-              "lesson": "js-modules",
-              "title": "ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports",
-              "level": 2,
-              "order": 14,
-              "estMinutes": 22,
-              "teachesVersion": "ES2024 / Node.js 24",
-              "patternLabel": "Module Architecture",
-              "prereqs": [],
-              "url": "learn/foundations/js-modules.html",
-              "slug": "foundations/js-modules",
-              "prev": {
-                "slug": "foundations/js-async-await",
-                "title": "Async/Await Control Flow, Sequential vs Parallel & Error Guards",
-                "url": "learn/foundations/js-async-await.html"
-              },
-              "next": {
-                "slug": "foundations/js-error-handling",
-                "title": "Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding",
-                "url": "learn/foundations/js-error-handling.html"
-              }
-            },
-            {
-              "track": "foundations",
-              "lesson": "js-error-handling",
-              "title": "Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding",
-              "level": 2,
-              "order": 15,
-              "estMinutes": 24,
-              "teachesVersion": "ES2024 / Node.js 24",
-              "patternLabel": "Defensive Architecture",
-              "prereqs": [],
-              "url": "learn/foundations/js-error-handling.html",
-              "slug": "foundations/js-error-handling",
-              "prev": {
-                "slug": "foundations/js-modules",
-                "title": "ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports",
-                "url": "learn/foundations/js-modules.html"
-              },
-              "next": {
-                "slug": "foundations/js-modern-features",
-                "title": "Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal",
-                "url": "learn/foundations/js-modern-features.html"
-              }
-            },
-            {
-              "track": "foundations",
-              "lesson": "js-modern-features",
-              "title": "Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal",
-              "level": 2,
-              "order": 16,
-              "estMinutes": 22,
-              "teachesVersion": "ES2024 Standard",
-              "patternLabel": "Modern Language Features",
-              "prereqs": [],
-              "url": "learn/foundations/js-modern-features.html",
-              "slug": "foundations/js-modern-features",
-              "prev": {
-                "slug": "foundations/js-error-handling",
-                "title": "Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding",
-                "url": "learn/foundations/js-error-handling.html"
               },
               "next": {
                 "slug": "react/thinking-in-react",
@@ -418,25 +418,25 @@
               "url": "learn/react/thinking-in-react.html",
               "slug": "react/thinking-in-react",
               "prev": {
-                "slug": "foundations/js-modern-features",
-                "title": "Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal",
-                "url": "learn/foundations/js-modern-features.html"
+                "slug": "foundations/fetch-api",
+                "title": "Fetch API, Streams & AbortController",
+                "url": "learn/foundations/fetch-api.html"
               },
               "next": {
                 "slug": "react/jsx-deep-dive",
-                "title": "JSX Under the Hood: React.createElement, AST & Modern JSX Transform",
+                "title": "JSX Under the Hood: React.createElement, Compilation & React 19 JSX Transform",
                 "url": "learn/react/jsx-deep-dive.html"
               }
             },
             {
               "track": "react",
               "lesson": "jsx-deep-dive",
-              "title": "JSX Under the Hood: React.createElement, AST & Modern JSX Transform",
+              "title": "JSX Under the Hood: React.createElement, Compilation & React 19 JSX Transform",
               "level": 1,
               "order": 2,
-              "estMinutes": 20,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Core Compilation Engine",
+              "estMinutes": 30,
+              "teachesVersion": "React 19.x & JSX Transform",
+              "patternLabel": "Virtual DOM & AST Compilation",
               "prereqs": [],
               "url": "learn/react/jsx-deep-dive.html",
               "slug": "react/jsx-deep-dive",
@@ -465,24 +465,24 @@
               "slug": "react/use-state",
               "prev": {
                 "slug": "react/jsx-deep-dive",
-                "title": "JSX Under the Hood: React.createElement, AST & Modern JSX Transform",
+                "title": "JSX Under the Hood: React.createElement, Compilation & React 19 JSX Transform",
                 "url": "learn/react/jsx-deep-dive.html"
               },
               "next": {
                 "slug": "react/event-handling",
-                "title": "SyntheticEvent System, Event Delegation & Controlled Forms",
+                "title": "Synthetic Events & Delegation in React 19: Pooling Removal & Native Interop",
                 "url": "learn/react/event-handling.html"
               }
             },
             {
               "track": "react",
               "lesson": "event-handling",
-              "title": "SyntheticEvent System, Event Delegation & Controlled Forms",
+              "title": "Synthetic Events & Delegation in React 19: Pooling Removal & Native Interop",
               "level": 1,
-              "order": 5,
-              "estMinutes": 24,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Event Architecture",
+              "order": 4,
+              "estMinutes": 30,
+              "teachesVersion": "React 19.x Concurrency",
+              "patternLabel": "Event Delegation & Synthetic Wrapper",
               "prereqs": [],
               "url": "learn/react/event-handling.html",
               "slug": "react/event-handling",
@@ -493,48 +493,48 @@
               },
               "next": {
                 "slug": "react/conditional-rendering",
-                "title": "Conditional Rendering Patterns, Short-Circuits & Early Returns",
+                "title": "Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns",
                 "url": "learn/react/conditional-rendering.html"
               }
             },
             {
               "track": "react",
               "lesson": "conditional-rendering",
-              "title": "Conditional Rendering Patterns, Short-Circuits & Early Returns",
+              "title": "Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns",
               "level": 1,
-              "order": 6,
-              "estMinutes": 20,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "UI Logic Flow",
+              "order": 5,
+              "estMinutes": 28,
+              "teachesVersion": "React 19.x",
+              "patternLabel": "Declarative Branching & Guard Clauses",
               "prereqs": [],
               "url": "learn/react/conditional-rendering.html",
               "slug": "react/conditional-rendering",
               "prev": {
                 "slug": "react/event-handling",
-                "title": "SyntheticEvent System, Event Delegation & Controlled Forms",
+                "title": "Synthetic Events & Delegation in React 19: Pooling Removal & Native Interop",
                 "url": "learn/react/event-handling.html"
               },
               "next": {
                 "slug": "react/lists-keys",
-                "title": "Lists, Stable Keys Strategies & The Index-as-Key Hazard",
+                "title": "Lists, Keys & Reconciliation: Identity Preservation & Index Anti-Pattern",
                 "url": "learn/react/lists-keys.html"
               }
             },
             {
               "track": "react",
               "lesson": "lists-keys",
-              "title": "Lists, Stable Keys Strategies & The Index-as-Key Hazard",
+              "title": "Lists, Keys & Reconciliation: Identity Preservation & Index Anti-Pattern",
               "level": 1,
-              "order": 7,
-              "estMinutes": 22,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "DOM Reconciliation Safety",
+              "order": 6,
+              "estMinutes": 30,
+              "teachesVersion": "React 19.x Fiber Diffing",
+              "patternLabel": "Identity Preservation & Reconciliation",
               "prereqs": [],
               "url": "learn/react/lists-keys.html",
               "slug": "react/lists-keys",
               "prev": {
                 "slug": "react/conditional-rendering",
-                "title": "Conditional Rendering Patterns, Short-Circuits & Early Returns",
+                "title": "Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns",
                 "url": "learn/react/conditional-rendering.html"
               },
               "next": {
@@ -562,7 +562,7 @@
               "slug": "react/use-effect",
               "prev": {
                 "slug": "react/lists-keys",
-                "title": "Lists, Stable Keys Strategies & The Index-as-Key Hazard",
+                "title": "Lists, Keys & Reconciliation: Identity Preservation & Index Anti-Pattern",
                 "url": "learn/react/lists-keys.html"
               },
               "next": {
@@ -590,19 +590,19 @@
               },
               "next": {
                 "slug": "react/component-patterns",
-                "title": "Advanced Component Patterns: Compound Components & Render Props",
+                "title": "Component Architecture: Compound Components, Render Props & Polymorphic Elements",
                 "url": "learn/react/component-patterns.html"
               }
             },
             {
               "track": "react",
               "lesson": "component-patterns",
-              "title": "Advanced Component Patterns: Compound Components & Render Props",
+              "title": "Component Architecture: Compound Components, Render Props & Polymorphic Elements",
               "level": 2,
-              "order": 9,
-              "estMinutes": 26,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Component Composition",
+              "order": 7,
+              "estMinutes": 35,
+              "teachesVersion": "React 19.x Architecture",
+              "patternLabel": "Advanced Component Composition",
               "prereqs": [],
               "url": "learn/react/component-patterns.html",
               "slug": "react/component-patterns",
@@ -613,77 +613,169 @@
               },
               "next": {
                 "slug": "react/use-reducer",
-                "title": "Complex State Transitions with useReducer & State Machines",
+                "title": "useReducer: Complex State Machines, Discriminated Unions & Lazy Init",
                 "url": "learn/react/use-reducer.html"
               }
             },
             {
               "track": "react",
               "lesson": "use-reducer",
-              "title": "Complex State Transitions with useReducer & State Machines",
+              "title": "useReducer: Complex State Machines, Discriminated Unions & Lazy Init",
               "level": 2,
-              "order": 10,
-              "estMinutes": 24,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Predictable State Management",
+              "order": 8,
+              "estMinutes": 32,
+              "teachesVersion": "React 19.x Fiber",
+              "patternLabel": "Predictable State Machine & Reducer Composition",
               "prereqs": [],
               "url": "learn/react/use-reducer.html",
               "slug": "react/use-reducer",
               "prev": {
                 "slug": "react/component-patterns",
-                "title": "Advanced Component Patterns: Compound Components & Render Props",
+                "title": "Component Architecture: Compound Components, Render Props & Polymorphic Elements",
                 "url": "learn/react/component-patterns.html"
               },
               "next": {
                 "slug": "react/use-context",
-                "title": "Context API: Eliminating Prop Drilling & Context Splitting",
+                "title": "Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps",
                 "url": "learn/react/use-context.html"
               }
             },
             {
               "track": "react",
               "lesson": "use-context",
-              "title": "Context API: Eliminating Prop Drilling & Context Splitting",
+              "title": "Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps",
               "level": 2,
-              "order": 11,
-              "estMinutes": 24,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Global Data Sharing",
+              "order": 9,
+              "estMinutes": 30,
+              "teachesVersion": "React 19.x",
+              "patternLabel": "Dependency Injection & Context Splitting",
               "prereqs": [],
               "url": "learn/react/use-context.html",
               "slug": "react/use-context",
               "prev": {
                 "slug": "react/use-reducer",
-                "title": "Complex State Transitions with useReducer & State Machines",
+                "title": "useReducer: Complex State Machines, Discriminated Unions & Lazy Init",
                 "url": "learn/react/use-reducer.html"
               },
               "next": {
                 "slug": "react/use-ref-dom",
-                "title": "useRef: Mutable Value Persistence & Direct DOM Node Access",
+                "title": "useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation",
                 "url": "learn/react/use-ref-dom.html"
               }
             },
             {
               "track": "react",
               "lesson": "use-ref-dom",
-              "title": "useRef: Mutable Value Persistence & Direct DOM Node Access",
+              "title": "useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation",
               "level": 2,
-              "order": 12,
-              "estMinutes": 22,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "DOM & Memory Escape Hatch",
+              "order": 10,
+              "estMinutes": 30,
+              "teachesVersion": "React 19.x & ref as prop",
+              "patternLabel": "Imperative Escape Hatch & Mutable Containers",
               "prereqs": [],
               "url": "learn/react/use-ref-dom.html",
               "slug": "react/use-ref-dom",
               "prev": {
                 "slug": "react/use-context",
-                "title": "Context API: Eliminating Prop Drilling & Context Splitting",
+                "title": "Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps",
                 "url": "learn/react/use-context.html"
               },
               "next": {
                 "slug": "react/use-memo-callback",
-                "title": "Performance Optimization: useMemo, useCallback & Referential Equality",
+                "title": "Performance Optimization: useMemo, useCallback, React.memo & React 19 Compiler",
                 "url": "learn/react/use-memo-callback.html"
+              }
+            },
+            {
+              "track": "react",
+              "lesson": "use-memo-callback",
+              "title": "Performance Optimization: useMemo, useCallback, React.memo & React 19 Compiler",
+              "level": 2,
+              "order": 11,
+              "estMinutes": 35,
+              "teachesVersion": "React 19.x & React Compiler",
+              "patternLabel": "Memoization, Referential Equality & Automatic Memoization",
+              "prereqs": [],
+              "url": "learn/react/use-memo-callback.html",
+              "slug": "react/use-memo-callback",
+              "prev": {
+                "slug": "react/use-ref-dom",
+                "title": "useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation",
+                "url": "learn/react/use-ref-dom.html"
+              },
+              "next": {
+                "slug": "react/custom-hooks",
+                "title": "Custom Hooks Architecture: Headless UI, State Encapsulation & Composition",
+                "url": "learn/react/custom-hooks.html"
+              }
+            },
+            {
+              "track": "react",
+              "lesson": "custom-hooks",
+              "title": "Custom Hooks Architecture: Headless UI, State Encapsulation & Composition",
+              "level": 2,
+              "order": 12,
+              "estMinutes": 32,
+              "teachesVersion": "React 19.x Architecture",
+              "patternLabel": "Headless Logic & Hook Composition",
+              "prereqs": [],
+              "url": "learn/react/custom-hooks.html",
+              "slug": "react/custom-hooks",
+              "prev": {
+                "slug": "react/use-memo-callback",
+                "title": "Performance Optimization: useMemo, useCallback, React.memo & React 19 Compiler",
+                "url": "learn/react/use-memo-callback.html"
+              },
+              "next": {
+                "slug": "react/react-router",
+                "title": "Client-Side Routing: React Router 7 Architecture, Nested Layouts & Loaders",
+                "url": "learn/react/react-router.html"
+              }
+            },
+            {
+              "track": "react",
+              "lesson": "react-router",
+              "title": "Client-Side Routing: React Router 7 Architecture, Nested Layouts & Loaders",
+              "level": 2,
+              "order": 13,
+              "estMinutes": 35,
+              "teachesVersion": "React Router v7 / v6.4+ Data APIs",
+              "patternLabel": "Client Routing & Data Router Engine",
+              "prereqs": [],
+              "url": "learn/react/react-router.html",
+              "slug": "react/react-router",
+              "prev": {
+                "slug": "react/custom-hooks",
+                "title": "Custom Hooks Architecture: Headless UI, State Encapsulation & Composition",
+                "url": "learn/react/custom-hooks.html"
+              },
+              "next": {
+                "slug": "react/data-fetching",
+                "title": "Modern Data Fetching & Server State: TanStack Query (React Query) Architecture",
+                "url": "learn/react/data-fetching.html"
+              }
+            },
+            {
+              "track": "react",
+              "lesson": "data-fetching",
+              "title": "Modern Data Fetching & Server State: TanStack Query (React Query) Architecture",
+              "level": 2,
+              "order": 14,
+              "estMinutes": 35,
+              "teachesVersion": "TanStack Query v5 / React 19",
+              "patternLabel": "Server State Management & Cache Invalidation",
+              "prereqs": [],
+              "url": "learn/react/data-fetching.html",
+              "slug": "react/data-fetching",
+              "prev": {
+                "slug": "react/react-router",
+                "title": "Client-Side Routing: React Router 7 Architecture, Nested Layouts & Loaders",
+                "url": "learn/react/react-router.html"
+              },
+              "next": {
+                "slug": "react/state-management",
+                "title": "Modern Global State Architecture: Zustand vs Redux Toolkit & Atomic State (Jotai)",
+                "url": "learn/react/state-management.html"
               }
             }
           ]
@@ -693,134 +785,42 @@
           "lessons": [
             {
               "track": "react",
-              "lesson": "use-memo-callback",
-              "title": "Performance Optimization: useMemo, useCallback & Referential Equality",
-              "level": 3,
-              "order": 13,
-              "estMinutes": 26,
-              "teachesVersion": "React 19.2 / React Compiler",
-              "patternLabel": "Performance & Optimization",
-              "prereqs": [],
-              "url": "learn/react/use-memo-callback.html",
-              "slug": "react/use-memo-callback",
-              "prev": {
-                "slug": "react/use-ref-dom",
-                "title": "useRef: Mutable Value Persistence & Direct DOM Node Access",
-                "url": "learn/react/use-ref-dom.html"
-              },
-              "next": {
-                "slug": "react/custom-hooks",
-                "title": "Custom Hooks: Logic Extraction, Composition & Clean Architecture",
-                "url": "learn/react/custom-hooks.html"
-              }
-            },
-            {
-              "track": "react",
-              "lesson": "custom-hooks",
-              "title": "Custom Hooks: Logic Extraction, Composition & Clean Architecture",
-              "level": 3,
-              "order": 14,
-              "estMinutes": 26,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Logic Abstraction",
-              "prereqs": [],
-              "url": "learn/react/custom-hooks.html",
-              "slug": "react/custom-hooks",
-              "prev": {
-                "slug": "react/use-memo-callback",
-                "title": "Performance Optimization: useMemo, useCallback & Referential Equality",
-                "url": "learn/react/use-memo-callback.html"
-              },
-              "next": {
-                "slug": "react/react-router",
-                "title": "Client-Side Routing: React Router v7, Nested Routes & Loaders",
-                "url": "learn/react/react-router.html"
-              }
-            },
-            {
-              "track": "react",
-              "lesson": "react-router",
-              "title": "Client-Side Routing: React Router v7, Nested Routes & Loaders",
+              "lesson": "state-management",
+              "title": "Modern Global State Architecture: Zustand vs Redux Toolkit & Atomic State (Jotai)",
               "level": 3,
               "order": 15,
-              "estMinutes": 26,
-              "teachesVersion": "React Router v7",
-              "patternLabel": "SPA Navigation",
-              "prereqs": [],
-              "url": "learn/react/react-router.html",
-              "slug": "react/react-router",
-              "prev": {
-                "slug": "react/custom-hooks",
-                "title": "Custom Hooks: Logic Extraction, Composition & Clean Architecture",
-                "url": "learn/react/custom-hooks.html"
-              },
-              "next": {
-                "slug": "react/data-fetching",
-                "title": "Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns",
-                "url": "learn/react/data-fetching.html"
-              }
-            },
-            {
-              "track": "react",
-              "lesson": "data-fetching",
-              "title": "Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns",
-              "level": 3,
-              "order": 16,
-              "estMinutes": 28,
-              "teachesVersion": "TanStack Query v5",
-              "patternLabel": "Server State Management",
-              "prereqs": [],
-              "url": "learn/react/data-fetching.html",
-              "slug": "react/data-fetching",
-              "prev": {
-                "slug": "react/react-router",
-                "title": "Client-Side Routing: React Router v7, Nested Routes & Loaders",
-                "url": "learn/react/react-router.html"
-              },
-              "next": {
-                "slug": "react/state-management",
-                "title": "Global State Management with Zustand: Stores, Selectors & Slices",
-                "url": "learn/react/state-management.html"
-              }
-            },
-            {
-              "track": "react",
-              "lesson": "state-management",
-              "title": "Global State Management with Zustand: Stores, Selectors & Slices",
-              "level": 3,
-              "order": 17,
-              "estMinutes": 24,
-              "teachesVersion": "Zustand v5",
-              "patternLabel": "Global Store Architecture",
+              "estMinutes": 35,
+              "teachesVersion": "Zustand v5 / Redux Toolkit 2.x",
+              "patternLabel": "Global State Management & Selective Subscriptions",
               "prereqs": [],
               "url": "learn/react/state-management.html",
               "slug": "react/state-management",
               "prev": {
                 "slug": "react/data-fetching",
-                "title": "Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns",
+                "title": "Modern Data Fetching & Server State: TanStack Query (React Query) Architecture",
                 "url": "learn/react/data-fetching.html"
               },
               "next": {
                 "slug": "react/react-best-practices",
-                "title": "React Production Checklist: Project Structure, Profiler & Performance Audits",
+                "title": "Production React 19: Security, Performance Audits, Accessibility & Architecture Checklist",
                 "url": "learn/react/react-best-practices.html"
               }
             },
             {
               "track": "react",
               "lesson": "react-best-practices",
-              "title": "React Production Checklist: Project Structure, Profiler & Performance Audits",
+              "title": "Production React 19: Security, Performance Audits, Accessibility & Architecture Checklist",
               "level": 3,
-              "order": 18,
-              "estMinutes": 24,
-              "teachesVersion": "React 19.2",
-              "patternLabel": "Production Engineering",
+              "order": 16,
+              "estMinutes": 35,
+              "teachesVersion": "React 19.x Production Standards",
+              "patternLabel": "Enterprise Production Engineering",
               "prereqs": [],
               "url": "learn/react/react-best-practices.html",
               "slug": "react/react-best-practices",
               "prev": {
                 "slug": "react/state-management",
-                "title": "Global State Management with Zustand: Stores, Selectors & Slices",
+                "title": "Modern Global State Architecture: Zustand vs Redux Toolkit & Atomic State (Jotai)",
                 "url": "learn/react/state-management.html"
               },
               "next": {
@@ -838,7 +838,7 @@
       "title": "Node.js 24 LTS",
       "icon": "fsa-icon-terminal",
       "color": "var(--track-node)",
-      "totalLessons": 14,
+      "totalLessons": 22,
       "levels": [
         {
           "level": 1,
@@ -857,7 +857,7 @@
               "slug": "nodejs/what-node-is",
               "prev": {
                 "slug": "react/react-best-practices",
-                "title": "React Production Checklist: Project Structure, Profiler & Performance Audits",
+                "title": "Production React 19: Security, Performance Audits, Accessibility & Architecture Checklist",
                 "url": "learn/react/react-best-practices.html"
               },
               "next": {
@@ -872,9 +872,9 @@
               "title": "Module Systems: CommonJS vs ECMAScript Modules (ESM) in Node.js 24",
               "level": 1,
               "order": 2,
-              "estMinutes": 22,
+              "estMinutes": 30,
               "teachesVersion": "Node.js 24 LTS",
-              "patternLabel": "Runtime Architecture",
+              "patternLabel": "Runtime Architecture & Module Resolution",
               "prereqs": [],
               "url": "learn/nodejs/node-modules.html",
               "slug": "nodejs/node-modules",
@@ -882,6 +882,52 @@
                 "slug": "nodejs/what-node-is",
                 "title": "What Node.js Is: V8 & libuv Architecture",
                 "url": "learn/nodejs/what-node-is.html"
+              },
+              "next": {
+                "slug": "nodejs/fs-promises",
+                "title": "File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes",
+                "url": "learn/nodejs/fs-promises.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "fs-promises",
+              "title": "File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes",
+              "level": 1,
+              "order": 4,
+              "estMinutes": 30,
+              "teachesVersion": "Node.js 24 fs/promises",
+              "patternLabel": "Non-blocking I/O & Atomic File Operations",
+              "prereqs": [],
+              "url": "learn/nodejs/fs-promises.html",
+              "slug": "nodejs/fs-promises",
+              "prev": {
+                "slug": "nodejs/node-modules",
+                "title": "Module Systems: CommonJS vs ECMAScript Modules (ESM) in Node.js 24",
+                "url": "learn/nodejs/node-modules.html"
+              },
+              "next": {
+                "slug": "nodejs/path-url",
+                "title": "Path & URL Modules: Cross-Platform File Paths & URL Traversal Prevention",
+                "url": "learn/nodejs/path-url.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "path-url",
+              "title": "Path & URL Modules: Cross-Platform File Paths & URL Traversal Prevention",
+              "level": 1,
+              "order": 5,
+              "estMinutes": 28,
+              "teachesVersion": "Node.js 24 LTS",
+              "patternLabel": "Path Normalization & Security Boundary",
+              "prereqs": [],
+              "url": "learn/nodejs/path-url.html",
+              "slug": "nodejs/path-url",
+              "prev": {
+                "slug": "nodejs/fs-promises",
+                "title": "File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes",
+                "url": "learn/nodejs/fs-promises.html"
               },
               "next": {
                 "slug": "nodejs/event-loop",
@@ -907,9 +953,9 @@
               "url": "learn/nodejs/event-loop.html",
               "slug": "nodejs/event-loop",
               "prev": {
-                "slug": "nodejs/node-modules",
-                "title": "Module Systems: CommonJS vs ECMAScript Modules (ESM) in Node.js 24",
-                "url": "learn/nodejs/node-modules.html"
+                "slug": "nodejs/path-url",
+                "title": "Path & URL Modules: Cross-Platform File Paths & URL Traversal Prevention",
+                "url": "learn/nodejs/path-url.html"
               },
               "next": {
                 "slug": "nodejs/event-emitter",
@@ -958,6 +1004,52 @@
                 "url": "learn/nodejs/event-emitter.html"
               },
               "next": {
+                "slug": "nodejs/events-emitter",
+                "title": "Event-Driven Architecture: EventEmitter, Custom Events & Memory Leak Detection",
+                "url": "learn/nodejs/events-emitter.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "events-emitter",
+              "title": "Event-Driven Architecture: EventEmitter, Custom Events & Memory Leak Detection",
+              "level": 2,
+              "order": 6,
+              "estMinutes": 30,
+              "teachesVersion": "Node.js 24 Events API",
+              "patternLabel": "Observer Pattern & Event-Driven Architecture",
+              "prereqs": [],
+              "url": "learn/nodejs/events-emitter.html",
+              "slug": "nodejs/events-emitter",
+              "prev": {
+                "slug": "nodejs/fs-path",
+                "title": "File System Operations: Promises API, Streams & Path Normalization",
+                "url": "learn/nodejs/fs-path.html"
+              },
+              "next": {
+                "slug": "nodejs/crypto-security",
+                "title": "Node.js Crypto & Security: Password Hashing (Argon2/Bcrypt), AES-256-GCM & HMAC",
+                "url": "learn/nodejs/crypto-security.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "crypto-security",
+              "title": "Node.js Crypto & Security: Password Hashing (Argon2/Bcrypt), AES-256-GCM & HMAC",
+              "level": 2,
+              "order": 7,
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 Web Crypto & node:crypto",
+              "patternLabel": "Cryptographic Security & Data Encryption",
+              "prereqs": [],
+              "url": "learn/nodejs/crypto-security.html",
+              "slug": "nodejs/crypto-security",
+              "prev": {
+                "slug": "nodejs/events-emitter",
+                "title": "Event-Driven Architecture: EventEmitter, Custom Events & Memory Leak Detection",
+                "url": "learn/nodejs/events-emitter.html"
+              },
+              "next": {
                 "slug": "nodejs/http-module",
                 "title": "Native HTTP/HTTPS Servers & Raw Request Routing Without Frameworks",
                 "url": "learn/nodejs/http-module.html"
@@ -976,25 +1068,25 @@
               "url": "learn/nodejs/http-module.html",
               "slug": "nodejs/http-module",
               "prev": {
-                "slug": "nodejs/fs-path",
-                "title": "File System Operations: Promises API, Streams & Path Normalization",
-                "url": "learn/nodejs/fs-path.html"
+                "slug": "nodejs/crypto-security",
+                "title": "Node.js Crypto & Security: Password Hashing (Argon2/Bcrypt), AES-256-GCM & HMAC",
+                "url": "learn/nodejs/crypto-security.html"
               },
               "next": {
                 "slug": "nodejs/process-env",
-                "title": "The Process Object, Environment Variables, CLI Args & OS Signals",
+                "title": "Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)",
                 "url": "learn/nodejs/process-env.html"
               }
             },
             {
               "track": "nodejs",
               "lesson": "process-env",
-              "title": "The Process Object, Environment Variables, CLI Args & OS Signals",
+              "title": "Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)",
               "level": 2,
               "order": 8,
-              "estMinutes": 22,
-              "teachesVersion": "Node.js 24",
-              "patternLabel": "Process Architecture",
+              "estMinutes": 30,
+              "teachesVersion": "Node.js 24 (.env native support)",
+              "patternLabel": "Process Lifecycle & Graceful Shutdown",
               "prereqs": [],
               "url": "learn/nodejs/process-env.html",
               "slug": "nodejs/process-env",
@@ -1002,6 +1094,29 @@
                 "slug": "nodejs/http-module",
                 "title": "Native HTTP/HTTPS Servers & Raw Request Routing Without Frameworks",
                 "url": "learn/nodejs/http-module.html"
+              },
+              "next": {
+                "slug": "nodejs/child-processes",
+                "title": "Child Processes & OS Integration: Exec, Spawn, Fork & IPC Architecture",
+                "url": "learn/nodejs/child-processes.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "child-processes",
+              "title": "Child Processes & OS Integration: Exec, Spawn, Fork & IPC Architecture",
+              "level": 2,
+              "order": 9,
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 node:child_process",
+              "patternLabel": "Multi-Process Architecture & Inter-Process Communication",
+              "prereqs": [],
+              "url": "learn/nodejs/child-processes.html",
+              "slug": "nodejs/child-processes",
+              "prev": {
+                "slug": "nodejs/process-env",
+                "title": "Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)",
+                "url": "learn/nodejs/process-env.html"
               },
               "next": {
                 "slug": "nodejs/error-handling-node",
@@ -1022,9 +1137,55 @@
               "url": "learn/nodejs/error-handling-node.html",
               "slug": "nodejs/error-handling-node",
               "prev": {
-                "slug": "nodejs/process-env",
-                "title": "The Process Object, Environment Variables, CLI Args & OS Signals",
-                "url": "learn/nodejs/process-env.html"
+                "slug": "nodejs/child-processes",
+                "title": "Child Processes & OS Integration: Exec, Spawn, Fork & IPC Architecture",
+                "url": "learn/nodejs/child-processes.html"
+              },
+              "next": {
+                "slug": "nodejs/http-core",
+                "title": "Core HTTP/HTTPS & WebSockets: Raw Sockets, Keep-Alive & TLS Configuration",
+                "url": "learn/nodejs/http-core.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "http-core",
+              "title": "Core HTTP/HTTPS & WebSockets: Raw Sockets, Keep-Alive & TLS Configuration",
+              "level": 2,
+              "order": 11,
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 http & https",
+              "patternLabel": "Low-Level Networking & Socket Architecture",
+              "prereqs": [],
+              "url": "learn/nodejs/http-core.html",
+              "slug": "nodejs/http-core",
+              "prev": {
+                "slug": "nodejs/error-handling-node",
+                "title": "Operational vs Programmer Errors, Uncaught Exceptions & Process Safety",
+                "url": "learn/nodejs/error-handling-node.html"
+              },
+              "next": {
+                "slug": "nodejs/npm-package-manager",
+                "title": "NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces",
+                "url": "learn/nodejs/npm-package-manager.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "npm-package-manager",
+              "title": "NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces",
+              "level": 2,
+              "order": 12,
+              "estMinutes": 30,
+              "teachesVersion": "NPM 10.x & Node.js 24",
+              "patternLabel": "Dependency Management & Monorepo Architecture",
+              "prereqs": [],
+              "url": "learn/nodejs/npm-package-manager.html",
+              "slug": "nodejs/npm-package-manager",
+              "prev": {
+                "slug": "nodejs/http-core",
+                "title": "Core HTTP/HTTPS & WebSockets: Raw Sockets, Keep-Alive & TLS Configuration",
+                "url": "learn/nodejs/http-core.html"
               },
               "next": {
                 "slug": "nodejs/streams-buffers",
@@ -1050,28 +1211,28 @@
               "url": "learn/nodejs/streams-buffers.html",
               "slug": "nodejs/streams-buffers",
               "prev": {
-                "slug": "nodejs/error-handling-node",
-                "title": "Operational vs Programmer Errors, Uncaught Exceptions & Process Safety",
-                "url": "learn/nodejs/error-handling-node.html"
+                "slug": "nodejs/npm-package-manager",
+                "title": "NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces",
+                "url": "learn/nodejs/npm-package-manager.html"
               },
               "next": {
-                "slug": "nodejs/child-processes",
-                "title": "Multiprocessing in Node.js: spawn, fork, exec & Worker Threads",
-                "url": "learn/nodejs/child-processes.html"
+                "slug": "nodejs/worker-threads",
+                "title": "Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics",
+                "url": "learn/nodejs/worker-threads.html"
               }
             },
             {
               "track": "nodejs",
-              "lesson": "child-processes",
-              "title": "Multiprocessing in Node.js: spawn, fork, exec & Worker Threads",
+              "lesson": "worker-threads",
+              "title": "Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics",
               "level": 3,
               "order": 10,
-              "estMinutes": 28,
-              "teachesVersion": "Node.js 24",
-              "patternLabel": "CPU-Intensive Concurrency",
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 worker_threads",
+              "patternLabel": "Multi-threaded Concurrency & Shared Memory",
               "prereqs": [],
-              "url": "learn/nodejs/child-processes.html",
-              "slug": "nodejs/child-processes",
+              "url": "learn/nodejs/worker-threads.html",
+              "slug": "nodejs/worker-threads",
               "prev": {
                 "slug": "nodejs/streams-buffers",
                 "title": "Streams, Buffers & Backpressure Management",
@@ -1096,9 +1257,9 @@
               "url": "learn/nodejs/npm-packages.html",
               "slug": "nodejs/npm-packages",
               "prev": {
-                "slug": "nodejs/child-processes",
-                "title": "Multiprocessing in Node.js: spawn, fork, exec & Worker Threads",
-                "url": "learn/nodejs/child-processes.html"
+                "slug": "nodejs/worker-threads",
+                "title": "Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics",
+                "url": "learn/nodejs/worker-threads.html"
               },
               "next": {
                 "slug": "nodejs/testing-node",
@@ -1147,6 +1308,29 @@
                 "url": "learn/nodejs/testing-node.html"
               },
               "next": {
+                "slug": "nodejs/debugging-profiling",
+                "title": "Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling",
+                "url": "learn/nodejs/debugging-profiling.html"
+              }
+            },
+            {
+              "track": "nodejs",
+              "lesson": "debugging-profiling",
+              "title": "Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling",
+              "level": 3,
+              "order": 13,
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 Inspector V8",
+              "patternLabel": "Performance Diagnostics & Heap Profiling",
+              "prereqs": [],
+              "url": "learn/nodejs/debugging-profiling.html",
+              "slug": "nodejs/debugging-profiling",
+              "prev": {
+                "slug": "nodejs/debugging-node",
+                "title": "Node.js Debugging: Inspector Protocol, Chrome DevTools & Memory Leak Profiling",
+                "url": "learn/nodejs/debugging-node.html"
+              },
+              "next": {
                 "slug": "nodejs/security-node",
                 "title": "Node.js Security Best Practices: Helmet, Input Sanitization, Rate Limiting & CSRF",
                 "url": "learn/nodejs/security-node.html"
@@ -1165,9 +1349,9 @@
               "url": "learn/nodejs/security-node.html",
               "slug": "nodejs/security-node",
               "prev": {
-                "slug": "nodejs/debugging-node",
-                "title": "Node.js Debugging: Inspector Protocol, Chrome DevTools & Memory Leak Profiling",
-                "url": "learn/nodejs/debugging-node.html"
+                "slug": "nodejs/debugging-profiling",
+                "title": "Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling",
+                "url": "learn/nodejs/debugging-profiling.html"
               },
               "next": {
                 "slug": "express/hello-express",
@@ -1184,7 +1368,7 @@
       "title": "Express.js 5.2",
       "icon": "fsa-icon-terminal",
       "color": "var(--track-express)",
-      "totalLessons": 14,
+      "totalLessons": 22,
       "levels": [
         {
           "level": 1,
@@ -1218,9 +1402,9 @@
               "title": "Express 5 Routing, Route Parameters, Query Strings & Sub-Routers",
               "level": 1,
               "order": 2,
-              "estMinutes": 22,
+              "estMinutes": 30,
               "teachesVersion": "Express 5.2",
-              "patternLabel": "Routing Architecture",
+              "patternLabel": "Modular Routing & Route Tree",
               "prereqs": [],
               "url": "learn/express/routing-params.html",
               "slug": "express/routing-params",
@@ -1228,6 +1412,29 @@
                 "slug": "express/hello-express",
                 "title": "Hello Express: Server Architecture & Routing",
                 "url": "learn/express/hello-express.html"
+              },
+              "next": {
+                "slug": "express/req-res-lifecycle",
+                "title": "Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation",
+                "url": "learn/express/req-res-lifecycle.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "req-res-lifecycle",
+              "title": "Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation",
+              "level": 1,
+              "order": 4,
+              "estMinutes": 30,
+              "teachesVersion": "Express 5.2",
+              "patternLabel": "Lifecycle Pipeline & HTTP Protocols",
+              "prereqs": [],
+              "url": "learn/express/req-res-lifecycle.html",
+              "slug": "express/req-res-lifecycle",
+              "prev": {
+                "slug": "express/routing-params",
+                "title": "Express 5 Routing, Route Parameters, Query Strings & Sub-Routers",
+                "url": "learn/express/routing-params.html"
               },
               "next": {
                 "slug": "express/request-response",
@@ -1248,9 +1455,55 @@
               "url": "learn/express/request-response.html",
               "slug": "express/request-response",
               "prev": {
-                "slug": "express/routing-params",
-                "title": "Express 5 Routing, Route Parameters, Query Strings & Sub-Routers",
-                "url": "learn/express/routing-params.html"
+                "slug": "express/req-res-lifecycle",
+                "title": "Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation",
+                "url": "learn/express/req-res-lifecycle.html"
+              },
+              "next": {
+                "slug": "express/middleware-deep-dive",
+                "title": "Middleware Architecture: Chain-of-Responsibility, Async Handlers & Next() Mechanics",
+                "url": "learn/express/middleware-deep-dive.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "middleware-deep-dive",
+              "title": "Middleware Architecture: Chain-of-Responsibility, Async Handlers & Next() Mechanics",
+              "level": 1,
+              "order": 6,
+              "estMinutes": 30,
+              "teachesVersion": "Express 5.2 Native Promises",
+              "patternLabel": "Chain of Responsibility & Pipeline Architecture",
+              "prereqs": [],
+              "url": "learn/express/middleware-deep-dive.html",
+              "slug": "express/middleware-deep-dive",
+              "prev": {
+                "slug": "express/request-response",
+                "title": "Request & Response Lifecycle, Content Negotiation & Custom Responses",
+                "url": "learn/express/request-response.html"
+              },
+              "next": {
+                "slug": "express/body-parsing",
+                "title": "Body Parsing, Data Validation with Zod & Payload Size Defense",
+                "url": "learn/express/body-parsing.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "body-parsing",
+              "title": "Body Parsing, Data Validation with Zod & Payload Size Defense",
+              "level": 1,
+              "order": 8,
+              "estMinutes": 30,
+              "teachesVersion": "Express 5.2 & Zod v3",
+              "patternLabel": "Data Validation & Defensive Parsing",
+              "prereqs": [],
+              "url": "learn/express/body-parsing.html",
+              "slug": "express/body-parsing",
+              "prev": {
+                "slug": "express/middleware-deep-dive",
+                "title": "Middleware Architecture: Chain-of-Responsibility, Async Handlers & Next() Mechanics",
+                "url": "learn/express/middleware-deep-dive.html"
               },
               "next": {
                 "slug": "express/middleware",
@@ -1276,9 +1529,9 @@
               "url": "learn/express/middleware.html",
               "slug": "express/middleware",
               "prev": {
-                "slug": "express/request-response",
-                "title": "Request & Response Lifecycle, Content Negotiation & Custom Responses",
-                "url": "learn/express/request-response.html"
+                "slug": "express/body-parsing",
+                "title": "Body Parsing, Data Validation with Zod & Payload Size Defense",
+                "url": "learn/express/body-parsing.html"
               },
               "next": {
                 "slug": "express/error-handling-express",
@@ -1350,6 +1603,29 @@
                 "url": "learn/express/validation-sanitization.html"
               },
               "next": {
+                "slug": "express/auth-jwt",
+                "title": "Authentication & JWT Architecture: Access Tokens, Refresh Token Rotation & Blacklisting",
+                "url": "learn/express/auth-jwt.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "auth-jwt",
+              "title": "Authentication & JWT Architecture: Access Tokens, Refresh Token Rotation & Blacklisting",
+              "level": 2,
+              "order": 9,
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 & jsonwebtoken / jose",
+              "patternLabel": "Stateless Authentication & Token Rotation",
+              "prereqs": [],
+              "url": "learn/express/auth-jwt.html",
+              "slug": "express/auth-jwt",
+              "prev": {
+                "slug": "express/authentication",
+                "title": "Authentication Architecture: JWTs, Password Hashing & HttpOnly Cookies",
+                "url": "learn/express/authentication.html"
+              },
+              "next": {
                 "slug": "express/authorization-rbac",
                 "title": "Role-Based Access Control (RBAC), Permissions & Auth Guards",
                 "url": "learn/express/authorization-rbac.html"
@@ -1368,28 +1644,28 @@
               "url": "learn/express/authorization-rbac.html",
               "slug": "express/authorization-rbac",
               "prev": {
-                "slug": "express/authentication",
-                "title": "Authentication Architecture: JWTs, Password Hashing & HttpOnly Cookies",
-                "url": "learn/express/authentication.html"
+                "slug": "express/auth-jwt",
+                "title": "Authentication & JWT Architecture: Access Tokens, Refresh Token Rotation & Blacklisting",
+                "url": "learn/express/auth-jwt.html"
               },
               "next": {
-                "slug": "express/file-uploads",
-                "title": "Multi-Part Form Data & Secure File Uploads with Multer",
-                "url": "learn/express/file-uploads.html"
+                "slug": "express/rbac-permissions",
+                "title": "Role-Based (RBAC) & Attribute-Based (ABAC) Access Control Architecture",
+                "url": "learn/express/rbac-permissions.html"
               }
             },
             {
               "track": "express",
-              "lesson": "file-uploads",
-              "title": "Multi-Part Form Data & Secure File Uploads with Multer",
+              "lesson": "rbac-permissions",
+              "title": "Role-Based (RBAC) & Attribute-Based (ABAC) Access Control Architecture",
               "level": 2,
               "order": 10,
-              "estMinutes": 24,
-              "teachesVersion": "Multer 1.4+ / Express 5",
-              "patternLabel": "Binary Data Handling",
+              "estMinutes": 30,
+              "teachesVersion": "Express 5.2 & CASL Architecture",
+              "patternLabel": "Authorization Matrix & Policy Enforcement",
               "prereqs": [],
-              "url": "learn/express/file-uploads.html",
-              "slug": "express/file-uploads",
+              "url": "learn/express/rbac-permissions.html",
+              "slug": "express/rbac-permissions",
               "prev": {
                 "slug": "express/authorization-rbac",
                 "title": "Role-Based Access Control (RBAC), Permissions & Auth Guards",
@@ -1414,8 +1690,54 @@
               "url": "learn/express/api-pagination.html",
               "slug": "express/api-pagination",
               "prev": {
+                "slug": "express/rbac-permissions",
+                "title": "Role-Based (RBAC) & Attribute-Based (ABAC) Access Control Architecture",
+                "url": "learn/express/rbac-permissions.html"
+              },
+              "next": {
                 "slug": "express/file-uploads",
-                "title": "Multi-Part Form Data & Secure File Uploads with Multer",
+                "title": "Streaming File Uploads: Multer Architecture, Cloud S3/R2 Storage & Malware Validation",
+                "url": "learn/express/file-uploads.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "file-uploads",
+              "title": "Streaming File Uploads: Multer Architecture, Cloud S3/R2 Storage & Malware Validation",
+              "level": 2,
+              "order": 11,
+              "estMinutes": 35,
+              "teachesVersion": "Multer v1.4 / S3 SDK v3",
+              "patternLabel": "Streaming Uploads & Magic Bytes Security",
+              "prereqs": [],
+              "url": "learn/express/file-uploads.html",
+              "slug": "express/file-uploads",
+              "prev": {
+                "slug": "express/api-pagination",
+                "title": "API Pagination & Query Optimization: Offset vs Cursor-Based Pagination",
+                "url": "learn/express/api-pagination.html"
+              },
+              "next": {
+                "slug": "express/error-handling",
+                "title": "Centralized Error Handling: Operational vs Programmer Errors, Logging & Error Middleware",
+                "url": "learn/express/error-handling.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "error-handling",
+              "title": "Centralized Error Handling: Operational vs Programmer Errors, Logging & Error Middleware",
+              "level": 2,
+              "order": 12,
+              "estMinutes": 35,
+              "teachesVersion": "Express 5.2 Error Pipeline",
+              "patternLabel": "Centralized Error Gateway & Fault Isolation",
+              "prereqs": [],
+              "url": "learn/express/error-handling.html",
+              "slug": "express/error-handling",
+              "prev": {
+                "slug": "express/file-uploads",
+                "title": "Streaming File Uploads: Multer Architecture, Cloud S3/R2 Storage & Malware Validation",
                 "url": "learn/express/file-uploads.html"
               },
               "next": {
@@ -1442,9 +1764,9 @@
               "url": "learn/express/rest-crud.html",
               "slug": "express/rest-crud",
               "prev": {
-                "slug": "express/api-pagination",
-                "title": "API Pagination & Query Optimization: Offset vs Cursor-Based Pagination",
-                "url": "learn/express/api-pagination.html"
+                "slug": "express/error-handling",
+                "title": "Centralized Error Handling: Operational vs Programmer Errors, Logging & Error Middleware",
+                "url": "learn/express/error-handling.html"
               },
               "next": {
                 "slug": "express/rate-limiting-security",
@@ -1470,27 +1792,50 @@
                 "url": "learn/express/rest-crud.html"
               },
               "next": {
-                "slug": "express/api-documentation",
-                "title": "API Documentation with OpenAPI 3.1 & Swagger UI Generation",
-                "url": "learn/express/api-documentation.html"
+                "slug": "express/rate-limiting",
+                "title": "Rate Limiting & DDoS Defense: Token Bucket, Sliding Window & Redis Store",
+                "url": "learn/express/rate-limiting.html"
               }
             },
             {
               "track": "express",
-              "lesson": "api-documentation",
-              "title": "API Documentation with OpenAPI 3.1 & Swagger UI Generation",
+              "lesson": "rate-limiting",
+              "title": "Rate Limiting & DDoS Defense: Token Bucket, Sliding Window & Redis Store",
               "level": 3,
               "order": 13,
-              "estMinutes": 24,
-              "teachesVersion": "OpenAPI 3.1 / Swagger",
-              "patternLabel": "Developer Experience",
+              "estMinutes": 35,
+              "teachesVersion": "Express 5.2 & express-rate-limit + Redis",
+              "patternLabel": "DDoS Defense & Distributed Throttling",
               "prereqs": [],
-              "url": "learn/express/api-documentation.html",
-              "slug": "express/api-documentation",
+              "url": "learn/express/rate-limiting.html",
+              "slug": "express/rate-limiting",
               "prev": {
                 "slug": "express/rate-limiting-security",
                 "title": "API Rate Limiting, CORS Whitelisting & Advanced Security Headers",
                 "url": "learn/express/rate-limiting-security.html"
+              },
+              "next": {
+                "slug": "express/cors-security",
+                "title": "CORS & API Security: Preflight OPTIONS, Origin Whitelisting & Helmet Hardening",
+                "url": "learn/express/cors-security.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "cors-security",
+              "title": "CORS & API Security: Preflight OPTIONS, Origin Whitelisting & Helmet Hardening",
+              "level": 3,
+              "order": 14,
+              "estMinutes": 30,
+              "teachesVersion": "Express 5.2 Security Standards",
+              "patternLabel": "Browser Security Model & Defense in Depth",
+              "prereqs": [],
+              "url": "learn/express/cors-security.html",
+              "slug": "express/cors-security",
+              "prev": {
+                "slug": "express/rate-limiting",
+                "title": "Rate Limiting & DDoS Defense: Token Bucket, Sliding Window & Redis Store",
+                "url": "learn/express/rate-limiting.html"
               },
               "next": {
                 "slug": "express/deployment-production",
@@ -1511,9 +1856,32 @@
               "url": "learn/express/deployment-production.html",
               "slug": "express/deployment-production",
               "prev": {
+                "slug": "express/cors-security",
+                "title": "CORS & API Security: Preflight OPTIONS, Origin Whitelisting & Helmet Hardening",
+                "url": "learn/express/cors-security.html"
+              },
+              "next": {
                 "slug": "express/api-documentation",
-                "title": "API Documentation with OpenAPI 3.1 & Swagger UI Generation",
+                "title": "Enterprise API Documentation: OpenAPI 3.1, Swagger UI & Automated Contract Testing",
                 "url": "learn/express/api-documentation.html"
+              }
+            },
+            {
+              "track": "express",
+              "lesson": "api-documentation",
+              "title": "Enterprise API Documentation: OpenAPI 3.1, Swagger UI & Automated Contract Testing",
+              "level": 3,
+              "order": 15,
+              "estMinutes": 35,
+              "teachesVersion": "OpenAPI 3.1 & Swagger UI",
+              "patternLabel": "API Specification & Contract-First Development",
+              "prereqs": [],
+              "url": "learn/express/api-documentation.html",
+              "slug": "express/api-documentation",
+              "prev": {
+                "slug": "express/deployment-production",
+                "title": "Express Production Readiness: PM2 Cluster, Reverse Proxy & Graceful Shutdowns",
+                "url": "learn/express/deployment-production.html"
               },
               "next": {
                 "slug": "mongodb/document-model",
@@ -1530,7 +1898,7 @@
       "title": "MongoDB 8.0",
       "icon": "fsa-icon-book",
       "color": "var(--track-mongo)",
-      "totalLessons": 10,
+      "totalLessons": 13,
       "levels": [
         {
           "level": 1,
@@ -1548,9 +1916,9 @@
               "url": "learn/mongodb/document-model.html",
               "slug": "mongodb/document-model",
               "prev": {
-                "slug": "express/deployment-production",
-                "title": "Express Production Readiness: PM2 Cluster, Reverse Proxy & Graceful Shutdowns",
-                "url": "learn/express/deployment-production.html"
+                "slug": "express/api-documentation",
+                "title": "Enterprise API Documentation: OpenAPI 3.1, Swagger UI & Automated Contract Testing",
+                "url": "learn/express/api-documentation.html"
               },
               "next": {
                 "slug": "mongodb/crud-operations",
@@ -1564,9 +1932,9 @@
               "title": "MongoDB CRUD Operations: BSON Data Types, Query Selectors & Atomic Updates",
               "level": 1,
               "order": 2,
-              "estMinutes": 24,
-              "teachesVersion": "MongoDB 7.0+",
-              "patternLabel": "Database Operations",
+              "estMinutes": 30,
+              "teachesVersion": "MongoDB 8.0+",
+              "patternLabel": "Atomic Document Modification & BSON Serialization",
               "prereqs": [],
               "url": "learn/mongodb/crud-operations.html",
               "slug": "mongodb/crud-operations",
@@ -1577,24 +1945,19 @@
               },
               "next": {
                 "slug": "mongodb/schema-design",
-                "title": "MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold",
+                "title": "MongoDB Schema Design: Embedding vs Referencing & The 16MB Threshold",
                 "url": "learn/mongodb/schema-design.html"
               }
-            }
-          ]
-        },
-        {
-          "level": 2,
-          "lessons": [
+            },
             {
               "track": "mongodb",
               "lesson": "schema-design",
-              "title": "MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold",
-              "level": 2,
-              "order": 3,
-              "estMinutes": 26,
-              "teachesVersion": "MongoDB 7.0+",
-              "patternLabel": "Data Modeling",
+              "title": "MongoDB Schema Design: Embedding vs Referencing & The 16MB Threshold",
+              "level": 1,
+              "order": 4,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0+",
+              "patternLabel": "Data Modeling & Access Pattern Optimization",
               "prereqs": [],
               "url": "learn/mongodb/schema-design.html",
               "slug": "mongodb/schema-design",
@@ -1608,7 +1971,12 @@
                 "title": "MongoDB Index Strategies: Single, Compound, Multikey, TTL & Explain Plans",
                 "url": "learn/mongodb/indexes-performance.html"
               }
-            },
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "lessons": [
             {
               "track": "mongodb",
               "lesson": "indexes-performance",
@@ -1623,58 +1991,76 @@
               "slug": "mongodb/indexes-performance",
               "prev": {
                 "slug": "mongodb/schema-design",
-                "title": "MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold",
+                "title": "MongoDB Schema Design: Embedding vs Referencing & The 16MB Threshold",
                 "url": "learn/mongodb/schema-design.html"
               },
               "next": {
-                "slug": "mongodb/aggregation-pipeline",
-                "title": "MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet",
-                "url": "learn/mongodb/aggregation-pipeline.html"
+                "slug": "mongodb/indexing-strategies",
+                "title": "Indexing Architecture: Compound Indexes, ESR Rule, Partial & TTL Indexes",
+                "url": "learn/mongodb/indexing-strategies.html"
               }
             },
             {
               "track": "mongodb",
-              "lesson": "aggregation-pipeline",
-              "title": "MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet",
+              "lesson": "indexing-strategies",
+              "title": "Indexing Architecture: Compound Indexes, ESR Rule, Partial & TTL Indexes",
               "level": 2,
-              "order": 5,
-              "estMinutes": 28,
-              "teachesVersion": "MongoDB 7.0+",
-              "patternLabel": "Analytical Engine",
+              "order": 6,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0+",
+              "patternLabel": "Index Optimization & ESR Rule",
               "prereqs": [],
-              "url": "learn/mongodb/aggregation-pipeline.html",
-              "slug": "mongodb/aggregation-pipeline",
+              "url": "learn/mongodb/indexing-strategies.html",
+              "slug": "mongodb/indexing-strategies",
               "prev": {
                 "slug": "mongodb/indexes-performance",
                 "title": "MongoDB Index Strategies: Single, Compound, Multikey, TTL & Explain Plans",
                 "url": "learn/mongodb/indexes-performance.html"
               },
               "next": {
-                "slug": "mongodb/transactions-acid",
-                "title": "Multi-Document ACID Transactions & Session Management in MongoDB",
-                "url": "learn/mongodb/transactions-acid.html"
+                "slug": "mongodb/aggregation-pipeline",
+                "title": "Aggregation Pipeline Mastery: $match, $group, $lookup, $facet & Window Fields",
+                "url": "learn/mongodb/aggregation-pipeline.html"
               }
-            }
-          ]
-        },
-        {
-          "level": 3,
-          "lessons": [
+            },
             {
               "track": "mongodb",
-              "lesson": "transactions-acid",
-              "title": "Multi-Document ACID Transactions & Session Management in MongoDB",
-              "level": 3,
-              "order": 6,
-              "estMinutes": 26,
-              "teachesVersion": "MongoDB 7.0+",
-              "patternLabel": "Data Integrity",
+              "lesson": "aggregation-pipeline",
+              "title": "Aggregation Pipeline Mastery: $match, $group, $lookup, $facet & Window Fields",
+              "level": 2,
+              "order": 8,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0 Aggregation",
+              "patternLabel": "Multi-Stage Analytics & Pipeline Processing",
               "prereqs": [],
-              "url": "learn/mongodb/transactions-acid.html",
-              "slug": "mongodb/transactions-acid",
+              "url": "learn/mongodb/aggregation-pipeline.html",
+              "slug": "mongodb/aggregation-pipeline",
+              "prev": {
+                "slug": "mongodb/indexing-strategies",
+                "title": "Indexing Architecture: Compound Indexes, ESR Rule, Partial & TTL Indexes",
+                "url": "learn/mongodb/indexing-strategies.html"
+              },
+              "next": {
+                "slug": "mongodb/mongoose-middleware",
+                "title": "Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population",
+                "url": "learn/mongodb/mongoose-middleware.html"
+              }
+            },
+            {
+              "track": "mongodb",
+              "lesson": "mongoose-middleware",
+              "title": "Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population",
+              "level": 2,
+              "order": 11,
+              "estMinutes": 30,
+              "teachesVersion": "Mongoose v8.x",
+              "patternLabel": "ORM Lifecycle Hooks & Virtual Fields",
+              "prereqs": [],
+              "url": "learn/mongodb/mongoose-middleware.html",
+              "slug": "mongodb/mongoose-middleware",
               "prev": {
                 "slug": "mongodb/aggregation-pipeline",
-                "title": "MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet",
+                "title": "Aggregation Pipeline Mastery: $match, $group, $lookup, $facet & Window Fields",
                 "url": "learn/mongodb/aggregation-pipeline.html"
               },
               "next": {
@@ -1682,7 +2068,12 @@
                 "title": "Mongoose 8 ODM: Schemas, Models, Middleware Hooks, Virtuals & Lean Queries",
                 "url": "learn/mongodb/mongoose-odm.html"
               }
-            },
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "lessons": [
             {
               "track": "mongodb",
               "lesson": "mongoose-odm",
@@ -1696,9 +2087,9 @@
               "url": "learn/mongodb/mongoose-odm.html",
               "slug": "mongodb/mongoose-odm",
               "prev": {
-                "slug": "mongodb/transactions-acid",
-                "title": "Multi-Document ACID Transactions & Session Management in MongoDB",
-                "url": "learn/mongodb/transactions-acid.html"
+                "slug": "mongodb/mongoose-middleware",
+                "title": "Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population",
+                "url": "learn/mongodb/mongoose-middleware.html"
               },
               "next": {
                 "slug": "mongodb/schema-validation",
@@ -1724,50 +2115,96 @@
                 "url": "learn/mongodb/mongoose-odm.html"
               },
               "next": {
-                "slug": "mongodb/sharding-replication",
-                "title": "High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling",
-                "url": "learn/mongodb/sharding-replication.html"
+                "slug": "mongodb/transactions-acid",
+                "title": "Multi-Document ACID Transactions, Write Concerns & Read Concerns",
+                "url": "learn/mongodb/transactions-acid.html"
               }
             },
             {
               "track": "mongodb",
-              "lesson": "sharding-replication",
-              "title": "High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling",
+              "lesson": "transactions-acid",
+              "title": "Multi-Document ACID Transactions, Write Concerns & Read Concerns",
               "level": 3,
-              "order": 9,
-              "estMinutes": 28,
-              "teachesVersion": "MongoDB 7.0 Enterprise",
-              "patternLabel": "Distributed Systems",
+              "order": 10,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0 Transactions",
+              "patternLabel": "Distributed ACID & Consensus Guarantees",
               "prereqs": [],
-              "url": "learn/mongodb/sharding-replication.html",
-              "slug": "mongodb/sharding-replication",
+              "url": "learn/mongodb/transactions-acid.html",
+              "slug": "mongodb/transactions-acid",
               "prev": {
                 "slug": "mongodb/schema-validation",
                 "title": "MongoDB Collection-Level JSON Schema Validation ($jsonSchema)",
                 "url": "learn/mongodb/schema-validation.html"
               },
               "next": {
+                "slug": "mongodb/sharding-replication",
+                "title": "Distributed MongoDB: Replica Sets, Raft Consensus & Sharding Architecture",
+                "url": "learn/mongodb/sharding-replication.html"
+              }
+            },
+            {
+              "track": "mongodb",
+              "lesson": "sharding-replication",
+              "title": "Distributed MongoDB: Replica Sets, Raft Consensus & Sharding Architecture",
+              "level": 3,
+              "order": 12,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0 Sharded Cluster",
+              "patternLabel": "Horizontal Partitioning & High Availability",
+              "prereqs": [],
+              "url": "learn/mongodb/sharding-replication.html",
+              "slug": "mongodb/sharding-replication",
+              "prev": {
+                "slug": "mongodb/transactions-acid",
+                "title": "Multi-Document ACID Transactions, Write Concerns & Read Concerns",
+                "url": "learn/mongodb/transactions-acid.html"
+              },
+              "next": {
+                "slug": "mongodb/performance-tuning",
+                "title": "MongoDB Performance Tuning: WiredTiger Cache, Working Set & Profiler Analysis",
+                "url": "learn/mongodb/performance-tuning.html"
+              }
+            },
+            {
+              "track": "mongodb",
+              "lesson": "performance-tuning",
+              "title": "MongoDB Performance Tuning: WiredTiger Cache, Working Set & Profiler Analysis",
+              "level": 3,
+              "order": 13,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0 Engine",
+              "patternLabel": "Database Profiling & Memory Sizing",
+              "prereqs": [],
+              "url": "learn/mongodb/performance-tuning.html",
+              "slug": "mongodb/performance-tuning",
+              "prev": {
+                "slug": "mongodb/sharding-replication",
+                "title": "Distributed MongoDB: Replica Sets, Raft Consensus & Sharding Architecture",
+                "url": "learn/mongodb/sharding-replication.html"
+              },
+              "next": {
                 "slug": "mongodb/backup-security",
-                "title": "Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery",
+                "title": "MongoDB Security, Role-Based Access Control (RBAC), TLS & Automated Backup Strategies",
                 "url": "learn/mongodb/backup-security.html"
               }
             },
             {
               "track": "mongodb",
               "lesson": "backup-security",
-              "title": "Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery",
+              "title": "MongoDB Security, Role-Based Access Control (RBAC), TLS & Automated Backup Strategies",
               "level": 3,
-              "order": 10,
-              "estMinutes": 24,
-              "teachesVersion": "MongoDB 7.0 Production",
-              "patternLabel": "Security & Operations",
+              "order": 14,
+              "estMinutes": 35,
+              "teachesVersion": "MongoDB 8.0 Security",
+              "patternLabel": "Database Hardening & Disaster Recovery",
               "prereqs": [],
               "url": "learn/mongodb/backup-security.html",
               "slug": "mongodb/backup-security",
               "prev": {
-                "slug": "mongodb/sharding-replication",
-                "title": "High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling",
-                "url": "learn/mongodb/sharding-replication.html"
+                "slug": "mongodb/performance-tuning",
+                "title": "MongoDB Performance Tuning: WiredTiger Cache, Working Set & Profiler Analysis",
+                "url": "learn/mongodb/performance-tuning.html"
               },
               "next": {
                 "slug": "postgresql/relational-model",
@@ -1784,7 +2221,7 @@
       "title": "PostgreSQL 18.x",
       "icon": "fsa-icon-book",
       "color": "var(--track-pg)",
-      "totalLessons": 10,
+      "totalLessons": 17,
       "levels": [
         {
           "level": 1,
@@ -1803,7 +2240,7 @@
               "slug": "postgresql/relational-model",
               "prev": {
                 "slug": "mongodb/backup-security",
-                "title": "Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery",
+                "title": "MongoDB Security, Role-Based Access Control (RBAC), TLS & Automated Backup Strategies",
                 "url": "learn/mongodb/backup-security.html"
               },
               "next": {
@@ -1818,9 +2255,9 @@
               "title": "SQL DDL/DML & PostgreSQL Advanced Types: UUID, JSONB, Arrays & Timestamptz",
               "level": 1,
               "order": 2,
-              "estMinutes": 24,
-              "teachesVersion": "PostgreSQL 16+",
-              "patternLabel": "Data Modeling & Types",
+              "estMinutes": 30,
+              "teachesVersion": "PostgreSQL 18+",
+              "patternLabel": "Data Modeling & Advanced Relational Types",
               "prereqs": [],
               "url": "learn/postgresql/sql-syntax-data-types.html",
               "slug": "postgresql/sql-syntax-data-types",
@@ -1831,24 +2268,19 @@
               },
               "next": {
                 "slug": "postgresql/joins-relations",
-                "title": "Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics",
+                "title": "Relational Joins, CTEs & Complex Query Optimization",
                 "url": "learn/postgresql/joins-relations.html"
               }
-            }
-          ]
-        },
-        {
-          "level": 2,
-          "lessons": [
+            },
             {
               "track": "postgresql",
               "lesson": "joins-relations",
-              "title": "Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics",
-              "level": 2,
-              "order": 3,
-              "estMinutes": 26,
-              "teachesVersion": "PostgreSQL 16+",
-              "patternLabel": "Relational Theory",
+              "title": "Relational Joins, CTEs & Complex Query Optimization",
+              "level": 1,
+              "order": 4,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 Joins",
+              "patternLabel": "Relational Algebra & Recursive Queries",
               "prereqs": [],
               "url": "learn/postgresql/joins-relations.html",
               "slug": "postgresql/joins-relations",
@@ -1862,7 +2294,12 @@
                 "title": "PostgreSQL Indexes & Query Optimization: B-Tree, GIN, BRIN & EXPLAIN ANALYZE",
                 "url": "learn/postgresql/indexes-query-planner.html"
               }
-            },
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "lessons": [
             {
               "track": "postgresql",
               "lesson": "indexes-query-planner",
@@ -1877,8 +2314,77 @@
               "slug": "postgresql/indexes-query-planner",
               "prev": {
                 "slug": "postgresql/joins-relations",
-                "title": "Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics",
+                "title": "Relational Joins, CTEs & Complex Query Optimization",
                 "url": "learn/postgresql/joins-relations.html"
+              },
+              "next": {
+                "slug": "postgresql/indexing-btree-gin",
+                "title": "PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data",
+                "url": "learn/postgresql/indexing-btree-gin.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "indexing-btree-gin",
+              "title": "PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data",
+              "level": 2,
+              "order": 6,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 Indexes",
+              "patternLabel": "Multi-Engine Index Structures & Spatial Indexing",
+              "prereqs": [],
+              "url": "learn/postgresql/indexing-btree-gin.html",
+              "slug": "postgresql/indexing-btree-gin",
+              "prev": {
+                "slug": "postgresql/indexes-query-planner",
+                "title": "PostgreSQL Indexes & Query Optimization: B-Tree, GIN, BRIN & EXPLAIN ANALYZE",
+                "url": "learn/postgresql/indexes-query-planner.html"
+              },
+              "next": {
+                "slug": "postgresql/jsonb-hybrid",
+                "title": "Hybrid PostgreSQL: JSONB Indexing, JSONPath Queries & Relational Duality",
+                "url": "learn/postgresql/jsonb-hybrid.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "jsonb-hybrid",
+              "title": "Hybrid PostgreSQL: JSONB Indexing, JSONPath Queries & Relational Duality",
+              "level": 2,
+              "order": 8,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 JSONB",
+              "patternLabel": "Hybrid Relational-Document Architecture",
+              "prereqs": [],
+              "url": "learn/postgresql/jsonb-hybrid.html",
+              "slug": "postgresql/jsonb-hybrid",
+              "prev": {
+                "slug": "postgresql/indexing-btree-gin",
+                "title": "PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data",
+                "url": "learn/postgresql/indexing-btree-gin.html"
+              },
+              "next": {
+                "slug": "postgresql/window-functions",
+                "title": "Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG",
+                "url": "learn/postgresql/window-functions.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "window-functions",
+              "title": "Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG",
+              "level": 2,
+              "order": 10,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 Analytics",
+              "patternLabel": "Analytical SQL & Data Warehousing",
+              "prereqs": [],
+              "url": "learn/postgresql/window-functions.html",
+              "slug": "postgresql/window-functions",
+              "prev": {
+                "slug": "postgresql/jsonb-hybrid",
+                "title": "Hybrid PostgreSQL: JSONB Indexing, JSONPath Queries & Relational Duality",
+                "url": "learn/postgresql/jsonb-hybrid.html"
               },
               "next": {
                 "slug": "postgresql/transactions-concurrency",
@@ -1904,9 +2410,9 @@
               "url": "learn/postgresql/transactions-concurrency.html",
               "slug": "postgresql/transactions-concurrency",
               "prev": {
-                "slug": "postgresql/indexes-query-planner",
-                "title": "PostgreSQL Indexes & Query Optimization: B-Tree, GIN, BRIN & EXPLAIN ANALYZE",
-                "url": "learn/postgresql/indexes-query-planner.html"
+                "slug": "postgresql/window-functions",
+                "title": "Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG",
+                "url": "learn/postgresql/window-functions.html"
               },
               "next": {
                 "slug": "postgresql/jsonb-hybrid-patterns",
@@ -2024,6 +2530,98 @@
                 "url": "learn/postgresql/connection-pooling.html"
               },
               "next": {
+                "slug": "postgresql/transactions-locks",
+                "title": "ACID Isolation Levels & Concurrency Locks: MVCC, Row Locks & Deadlock Prevention",
+                "url": "learn/postgresql/transactions-locks.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "transactions-locks",
+              "title": "ACID Isolation Levels & Concurrency Locks: MVCC, Row Locks & Deadlock Prevention",
+              "level": 3,
+              "order": 11,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 Concurrency",
+              "patternLabel": "Multi-Version Concurrency Control (MVCC) & Row-Level Locking",
+              "prereqs": [],
+              "url": "learn/postgresql/transactions-locks.html",
+              "slug": "postgresql/transactions-locks",
+              "prev": {
+                "slug": "postgresql/security-backup-pg",
+                "title": "PostgreSQL Production Security: Row-Level Security (RLS), pg_dump & WAL Archiving",
+                "url": "learn/postgresql/security-backup-pg.html"
+              },
+              "next": {
+                "slug": "postgresql/partitioning-sharding",
+                "title": "Declarative Table Partitioning: Range, List, Hash & Citus Distributed Sharding",
+                "url": "learn/postgresql/partitioning-sharding.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "partitioning-sharding",
+              "title": "Declarative Table Partitioning: Range, List, Hash & Citus Distributed Sharding",
+              "level": 3,
+              "order": 12,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 Declarative Partitioning",
+              "patternLabel": "Horizontal Data Partitioning & Scale-Out SQL",
+              "prereqs": [],
+              "url": "learn/postgresql/partitioning-sharding.html",
+              "slug": "postgresql/partitioning-sharding",
+              "prev": {
+                "slug": "postgresql/transactions-locks",
+                "title": "ACID Isolation Levels & Concurrency Locks: MVCC, Row Locks & Deadlock Prevention",
+                "url": "learn/postgresql/transactions-locks.html"
+              },
+              "next": {
+                "slug": "postgresql/fulltext-search",
+                "title": "Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching",
+                "url": "learn/postgresql/fulltext-search.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "fulltext-search",
+              "title": "Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching",
+              "level": 3,
+              "order": 13,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 FTS",
+              "patternLabel": "Search Engine Architecture & Lexical Analysis",
+              "prereqs": [],
+              "url": "learn/postgresql/fulltext-search.html",
+              "slug": "postgresql/fulltext-search",
+              "prev": {
+                "slug": "postgresql/partitioning-sharding",
+                "title": "Declarative Table Partitioning: Range, List, Hash & Citus Distributed Sharding",
+                "url": "learn/postgresql/partitioning-sharding.html"
+              },
+              "next": {
+                "slug": "postgresql/pg-performance",
+                "title": "PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling",
+                "url": "learn/postgresql/pg-performance.html"
+              }
+            },
+            {
+              "track": "postgresql",
+              "lesson": "pg-performance",
+              "title": "PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling",
+              "level": 3,
+              "order": 14,
+              "estMinutes": 35,
+              "teachesVersion": "PostgreSQL 18 Performance",
+              "patternLabel": "Query Optimization & Infrastructure Sizing",
+              "prereqs": [],
+              "url": "learn/postgresql/pg-performance.html",
+              "slug": "postgresql/pg-performance",
+              "prev": {
+                "slug": "postgresql/fulltext-search",
+                "title": "Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching",
+                "url": "learn/postgresql/fulltext-search.html"
+              },
+              "next": {
                 "slug": "prisma/what-is-an-orm",
                 "title": "What is an ORM: Prisma Architecture & Type Safety",
                 "url": "learn/prisma/what-is-an-orm.html"
@@ -2038,7 +2636,7 @@
       "title": "Prisma 7.x",
       "icon": "fsa-icon-code",
       "color": "var(--track-prisma)",
-      "totalLessons": 10,
+      "totalLessons": 18,
       "levels": [
         {
           "level": 1,
@@ -2056,9 +2654,9 @@
               "url": "learn/prisma/what-is-an-orm.html",
               "slug": "prisma/what-is-an-orm",
               "prev": {
-                "slug": "postgresql/security-backup-pg",
-                "title": "PostgreSQL Production Security: Row-Level Security (RLS), pg_dump & WAL Archiving",
-                "url": "learn/postgresql/security-backup-pg.html"
+                "slug": "postgresql/pg-performance",
+                "title": "PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling",
+                "url": "learn/postgresql/pg-performance.html"
               },
               "next": {
                 "slug": "prisma/schema-modeling",
@@ -2072,9 +2670,9 @@
               "title": "Prisma Schema DSL: Models, Data Types, Attributes (@id, @map) & Multi-File Schemas",
               "level": 1,
               "order": 2,
-              "estMinutes": 24,
-              "teachesVersion": "Prisma 5.x/6.x",
-              "patternLabel": "Type-Safe Modeling",
+              "estMinutes": 30,
+              "teachesVersion": "Prisma 7 / 6.x",
+              "patternLabel": "Type-Safe Modeling & Single Source of Truth",
               "prereqs": [],
               "url": "learn/prisma/schema-modeling.html",
               "slug": "prisma/schema-modeling",
@@ -2107,6 +2705,29 @@
                 "url": "learn/prisma/schema-modeling.html"
               },
               "next": {
+                "slug": "prisma/client-crud",
+                "title": "Prisma Client CRUD: Type-Safe Queries, Filtering, Pagination & Partial Selection",
+                "url": "learn/prisma/client-crud.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "client-crud",
+              "title": "Prisma Client CRUD: Type-Safe Queries, Filtering, Pagination & Partial Selection",
+              "level": 1,
+              "order": 4,
+              "estMinutes": 30,
+              "teachesVersion": "Prisma 7 Client",
+              "patternLabel": "Type-Safe Data Access & Cursor Pagination",
+              "prereqs": [],
+              "url": "learn/prisma/client-crud.html",
+              "slug": "prisma/client-crud",
+              "prev": {
+                "slug": "prisma/migrations-lifecycle",
+                "title": "Prisma Migrate: prisma migrate dev, deploy, reset & The Shadow Database",
+                "url": "learn/prisma/migrations-lifecycle.html"
+              },
+              "next": {
                 "slug": "prisma/crud-queries",
                 "title": "Prisma Client CRUD: findUnique, findFirst, findMany, create, update & delete",
                 "url": "learn/prisma/crud-queries.html"
@@ -2125,9 +2746,9 @@
               "url": "learn/prisma/crud-queries.html",
               "slug": "prisma/crud-queries",
               "prev": {
-                "slug": "prisma/migrations-lifecycle",
-                "title": "Prisma Migrate: prisma migrate dev, deploy, reset & The Shadow Database",
-                "url": "learn/prisma/migrations-lifecycle.html"
+                "slug": "prisma/client-crud",
+                "title": "Prisma Client CRUD: Type-Safe Queries, Filtering, Pagination & Partial Selection",
+                "url": "learn/prisma/client-crud.html"
               },
               "next": {
                 "slug": "prisma/relations-filtering",
@@ -2158,6 +2779,29 @@
                 "url": "learn/prisma/crud-queries.html"
               },
               "next": {
+                "slug": "prisma/migrations-ci-cd",
+                "title": "Database Migrations & CI/CD Pipelines: prisma migrate, migrate deploy & Drift Detection",
+                "url": "learn/prisma/migrations-ci-cd.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "migrations-ci-cd",
+              "title": "Database Migrations & CI/CD Pipelines: prisma migrate, migrate deploy & Drift Detection",
+              "level": 2,
+              "order": 6,
+              "estMinutes": 35,
+              "teachesVersion": "Prisma 7 Migrations Engine",
+              "patternLabel": "Schema Evolution & CI/CD Automation",
+              "prereqs": [],
+              "url": "learn/prisma/migrations-ci-cd.html",
+              "slug": "prisma/migrations-ci-cd",
+              "prev": {
+                "slug": "prisma/relations-filtering",
+                "title": "Nested Relations, Deep Querying: include vs select & Fluent API",
+                "url": "learn/prisma/relations-filtering.html"
+              },
+              "next": {
                 "slug": "prisma/transactions-batching",
                 "title": "Prisma Transactions: Sequential Batching vs Interactive $transaction",
                 "url": "learn/prisma/transactions-batching.html"
@@ -2176,9 +2820,55 @@
               "url": "learn/prisma/transactions-batching.html",
               "slug": "prisma/transactions-batching",
               "prev": {
-                "slug": "prisma/relations-filtering",
-                "title": "Nested Relations, Deep Querying: include vs select & Fluent API",
-                "url": "learn/prisma/relations-filtering.html"
+                "slug": "prisma/migrations-ci-cd",
+                "title": "Database Migrations & CI/CD Pipelines: prisma migrate, migrate deploy & Drift Detection",
+                "url": "learn/prisma/migrations-ci-cd.html"
+              },
+              "next": {
+                "slug": "prisma/relation-queries",
+                "title": "Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations",
+                "url": "learn/prisma/relation-queries.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "relation-queries",
+              "title": "Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations",
+              "level": 2,
+              "order": 8,
+              "estMinutes": 35,
+              "teachesVersion": "Prisma 7 Relations",
+              "patternLabel": "Relational Graph Traversal & Atomic Nested Mutations",
+              "prereqs": [],
+              "url": "learn/prisma/relation-queries.html",
+              "slug": "prisma/relation-queries",
+              "prev": {
+                "slug": "prisma/transactions-batching",
+                "title": "Prisma Transactions: Sequential Batching vs Interactive $transaction",
+                "url": "learn/prisma/transactions-batching.html"
+              },
+              "next": {
+                "slug": "prisma/middleware-logging",
+                "title": "Prisma Client Logging, OpenTelemetry Tracing & Query Event Metrics",
+                "url": "learn/prisma/middleware-logging.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "middleware-logging",
+              "title": "Prisma Client Logging, OpenTelemetry Tracing & Query Event Metrics",
+              "level": 2,
+              "order": 12,
+              "estMinutes": 30,
+              "teachesVersion": "Prisma 7 Tracing",
+              "patternLabel": "Observability & OpenTelemetry Instrumentation",
+              "prereqs": [],
+              "url": "learn/prisma/middleware-logging.html",
+              "slug": "prisma/middleware-logging",
+              "prev": {
+                "slug": "prisma/relation-queries",
+                "title": "Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations",
+                "url": "learn/prisma/relation-queries.html"
               },
               "next": {
                 "slug": "prisma/raw-queries",
@@ -2204,9 +2894,9 @@
               "url": "learn/prisma/raw-queries.html",
               "slug": "prisma/raw-queries",
               "prev": {
-                "slug": "prisma/transactions-batching",
-                "title": "Prisma Transactions: Sequential Batching vs Interactive $transaction",
-                "url": "learn/prisma/transactions-batching.html"
+                "slug": "prisma/middleware-logging",
+                "title": "Prisma Client Logging, OpenTelemetry Tracing & Query Event Metrics",
+                "url": "learn/prisma/middleware-logging.html"
               },
               "next": {
                 "slug": "prisma/middleware-extensions",
@@ -2278,6 +2968,98 @@
                 "url": "learn/prisma/performance-optimization.html"
               },
               "next": {
+                "slug": "prisma/transactions-optimistic",
+                "title": "Prisma Transactions & Concurrency: Interactive Transactions ($transaction) & Optimistic Locking",
+                "url": "learn/prisma/transactions-optimistic.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "transactions-optimistic",
+              "title": "Prisma Transactions & Concurrency: Interactive Transactions ($transaction) & Optimistic Locking",
+              "level": 3,
+              "order": 10,
+              "estMinutes": 35,
+              "teachesVersion": "Prisma 7 Transactions",
+              "patternLabel": "Interactive ACID & Optimistic Concurrency Control",
+              "prereqs": [],
+              "url": "learn/prisma/transactions-optimistic.html",
+              "slug": "prisma/transactions-optimistic",
+              "prev": {
+                "slug": "prisma/production-deployment",
+                "title": "Prisma in Production: Connection Limits, Accelerate, Pulse & Serverless Architecture",
+                "url": "learn/prisma/production-deployment.html"
+              },
+              "next": {
+                "slug": "prisma/raw-sql-extensions",
+                "title": "Raw SQL Escaping ($queryRaw) & Prisma Client Extensions ($extends)",
+                "url": "learn/prisma/raw-sql-extensions.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "raw-sql-extensions",
+              "title": "Raw SQL Escaping ($queryRaw) & Prisma Client Extensions ($extends)",
+              "level": 3,
+              "order": 11,
+              "estMinutes": 35,
+              "teachesVersion": "Prisma 7 Extensions",
+              "patternLabel": "Type-Safe Raw SQL & Client Plugins",
+              "prereqs": [],
+              "url": "learn/prisma/raw-sql-extensions.html",
+              "slug": "prisma/raw-sql-extensions",
+              "prev": {
+                "slug": "prisma/transactions-optimistic",
+                "title": "Prisma Transactions & Concurrency: Interactive Transactions ($transaction) & Optimistic Locking",
+                "url": "learn/prisma/transactions-optimistic.html"
+              },
+              "next": {
+                "slug": "prisma/performance-n-plus-1",
+                "title": "Solving N+1 Query Problem: DataLoader Pattern, Prisma Query Batching & Optimizations",
+                "url": "learn/prisma/performance-n-plus-1.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "performance-n-plus-1",
+              "title": "Solving N+1 Query Problem: DataLoader Pattern, Prisma Query Batching & Optimizations",
+              "level": 3,
+              "order": 13,
+              "estMinutes": 35,
+              "teachesVersion": "Prisma 7 Performance",
+              "patternLabel": "Query Batching & N+1 Prevention",
+              "prereqs": [],
+              "url": "learn/prisma/performance-n-plus-1.html",
+              "slug": "prisma/performance-n-plus-1",
+              "prev": {
+                "slug": "prisma/raw-sql-extensions",
+                "title": "Raw SQL Escaping ($queryRaw) & Prisma Client Extensions ($extends)",
+                "url": "learn/prisma/raw-sql-extensions.html"
+              },
+              "next": {
+                "slug": "prisma/enterprise-production",
+                "title": "Enterprise Prisma: Connection Pool Sizing, Read Replicas & Driver Adapters (PgBouncer)",
+                "url": "learn/prisma/enterprise-production.html"
+              }
+            },
+            {
+              "track": "prisma",
+              "lesson": "enterprise-production",
+              "title": "Enterprise Prisma: Connection Pool Sizing, Read Replicas & Driver Adapters (PgBouncer)",
+              "level": 3,
+              "order": 14,
+              "estMinutes": 35,
+              "teachesVersion": "Prisma 7 Enterprise",
+              "patternLabel": "Enterprise Resilience & Database Scaling",
+              "prereqs": [],
+              "url": "learn/prisma/enterprise-production.html",
+              "slug": "prisma/enterprise-production",
+              "prev": {
+                "slug": "prisma/performance-n-plus-1",
+                "title": "Solving N+1 Query Problem: DataLoader Pattern, Prisma Query Batching & Optimizations",
+                "url": "learn/prisma/performance-n-plus-1.html"
+              },
+              "next": {
                 "slug": "architecture/layered-architecture",
                 "title": "N-Tier Layered Architecture: Controllers, Services, Repositories & DTOs",
                 "url": "learn/architecture/layered-architecture.html"
@@ -2303,20 +3085,20 @@
               "title": "N-Tier Layered Architecture: Controllers, Services, Repositories & DTOs",
               "level": 1,
               "order": 2,
-              "estMinutes": 26,
+              "estMinutes": 30,
               "teachesVersion": "Enterprise Node.js",
-              "patternLabel": "Layered Architecture",
+              "patternLabel": "N-Tier Layered Architecture & Separation of Concerns",
               "prereqs": [],
               "url": "learn/architecture/layered-architecture.html",
               "slug": "architecture/layered-architecture",
               "prev": {
-                "slug": "prisma/production-deployment",
-                "title": "Prisma in Production: Connection Limits, Accelerate, Pulse & Serverless Architecture",
-                "url": "learn/prisma/production-deployment.html"
+                "slug": "prisma/enterprise-production",
+                "title": "Enterprise Prisma: Connection Pool Sizing, Read Replicas & Driver Adapters (PgBouncer)",
+                "url": "learn/prisma/enterprise-production.html"
               },
               "next": {
                 "slug": "architecture/clean-architecture",
-                "title": "Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js",
+                "title": "Clean Architecture & Hexagonal (Ports and Adapters): Domain-Centric Design",
                 "url": "learn/architecture/clean-architecture.html"
               }
             }
@@ -2328,12 +3110,12 @@
             {
               "track": "architecture",
               "lesson": "clean-architecture",
-              "title": "Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js",
+              "title": "Clean Architecture & Hexagonal (Ports and Adapters): Domain-Centric Design",
               "level": 2,
-              "order": 3,
-              "estMinutes": 28,
-              "teachesVersion": "Enterprise Architecture",
-              "patternLabel": "Domain-Driven Architecture",
+              "order": 4,
+              "estMinutes": 35,
+              "teachesVersion": "Domain-Centric Architecture",
+              "patternLabel": "Hexagonal Architecture & Clean Architecture",
               "prereqs": [],
               "url": "learn/architecture/clean-architecture.html",
               "slug": "architecture/clean-architecture",
@@ -2344,94 +3126,94 @@
               },
               "next": {
                 "slug": "architecture/auth-security-deep-dive",
-                "title": "Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO",
+                "title": "Enterprise Authentication & Security: OAuth2, OpenID Connect, Session Management & CSRF Defense",
                 "url": "learn/architecture/auth-security-deep-dive.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "auth-security-deep-dive",
-              "title": "Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO",
+              "title": "Enterprise Authentication & Security: OAuth2, OpenID Connect, Session Management & CSRF Defense",
               "level": 2,
-              "order": 4,
-              "estMinutes": 28,
-              "teachesVersion": "OAuth 2.1 / OIDC Spec",
-              "patternLabel": "Enterprise Security",
+              "order": 6,
+              "estMinutes": 35,
+              "teachesVersion": "OAuth 2.1 & OIDC Standards",
+              "patternLabel": "Federated Identity & Defense-in-Depth",
               "prereqs": [],
               "url": "learn/architecture/auth-security-deep-dive.html",
               "slug": "architecture/auth-security-deep-dive",
               "prev": {
                 "slug": "architecture/clean-architecture",
-                "title": "Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js",
+                "title": "Clean Architecture & Hexagonal (Ports and Adapters): Domain-Centric Design",
                 "url": "learn/architecture/clean-architecture.html"
               },
               "next": {
                 "slug": "architecture/caching-redis",
-                "title": "Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies",
+                "title": "Enterprise Caching with Redis: Patterns (Cache-Aside, Write-Through), Invalidation & Stampede Defense",
                 "url": "learn/architecture/caching-redis.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "caching-redis",
-              "title": "Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies",
+              "title": "Enterprise Caching with Redis: Patterns (Cache-Aside, Write-Through), Invalidation & Stampede Defense",
               "level": 2,
-              "order": 5,
-              "estMinutes": 26,
-              "teachesVersion": "Redis 7.x / Node.js 24",
-              "patternLabel": "Distributed Caching",
+              "order": 8,
+              "estMinutes": 35,
+              "teachesVersion": "Redis 7.2+ Stack",
+              "patternLabel": "Multi-Tier Caching & Distributed Stampede Defense",
               "prereqs": [],
               "url": "learn/architecture/caching-redis.html",
               "slug": "architecture/caching-redis",
               "prev": {
                 "slug": "architecture/auth-security-deep-dive",
-                "title": "Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO",
+                "title": "Enterprise Authentication & Security: OAuth2, OpenID Connect, Session Management & CSRF Defense",
                 "url": "learn/architecture/auth-security-deep-dive.html"
               },
               "next": {
                 "slug": "architecture/realtime-websockets",
-                "title": "Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters",
+                "title": "Real-Time Architecture: WebSockets, Server-Sent Events (SSE), Socket.io & Redis Adapter Scaling",
                 "url": "learn/architecture/realtime-websockets.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "realtime-websockets",
-              "title": "Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters",
+              "title": "Real-Time Architecture: WebSockets, Server-Sent Events (SSE), Socket.io & Redis Adapter Scaling",
               "level": 2,
-              "order": 6,
-              "estMinutes": 28,
-              "teachesVersion": "Socket.io 4+ / Node.js 24",
-              "patternLabel": "Real-Time Architecture",
+              "order": 10,
+              "estMinutes": 35,
+              "teachesVersion": "Socket.io v4.x & Native WS",
+              "patternLabel": "Bi-directional Real-Time & Horizontal Pub/Sub Scaling",
               "prereqs": [],
               "url": "learn/architecture/realtime-websockets.html",
               "slug": "architecture/realtime-websockets",
               "prev": {
                 "slug": "architecture/caching-redis",
-                "title": "Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies",
+                "title": "Enterprise Caching with Redis: Patterns (Cache-Aside, Write-Through), Invalidation & Stampede Defense",
                 "url": "learn/architecture/caching-redis.html"
               },
               "next": {
                 "slug": "architecture/message-queues",
-                "title": "Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues",
+                "title": "Asynchronous Processing & Message Queues: BullMQ, Redis, RabbitMQ & Dead Letter Queues (DLQ)",
                 "url": "learn/architecture/message-queues.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "message-queues",
-              "title": "Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues",
+              "title": "Asynchronous Processing & Message Queues: BullMQ, Redis, RabbitMQ & Dead Letter Queues (DLQ)",
               "level": 2,
-              "order": 7,
-              "estMinutes": 28,
-              "teachesVersion": "BullMQ 5+ / Redis",
-              "patternLabel": "Async Worker Architecture",
+              "order": 12,
+              "estMinutes": 35,
+              "teachesVersion": "BullMQ v5 / RabbitMQ AMQP",
+              "patternLabel": "Decoupled Worker Architecture & Guaranteed Delivery",
               "prereqs": [],
               "url": "learn/architecture/message-queues.html",
               "slug": "architecture/message-queues",
               "prev": {
                 "slug": "architecture/realtime-websockets",
-                "title": "Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters",
+                "title": "Real-Time Architecture: WebSockets, Server-Sent Events (SSE), Socket.io & Redis Adapter Scaling",
                 "url": "learn/architecture/realtime-websockets.html"
               },
               "next": {
@@ -2459,24 +3241,24 @@
               "slug": "architecture/request-lifecycles",
               "prev": {
                 "slug": "architecture/message-queues",
-                "title": "Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues",
+                "title": "Asynchronous Processing & Message Queues: BullMQ, Redis, RabbitMQ & Dead Letter Queues (DLQ)",
                 "url": "learn/architecture/message-queues.html"
               },
               "next": {
                 "slug": "architecture/microservices-monolith",
-                "title": "Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD",
+                "title": "Monolith vs Microservices: Modular Monoliths, Distributed Systems & Decomposition Strategies",
                 "url": "learn/architecture/microservices-monolith.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "microservices-monolith",
-              "title": "Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD",
+              "title": "Monolith vs Microservices: Modular Monoliths, Distributed Systems & Decomposition Strategies",
               "level": 3,
-              "order": 8,
-              "estMinutes": 28,
-              "teachesVersion": "Enterprise Architecture",
-              "patternLabel": "System Decomposition",
+              "order": 13,
+              "estMinutes": 35,
+              "teachesVersion": "Distributed System Architecture",
+              "patternLabel": "System Evolution & Service Decomposition",
               "prereqs": [],
               "url": "learn/architecture/microservices-monolith.html",
               "slug": "architecture/microservices-monolith",
@@ -2487,140 +3269,140 @@
               },
               "next": {
                 "slug": "architecture/api-gateway",
-                "title": "API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing",
+                "title": "API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration",
                 "url": "learn/architecture/api-gateway.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "api-gateway",
-              "title": "API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing",
+              "title": "API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration",
               "level": 3,
-              "order": 9,
-              "estMinutes": 26,
-              "teachesVersion": "Enterprise Architecture",
-              "patternLabel": "Edge Infrastructure",
+              "order": 14,
+              "estMinutes": 35,
+              "teachesVersion": "Enterprise API Gateway",
+              "patternLabel": "API Gateway Pattern & Backend for Frontend (BFF)",
               "prereqs": [],
               "url": "learn/architecture/api-gateway.html",
               "slug": "architecture/api-gateway",
               "prev": {
                 "slug": "architecture/microservices-monolith",
-                "title": "Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD",
+                "title": "Monolith vs Microservices: Modular Monoliths, Distributed Systems & Decomposition Strategies",
                 "url": "learn/architecture/microservices-monolith.html"
               },
               "next": {
                 "slug": "architecture/event-driven-architecture",
-                "title": "Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern",
+                "title": "Event-Driven Architecture: Event Sourcing, CQRS & Apache Kafka Stream Processing",
                 "url": "learn/architecture/event-driven-architecture.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "event-driven-architecture",
-              "title": "Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern",
+              "title": "Event-Driven Architecture: Event Sourcing, CQRS & Apache Kafka Stream Processing",
               "level": 3,
-              "order": 10,
-              "estMinutes": 28,
-              "teachesVersion": "Enterprise EDA Spec",
-              "patternLabel": "Asynchronous Event Systems",
+              "order": 15,
+              "estMinutes": 35,
+              "teachesVersion": "Apache Kafka & Event-Driven Systems",
+              "patternLabel": "Event Sourcing, CQRS & Distributed Event Streams",
               "prereqs": [],
               "url": "learn/architecture/event-driven-architecture.html",
               "slug": "architecture/event-driven-architecture",
               "prev": {
                 "slug": "architecture/api-gateway",
-                "title": "API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing",
+                "title": "API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration",
                 "url": "learn/architecture/api-gateway.html"
               },
               "next": {
                 "slug": "architecture/system-design-case-studies",
-                "title": "System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems",
+                "title": "Enterprise System Design: Architecture Case Studies (URL Shortener, E-Commerce, Chat & Streaming)",
                 "url": "learn/architecture/system-design-case-studies.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "system-design-case-studies",
-              "title": "System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems",
+              "title": "Enterprise System Design: Architecture Case Studies (URL Shortener, E-Commerce, Chat & Streaming)",
               "level": 3,
-              "order": 11,
-              "estMinutes": 30,
-              "teachesVersion": "System Design Standard",
-              "patternLabel": "System Design & Scalability",
+              "order": 16,
+              "estMinutes": 40,
+              "teachesVersion": "System Design Interview Standards",
+              "patternLabel": "End-to-End System Architecture & High-Scale Tradeoffs",
               "prereqs": [],
               "url": "learn/architecture/system-design-case-studies.html",
               "slug": "architecture/system-design-case-studies",
               "prev": {
                 "slug": "architecture/event-driven-architecture",
-                "title": "Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern",
+                "title": "Event-Driven Architecture: Event Sourcing, CQRS & Apache Kafka Stream Processing",
                 "url": "learn/architecture/event-driven-architecture.html"
               },
               "next": {
                 "slug": "architecture/performance-tuning",
-                "title": "Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits",
+                "title": "High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling",
                 "url": "learn/architecture/performance-tuning.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "performance-tuning",
-              "title": "Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits",
+              "title": "High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling",
               "level": 3,
-              "order": 12,
-              "estMinutes": 26,
-              "teachesVersion": "Performance Standard",
-              "patternLabel": "Performance Engineering",
+              "order": 17,
+              "estMinutes": 35,
+              "teachesVersion": "Node.js 24 Performance Core",
+              "patternLabel": "V8 Optimization & Low-Latency Systems",
               "prereqs": [],
               "url": "learn/architecture/performance-tuning.html",
               "slug": "architecture/performance-tuning",
               "prev": {
                 "slug": "architecture/system-design-case-studies",
-                "title": "System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems",
+                "title": "Enterprise System Design: Architecture Case Studies (URL Shortener, E-Commerce, Chat & Streaming)",
                 "url": "learn/architecture/system-design-case-studies.html"
               },
               "next": {
                 "slug": "architecture/observability-monitoring",
-                "title": "Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing",
+                "title": "Observability & Monitoring: The Three Pillars (Metrics, Logs, Traces), Prometheus & Grafana",
                 "url": "learn/architecture/observability-monitoring.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "observability-monitoring",
-              "title": "Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing",
+              "title": "Observability & Monitoring: The Three Pillars (Metrics, Logs, Traces), Prometheus & Grafana",
               "level": 3,
-              "order": 13,
-              "estMinutes": 28,
-              "teachesVersion": "OpenTelemetry / Pino 9+",
-              "patternLabel": "Production Observability",
+              "order": 18,
+              "estMinutes": 35,
+              "teachesVersion": "OpenTelemetry & Prometheus Core",
+              "patternLabel": "Telemetry Pipeline & Site Reliability Engineering (SRE)",
               "prereqs": [],
               "url": "learn/architecture/observability-monitoring.html",
               "slug": "architecture/observability-monitoring",
               "prev": {
                 "slug": "architecture/performance-tuning",
-                "title": "Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits",
+                "title": "High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling",
                 "url": "learn/architecture/performance-tuning.html"
               },
               "next": {
                 "slug": "architecture/ci-cd-devops",
-                "title": "Production DevOps: Multi-Stage Docker Builds, GitHub Actions CI/CD & Zero-Downtime Deployments",
+                "title": "Enterprise CI/CD & DevOps: GitHub Actions, Docker Multi-Stage Builds & Zero-Downtime Deployment",
                 "url": "learn/architecture/ci-cd-devops.html"
               }
             },
             {
               "track": "architecture",
               "lesson": "ci-cd-devops",
-              "title": "Production DevOps: Multi-Stage Docker Builds, GitHub Actions CI/CD & Zero-Downtime Deployments",
+              "title": "Enterprise CI/CD & DevOps: GitHub Actions, Docker Multi-Stage Builds & Zero-Downtime Deployment",
               "level": 3,
-              "order": 14,
-              "estMinutes": 28,
-              "teachesVersion": "Docker / GitHub Actions",
-              "patternLabel": "DevOps & Automation",
+              "order": 19,
+              "estMinutes": 35,
+              "teachesVersion": "GitHub Actions & Docker Multi-Stage",
+              "patternLabel": "DevOps Automation & Progressive Delivery",
               "prereqs": [],
               "url": "learn/architecture/ci-cd-devops.html",
               "slug": "architecture/ci-cd-devops",
               "prev": {
                 "slug": "architecture/observability-monitoring",
-                "title": "Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing",
+                "title": "Observability & Monitoring: The Three Pillars (Metrics, Logs, Traces), Prometheus & Grafana",
                 "url": "learn/architecture/observability-monitoring.html"
               },
               "next": null
@@ -2680,7 +3462,7 @@
       },
       "next": {
         "slug": "foundations/css-box-model",
-        "title": "CSS Box Model, Flexbox Axis & Modern CSS Grid",
+        "title": "CSS Box Model, Flexbox Axis & Modern Grid Layouts",
         "url": "learn/foundations/css-box-model.html"
       }
     },
@@ -2688,7 +3470,7 @@
       "slug": "foundations/css-box-model",
       "track": "foundations",
       "lesson": "css-box-model",
-      "title": "CSS Box Model, Flexbox Axis & Modern CSS Grid",
+      "title": "CSS Box Model, Flexbox Axis & Modern Grid Layouts",
       "level": 1,
       "order": 3,
       "url": "learn/foundations/css-box-model.html",
@@ -2699,7 +3481,7 @@
       },
       "next": {
         "slug": "foundations/js-types-operators",
-        "title": "Primitive Types, Type Coercion & Symbols/BigInt",
+        "title": "JavaScript Types, Coercion Quirks & Symbols/BigInt",
         "url": "learn/foundations/js-types-operators.html"
       }
     },
@@ -2707,18 +3489,18 @@
       "slug": "foundations/js-types-operators",
       "track": "foundations",
       "lesson": "js-types-operators",
-      "title": "Primitive Types, Type Coercion & Symbols/BigInt",
+      "title": "JavaScript Types, Coercion Quirks & Symbols/BigInt",
       "level": 1,
       "order": 4,
       "url": "learn/foundations/js-types-operators.html",
       "prev": {
         "slug": "foundations/css-box-model",
-        "title": "CSS Box Model, Flexbox Axis & Modern CSS Grid",
+        "title": "CSS Box Model, Flexbox Axis & Modern Grid Layouts",
         "url": "learn/foundations/css-box-model.html"
       },
       "next": {
         "slug": "foundations/js-control-flow",
-        "title": "Control Flow, Iteration Protocols & Labeled Statements",
+        "title": "Control Flow, Iterators, Labeled Loops & Break/Continue",
         "url": "learn/foundations/js-control-flow.html"
       }
     },
@@ -2726,18 +3508,18 @@
       "slug": "foundations/js-control-flow",
       "track": "foundations",
       "lesson": "js-control-flow",
-      "title": "Control Flow, Iteration Protocols & Labeled Statements",
+      "title": "Control Flow, Iterators, Labeled Loops & Break/Continue",
       "level": 1,
       "order": 5,
       "url": "learn/foundations/js-control-flow.html",
       "prev": {
         "slug": "foundations/js-types-operators",
-        "title": "Primitive Types, Type Coercion & Symbols/BigInt",
+        "title": "JavaScript Types, Coercion Quirks & Symbols/BigInt",
         "url": "learn/foundations/js-types-operators.html"
       },
       "next": {
         "slug": "foundations/js-functions",
-        "title": "Functions, Arrow Mechanics, Rest/Spread & Currying",
+        "title": "Function Declarations, Expressions, Arrow Functions & Hoisting",
         "url": "learn/foundations/js-functions.html"
       }
     },
@@ -2745,18 +3527,18 @@
       "slug": "foundations/js-functions",
       "track": "foundations",
       "lesson": "js-functions",
-      "title": "Functions, Arrow Mechanics, Rest/Spread & Currying",
+      "title": "Function Declarations, Expressions, Arrow Functions & Hoisting",
       "level": 1,
       "order": 6,
       "url": "learn/foundations/js-functions.html",
       "prev": {
         "slug": "foundations/js-control-flow",
-        "title": "Control Flow, Iteration Protocols & Labeled Statements",
+        "title": "Control Flow, Iterators, Labeled Loops & Break/Continue",
         "url": "learn/foundations/js-control-flow.html"
       },
       "next": {
         "slug": "foundations/js-arrays-methods",
-        "title": "Array Pipeline: Map, Filter, Reduce, FlatMap & Performance",
+        "title": "Functional Array Pipelines: Map, Filter, Reduce & FlatMap",
         "url": "learn/foundations/js-arrays-methods.html"
       }
     },
@@ -2764,18 +3546,18 @@
       "slug": "foundations/js-arrays-methods",
       "track": "foundations",
       "lesson": "js-arrays-methods",
-      "title": "Array Pipeline: Map, Filter, Reduce, FlatMap & Performance",
+      "title": "Functional Array Pipelines: Map, Filter, Reduce & FlatMap",
       "level": 1,
-      "order": 7,
+      "order": 8,
       "url": "learn/foundations/js-arrays-methods.html",
       "prev": {
         "slug": "foundations/js-functions",
-        "title": "Functions, Arrow Mechanics, Rest/Spread & Currying",
+        "title": "Function Declarations, Expressions, Arrow Functions & Hoisting",
         "url": "learn/foundations/js-functions.html"
       },
       "next": {
         "slug": "foundations/js-objects-prototypes",
-        "title": "Objects, Prototypes, Descriptors & Property Shadowing",
+        "title": "Objects, Property Descriptors & Prototype Inheritance",
         "url": "learn/foundations/js-objects-prototypes.html"
       }
     },
@@ -2783,18 +3565,18 @@
       "slug": "foundations/js-objects-prototypes",
       "track": "foundations",
       "lesson": "js-objects-prototypes",
-      "title": "Objects, Prototypes, Descriptors & Property Shadowing",
+      "title": "Objects, Property Descriptors & Prototype Inheritance",
       "level": 1,
-      "order": 8,
+      "order": 9,
       "url": "learn/foundations/js-objects-prototypes.html",
       "prev": {
         "slug": "foundations/js-arrays-methods",
-        "title": "Array Pipeline: Map, Filter, Reduce, FlatMap & Performance",
+        "title": "Functional Array Pipelines: Map, Filter, Reduce & FlatMap",
         "url": "learn/foundations/js-arrays-methods.html"
       },
       "next": {
         "slug": "foundations/js-classes-oop",
-        "title": "ES6 Classes, Private Fields (#), Inheritance & Static Methods",
+        "title": "ES6 Classes, Private Fields (#), Inheritance & Mixins",
         "url": "learn/foundations/js-classes-oop.html"
       }
     },
@@ -2802,14 +3584,90 @@
       "slug": "foundations/js-classes-oop",
       "track": "foundations",
       "lesson": "js-classes-oop",
-      "title": "ES6 Classes, Private Fields (#), Inheritance & Static Methods",
+      "title": "ES6 Classes, Private Fields (#), Inheritance & Mixins",
       "level": 1,
-      "order": 9,
+      "order": 10,
       "url": "learn/foundations/js-classes-oop.html",
       "prev": {
         "slug": "foundations/js-objects-prototypes",
-        "title": "Objects, Prototypes, Descriptors & Property Shadowing",
+        "title": "Objects, Property Descriptors & Prototype Inheritance",
         "url": "learn/foundations/js-objects-prototypes.html"
+      },
+      "next": {
+        "slug": "foundations/js-async-await",
+        "title": "Async/Await Control Flow, Sequential vs Parallel & Error Boundaries",
+        "url": "learn/foundations/js-async-await.html"
+      }
+    },
+    {
+      "slug": "foundations/js-async-await",
+      "track": "foundations",
+      "lesson": "js-async-await",
+      "title": "Async/Await Control Flow, Sequential vs Parallel & Error Boundaries",
+      "level": 1,
+      "order": 12,
+      "url": "learn/foundations/js-async-await.html",
+      "prev": {
+        "slug": "foundations/js-classes-oop",
+        "title": "ES6 Classes, Private Fields (#), Inheritance & Mixins",
+        "url": "learn/foundations/js-classes-oop.html"
+      },
+      "next": {
+        "slug": "foundations/js-modules",
+        "title": "ES Modules (ESM) vs CommonJS (CJS), Dynamic Imports & Tree-Shaking",
+        "url": "learn/foundations/js-modules.html"
+      }
+    },
+    {
+      "slug": "foundations/js-modules",
+      "track": "foundations",
+      "lesson": "js-modules",
+      "title": "ES Modules (ESM) vs CommonJS (CJS), Dynamic Imports & Tree-Shaking",
+      "level": 1,
+      "order": 14,
+      "url": "learn/foundations/js-modules.html",
+      "prev": {
+        "slug": "foundations/js-async-await",
+        "title": "Async/Await Control Flow, Sequential vs Parallel & Error Boundaries",
+        "url": "learn/foundations/js-async-await.html"
+      },
+      "next": {
+        "slug": "foundations/js-error-handling",
+        "title": "Custom Error Hierarchies, Stack Traces & Defensive Coding",
+        "url": "learn/foundations/js-error-handling.html"
+      }
+    },
+    {
+      "slug": "foundations/js-error-handling",
+      "track": "foundations",
+      "lesson": "js-error-handling",
+      "title": "Custom Error Hierarchies, Stack Traces & Defensive Coding",
+      "level": 1,
+      "order": 15,
+      "url": "learn/foundations/js-error-handling.html",
+      "prev": {
+        "slug": "foundations/js-modules",
+        "title": "ES Modules (ESM) vs CommonJS (CJS), Dynamic Imports & Tree-Shaking",
+        "url": "learn/foundations/js-modules.html"
+      },
+      "next": {
+        "slug": "foundations/js-modern-features",
+        "title": "Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal",
+        "url": "learn/foundations/js-modern-features.html"
+      }
+    },
+    {
+      "slug": "foundations/js-modern-features",
+      "track": "foundations",
+      "lesson": "js-modern-features",
+      "title": "Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal",
+      "level": 1,
+      "order": 16,
+      "url": "learn/foundations/js-modern-features.html",
+      "prev": {
+        "slug": "foundations/js-error-handling",
+        "title": "Custom Error Hierarchies, Stack Traces & Defensive Coding",
+        "url": "learn/foundations/js-error-handling.html"
       },
       "next": {
         "slug": "foundations/async-js",
@@ -2826,9 +3684,9 @@
       "order": 3,
       "url": "learn/foundations/async-js.html",
       "prev": {
-        "slug": "foundations/js-classes-oop",
-        "title": "ES6 Classes, Private Fields (#), Inheritance & Static Methods",
-        "url": "learn/foundations/js-classes-oop.html"
+        "slug": "foundations/js-modern-features",
+        "title": "Modern JavaScript (ES2020–ES2026+): Nullish Coalescing, WeakRefs & Temporal",
+        "url": "learn/foundations/js-modern-features.html"
       },
       "next": {
         "slug": "foundations/fetch-api",
@@ -2850,82 +3708,6 @@
         "url": "learn/foundations/async-js.html"
       },
       "next": {
-        "slug": "foundations/js-async-await",
-        "title": "Async/Await Control Flow, Sequential vs Parallel & Error Guards",
-        "url": "learn/foundations/js-async-await.html"
-      }
-    },
-    {
-      "slug": "foundations/js-async-await",
-      "track": "foundations",
-      "lesson": "js-async-await",
-      "title": "Async/Await Control Flow, Sequential vs Parallel & Error Guards",
-      "level": 2,
-      "order": 12,
-      "url": "learn/foundations/js-async-await.html",
-      "prev": {
-        "slug": "foundations/fetch-api",
-        "title": "Fetch API, Streams & AbortController",
-        "url": "learn/foundations/fetch-api.html"
-      },
-      "next": {
-        "slug": "foundations/js-modules",
-        "title": "ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports",
-        "url": "learn/foundations/js-modules.html"
-      }
-    },
-    {
-      "slug": "foundations/js-modules",
-      "track": "foundations",
-      "lesson": "js-modules",
-      "title": "ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports",
-      "level": 2,
-      "order": 14,
-      "url": "learn/foundations/js-modules.html",
-      "prev": {
-        "slug": "foundations/js-async-await",
-        "title": "Async/Await Control Flow, Sequential vs Parallel & Error Guards",
-        "url": "learn/foundations/js-async-await.html"
-      },
-      "next": {
-        "slug": "foundations/js-error-handling",
-        "title": "Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding",
-        "url": "learn/foundations/js-error-handling.html"
-      }
-    },
-    {
-      "slug": "foundations/js-error-handling",
-      "track": "foundations",
-      "lesson": "js-error-handling",
-      "title": "Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding",
-      "level": 2,
-      "order": 15,
-      "url": "learn/foundations/js-error-handling.html",
-      "prev": {
-        "slug": "foundations/js-modules",
-        "title": "ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports",
-        "url": "learn/foundations/js-modules.html"
-      },
-      "next": {
-        "slug": "foundations/js-modern-features",
-        "title": "Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal",
-        "url": "learn/foundations/js-modern-features.html"
-      }
-    },
-    {
-      "slug": "foundations/js-modern-features",
-      "track": "foundations",
-      "lesson": "js-modern-features",
-      "title": "Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal",
-      "level": 2,
-      "order": 16,
-      "url": "learn/foundations/js-modern-features.html",
-      "prev": {
-        "slug": "foundations/js-error-handling",
-        "title": "Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding",
-        "url": "learn/foundations/js-error-handling.html"
-      },
-      "next": {
         "slug": "react/thinking-in-react",
         "title": "Thinking in React: Component Hierarchy",
         "url": "learn/react/thinking-in-react.html"
@@ -2940,13 +3722,13 @@
       "order": 1,
       "url": "learn/react/thinking-in-react.html",
       "prev": {
-        "slug": "foundations/js-modern-features",
-        "title": "Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal",
-        "url": "learn/foundations/js-modern-features.html"
+        "slug": "foundations/fetch-api",
+        "title": "Fetch API, Streams & AbortController",
+        "url": "learn/foundations/fetch-api.html"
       },
       "next": {
         "slug": "react/jsx-deep-dive",
-        "title": "JSX Under the Hood: React.createElement, AST & Modern JSX Transform",
+        "title": "JSX Under the Hood: React.createElement, Compilation & React 19 JSX Transform",
         "url": "learn/react/jsx-deep-dive.html"
       }
     },
@@ -2954,7 +3736,7 @@
       "slug": "react/jsx-deep-dive",
       "track": "react",
       "lesson": "jsx-deep-dive",
-      "title": "JSX Under the Hood: React.createElement, AST & Modern JSX Transform",
+      "title": "JSX Under the Hood: React.createElement, Compilation & React 19 JSX Transform",
       "level": 1,
       "order": 2,
       "url": "learn/react/jsx-deep-dive.html",
@@ -2979,12 +3761,12 @@
       "url": "learn/react/use-state.html",
       "prev": {
         "slug": "react/jsx-deep-dive",
-        "title": "JSX Under the Hood: React.createElement, AST & Modern JSX Transform",
+        "title": "JSX Under the Hood: React.createElement, Compilation & React 19 JSX Transform",
         "url": "learn/react/jsx-deep-dive.html"
       },
       "next": {
         "slug": "react/event-handling",
-        "title": "SyntheticEvent System, Event Delegation & Controlled Forms",
+        "title": "Synthetic Events & Delegation in React 19: Pooling Removal & Native Interop",
         "url": "learn/react/event-handling.html"
       }
     },
@@ -2992,9 +3774,9 @@
       "slug": "react/event-handling",
       "track": "react",
       "lesson": "event-handling",
-      "title": "SyntheticEvent System, Event Delegation & Controlled Forms",
+      "title": "Synthetic Events & Delegation in React 19: Pooling Removal & Native Interop",
       "level": 1,
-      "order": 5,
+      "order": 4,
       "url": "learn/react/event-handling.html",
       "prev": {
         "slug": "react/use-state",
@@ -3003,7 +3785,7 @@
       },
       "next": {
         "slug": "react/conditional-rendering",
-        "title": "Conditional Rendering Patterns, Short-Circuits & Early Returns",
+        "title": "Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns",
         "url": "learn/react/conditional-rendering.html"
       }
     },
@@ -3011,18 +3793,18 @@
       "slug": "react/conditional-rendering",
       "track": "react",
       "lesson": "conditional-rendering",
-      "title": "Conditional Rendering Patterns, Short-Circuits & Early Returns",
+      "title": "Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns",
       "level": 1,
-      "order": 6,
+      "order": 5,
       "url": "learn/react/conditional-rendering.html",
       "prev": {
         "slug": "react/event-handling",
-        "title": "SyntheticEvent System, Event Delegation & Controlled Forms",
+        "title": "Synthetic Events & Delegation in React 19: Pooling Removal & Native Interop",
         "url": "learn/react/event-handling.html"
       },
       "next": {
         "slug": "react/lists-keys",
-        "title": "Lists, Stable Keys Strategies & The Index-as-Key Hazard",
+        "title": "Lists, Keys & Reconciliation: Identity Preservation & Index Anti-Pattern",
         "url": "learn/react/lists-keys.html"
       }
     },
@@ -3030,13 +3812,13 @@
       "slug": "react/lists-keys",
       "track": "react",
       "lesson": "lists-keys",
-      "title": "Lists, Stable Keys Strategies & The Index-as-Key Hazard",
+      "title": "Lists, Keys & Reconciliation: Identity Preservation & Index Anti-Pattern",
       "level": 1,
-      "order": 7,
+      "order": 6,
       "url": "learn/react/lists-keys.html",
       "prev": {
         "slug": "react/conditional-rendering",
-        "title": "Conditional Rendering Patterns, Short-Circuits & Early Returns",
+        "title": "Conditional Rendering Patterns: The 0 && Trap, Polymorphic Components & Early Returns",
         "url": "learn/react/conditional-rendering.html"
       },
       "next": {
@@ -3055,7 +3837,7 @@
       "url": "learn/react/use-effect.html",
       "prev": {
         "slug": "react/lists-keys",
-        "title": "Lists, Stable Keys Strategies & The Index-as-Key Hazard",
+        "title": "Lists, Keys & Reconciliation: Identity Preservation & Index Anti-Pattern",
         "url": "learn/react/lists-keys.html"
       },
       "next": {
@@ -3079,7 +3861,7 @@
       },
       "next": {
         "slug": "react/component-patterns",
-        "title": "Advanced Component Patterns: Compound Components & Render Props",
+        "title": "Component Architecture: Compound Components, Render Props & Polymorphic Elements",
         "url": "learn/react/component-patterns.html"
       }
     },
@@ -3087,9 +3869,9 @@
       "slug": "react/component-patterns",
       "track": "react",
       "lesson": "component-patterns",
-      "title": "Advanced Component Patterns: Compound Components & Render Props",
+      "title": "Component Architecture: Compound Components, Render Props & Polymorphic Elements",
       "level": 2,
-      "order": 9,
+      "order": 7,
       "url": "learn/react/component-patterns.html",
       "prev": {
         "slug": "react/reconciliation",
@@ -3098,7 +3880,7 @@
       },
       "next": {
         "slug": "react/use-reducer",
-        "title": "Complex State Transitions with useReducer & State Machines",
+        "title": "useReducer: Complex State Machines, Discriminated Unions & Lazy Init",
         "url": "learn/react/use-reducer.html"
       }
     },
@@ -3106,18 +3888,18 @@
       "slug": "react/use-reducer",
       "track": "react",
       "lesson": "use-reducer",
-      "title": "Complex State Transitions with useReducer & State Machines",
+      "title": "useReducer: Complex State Machines, Discriminated Unions & Lazy Init",
       "level": 2,
-      "order": 10,
+      "order": 8,
       "url": "learn/react/use-reducer.html",
       "prev": {
         "slug": "react/component-patterns",
-        "title": "Advanced Component Patterns: Compound Components & Render Props",
+        "title": "Component Architecture: Compound Components, Render Props & Polymorphic Elements",
         "url": "learn/react/component-patterns.html"
       },
       "next": {
         "slug": "react/use-context",
-        "title": "Context API: Eliminating Prop Drilling & Context Splitting",
+        "title": "Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps",
         "url": "learn/react/use-context.html"
       }
     },
@@ -3125,18 +3907,18 @@
       "slug": "react/use-context",
       "track": "react",
       "lesson": "use-context",
-      "title": "Context API: Eliminating Prop Drilling & Context Splitting",
+      "title": "Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps",
       "level": 2,
-      "order": 11,
+      "order": 9,
       "url": "learn/react/use-context.html",
       "prev": {
         "slug": "react/use-reducer",
-        "title": "Complex State Transitions with useReducer & State Machines",
+        "title": "useReducer: Complex State Machines, Discriminated Unions & Lazy Init",
         "url": "learn/react/use-reducer.html"
       },
       "next": {
         "slug": "react/use-ref-dom",
-        "title": "useRef: Mutable Value Persistence & Direct DOM Node Access",
+        "title": "useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation",
         "url": "learn/react/use-ref-dom.html"
       }
     },
@@ -3144,18 +3926,18 @@
       "slug": "react/use-ref-dom",
       "track": "react",
       "lesson": "use-ref-dom",
-      "title": "useRef: Mutable Value Persistence & Direct DOM Node Access",
+      "title": "useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation",
       "level": 2,
-      "order": 12,
+      "order": 10,
       "url": "learn/react/use-ref-dom.html",
       "prev": {
         "slug": "react/use-context",
-        "title": "Context API: Eliminating Prop Drilling & Context Splitting",
+        "title": "Context API: Eliminating Prop Drilling, Context Splitting & Performance Traps",
         "url": "learn/react/use-context.html"
       },
       "next": {
         "slug": "react/use-memo-callback",
-        "title": "Performance Optimization: useMemo, useCallback & Referential Equality",
+        "title": "Performance Optimization: useMemo, useCallback, React.memo & React 19 Compiler",
         "url": "learn/react/use-memo-callback.html"
       }
     },
@@ -3163,18 +3945,18 @@
       "slug": "react/use-memo-callback",
       "track": "react",
       "lesson": "use-memo-callback",
-      "title": "Performance Optimization: useMemo, useCallback & Referential Equality",
-      "level": 3,
-      "order": 13,
+      "title": "Performance Optimization: useMemo, useCallback, React.memo & React 19 Compiler",
+      "level": 2,
+      "order": 11,
       "url": "learn/react/use-memo-callback.html",
       "prev": {
         "slug": "react/use-ref-dom",
-        "title": "useRef: Mutable Value Persistence & Direct DOM Node Access",
+        "title": "useRef: Escaping the React Paradigm, Mutable Refs & DOM Manipulation",
         "url": "learn/react/use-ref-dom.html"
       },
       "next": {
         "slug": "react/custom-hooks",
-        "title": "Custom Hooks: Logic Extraction, Composition & Clean Architecture",
+        "title": "Custom Hooks Architecture: Headless UI, State Encapsulation & Composition",
         "url": "learn/react/custom-hooks.html"
       }
     },
@@ -3182,18 +3964,18 @@
       "slug": "react/custom-hooks",
       "track": "react",
       "lesson": "custom-hooks",
-      "title": "Custom Hooks: Logic Extraction, Composition & Clean Architecture",
-      "level": 3,
-      "order": 14,
+      "title": "Custom Hooks Architecture: Headless UI, State Encapsulation & Composition",
+      "level": 2,
+      "order": 12,
       "url": "learn/react/custom-hooks.html",
       "prev": {
         "slug": "react/use-memo-callback",
-        "title": "Performance Optimization: useMemo, useCallback & Referential Equality",
+        "title": "Performance Optimization: useMemo, useCallback, React.memo & React 19 Compiler",
         "url": "learn/react/use-memo-callback.html"
       },
       "next": {
         "slug": "react/react-router",
-        "title": "Client-Side Routing: React Router v7, Nested Routes & Loaders",
+        "title": "Client-Side Routing: React Router 7 Architecture, Nested Layouts & Loaders",
         "url": "learn/react/react-router.html"
       }
     },
@@ -3201,18 +3983,18 @@
       "slug": "react/react-router",
       "track": "react",
       "lesson": "react-router",
-      "title": "Client-Side Routing: React Router v7, Nested Routes & Loaders",
-      "level": 3,
-      "order": 15,
+      "title": "Client-Side Routing: React Router 7 Architecture, Nested Layouts & Loaders",
+      "level": 2,
+      "order": 13,
       "url": "learn/react/react-router.html",
       "prev": {
         "slug": "react/custom-hooks",
-        "title": "Custom Hooks: Logic Extraction, Composition & Clean Architecture",
+        "title": "Custom Hooks Architecture: Headless UI, State Encapsulation & Composition",
         "url": "learn/react/custom-hooks.html"
       },
       "next": {
         "slug": "react/data-fetching",
-        "title": "Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns",
+        "title": "Modern Data Fetching & Server State: TanStack Query (React Query) Architecture",
         "url": "learn/react/data-fetching.html"
       }
     },
@@ -3220,18 +4002,18 @@
       "slug": "react/data-fetching",
       "track": "react",
       "lesson": "data-fetching",
-      "title": "Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns",
-      "level": 3,
-      "order": 16,
+      "title": "Modern Data Fetching & Server State: TanStack Query (React Query) Architecture",
+      "level": 2,
+      "order": 14,
       "url": "learn/react/data-fetching.html",
       "prev": {
         "slug": "react/react-router",
-        "title": "Client-Side Routing: React Router v7, Nested Routes & Loaders",
+        "title": "Client-Side Routing: React Router 7 Architecture, Nested Layouts & Loaders",
         "url": "learn/react/react-router.html"
       },
       "next": {
         "slug": "react/state-management",
-        "title": "Global State Management with Zustand: Stores, Selectors & Slices",
+        "title": "Modern Global State Architecture: Zustand vs Redux Toolkit & Atomic State (Jotai)",
         "url": "learn/react/state-management.html"
       }
     },
@@ -3239,18 +4021,18 @@
       "slug": "react/state-management",
       "track": "react",
       "lesson": "state-management",
-      "title": "Global State Management with Zustand: Stores, Selectors & Slices",
+      "title": "Modern Global State Architecture: Zustand vs Redux Toolkit & Atomic State (Jotai)",
       "level": 3,
-      "order": 17,
+      "order": 15,
       "url": "learn/react/state-management.html",
       "prev": {
         "slug": "react/data-fetching",
-        "title": "Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns",
+        "title": "Modern Data Fetching & Server State: TanStack Query (React Query) Architecture",
         "url": "learn/react/data-fetching.html"
       },
       "next": {
         "slug": "react/react-best-practices",
-        "title": "React Production Checklist: Project Structure, Profiler & Performance Audits",
+        "title": "Production React 19: Security, Performance Audits, Accessibility & Architecture Checklist",
         "url": "learn/react/react-best-practices.html"
       }
     },
@@ -3258,13 +4040,13 @@
       "slug": "react/react-best-practices",
       "track": "react",
       "lesson": "react-best-practices",
-      "title": "React Production Checklist: Project Structure, Profiler & Performance Audits",
+      "title": "Production React 19: Security, Performance Audits, Accessibility & Architecture Checklist",
       "level": 3,
-      "order": 18,
+      "order": 16,
       "url": "learn/react/react-best-practices.html",
       "prev": {
         "slug": "react/state-management",
-        "title": "Global State Management with Zustand: Stores, Selectors & Slices",
+        "title": "Modern Global State Architecture: Zustand vs Redux Toolkit & Atomic State (Jotai)",
         "url": "learn/react/state-management.html"
       },
       "next": {
@@ -3283,7 +4065,7 @@
       "url": "learn/nodejs/what-node-is.html",
       "prev": {
         "slug": "react/react-best-practices",
-        "title": "React Production Checklist: Project Structure, Profiler & Performance Audits",
+        "title": "Production React 19: Security, Performance Audits, Accessibility & Architecture Checklist",
         "url": "learn/react/react-best-practices.html"
       },
       "next": {
@@ -3306,6 +4088,44 @@
         "url": "learn/nodejs/what-node-is.html"
       },
       "next": {
+        "slug": "nodejs/fs-promises",
+        "title": "File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes",
+        "url": "learn/nodejs/fs-promises.html"
+      }
+    },
+    {
+      "slug": "nodejs/fs-promises",
+      "track": "nodejs",
+      "lesson": "fs-promises",
+      "title": "File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes",
+      "level": 1,
+      "order": 4,
+      "url": "learn/nodejs/fs-promises.html",
+      "prev": {
+        "slug": "nodejs/node-modules",
+        "title": "Module Systems: CommonJS vs ECMAScript Modules (ESM) in Node.js 24",
+        "url": "learn/nodejs/node-modules.html"
+      },
+      "next": {
+        "slug": "nodejs/path-url",
+        "title": "Path & URL Modules: Cross-Platform File Paths & URL Traversal Prevention",
+        "url": "learn/nodejs/path-url.html"
+      }
+    },
+    {
+      "slug": "nodejs/path-url",
+      "track": "nodejs",
+      "lesson": "path-url",
+      "title": "Path & URL Modules: Cross-Platform File Paths & URL Traversal Prevention",
+      "level": 1,
+      "order": 5,
+      "url": "learn/nodejs/path-url.html",
+      "prev": {
+        "slug": "nodejs/fs-promises",
+        "title": "File System (fs/promises): Async I/O, Streams & Safe Atomic File Writes",
+        "url": "learn/nodejs/fs-promises.html"
+      },
+      "next": {
         "slug": "nodejs/event-loop",
         "title": "The 6-Phase Node.js Event Loop",
         "url": "learn/nodejs/event-loop.html"
@@ -3320,9 +4140,9 @@
       "order": 2,
       "url": "learn/nodejs/event-loop.html",
       "prev": {
-        "slug": "nodejs/node-modules",
-        "title": "Module Systems: CommonJS vs ECMAScript Modules (ESM) in Node.js 24",
-        "url": "learn/nodejs/node-modules.html"
+        "slug": "nodejs/path-url",
+        "title": "Path & URL Modules: Cross-Platform File Paths & URL Traversal Prevention",
+        "url": "learn/nodejs/path-url.html"
       },
       "next": {
         "slug": "nodejs/event-emitter",
@@ -3363,6 +4183,44 @@
         "url": "learn/nodejs/event-emitter.html"
       },
       "next": {
+        "slug": "nodejs/events-emitter",
+        "title": "Event-Driven Architecture: EventEmitter, Custom Events & Memory Leak Detection",
+        "url": "learn/nodejs/events-emitter.html"
+      }
+    },
+    {
+      "slug": "nodejs/events-emitter",
+      "track": "nodejs",
+      "lesson": "events-emitter",
+      "title": "Event-Driven Architecture: EventEmitter, Custom Events & Memory Leak Detection",
+      "level": 2,
+      "order": 6,
+      "url": "learn/nodejs/events-emitter.html",
+      "prev": {
+        "slug": "nodejs/fs-path",
+        "title": "File System Operations: Promises API, Streams & Path Normalization",
+        "url": "learn/nodejs/fs-path.html"
+      },
+      "next": {
+        "slug": "nodejs/crypto-security",
+        "title": "Node.js Crypto & Security: Password Hashing (Argon2/Bcrypt), AES-256-GCM & HMAC",
+        "url": "learn/nodejs/crypto-security.html"
+      }
+    },
+    {
+      "slug": "nodejs/crypto-security",
+      "track": "nodejs",
+      "lesson": "crypto-security",
+      "title": "Node.js Crypto & Security: Password Hashing (Argon2/Bcrypt), AES-256-GCM & HMAC",
+      "level": 2,
+      "order": 7,
+      "url": "learn/nodejs/crypto-security.html",
+      "prev": {
+        "slug": "nodejs/events-emitter",
+        "title": "Event-Driven Architecture: EventEmitter, Custom Events & Memory Leak Detection",
+        "url": "learn/nodejs/events-emitter.html"
+      },
+      "next": {
         "slug": "nodejs/http-module",
         "title": "Native HTTP/HTTPS Servers & Raw Request Routing Without Frameworks",
         "url": "learn/nodejs/http-module.html"
@@ -3377,13 +4235,13 @@
       "order": 7,
       "url": "learn/nodejs/http-module.html",
       "prev": {
-        "slug": "nodejs/fs-path",
-        "title": "File System Operations: Promises API, Streams & Path Normalization",
-        "url": "learn/nodejs/fs-path.html"
+        "slug": "nodejs/crypto-security",
+        "title": "Node.js Crypto & Security: Password Hashing (Argon2/Bcrypt), AES-256-GCM & HMAC",
+        "url": "learn/nodejs/crypto-security.html"
       },
       "next": {
         "slug": "nodejs/process-env",
-        "title": "The Process Object, Environment Variables, CLI Args & OS Signals",
+        "title": "Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)",
         "url": "learn/nodejs/process-env.html"
       }
     },
@@ -3391,7 +4249,7 @@
       "slug": "nodejs/process-env",
       "track": "nodejs",
       "lesson": "process-env",
-      "title": "The Process Object, Environment Variables, CLI Args & OS Signals",
+      "title": "Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)",
       "level": 2,
       "order": 8,
       "url": "learn/nodejs/process-env.html",
@@ -3399,6 +4257,25 @@
         "slug": "nodejs/http-module",
         "title": "Native HTTP/HTTPS Servers & Raw Request Routing Without Frameworks",
         "url": "learn/nodejs/http-module.html"
+      },
+      "next": {
+        "slug": "nodejs/child-processes",
+        "title": "Child Processes & OS Integration: Exec, Spawn, Fork & IPC Architecture",
+        "url": "learn/nodejs/child-processes.html"
+      }
+    },
+    {
+      "slug": "nodejs/child-processes",
+      "track": "nodejs",
+      "lesson": "child-processes",
+      "title": "Child Processes & OS Integration: Exec, Spawn, Fork & IPC Architecture",
+      "level": 2,
+      "order": 9,
+      "url": "learn/nodejs/child-processes.html",
+      "prev": {
+        "slug": "nodejs/process-env",
+        "title": "Process Architecture, Environment Variables (.env) & Signal Handling (SIGTERM)",
+        "url": "learn/nodejs/process-env.html"
       },
       "next": {
         "slug": "nodejs/error-handling-node",
@@ -3415,9 +4292,47 @@
       "order": 9,
       "url": "learn/nodejs/error-handling-node.html",
       "prev": {
-        "slug": "nodejs/process-env",
-        "title": "The Process Object, Environment Variables, CLI Args & OS Signals",
-        "url": "learn/nodejs/process-env.html"
+        "slug": "nodejs/child-processes",
+        "title": "Child Processes & OS Integration: Exec, Spawn, Fork & IPC Architecture",
+        "url": "learn/nodejs/child-processes.html"
+      },
+      "next": {
+        "slug": "nodejs/http-core",
+        "title": "Core HTTP/HTTPS & WebSockets: Raw Sockets, Keep-Alive & TLS Configuration",
+        "url": "learn/nodejs/http-core.html"
+      }
+    },
+    {
+      "slug": "nodejs/http-core",
+      "track": "nodejs",
+      "lesson": "http-core",
+      "title": "Core HTTP/HTTPS & WebSockets: Raw Sockets, Keep-Alive & TLS Configuration",
+      "level": 2,
+      "order": 11,
+      "url": "learn/nodejs/http-core.html",
+      "prev": {
+        "slug": "nodejs/error-handling-node",
+        "title": "Operational vs Programmer Errors, Uncaught Exceptions & Process Safety",
+        "url": "learn/nodejs/error-handling-node.html"
+      },
+      "next": {
+        "slug": "nodejs/npm-package-manager",
+        "title": "NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces",
+        "url": "learn/nodejs/npm-package-manager.html"
+      }
+    },
+    {
+      "slug": "nodejs/npm-package-manager",
+      "track": "nodejs",
+      "lesson": "npm-package-manager",
+      "title": "NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces",
+      "level": 2,
+      "order": 12,
+      "url": "learn/nodejs/npm-package-manager.html",
+      "prev": {
+        "slug": "nodejs/http-core",
+        "title": "Core HTTP/HTTPS & WebSockets: Raw Sockets, Keep-Alive & TLS Configuration",
+        "url": "learn/nodejs/http-core.html"
       },
       "next": {
         "slug": "nodejs/streams-buffers",
@@ -3434,24 +4349,24 @@
       "order": 3,
       "url": "learn/nodejs/streams-buffers.html",
       "prev": {
-        "slug": "nodejs/error-handling-node",
-        "title": "Operational vs Programmer Errors, Uncaught Exceptions & Process Safety",
-        "url": "learn/nodejs/error-handling-node.html"
+        "slug": "nodejs/npm-package-manager",
+        "title": "NPM, Package Management & Monorepos: Semantic Versioning, Package-Lock & Workspaces",
+        "url": "learn/nodejs/npm-package-manager.html"
       },
       "next": {
-        "slug": "nodejs/child-processes",
-        "title": "Multiprocessing in Node.js: spawn, fork, exec & Worker Threads",
-        "url": "learn/nodejs/child-processes.html"
+        "slug": "nodejs/worker-threads",
+        "title": "Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics",
+        "url": "learn/nodejs/worker-threads.html"
       }
     },
     {
-      "slug": "nodejs/child-processes",
+      "slug": "nodejs/worker-threads",
       "track": "nodejs",
-      "lesson": "child-processes",
-      "title": "Multiprocessing in Node.js: spawn, fork, exec & Worker Threads",
+      "lesson": "worker-threads",
+      "title": "Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics",
       "level": 3,
       "order": 10,
-      "url": "learn/nodejs/child-processes.html",
+      "url": "learn/nodejs/worker-threads.html",
       "prev": {
         "slug": "nodejs/streams-buffers",
         "title": "Streams, Buffers & Backpressure Management",
@@ -3472,9 +4387,9 @@
       "order": 11,
       "url": "learn/nodejs/npm-packages.html",
       "prev": {
-        "slug": "nodejs/child-processes",
-        "title": "Multiprocessing in Node.js: spawn, fork, exec & Worker Threads",
-        "url": "learn/nodejs/child-processes.html"
+        "slug": "nodejs/worker-threads",
+        "title": "Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics",
+        "url": "learn/nodejs/worker-threads.html"
       },
       "next": {
         "slug": "nodejs/testing-node",
@@ -3515,6 +4430,25 @@
         "url": "learn/nodejs/testing-node.html"
       },
       "next": {
+        "slug": "nodejs/debugging-profiling",
+        "title": "Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling",
+        "url": "learn/nodejs/debugging-profiling.html"
+      }
+    },
+    {
+      "slug": "nodejs/debugging-profiling",
+      "track": "nodejs",
+      "lesson": "debugging-profiling",
+      "title": "Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling",
+      "level": 3,
+      "order": 13,
+      "url": "learn/nodejs/debugging-profiling.html",
+      "prev": {
+        "slug": "nodejs/debugging-node",
+        "title": "Node.js Debugging: Inspector Protocol, Chrome DevTools & Memory Leak Profiling",
+        "url": "learn/nodejs/debugging-node.html"
+      },
+      "next": {
         "slug": "nodejs/security-node",
         "title": "Node.js Security Best Practices: Helmet, Input Sanitization, Rate Limiting & CSRF",
         "url": "learn/nodejs/security-node.html"
@@ -3529,9 +4463,9 @@
       "order": 14,
       "url": "learn/nodejs/security-node.html",
       "prev": {
-        "slug": "nodejs/debugging-node",
-        "title": "Node.js Debugging: Inspector Protocol, Chrome DevTools & Memory Leak Profiling",
-        "url": "learn/nodejs/debugging-node.html"
+        "slug": "nodejs/debugging-profiling",
+        "title": "Node.js Production Debugging: Chrome DevTools Inspector, Memory Leaks & CPU Profiling",
+        "url": "learn/nodejs/debugging-profiling.html"
       },
       "next": {
         "slug": "express/hello-express",
@@ -3572,6 +4506,25 @@
         "url": "learn/express/hello-express.html"
       },
       "next": {
+        "slug": "express/req-res-lifecycle",
+        "title": "Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation",
+        "url": "learn/express/req-res-lifecycle.html"
+      }
+    },
+    {
+      "slug": "express/req-res-lifecycle",
+      "track": "express",
+      "lesson": "req-res-lifecycle",
+      "title": "Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation",
+      "level": 1,
+      "order": 4,
+      "url": "learn/express/req-res-lifecycle.html",
+      "prev": {
+        "slug": "express/routing-params",
+        "title": "Express 5 Routing, Route Parameters, Query Strings & Sub-Routers",
+        "url": "learn/express/routing-params.html"
+      },
+      "next": {
         "slug": "express/request-response",
         "title": "Request & Response Lifecycle, Content Negotiation & Custom Responses",
         "url": "learn/express/request-response.html"
@@ -3586,9 +4539,47 @@
       "order": 4,
       "url": "learn/express/request-response.html",
       "prev": {
-        "slug": "express/routing-params",
-        "title": "Express 5 Routing, Route Parameters, Query Strings & Sub-Routers",
-        "url": "learn/express/routing-params.html"
+        "slug": "express/req-res-lifecycle",
+        "title": "Request-Response Lifecycle: Headers, Cookies, Streams & Content Negotiation",
+        "url": "learn/express/req-res-lifecycle.html"
+      },
+      "next": {
+        "slug": "express/middleware-deep-dive",
+        "title": "Middleware Architecture: Chain-of-Responsibility, Async Handlers & Next() Mechanics",
+        "url": "learn/express/middleware-deep-dive.html"
+      }
+    },
+    {
+      "slug": "express/middleware-deep-dive",
+      "track": "express",
+      "lesson": "middleware-deep-dive",
+      "title": "Middleware Architecture: Chain-of-Responsibility, Async Handlers & Next() Mechanics",
+      "level": 1,
+      "order": 6,
+      "url": "learn/express/middleware-deep-dive.html",
+      "prev": {
+        "slug": "express/request-response",
+        "title": "Request & Response Lifecycle, Content Negotiation & Custom Responses",
+        "url": "learn/express/request-response.html"
+      },
+      "next": {
+        "slug": "express/body-parsing",
+        "title": "Body Parsing, Data Validation with Zod & Payload Size Defense",
+        "url": "learn/express/body-parsing.html"
+      }
+    },
+    {
+      "slug": "express/body-parsing",
+      "track": "express",
+      "lesson": "body-parsing",
+      "title": "Body Parsing, Data Validation with Zod & Payload Size Defense",
+      "level": 1,
+      "order": 8,
+      "url": "learn/express/body-parsing.html",
+      "prev": {
+        "slug": "express/middleware-deep-dive",
+        "title": "Middleware Architecture: Chain-of-Responsibility, Async Handlers & Next() Mechanics",
+        "url": "learn/express/middleware-deep-dive.html"
       },
       "next": {
         "slug": "express/middleware",
@@ -3605,9 +4596,9 @@
       "order": 2,
       "url": "learn/express/middleware.html",
       "prev": {
-        "slug": "express/request-response",
-        "title": "Request & Response Lifecycle, Content Negotiation & Custom Responses",
-        "url": "learn/express/request-response.html"
+        "slug": "express/body-parsing",
+        "title": "Body Parsing, Data Validation with Zod & Payload Size Defense",
+        "url": "learn/express/body-parsing.html"
       },
       "next": {
         "slug": "express/error-handling-express",
@@ -3667,6 +4658,25 @@
         "url": "learn/express/validation-sanitization.html"
       },
       "next": {
+        "slug": "express/auth-jwt",
+        "title": "Authentication & JWT Architecture: Access Tokens, Refresh Token Rotation & Blacklisting",
+        "url": "learn/express/auth-jwt.html"
+      }
+    },
+    {
+      "slug": "express/auth-jwt",
+      "track": "express",
+      "lesson": "auth-jwt",
+      "title": "Authentication & JWT Architecture: Access Tokens, Refresh Token Rotation & Blacklisting",
+      "level": 2,
+      "order": 9,
+      "url": "learn/express/auth-jwt.html",
+      "prev": {
+        "slug": "express/authentication",
+        "title": "Authentication Architecture: JWTs, Password Hashing & HttpOnly Cookies",
+        "url": "learn/express/authentication.html"
+      },
+      "next": {
         "slug": "express/authorization-rbac",
         "title": "Role-Based Access Control (RBAC), Permissions & Auth Guards",
         "url": "learn/express/authorization-rbac.html"
@@ -3681,24 +4691,24 @@
       "order": 9,
       "url": "learn/express/authorization-rbac.html",
       "prev": {
-        "slug": "express/authentication",
-        "title": "Authentication Architecture: JWTs, Password Hashing & HttpOnly Cookies",
-        "url": "learn/express/authentication.html"
+        "slug": "express/auth-jwt",
+        "title": "Authentication & JWT Architecture: Access Tokens, Refresh Token Rotation & Blacklisting",
+        "url": "learn/express/auth-jwt.html"
       },
       "next": {
-        "slug": "express/file-uploads",
-        "title": "Multi-Part Form Data & Secure File Uploads with Multer",
-        "url": "learn/express/file-uploads.html"
+        "slug": "express/rbac-permissions",
+        "title": "Role-Based (RBAC) & Attribute-Based (ABAC) Access Control Architecture",
+        "url": "learn/express/rbac-permissions.html"
       }
     },
     {
-      "slug": "express/file-uploads",
+      "slug": "express/rbac-permissions",
       "track": "express",
-      "lesson": "file-uploads",
-      "title": "Multi-Part Form Data & Secure File Uploads with Multer",
+      "lesson": "rbac-permissions",
+      "title": "Role-Based (RBAC) & Attribute-Based (ABAC) Access Control Architecture",
       "level": 2,
       "order": 10,
-      "url": "learn/express/file-uploads.html",
+      "url": "learn/express/rbac-permissions.html",
       "prev": {
         "slug": "express/authorization-rbac",
         "title": "Role-Based Access Control (RBAC), Permissions & Auth Guards",
@@ -3719,8 +4729,46 @@
       "order": 11,
       "url": "learn/express/api-pagination.html",
       "prev": {
+        "slug": "express/rbac-permissions",
+        "title": "Role-Based (RBAC) & Attribute-Based (ABAC) Access Control Architecture",
+        "url": "learn/express/rbac-permissions.html"
+      },
+      "next": {
         "slug": "express/file-uploads",
-        "title": "Multi-Part Form Data & Secure File Uploads with Multer",
+        "title": "Streaming File Uploads: Multer Architecture, Cloud S3/R2 Storage & Malware Validation",
+        "url": "learn/express/file-uploads.html"
+      }
+    },
+    {
+      "slug": "express/file-uploads",
+      "track": "express",
+      "lesson": "file-uploads",
+      "title": "Streaming File Uploads: Multer Architecture, Cloud S3/R2 Storage & Malware Validation",
+      "level": 2,
+      "order": 11,
+      "url": "learn/express/file-uploads.html",
+      "prev": {
+        "slug": "express/api-pagination",
+        "title": "API Pagination & Query Optimization: Offset vs Cursor-Based Pagination",
+        "url": "learn/express/api-pagination.html"
+      },
+      "next": {
+        "slug": "express/error-handling",
+        "title": "Centralized Error Handling: Operational vs Programmer Errors, Logging & Error Middleware",
+        "url": "learn/express/error-handling.html"
+      }
+    },
+    {
+      "slug": "express/error-handling",
+      "track": "express",
+      "lesson": "error-handling",
+      "title": "Centralized Error Handling: Operational vs Programmer Errors, Logging & Error Middleware",
+      "level": 2,
+      "order": 12,
+      "url": "learn/express/error-handling.html",
+      "prev": {
+        "slug": "express/file-uploads",
+        "title": "Streaming File Uploads: Multer Architecture, Cloud S3/R2 Storage & Malware Validation",
         "url": "learn/express/file-uploads.html"
       },
       "next": {
@@ -3738,9 +4786,9 @@
       "order": 3,
       "url": "learn/express/rest-crud.html",
       "prev": {
-        "slug": "express/api-pagination",
-        "title": "API Pagination & Query Optimization: Offset vs Cursor-Based Pagination",
-        "url": "learn/express/api-pagination.html"
+        "slug": "express/error-handling",
+        "title": "Centralized Error Handling: Operational vs Programmer Errors, Logging & Error Middleware",
+        "url": "learn/express/error-handling.html"
       },
       "next": {
         "slug": "express/rate-limiting-security",
@@ -3762,23 +4810,42 @@
         "url": "learn/express/rest-crud.html"
       },
       "next": {
-        "slug": "express/api-documentation",
-        "title": "API Documentation with OpenAPI 3.1 & Swagger UI Generation",
-        "url": "learn/express/api-documentation.html"
+        "slug": "express/rate-limiting",
+        "title": "Rate Limiting & DDoS Defense: Token Bucket, Sliding Window & Redis Store",
+        "url": "learn/express/rate-limiting.html"
       }
     },
     {
-      "slug": "express/api-documentation",
+      "slug": "express/rate-limiting",
       "track": "express",
-      "lesson": "api-documentation",
-      "title": "API Documentation with OpenAPI 3.1 & Swagger UI Generation",
+      "lesson": "rate-limiting",
+      "title": "Rate Limiting & DDoS Defense: Token Bucket, Sliding Window & Redis Store",
       "level": 3,
       "order": 13,
-      "url": "learn/express/api-documentation.html",
+      "url": "learn/express/rate-limiting.html",
       "prev": {
         "slug": "express/rate-limiting-security",
         "title": "API Rate Limiting, CORS Whitelisting & Advanced Security Headers",
         "url": "learn/express/rate-limiting-security.html"
+      },
+      "next": {
+        "slug": "express/cors-security",
+        "title": "CORS & API Security: Preflight OPTIONS, Origin Whitelisting & Helmet Hardening",
+        "url": "learn/express/cors-security.html"
+      }
+    },
+    {
+      "slug": "express/cors-security",
+      "track": "express",
+      "lesson": "cors-security",
+      "title": "CORS & API Security: Preflight OPTIONS, Origin Whitelisting & Helmet Hardening",
+      "level": 3,
+      "order": 14,
+      "url": "learn/express/cors-security.html",
+      "prev": {
+        "slug": "express/rate-limiting",
+        "title": "Rate Limiting & DDoS Defense: Token Bucket, Sliding Window & Redis Store",
+        "url": "learn/express/rate-limiting.html"
       },
       "next": {
         "slug": "express/deployment-production",
@@ -3795,9 +4862,28 @@
       "order": 14,
       "url": "learn/express/deployment-production.html",
       "prev": {
+        "slug": "express/cors-security",
+        "title": "CORS & API Security: Preflight OPTIONS, Origin Whitelisting & Helmet Hardening",
+        "url": "learn/express/cors-security.html"
+      },
+      "next": {
         "slug": "express/api-documentation",
-        "title": "API Documentation with OpenAPI 3.1 & Swagger UI Generation",
+        "title": "Enterprise API Documentation: OpenAPI 3.1, Swagger UI & Automated Contract Testing",
         "url": "learn/express/api-documentation.html"
+      }
+    },
+    {
+      "slug": "express/api-documentation",
+      "track": "express",
+      "lesson": "api-documentation",
+      "title": "Enterprise API Documentation: OpenAPI 3.1, Swagger UI & Automated Contract Testing",
+      "level": 3,
+      "order": 15,
+      "url": "learn/express/api-documentation.html",
+      "prev": {
+        "slug": "express/deployment-production",
+        "title": "Express Production Readiness: PM2 Cluster, Reverse Proxy & Graceful Shutdowns",
+        "url": "learn/express/deployment-production.html"
       },
       "next": {
         "slug": "mongodb/document-model",
@@ -3814,9 +4900,9 @@
       "order": 1,
       "url": "learn/mongodb/document-model.html",
       "prev": {
-        "slug": "express/deployment-production",
-        "title": "Express Production Readiness: PM2 Cluster, Reverse Proxy & Graceful Shutdowns",
-        "url": "learn/express/deployment-production.html"
+        "slug": "express/api-documentation",
+        "title": "Enterprise API Documentation: OpenAPI 3.1, Swagger UI & Automated Contract Testing",
+        "url": "learn/express/api-documentation.html"
       },
       "next": {
         "slug": "mongodb/crud-operations",
@@ -3839,7 +4925,7 @@
       },
       "next": {
         "slug": "mongodb/schema-design",
-        "title": "MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold",
+        "title": "MongoDB Schema Design: Embedding vs Referencing & The 16MB Threshold",
         "url": "learn/mongodb/schema-design.html"
       }
     },
@@ -3847,9 +4933,9 @@
       "slug": "mongodb/schema-design",
       "track": "mongodb",
       "lesson": "schema-design",
-      "title": "MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold",
-      "level": 2,
-      "order": 3,
+      "title": "MongoDB Schema Design: Embedding vs Referencing & The 16MB Threshold",
+      "level": 1,
+      "order": 4,
       "url": "learn/mongodb/schema-design.html",
       "prev": {
         "slug": "mongodb/crud-operations",
@@ -3872,12 +4958,31 @@
       "url": "learn/mongodb/indexes-performance.html",
       "prev": {
         "slug": "mongodb/schema-design",
-        "title": "MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold",
+        "title": "MongoDB Schema Design: Embedding vs Referencing & The 16MB Threshold",
         "url": "learn/mongodb/schema-design.html"
       },
       "next": {
+        "slug": "mongodb/indexing-strategies",
+        "title": "Indexing Architecture: Compound Indexes, ESR Rule, Partial & TTL Indexes",
+        "url": "learn/mongodb/indexing-strategies.html"
+      }
+    },
+    {
+      "slug": "mongodb/indexing-strategies",
+      "track": "mongodb",
+      "lesson": "indexing-strategies",
+      "title": "Indexing Architecture: Compound Indexes, ESR Rule, Partial & TTL Indexes",
+      "level": 2,
+      "order": 6,
+      "url": "learn/mongodb/indexing-strategies.html",
+      "prev": {
+        "slug": "mongodb/indexes-performance",
+        "title": "MongoDB Index Strategies: Single, Compound, Multikey, TTL & Explain Plans",
+        "url": "learn/mongodb/indexes-performance.html"
+      },
+      "next": {
         "slug": "mongodb/aggregation-pipeline",
-        "title": "MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet",
+        "title": "Aggregation Pipeline Mastery: $match, $group, $lookup, $facet & Window Fields",
         "url": "learn/mongodb/aggregation-pipeline.html"
       }
     },
@@ -3885,32 +4990,32 @@
       "slug": "mongodb/aggregation-pipeline",
       "track": "mongodb",
       "lesson": "aggregation-pipeline",
-      "title": "MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet",
+      "title": "Aggregation Pipeline Mastery: $match, $group, $lookup, $facet & Window Fields",
       "level": 2,
-      "order": 5,
+      "order": 8,
       "url": "learn/mongodb/aggregation-pipeline.html",
       "prev": {
-        "slug": "mongodb/indexes-performance",
-        "title": "MongoDB Index Strategies: Single, Compound, Multikey, TTL & Explain Plans",
-        "url": "learn/mongodb/indexes-performance.html"
+        "slug": "mongodb/indexing-strategies",
+        "title": "Indexing Architecture: Compound Indexes, ESR Rule, Partial & TTL Indexes",
+        "url": "learn/mongodb/indexing-strategies.html"
       },
       "next": {
-        "slug": "mongodb/transactions-acid",
-        "title": "Multi-Document ACID Transactions & Session Management in MongoDB",
-        "url": "learn/mongodb/transactions-acid.html"
+        "slug": "mongodb/mongoose-middleware",
+        "title": "Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population",
+        "url": "learn/mongodb/mongoose-middleware.html"
       }
     },
     {
-      "slug": "mongodb/transactions-acid",
+      "slug": "mongodb/mongoose-middleware",
       "track": "mongodb",
-      "lesson": "transactions-acid",
-      "title": "Multi-Document ACID Transactions & Session Management in MongoDB",
-      "level": 3,
-      "order": 6,
-      "url": "learn/mongodb/transactions-acid.html",
+      "lesson": "mongoose-middleware",
+      "title": "Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population",
+      "level": 2,
+      "order": 11,
+      "url": "learn/mongodb/mongoose-middleware.html",
       "prev": {
         "slug": "mongodb/aggregation-pipeline",
-        "title": "MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet",
+        "title": "Aggregation Pipeline Mastery: $match, $group, $lookup, $facet & Window Fields",
         "url": "learn/mongodb/aggregation-pipeline.html"
       },
       "next": {
@@ -3928,9 +5033,9 @@
       "order": 7,
       "url": "learn/mongodb/mongoose-odm.html",
       "prev": {
-        "slug": "mongodb/transactions-acid",
-        "title": "Multi-Document ACID Transactions & Session Management in MongoDB",
-        "url": "learn/mongodb/transactions-acid.html"
+        "slug": "mongodb/mongoose-middleware",
+        "title": "Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population",
+        "url": "learn/mongodb/mongoose-middleware.html"
       },
       "next": {
         "slug": "mongodb/schema-validation",
@@ -3952,8 +5057,27 @@
         "url": "learn/mongodb/mongoose-odm.html"
       },
       "next": {
+        "slug": "mongodb/transactions-acid",
+        "title": "Multi-Document ACID Transactions, Write Concerns & Read Concerns",
+        "url": "learn/mongodb/transactions-acid.html"
+      }
+    },
+    {
+      "slug": "mongodb/transactions-acid",
+      "track": "mongodb",
+      "lesson": "transactions-acid",
+      "title": "Multi-Document ACID Transactions, Write Concerns & Read Concerns",
+      "level": 3,
+      "order": 10,
+      "url": "learn/mongodb/transactions-acid.html",
+      "prev": {
+        "slug": "mongodb/schema-validation",
+        "title": "MongoDB Collection-Level JSON Schema Validation ($jsonSchema)",
+        "url": "learn/mongodb/schema-validation.html"
+      },
+      "next": {
         "slug": "mongodb/sharding-replication",
-        "title": "High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling",
+        "title": "Distributed MongoDB: Replica Sets, Raft Consensus & Sharding Architecture",
         "url": "learn/mongodb/sharding-replication.html"
       }
     },
@@ -3961,18 +5085,37 @@
       "slug": "mongodb/sharding-replication",
       "track": "mongodb",
       "lesson": "sharding-replication",
-      "title": "High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling",
+      "title": "Distributed MongoDB: Replica Sets, Raft Consensus & Sharding Architecture",
       "level": 3,
-      "order": 9,
+      "order": 12,
       "url": "learn/mongodb/sharding-replication.html",
       "prev": {
-        "slug": "mongodb/schema-validation",
-        "title": "MongoDB Collection-Level JSON Schema Validation ($jsonSchema)",
-        "url": "learn/mongodb/schema-validation.html"
+        "slug": "mongodb/transactions-acid",
+        "title": "Multi-Document ACID Transactions, Write Concerns & Read Concerns",
+        "url": "learn/mongodb/transactions-acid.html"
+      },
+      "next": {
+        "slug": "mongodb/performance-tuning",
+        "title": "MongoDB Performance Tuning: WiredTiger Cache, Working Set & Profiler Analysis",
+        "url": "learn/mongodb/performance-tuning.html"
+      }
+    },
+    {
+      "slug": "mongodb/performance-tuning",
+      "track": "mongodb",
+      "lesson": "performance-tuning",
+      "title": "MongoDB Performance Tuning: WiredTiger Cache, Working Set & Profiler Analysis",
+      "level": 3,
+      "order": 13,
+      "url": "learn/mongodb/performance-tuning.html",
+      "prev": {
+        "slug": "mongodb/sharding-replication",
+        "title": "Distributed MongoDB: Replica Sets, Raft Consensus & Sharding Architecture",
+        "url": "learn/mongodb/sharding-replication.html"
       },
       "next": {
         "slug": "mongodb/backup-security",
-        "title": "Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery",
+        "title": "MongoDB Security, Role-Based Access Control (RBAC), TLS & Automated Backup Strategies",
         "url": "learn/mongodb/backup-security.html"
       }
     },
@@ -3980,14 +5123,14 @@
       "slug": "mongodb/backup-security",
       "track": "mongodb",
       "lesson": "backup-security",
-      "title": "Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery",
+      "title": "MongoDB Security, Role-Based Access Control (RBAC), TLS & Automated Backup Strategies",
       "level": 3,
-      "order": 10,
+      "order": 14,
       "url": "learn/mongodb/backup-security.html",
       "prev": {
-        "slug": "mongodb/sharding-replication",
-        "title": "High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling",
-        "url": "learn/mongodb/sharding-replication.html"
+        "slug": "mongodb/performance-tuning",
+        "title": "MongoDB Performance Tuning: WiredTiger Cache, Working Set & Profiler Analysis",
+        "url": "learn/mongodb/performance-tuning.html"
       },
       "next": {
         "slug": "postgresql/relational-model",
@@ -4005,7 +5148,7 @@
       "url": "learn/postgresql/relational-model.html",
       "prev": {
         "slug": "mongodb/backup-security",
-        "title": "Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery",
+        "title": "MongoDB Security, Role-Based Access Control (RBAC), TLS & Automated Backup Strategies",
         "url": "learn/mongodb/backup-security.html"
       },
       "next": {
@@ -4029,7 +5172,7 @@
       },
       "next": {
         "slug": "postgresql/joins-relations",
-        "title": "Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics",
+        "title": "Relational Joins, CTEs & Complex Query Optimization",
         "url": "learn/postgresql/joins-relations.html"
       }
     },
@@ -4037,9 +5180,9 @@
       "slug": "postgresql/joins-relations",
       "track": "postgresql",
       "lesson": "joins-relations",
-      "title": "Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics",
-      "level": 2,
-      "order": 3,
+      "title": "Relational Joins, CTEs & Complex Query Optimization",
+      "level": 1,
+      "order": 4,
       "url": "learn/postgresql/joins-relations.html",
       "prev": {
         "slug": "postgresql/sql-syntax-data-types",
@@ -4062,8 +5205,65 @@
       "url": "learn/postgresql/indexes-query-planner.html",
       "prev": {
         "slug": "postgresql/joins-relations",
-        "title": "Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics",
+        "title": "Relational Joins, CTEs & Complex Query Optimization",
         "url": "learn/postgresql/joins-relations.html"
+      },
+      "next": {
+        "slug": "postgresql/indexing-btree-gin",
+        "title": "PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data",
+        "url": "learn/postgresql/indexing-btree-gin.html"
+      }
+    },
+    {
+      "slug": "postgresql/indexing-btree-gin",
+      "track": "postgresql",
+      "lesson": "indexing-btree-gin",
+      "title": "PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data",
+      "level": 2,
+      "order": 6,
+      "url": "learn/postgresql/indexing-btree-gin.html",
+      "prev": {
+        "slug": "postgresql/indexes-query-planner",
+        "title": "PostgreSQL Indexes & Query Optimization: B-Tree, GIN, BRIN & EXPLAIN ANALYZE",
+        "url": "learn/postgresql/indexes-query-planner.html"
+      },
+      "next": {
+        "slug": "postgresql/jsonb-hybrid",
+        "title": "Hybrid PostgreSQL: JSONB Indexing, JSONPath Queries & Relational Duality",
+        "url": "learn/postgresql/jsonb-hybrid.html"
+      }
+    },
+    {
+      "slug": "postgresql/jsonb-hybrid",
+      "track": "postgresql",
+      "lesson": "jsonb-hybrid",
+      "title": "Hybrid PostgreSQL: JSONB Indexing, JSONPath Queries & Relational Duality",
+      "level": 2,
+      "order": 8,
+      "url": "learn/postgresql/jsonb-hybrid.html",
+      "prev": {
+        "slug": "postgresql/indexing-btree-gin",
+        "title": "PostgreSQL Indexing: B-Tree, GIN (Inverted), BRIN & GiST for Geospatial Data",
+        "url": "learn/postgresql/indexing-btree-gin.html"
+      },
+      "next": {
+        "slug": "postgresql/window-functions",
+        "title": "Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG",
+        "url": "learn/postgresql/window-functions.html"
+      }
+    },
+    {
+      "slug": "postgresql/window-functions",
+      "track": "postgresql",
+      "lesson": "window-functions",
+      "title": "Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG",
+      "level": 2,
+      "order": 10,
+      "url": "learn/postgresql/window-functions.html",
+      "prev": {
+        "slug": "postgresql/jsonb-hybrid",
+        "title": "Hybrid PostgreSQL: JSONB Indexing, JSONPath Queries & Relational Duality",
+        "url": "learn/postgresql/jsonb-hybrid.html"
       },
       "next": {
         "slug": "postgresql/transactions-concurrency",
@@ -4080,9 +5280,9 @@
       "order": 5,
       "url": "learn/postgresql/transactions-concurrency.html",
       "prev": {
-        "slug": "postgresql/indexes-query-planner",
-        "title": "PostgreSQL Indexes & Query Optimization: B-Tree, GIN, BRIN & EXPLAIN ANALYZE",
-        "url": "learn/postgresql/indexes-query-planner.html"
+        "slug": "postgresql/window-functions",
+        "title": "Advanced Analytical Window Functions: OVER, PARTITION BY, RANK & LEAD/LAG",
+        "url": "learn/postgresql/window-functions.html"
       },
       "next": {
         "slug": "postgresql/jsonb-hybrid-patterns",
@@ -4180,6 +5380,82 @@
         "url": "learn/postgresql/connection-pooling.html"
       },
       "next": {
+        "slug": "postgresql/transactions-locks",
+        "title": "ACID Isolation Levels & Concurrency Locks: MVCC, Row Locks & Deadlock Prevention",
+        "url": "learn/postgresql/transactions-locks.html"
+      }
+    },
+    {
+      "slug": "postgresql/transactions-locks",
+      "track": "postgresql",
+      "lesson": "transactions-locks",
+      "title": "ACID Isolation Levels & Concurrency Locks: MVCC, Row Locks & Deadlock Prevention",
+      "level": 3,
+      "order": 11,
+      "url": "learn/postgresql/transactions-locks.html",
+      "prev": {
+        "slug": "postgresql/security-backup-pg",
+        "title": "PostgreSQL Production Security: Row-Level Security (RLS), pg_dump & WAL Archiving",
+        "url": "learn/postgresql/security-backup-pg.html"
+      },
+      "next": {
+        "slug": "postgresql/partitioning-sharding",
+        "title": "Declarative Table Partitioning: Range, List, Hash & Citus Distributed Sharding",
+        "url": "learn/postgresql/partitioning-sharding.html"
+      }
+    },
+    {
+      "slug": "postgresql/partitioning-sharding",
+      "track": "postgresql",
+      "lesson": "partitioning-sharding",
+      "title": "Declarative Table Partitioning: Range, List, Hash & Citus Distributed Sharding",
+      "level": 3,
+      "order": 12,
+      "url": "learn/postgresql/partitioning-sharding.html",
+      "prev": {
+        "slug": "postgresql/transactions-locks",
+        "title": "ACID Isolation Levels & Concurrency Locks: MVCC, Row Locks & Deadlock Prevention",
+        "url": "learn/postgresql/transactions-locks.html"
+      },
+      "next": {
+        "slug": "postgresql/fulltext-search",
+        "title": "Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching",
+        "url": "learn/postgresql/fulltext-search.html"
+      }
+    },
+    {
+      "slug": "postgresql/fulltext-search",
+      "track": "postgresql",
+      "lesson": "fulltext-search",
+      "title": "Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching",
+      "level": 3,
+      "order": 13,
+      "url": "learn/postgresql/fulltext-search.html",
+      "prev": {
+        "slug": "postgresql/partitioning-sharding",
+        "title": "Declarative Table Partitioning: Range, List, Hash & Citus Distributed Sharding",
+        "url": "learn/postgresql/partitioning-sharding.html"
+      },
+      "next": {
+        "slug": "postgresql/pg-performance",
+        "title": "PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling",
+        "url": "learn/postgresql/pg-performance.html"
+      }
+    },
+    {
+      "slug": "postgresql/pg-performance",
+      "track": "postgresql",
+      "lesson": "pg-performance",
+      "title": "PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling",
+      "level": 3,
+      "order": 14,
+      "url": "learn/postgresql/pg-performance.html",
+      "prev": {
+        "slug": "postgresql/fulltext-search",
+        "title": "Full-Text Search (FTS): tsvector, tsquery, Ranking & Trigram Fuzzy Matching",
+        "url": "learn/postgresql/fulltext-search.html"
+      },
+      "next": {
         "slug": "prisma/what-is-an-orm",
         "title": "What is an ORM: Prisma Architecture & Type Safety",
         "url": "learn/prisma/what-is-an-orm.html"
@@ -4194,9 +5470,9 @@
       "order": 1,
       "url": "learn/prisma/what-is-an-orm.html",
       "prev": {
-        "slug": "postgresql/security-backup-pg",
-        "title": "PostgreSQL Production Security: Row-Level Security (RLS), pg_dump & WAL Archiving",
-        "url": "learn/postgresql/security-backup-pg.html"
+        "slug": "postgresql/pg-performance",
+        "title": "PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling",
+        "url": "learn/postgresql/pg-performance.html"
       },
       "next": {
         "slug": "prisma/schema-modeling",
@@ -4237,6 +5513,25 @@
         "url": "learn/prisma/schema-modeling.html"
       },
       "next": {
+        "slug": "prisma/client-crud",
+        "title": "Prisma Client CRUD: Type-Safe Queries, Filtering, Pagination & Partial Selection",
+        "url": "learn/prisma/client-crud.html"
+      }
+    },
+    {
+      "slug": "prisma/client-crud",
+      "track": "prisma",
+      "lesson": "client-crud",
+      "title": "Prisma Client CRUD: Type-Safe Queries, Filtering, Pagination & Partial Selection",
+      "level": 1,
+      "order": 4,
+      "url": "learn/prisma/client-crud.html",
+      "prev": {
+        "slug": "prisma/migrations-lifecycle",
+        "title": "Prisma Migrate: prisma migrate dev, deploy, reset & The Shadow Database",
+        "url": "learn/prisma/migrations-lifecycle.html"
+      },
+      "next": {
         "slug": "prisma/crud-queries",
         "title": "Prisma Client CRUD: findUnique, findFirst, findMany, create, update & delete",
         "url": "learn/prisma/crud-queries.html"
@@ -4251,9 +5546,9 @@
       "order": 4,
       "url": "learn/prisma/crud-queries.html",
       "prev": {
-        "slug": "prisma/migrations-lifecycle",
-        "title": "Prisma Migrate: prisma migrate dev, deploy, reset & The Shadow Database",
-        "url": "learn/prisma/migrations-lifecycle.html"
+        "slug": "prisma/client-crud",
+        "title": "Prisma Client CRUD: Type-Safe Queries, Filtering, Pagination & Partial Selection",
+        "url": "learn/prisma/client-crud.html"
       },
       "next": {
         "slug": "prisma/relations-filtering",
@@ -4275,6 +5570,25 @@
         "url": "learn/prisma/crud-queries.html"
       },
       "next": {
+        "slug": "prisma/migrations-ci-cd",
+        "title": "Database Migrations & CI/CD Pipelines: prisma migrate, migrate deploy & Drift Detection",
+        "url": "learn/prisma/migrations-ci-cd.html"
+      }
+    },
+    {
+      "slug": "prisma/migrations-ci-cd",
+      "track": "prisma",
+      "lesson": "migrations-ci-cd",
+      "title": "Database Migrations & CI/CD Pipelines: prisma migrate, migrate deploy & Drift Detection",
+      "level": 2,
+      "order": 6,
+      "url": "learn/prisma/migrations-ci-cd.html",
+      "prev": {
+        "slug": "prisma/relations-filtering",
+        "title": "Nested Relations, Deep Querying: include vs select & Fluent API",
+        "url": "learn/prisma/relations-filtering.html"
+      },
+      "next": {
         "slug": "prisma/transactions-batching",
         "title": "Prisma Transactions: Sequential Batching vs Interactive $transaction",
         "url": "learn/prisma/transactions-batching.html"
@@ -4289,9 +5603,47 @@
       "order": 6,
       "url": "learn/prisma/transactions-batching.html",
       "prev": {
-        "slug": "prisma/relations-filtering",
-        "title": "Nested Relations, Deep Querying: include vs select & Fluent API",
-        "url": "learn/prisma/relations-filtering.html"
+        "slug": "prisma/migrations-ci-cd",
+        "title": "Database Migrations & CI/CD Pipelines: prisma migrate, migrate deploy & Drift Detection",
+        "url": "learn/prisma/migrations-ci-cd.html"
+      },
+      "next": {
+        "slug": "prisma/relation-queries",
+        "title": "Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations",
+        "url": "learn/prisma/relation-queries.html"
+      }
+    },
+    {
+      "slug": "prisma/relation-queries",
+      "track": "prisma",
+      "lesson": "relation-queries",
+      "title": "Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations",
+      "level": 2,
+      "order": 8,
+      "url": "learn/prisma/relation-queries.html",
+      "prev": {
+        "slug": "prisma/transactions-batching",
+        "title": "Prisma Transactions: Sequential Batching vs Interactive $transaction",
+        "url": "learn/prisma/transactions-batching.html"
+      },
+      "next": {
+        "slug": "prisma/middleware-logging",
+        "title": "Prisma Client Logging, OpenTelemetry Tracing & Query Event Metrics",
+        "url": "learn/prisma/middleware-logging.html"
+      }
+    },
+    {
+      "slug": "prisma/middleware-logging",
+      "track": "prisma",
+      "lesson": "middleware-logging",
+      "title": "Prisma Client Logging, OpenTelemetry Tracing & Query Event Metrics",
+      "level": 2,
+      "order": 12,
+      "url": "learn/prisma/middleware-logging.html",
+      "prev": {
+        "slug": "prisma/relation-queries",
+        "title": "Relational Queries: Nested Writes, Fluent API, Select vs Include & Filter Relations",
+        "url": "learn/prisma/relation-queries.html"
       },
       "next": {
         "slug": "prisma/raw-queries",
@@ -4308,9 +5660,9 @@
       "order": 7,
       "url": "learn/prisma/raw-queries.html",
       "prev": {
-        "slug": "prisma/transactions-batching",
-        "title": "Prisma Transactions: Sequential Batching vs Interactive $transaction",
-        "url": "learn/prisma/transactions-batching.html"
+        "slug": "prisma/middleware-logging",
+        "title": "Prisma Client Logging, OpenTelemetry Tracing & Query Event Metrics",
+        "url": "learn/prisma/middleware-logging.html"
       },
       "next": {
         "slug": "prisma/middleware-extensions",
@@ -4370,6 +5722,82 @@
         "url": "learn/prisma/performance-optimization.html"
       },
       "next": {
+        "slug": "prisma/transactions-optimistic",
+        "title": "Prisma Transactions & Concurrency: Interactive Transactions ($transaction) & Optimistic Locking",
+        "url": "learn/prisma/transactions-optimistic.html"
+      }
+    },
+    {
+      "slug": "prisma/transactions-optimistic",
+      "track": "prisma",
+      "lesson": "transactions-optimistic",
+      "title": "Prisma Transactions & Concurrency: Interactive Transactions ($transaction) & Optimistic Locking",
+      "level": 3,
+      "order": 10,
+      "url": "learn/prisma/transactions-optimistic.html",
+      "prev": {
+        "slug": "prisma/production-deployment",
+        "title": "Prisma in Production: Connection Limits, Accelerate, Pulse & Serverless Architecture",
+        "url": "learn/prisma/production-deployment.html"
+      },
+      "next": {
+        "slug": "prisma/raw-sql-extensions",
+        "title": "Raw SQL Escaping ($queryRaw) & Prisma Client Extensions ($extends)",
+        "url": "learn/prisma/raw-sql-extensions.html"
+      }
+    },
+    {
+      "slug": "prisma/raw-sql-extensions",
+      "track": "prisma",
+      "lesson": "raw-sql-extensions",
+      "title": "Raw SQL Escaping ($queryRaw) & Prisma Client Extensions ($extends)",
+      "level": 3,
+      "order": 11,
+      "url": "learn/prisma/raw-sql-extensions.html",
+      "prev": {
+        "slug": "prisma/transactions-optimistic",
+        "title": "Prisma Transactions & Concurrency: Interactive Transactions ($transaction) & Optimistic Locking",
+        "url": "learn/prisma/transactions-optimistic.html"
+      },
+      "next": {
+        "slug": "prisma/performance-n-plus-1",
+        "title": "Solving N+1 Query Problem: DataLoader Pattern, Prisma Query Batching & Optimizations",
+        "url": "learn/prisma/performance-n-plus-1.html"
+      }
+    },
+    {
+      "slug": "prisma/performance-n-plus-1",
+      "track": "prisma",
+      "lesson": "performance-n-plus-1",
+      "title": "Solving N+1 Query Problem: DataLoader Pattern, Prisma Query Batching & Optimizations",
+      "level": 3,
+      "order": 13,
+      "url": "learn/prisma/performance-n-plus-1.html",
+      "prev": {
+        "slug": "prisma/raw-sql-extensions",
+        "title": "Raw SQL Escaping ($queryRaw) & Prisma Client Extensions ($extends)",
+        "url": "learn/prisma/raw-sql-extensions.html"
+      },
+      "next": {
+        "slug": "prisma/enterprise-production",
+        "title": "Enterprise Prisma: Connection Pool Sizing, Read Replicas & Driver Adapters (PgBouncer)",
+        "url": "learn/prisma/enterprise-production.html"
+      }
+    },
+    {
+      "slug": "prisma/enterprise-production",
+      "track": "prisma",
+      "lesson": "enterprise-production",
+      "title": "Enterprise Prisma: Connection Pool Sizing, Read Replicas & Driver Adapters (PgBouncer)",
+      "level": 3,
+      "order": 14,
+      "url": "learn/prisma/enterprise-production.html",
+      "prev": {
+        "slug": "prisma/performance-n-plus-1",
+        "title": "Solving N+1 Query Problem: DataLoader Pattern, Prisma Query Batching & Optimizations",
+        "url": "learn/prisma/performance-n-plus-1.html"
+      },
+      "next": {
         "slug": "architecture/layered-architecture",
         "title": "N-Tier Layered Architecture: Controllers, Services, Repositories & DTOs",
         "url": "learn/architecture/layered-architecture.html"
@@ -4384,13 +5812,13 @@
       "order": 2,
       "url": "learn/architecture/layered-architecture.html",
       "prev": {
-        "slug": "prisma/production-deployment",
-        "title": "Prisma in Production: Connection Limits, Accelerate, Pulse & Serverless Architecture",
-        "url": "learn/prisma/production-deployment.html"
+        "slug": "prisma/enterprise-production",
+        "title": "Enterprise Prisma: Connection Pool Sizing, Read Replicas & Driver Adapters (PgBouncer)",
+        "url": "learn/prisma/enterprise-production.html"
       },
       "next": {
         "slug": "architecture/clean-architecture",
-        "title": "Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js",
+        "title": "Clean Architecture & Hexagonal (Ports and Adapters): Domain-Centric Design",
         "url": "learn/architecture/clean-architecture.html"
       }
     },
@@ -4398,9 +5826,9 @@
       "slug": "architecture/clean-architecture",
       "track": "architecture",
       "lesson": "clean-architecture",
-      "title": "Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js",
+      "title": "Clean Architecture & Hexagonal (Ports and Adapters): Domain-Centric Design",
       "level": 2,
-      "order": 3,
+      "order": 4,
       "url": "learn/architecture/clean-architecture.html",
       "prev": {
         "slug": "architecture/layered-architecture",
@@ -4409,7 +5837,7 @@
       },
       "next": {
         "slug": "architecture/auth-security-deep-dive",
-        "title": "Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO",
+        "title": "Enterprise Authentication & Security: OAuth2, OpenID Connect, Session Management & CSRF Defense",
         "url": "learn/architecture/auth-security-deep-dive.html"
       }
     },
@@ -4417,18 +5845,18 @@
       "slug": "architecture/auth-security-deep-dive",
       "track": "architecture",
       "lesson": "auth-security-deep-dive",
-      "title": "Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO",
+      "title": "Enterprise Authentication & Security: OAuth2, OpenID Connect, Session Management & CSRF Defense",
       "level": 2,
-      "order": 4,
+      "order": 6,
       "url": "learn/architecture/auth-security-deep-dive.html",
       "prev": {
         "slug": "architecture/clean-architecture",
-        "title": "Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js",
+        "title": "Clean Architecture & Hexagonal (Ports and Adapters): Domain-Centric Design",
         "url": "learn/architecture/clean-architecture.html"
       },
       "next": {
         "slug": "architecture/caching-redis",
-        "title": "Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies",
+        "title": "Enterprise Caching with Redis: Patterns (Cache-Aside, Write-Through), Invalidation & Stampede Defense",
         "url": "learn/architecture/caching-redis.html"
       }
     },
@@ -4436,18 +5864,18 @@
       "slug": "architecture/caching-redis",
       "track": "architecture",
       "lesson": "caching-redis",
-      "title": "Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies",
+      "title": "Enterprise Caching with Redis: Patterns (Cache-Aside, Write-Through), Invalidation & Stampede Defense",
       "level": 2,
-      "order": 5,
+      "order": 8,
       "url": "learn/architecture/caching-redis.html",
       "prev": {
         "slug": "architecture/auth-security-deep-dive",
-        "title": "Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO",
+        "title": "Enterprise Authentication & Security: OAuth2, OpenID Connect, Session Management & CSRF Defense",
         "url": "learn/architecture/auth-security-deep-dive.html"
       },
       "next": {
         "slug": "architecture/realtime-websockets",
-        "title": "Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters",
+        "title": "Real-Time Architecture: WebSockets, Server-Sent Events (SSE), Socket.io & Redis Adapter Scaling",
         "url": "learn/architecture/realtime-websockets.html"
       }
     },
@@ -4455,18 +5883,18 @@
       "slug": "architecture/realtime-websockets",
       "track": "architecture",
       "lesson": "realtime-websockets",
-      "title": "Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters",
+      "title": "Real-Time Architecture: WebSockets, Server-Sent Events (SSE), Socket.io & Redis Adapter Scaling",
       "level": 2,
-      "order": 6,
+      "order": 10,
       "url": "learn/architecture/realtime-websockets.html",
       "prev": {
         "slug": "architecture/caching-redis",
-        "title": "Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies",
+        "title": "Enterprise Caching with Redis: Patterns (Cache-Aside, Write-Through), Invalidation & Stampede Defense",
         "url": "learn/architecture/caching-redis.html"
       },
       "next": {
         "slug": "architecture/message-queues",
-        "title": "Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues",
+        "title": "Asynchronous Processing & Message Queues: BullMQ, Redis, RabbitMQ & Dead Letter Queues (DLQ)",
         "url": "learn/architecture/message-queues.html"
       }
     },
@@ -4474,13 +5902,13 @@
       "slug": "architecture/message-queues",
       "track": "architecture",
       "lesson": "message-queues",
-      "title": "Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues",
+      "title": "Asynchronous Processing & Message Queues: BullMQ, Redis, RabbitMQ & Dead Letter Queues (DLQ)",
       "level": 2,
-      "order": 7,
+      "order": 12,
       "url": "learn/architecture/message-queues.html",
       "prev": {
         "slug": "architecture/realtime-websockets",
-        "title": "Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters",
+        "title": "Real-Time Architecture: WebSockets, Server-Sent Events (SSE), Socket.io & Redis Adapter Scaling",
         "url": "learn/architecture/realtime-websockets.html"
       },
       "next": {
@@ -4499,12 +5927,12 @@
       "url": "learn/architecture/request-lifecycles.html",
       "prev": {
         "slug": "architecture/message-queues",
-        "title": "Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues",
+        "title": "Asynchronous Processing & Message Queues: BullMQ, Redis, RabbitMQ & Dead Letter Queues (DLQ)",
         "url": "learn/architecture/message-queues.html"
       },
       "next": {
         "slug": "architecture/microservices-monolith",
-        "title": "Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD",
+        "title": "Monolith vs Microservices: Modular Monoliths, Distributed Systems & Decomposition Strategies",
         "url": "learn/architecture/microservices-monolith.html"
       }
     },
@@ -4512,9 +5940,9 @@
       "slug": "architecture/microservices-monolith",
       "track": "architecture",
       "lesson": "microservices-monolith",
-      "title": "Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD",
+      "title": "Monolith vs Microservices: Modular Monoliths, Distributed Systems & Decomposition Strategies",
       "level": 3,
-      "order": 8,
+      "order": 13,
       "url": "learn/architecture/microservices-monolith.html",
       "prev": {
         "slug": "architecture/request-lifecycles",
@@ -4523,7 +5951,7 @@
       },
       "next": {
         "slug": "architecture/api-gateway",
-        "title": "API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing",
+        "title": "API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration",
         "url": "learn/architecture/api-gateway.html"
       }
     },
@@ -4531,18 +5959,18 @@
       "slug": "architecture/api-gateway",
       "track": "architecture",
       "lesson": "api-gateway",
-      "title": "API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing",
+      "title": "API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration",
       "level": 3,
-      "order": 9,
+      "order": 14,
       "url": "learn/architecture/api-gateway.html",
       "prev": {
         "slug": "architecture/microservices-monolith",
-        "title": "Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD",
+        "title": "Monolith vs Microservices: Modular Monoliths, Distributed Systems & Decomposition Strategies",
         "url": "learn/architecture/microservices-monolith.html"
       },
       "next": {
         "slug": "architecture/event-driven-architecture",
-        "title": "Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern",
+        "title": "Event-Driven Architecture: Event Sourcing, CQRS & Apache Kafka Stream Processing",
         "url": "learn/architecture/event-driven-architecture.html"
       }
     },
@@ -4550,18 +5978,18 @@
       "slug": "architecture/event-driven-architecture",
       "track": "architecture",
       "lesson": "event-driven-architecture",
-      "title": "Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern",
+      "title": "Event-Driven Architecture: Event Sourcing, CQRS & Apache Kafka Stream Processing",
       "level": 3,
-      "order": 10,
+      "order": 15,
       "url": "learn/architecture/event-driven-architecture.html",
       "prev": {
         "slug": "architecture/api-gateway",
-        "title": "API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing",
+        "title": "API Gateway Architecture: Reverse Proxies, Rate Limiting, Aggregation & KrakenD/Kong Integration",
         "url": "learn/architecture/api-gateway.html"
       },
       "next": {
         "slug": "architecture/system-design-case-studies",
-        "title": "System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems",
+        "title": "Enterprise System Design: Architecture Case Studies (URL Shortener, E-Commerce, Chat & Streaming)",
         "url": "learn/architecture/system-design-case-studies.html"
       }
     },
@@ -4569,18 +5997,18 @@
       "slug": "architecture/system-design-case-studies",
       "track": "architecture",
       "lesson": "system-design-case-studies",
-      "title": "System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems",
+      "title": "Enterprise System Design: Architecture Case Studies (URL Shortener, E-Commerce, Chat & Streaming)",
       "level": 3,
-      "order": 11,
+      "order": 16,
       "url": "learn/architecture/system-design-case-studies.html",
       "prev": {
         "slug": "architecture/event-driven-architecture",
-        "title": "Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern",
+        "title": "Event-Driven Architecture: Event Sourcing, CQRS & Apache Kafka Stream Processing",
         "url": "learn/architecture/event-driven-architecture.html"
       },
       "next": {
         "slug": "architecture/performance-tuning",
-        "title": "Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits",
+        "title": "High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling",
         "url": "learn/architecture/performance-tuning.html"
       }
     },
@@ -4588,18 +6016,18 @@
       "slug": "architecture/performance-tuning",
       "track": "architecture",
       "lesson": "performance-tuning",
-      "title": "Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits",
+      "title": "High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling",
       "level": 3,
-      "order": 12,
+      "order": 17,
       "url": "learn/architecture/performance-tuning.html",
       "prev": {
         "slug": "architecture/system-design-case-studies",
-        "title": "System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems",
+        "title": "Enterprise System Design: Architecture Case Studies (URL Shortener, E-Commerce, Chat & Streaming)",
         "url": "learn/architecture/system-design-case-studies.html"
       },
       "next": {
         "slug": "architecture/observability-monitoring",
-        "title": "Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing",
+        "title": "Observability & Monitoring: The Three Pillars (Metrics, Logs, Traces), Prometheus & Grafana",
         "url": "learn/architecture/observability-monitoring.html"
       }
     },
@@ -4607,18 +6035,18 @@
       "slug": "architecture/observability-monitoring",
       "track": "architecture",
       "lesson": "observability-monitoring",
-      "title": "Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing",
+      "title": "Observability & Monitoring: The Three Pillars (Metrics, Logs, Traces), Prometheus & Grafana",
       "level": 3,
-      "order": 13,
+      "order": 18,
       "url": "learn/architecture/observability-monitoring.html",
       "prev": {
         "slug": "architecture/performance-tuning",
-        "title": "Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits",
+        "title": "High-Scale Backend Performance: Node.js V8 Engine Optimization, Libuv & Memory Profiling",
         "url": "learn/architecture/performance-tuning.html"
       },
       "next": {
         "slug": "architecture/ci-cd-devops",
-        "title": "Production DevOps: Multi-Stage Docker Builds, GitHub Actions CI/CD & Zero-Downtime Deployments",
+        "title": "Enterprise CI/CD & DevOps: GitHub Actions, Docker Multi-Stage Builds & Zero-Downtime Deployment",
         "url": "learn/architecture/ci-cd-devops.html"
       }
     },
@@ -4626,13 +6054,13 @@
       "slug": "architecture/ci-cd-devops",
       "track": "architecture",
       "lesson": "ci-cd-devops",
-      "title": "Production DevOps: Multi-Stage Docker Builds, GitHub Actions CI/CD & Zero-Downtime Deployments",
+      "title": "Enterprise CI/CD & DevOps: GitHub Actions, Docker Multi-Stage Builds & Zero-Downtime Deployment",
       "level": 3,
-      "order": 14,
+      "order": 19,
       "url": "learn/architecture/ci-cd-devops.html",
       "prev": {
         "slug": "architecture/observability-monitoring",
-        "title": "Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing",
+        "title": "Observability & Monitoring: The Three Pillars (Metrics, Logs, Traces), Prometheus & Grafana",
         "url": "learn/architecture/observability-monitoring.html"
       },
       "next": null

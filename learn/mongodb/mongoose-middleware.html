@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="mongodb">
+  <meta name="fsa-lesson" content="mongoose-middleware">
+  <meta name="fsa-level" content="2">
+  <meta name="fsa-order" content="11">
+  <meta name="fsa-title" content="Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population">
+  <meta name="fsa-est-minutes" content="30">
+  <meta name="fsa-teaches-version" content="Mongoose v8.x">
+  <meta name="fsa-pattern-label" content="ORM Lifecycle Hooks & Virtual Fields">
+  <meta name="fsa-root" content="../../">
+
+  <title>Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #22C55E;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">MongoDB 8 · قواعد البيانات الوثائقية الموزعة</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #22C55E;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-mongodb" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-mongodb">mongodb</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">mongoose-middleware</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #22C55E; color: #000; font-weight: 800;">MONGODB</span>
+            <span class="fsa-badge fsa-badge--info">Level 2</span>
+            <span class="fsa-badge fsa-badge--success">Mongoose v8.x</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 30 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">برمجيات Mongoose الوسيطة (Hooks): خطافات المستندات والاستعلامات والتعبئة الافتراضية (Virtuals)</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #22C55E; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>فهم الفرق الجوهري بين خطافات المستندات (Document Middleware: this = doc) وخطافات الاستعلام (Query Middleware: this = query).</li>
+              <li>تطبيق خطافات pre("save") لتشفير كلمات المرور تلقائياً فقط عند تعديل الحقل isModified("password").</li>
+              <li>بناء نمط الحذف الناعم (Soft Delete) باستخدام خطافات pre(/^find/) لتصفية السجلات المحذوفة تلقائياً.</li>
+              <li>استخدام الحقول الافتراضية (Virtual Population) لربط المجموعات بمرونة دون تخزين مصفوفات معرفات ضخمة.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">مكتبة **Mongoose** هي الـ ODM (Object Document Mapper) الأكثر شعبية في عالم Node.js.
+      واحدة من أقوى ميزات Mongoose هي **البرمجيات الوسيطة (Middleware Hooks)** التي تتيح لك اعتراض دورة حياة البيانات قبل أو بعد حفظها، تعديلها، أو حذفها.
+      لكن المطورين يقعون في فخاخ شهيرة تدمر البيانات:
+      - مطور يكتب <code dir="ltr">schema.pre('save')</code> لتشفير كلمة المرور بـ Bcrypt، وعندما يقوم المستخدم بتعديل اسمه فقط، يُعاد تشفير كلمة المرور المشفرة بالفعل فتتلف ويصبح المستخدم عاجزاً عن تسجيل الدخول للأبد!
+      - مطور آخر يستخدم <code dir="ltr">User.findByIdAndUpdate()</code> ويفاجأ بأن خطاف <code dir="ltr">pre('save')</code> لم يعمل نهائياً ولم يتم تشفير كلمة المرور!
+      السبب هو عدم فهم الفرق الجوهري بين **Document Middleware** (التي تعمل على مستندات تم تحميلها بـ <code dir="ltr">.save()</code>) و **Query Middleware** (التي تعمل مباشرة على استعلامات قاعدة البيانات مثل <code dir="ltr">findOneAndUpdate</code>).
+      في هذا الدرس، هنفكك دورة حياة Mongoose بالكامل، وهنتعلم إزاي نبني نظام **Soft Delete** و **Virtual Population**.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #22C55E; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">خطافات المستندات (Document Middleware)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تعمل عند استدعاء doc.save() أو doc.validate()؛ ويكون متغير this يشير إلى كائن المستند الفعلي في الذاكرة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #22C55E; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">فحص التعديلات بـ doc.isModified("field")</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                التحقق مما إذا كان حقل معين (مثل password) قد تم تغييره فعلياً قبل تشغيل العمليات المكلفة مثل التشفير.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #22C55E; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">خطافات الاستعلامات (Query Middleware)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تعمل عند استدعاء find() أو updateOne()؛ ويكون متغير this يشير إلى كائن الاستعلام Query وليس المستند.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #22C55E; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تطبيق الحذف الناعم (Soft Delete Pattern)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                اعتراض جميع استعلامات البحث بـ pre(/^find/) وإضافة شرط { isDeleted: { $ne: true } } تلقائياً دون كتابته في كل مسار.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #22C55E; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التعبئة الافتراضية بـ Virtual Population</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إنشاء علاقات وهمية schema.virtual("posts") تتيح استخدام populate("posts") دون تخزين مصفوفة معرفات في قاعدة البيانات.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population Architecture Flow Diagram">
+              <title>Mongoose Middleware: Document, Query, Aggregate Hooks & Virtual Population Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-mongoose-middleware" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#22C55E" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#22C55E" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#22C55E" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-mongoose-middleware)" stroke="#22C55E" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#22C55E" font-size="14" font-weight="800">ORM Lifecycle Hooks & Virtual Fields</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="mongoose-middlewarePlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #22C55E; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي خطافات Mongoose وفحص isModified
+class MockMongooseDoc {
+  constructor(data) {
+    this.data = { ...data };
+    this.modifiedFields = new Set();
+  }
+
+  set(field, val) {
+    this.data[field] = val;
+    this.modifiedFields.add(field);
+  }
+
+  isModified(field) { return this.modifiedFields.has(field); }
+
+  async save() {
+    // محاكاة خطاف pre('save')
+    if (this.isModified("password")) {
+      console.log("🔐 Password modified: Hashing new password with Scrypt/Argon2...");
+      this.data.password = "HASHED_" + this.data.password;
+    } else {
+      console.log("⚡ Password unchanged: Skipping hashing hook (Safe).");
+    }
+    this.modifiedFields.clear();
+    return this.data;
+  }
+}
+
+const user = new MockMongooseDoc({ name: "Amr", password: "InitialPassword123" });
+user.set("name", "Amr Zidan"); // تعديل الاسم فقط
+await user.save(); // لم يتم إعادة تشفير الباسورد!</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا لا يتم تشغيل خطاف schema.pre("save") عند استدعاء User.updateOne({ _id }, { name }) أو User.findByIdAndUpdate()؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #22C55E;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">لأن updateOne و findByIdAndUpdate هي عمليات استعلام مباشرة تُرسل من Mongoose إلى محرك MongoDB دون تحميل المستند إلى ذاكرة جافاسكريبت أو إنشاء Document Instance. وبالتالي يتم تشغيل خطافات الاستعلامات Query Hooks مثل schema.pre("findOneAndUpdate") وليس خطافات المستندات pre("save"). لتشغيل pre("save")، يجب جلب المستند بـ findById ثم تعديله واستدعاء doc.save().</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">userSchema.pre("save", async function (next) {      </span> <span style="color: #64748B;">// خطاف المستند قبل الحفظ</span>
+<span style="color: #F8FAFC;">  if (!this.isModified("password")) return next(); // حماية عدم التكرار</span> <span style="color: #64748B;">// فحص التعديل الفعلي</span>
+<span style="color: #F8FAFC;">  const salt = await bcrypt.genSalt(12);            </span> <span style="color: #64748B;">// توليد Salt قوي</span>
+<span style="color: #F8FAFC;">  this.password = await bcrypt.hash(this.password, salt);</span> <span style="color: #64748B;">// تشفير كلمة المرور</span>
+<span style="color: #F8FAFC;">  next();                                           </span> <span style="color: #64748B;">// تمرير العملية</span>
+<span style="color: #F8FAFC;">});                                                 </span> <span style="color: #64748B;">// نهاية خطاف الحفظ</span>
+<span style="color: #F8FAFC;">userSchema.pre(/^find/, function () {               </span> <span style="color: #64748B;">// خطاف استعلامات البحث (Regex)</span>
+<span style="color: #F8FAFC;">  this.where({ isDeleted: { $ne: true } }); // تصفية الحذف الناعم تلقائياً</span> <span style="color: #64748B;">// حجب السجلات المحذوفة</span>
+<span style="color: #F8FAFC;">});                                                 </span> <span style="color: #64748B;">// نهاية خطاف البحث</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ كارثي: تشفير الباسورد في pre('save') بدون فحص isModified
+userSchema.pre("save", async function() {
+  this.password = await bcrypt.hash(this.password, 10); // يعيد تشفير الـ Hash المشفر عند كل تعديل للملف الشخصي!
+});</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الصحيح: فحص isModified دائماً
+userSchema.pre("save", async function() {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 12);
+});</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> عدم فحص isModified يؤدي لإعادة تشفير الهاش المشفر مسبقاً وتلف كلمات المرور للمستخدمين.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="mongoose-middlewareCheckpoint" data-quiz-id="mongoose-middleware-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "What does \"this\" refer to inside a Mongoose Document Middleware (e.g. schema.pre(\"save\")) versus a Query Middleware (e.g. schema.pre(\"find\"))?",
+    "qAr": "إلى ماذا يشير متغير \"this\" داخل خطاف المستندات pre(\"save\") مقارنة بخطاف الاستعلامات pre(\"find\")؟",
+    "options": [
+      "In document middleware, \"this\" refers to the Document instance; in query middleware, \"this\" refers to the Query object.",
+      "In both, \"this\" refers to the global window object.",
+      "In document middleware, \"this\" refers to the MongoDB server.",
+      "There is no difference."
+    ],
+    "correct": 0,
+    "why": "Document hooks bind \"this\" to the individual document instance; query hooks bind \"this\" to the ongoing Mongoose Query builder.",
+    "whyAr": "في خطافات المستندات يشير this لنسخة المستند في الذاكرة، بينما في خطافات الاستعلام يشير this لكائن استعلام Mongoose Query."
+  },
+  {
+    "q": "Why is checking \"this.isModified('password')\" essential inside a pre(\"save\") password hashing hook?",
+    "qAr": "لماذا يعتبر فحص \"this.isModified('password')\" ضرورياً داخل خطاف تشفير كلمات المرور pre(\"save\")؟",
+    "options": [
+      "Prevents re-hashing an already-hashed password when updating unrelated document fields (e.g. updating user name).",
+      "Speeds up database connection.",
+      "Compresses the password string.",
+      "Validates email addresses."
+    ],
+    "correct": 0,
+    "why": "Without isModified, updating any field triggers pre-save, encrypting the existing hash again and corrupting the user credential.",
+    "whyAr": "بدون هذا الفحص، سيتم إعادة تشفير الهاش القديم عند تعديل أي حقل آخر مما يدمر كلمة المرور ويعجز المستخدم عن الدخول."
+  },
+  {
+    "q": "What is the primary benefit of Mongoose Virtual Populate (schema.virtual with ref/localField/foreignField)?",
+    "qAr": "ما هي الفائدة الأساسية لخاصية Virtual Populate في Mongoose؟",
+    "options": [
+      "Establishes relationships without storing massive unbounded arrays of ObjectIds in the parent document.",
+      "Generates fake test data automatically.",
+      "Deletes database collections.",
+      "Translates MongoDB queries into SQL."
+    ],
+    "correct": 0,
+    "why": "Virtual populate dynamically queries related children on-demand without bloating parent documents with array references.",
+    "whyAr": "تنشئ علاقات ديناميكية عند الطلب دون الحاجة لحشو المستند الأب بمصفوفات معرفات ضخمة تلتهم الـ 16MB."
+  },
+  {
+    "q": "How can you apply a Soft Delete filter universally across all find queries using Mongoose middleware?",
+    "qAr": "كيف يمكنك تطبيق تصفية الحذف الناعم (Soft Delete) تلقائياً عبر كل استعلامات البحث في Mongoose؟",
+    "options": [
+      "Using a regex query hook: schema.pre(/^find/, function() { this.where({ isDeleted: { $ne: true } }); });",
+      "By restarting the Node.js server.",
+      "Using express.json().",
+      "Deleting the document from the database."
+    ],
+    "correct": 0,
+    "why": "Regex pattern /^find/ intercepts find, findOne, findById, and findOneAndUpdate, enforcing the soft-delete filter centrally.",
+    "whyAr": "التعبير المنتظم /^find/ يعترض كافة دوال البحث تلقائياً ويحقن شرط تصفية السجلات المحذوفة مركزياً."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #22C55E; font-size: 1.05rem; margin-bottom: 4px;">ORM Lifecycle Hooks & Virtual Fields</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Mongoose v8.x</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: ما هو الفرق بين lean() و استعلام Mongoose العادي ومتى يجب استخدامه لزيادة سرعة الخادم بنسبة 400%؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">استعلام Mongoose العادي يقوم بتحويل كل وثيقة مسترجعة إلى Mongoose Document كامل محمّل بالـ Getters والـ Setters والـ Internal State والـ Change Tracking وخطافات الـ Middleware، مما يستهلك ذاكرة RAM ووقت معالجة كبير في الـ V8. عند استخدام .lean()، يتجاوز Mongoose كل هذا البناء ويُرجع كائنات جافاسكريبت خام نقيّة (Plain JavaScript Objects - POJO)، مما يقلل استهلاك الـ RAM بنسبة تصل إلى 70% ويسرع استعلامات القراءة (GET APIs) بنسبة تفوق 400%.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-mongodb" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #22C55E; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

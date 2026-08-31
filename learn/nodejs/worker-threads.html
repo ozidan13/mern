@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="nodejs">
+  <meta name="fsa-lesson" content="worker-threads">
+  <meta name="fsa-level" content="3">
+  <meta name="fsa-order" content="10">
+  <meta name="fsa-title" content="Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="Node.js 24 worker_threads">
+  <meta name="fsa-pattern-label" content="Multi-threaded Concurrency & Shared Memory">
+  <meta name="fsa-root" content="../../">
+
+  <title>Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #84CC16;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">Node.js 24 · محرك الباك إند عالي الأداء</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #84CC16;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-nodejs" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-nodejs">nodejs</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">worker-threads</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #84CC16; color: #000; font-weight: 800;">NODEJS</span>
+            <span class="fsa-badge fsa-badge--info">Level 3</span>
+            <span class="fsa-badge fsa-badge--success">Node.js 24 worker_threads</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">خيوط العمل المتعددة (Worker Threads): البرمجة متوازية الخيوط، الذاكرة المشتركة وعمليات Atomics</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #84CC16; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>تنفيذ المهام الحسابية الشاقة (CPU-bound tasks) على خيوط عمل حقيقية في الخلفية دون حظر الـ Event Loop.</li>
+              <li>إنشاء قنوات التراسل (MessageChannel & MessagePort) وتبادل البيانات بين الخيوط.</li>
+              <li>مشاركة الذاكرة الصفرية (Zero-Copy Shared Memory) باستخدام SharedArrayBuffer.</li>
+              <li>تجنب سباق البيانات (Race Conditions) باستخدام عمليات Atomics الذرية (Atomics.add, Atomics.wait).</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">خادم Node.js يشتهر بأنه فائق السرعة في مهام الـ I/O-bound (مثل قراءة قواعد البيانات واستقبال طلبات الـ HTTP)، لكنه كان يعاني تاريخياً في المهام الحسابية (CPU-intensive tasks).
+      لو كتبت دالة تحسب الأرقام الأولية (Prime Numbers) أو خوارزمية ذكاء اصطناعي تستغرق 5 ثوانٍ على الخيط الرئيسي، فإن خادمك سيتوقف بالكامل عن خدمة أي مستخدم طوال الـ 5 ثوانٍ!
+      وحدة **worker_threads** جلبت "البرمجة الحقيقية متوازية الخيوط" (True Multi-Threading) إلى Node.js!
+      تتيح لك تشغيل خيوط عمل متعددة داخل نفس عملية الخادم، كل خيط يملك V8 Engine مستقل وخاص به، ويعمل على نواة معالج مختلفة بالتوازي التام.
+      والأروع من ذلك هو إمكانية مشاركة الذاكرة بين الخيوط بسرعة الضوء دون أي نسخ للبيانات (Zero-Copy) باستخدام **SharedArrayBuffer** وتأمين العمليات الذرية بـ **Atomics**.
+      في هذا الدرس، هنبني Thread Pool متكامل لتوزيع المهام الحسابية، وهنتعلم إزاي ننقل البيانات الضخمة بين الخيوط في أجزاء من الميلي ثانية.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">إنشاء خيط العمل المستقل بـ new Worker()</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تحميل ملف جافاسكريبت في خيط عمل فرعي منفصل يمتلك V8 Isolate خاصاً به وتمرير البيانات المبدئية عبر workerData.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">التراسل بين الخيوط عبر parentPort</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إرسال واستقبال الرسائل بـ parentPort.postMessage() والاستماع للأحداث بـ worker.on("message").
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مشاركة الذاكرة الصفرية بـ SharedArrayBuffer</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                حجز كتلة ذاكرة خام في الـ RAM مشتركة بين الخيط الرئيسي وخيوط العمل لتعديل البيانات دون أي استهلاك للنقل.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">العمليات الذرية المتزامنة بـ Atomics API</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                استخدام Atomics.add() و Atomics.load() و Atomics.wait() لضمان سلامة العمليات المتزامنة وتجنب سباق الذاكرة (Race Conditions).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #84CC16; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">بناء مجمع الخيوط وإعادة الاستخدام (Worker Thread Pool)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                الحفاظ على عدد ثابت من خيوط العمل (مثل 4 أو 8 خيوط) وإعادة استخدامها لتجنب تكلفة إنشاء خيوط جديدة مع كل طلب.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics Architecture Flow Diagram">
+              <title>Worker Threads (worker_threads): Multi-Threading, SharedArrayBuffer & Atomics Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-worker-threads" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#84CC16" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#84CC16" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#84CC16" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-worker-threads)" stroke="#84CC16" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#84CC16" font-size="14" font-weight="800">Multi-threaded Concurrency & Shared Memory</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="worker-threadsPlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Node.js 24 Runtime & API Tester</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #84CC16; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي مشاركة الذاكرة بين الخيوط باستخدام SharedArrayBuffer و Atomics
+const sharedBuffer = new SharedArrayBuffer(16); // 16 bytes shared memory
+const sharedInt32 = new Int32Array(sharedBuffer);
+
+// الخيط الرئيسي يعين القيمة الابتدائية
+Atomics.store(sharedInt32, 0, 100);
+console.log("Main Thread: Initial counter set in shared RAM ->", Atomics.load(sharedInt32, 0));
+
+// محاكاة خيط عمل فرعي يزيد العداد ذرياً في نفس مساحة الذاكرة
+function mockWorkerThreadExecution() {
+  const previousValue = Atomics.add(sharedInt32, 0, 50); // زيادة ذرية آمنة
+  console.log("Worker Thread: Atomically incremented counter. Previous value was:", previousValue);
+}
+
+mockWorkerThreadExecution();
+console.log("Main Thread reads updated shared memory ->", Atomics.load(sharedInt32, 0)); // 150</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">لماذا تعتبر مشاركة الذاكرة العادية بين الخيوط بدون Atomics مصدراً للأخطاء الكارثية (Memory Corruption)؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #84CC16;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">لو قام خيطان بقراءة العداد (count = 10) وتعديله في نفس اللحظة (count = count + 1)، قد يقوم الخيطان بكتابة القيمة 11 بدلاً من 12، مما يفقد إحدى العمليتين (Lost Update Bug)! استخدام Atomics.add يضمن أن عملية القراءة والتعديل والكتابة تتم في دورة معالج ذرية واحدة لا تقبل المقاطعة على مستوى الـ CPU Hardware.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">import { Worker, isMainThread, parentPort, workerData } from "node:worker_threads";</span> <span style="color: #64748B;">// استيراد وحدة خيوط العمل</span>
+<span style="color: #F8FAFC;">if (isMainThread) {                                 </span> <span style="color: #64748B;">// كود الخيط الرئيسي</span>
+<span style="color: #F8FAFC;">  const worker = new Worker(new URL(import.meta.url), {</span> <span style="color: #64748B;">// إنشاء خيط العمل</span>
+<span style="color: #F8FAFC;">    workerData: { matrixSize: 1000 }                </span> <span style="color: #64748B;">// تمرير البيانات الابتدائية للخيط</span>
+<span style="color: #F8FAFC;">  });                                               </span> <span style="color: #64748B;">// نهاية إنشاء الخيط</span>
+<span style="color: #F8FAFC;">  worker.on("message", (result) =&gt; console.log("Result:", result));</span> <span style="color: #64748B;">// استقبال النتيجة المحسوبة</span>
+<span style="color: #F8FAFC;">} else {                                            </span> <span style="color: #64748B;">// كود خيط العمل الفرعي</span>
+<span style="color: #F8FAFC;">  const result = heavyCpuCalculation(workerData.matrixSize);</span> <span style="color: #64748B;">// تنفيذ الحسابات الثقيلة في الخلفية</span>
+<span style="color: #F8FAFC;">  parentPort.postMessage(result); // إرسال النتيجة للأصل</span> <span style="color: #64748B;">// إرسال الرد للخيط الرئيسي</span>
+<span style="color: #F8FAFC;">}                                                   </span> <span style="color: #64748B;">// نهاية التحقق</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ كارثي: تنفيذ عمليات تشفير أو حسابات مصفوفات ثقيلة على الخيط الرئيسي
+app.post("/resize-image", (req, res) =&gt; {
+  const thumbnail = heavyImageResize(req.body.image); // يجمد الخادم لمدة ثانية كاملة عن باقي المستخدمين!
+  res.send(thumbnail);
+});</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل الهندسي: تفويض المهمة لـ Worker Thread Pool
+app.post("/resize-image", async (req, res) =&gt; {
+  const thumbnail = await workerPool.exec("resizeImage", req.body.image); // تنفيذ متوازي بدون حظر الـ Event Loop
+  res.send(thumbnail);
+});</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> المهام الحسابية الثقيلة تحظر الـ Event Loop وتشل قدرة خادم Node.js على خدمة اتصالات المستخدمين، بينما Worker Threads توزع الحمل على أنوية المعالج المتعددة.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="worker-threadsCheckpoint" data-quiz-id="worker-threads-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "When should you use Worker Threads instead of standard asynchronous Node.js APIs?",
+    "qAr": "متى يجب استخدام Worker Threads بدلاً من واجهات Node.js اللاتزامنية العادية؟",
+    "options": [
+      "For CPU-bound tasks (image processing, heavy cryptography, matrix math) that would otherwise block the Event Loop.",
+      "For simple database queries.",
+      "For reading small JSON files.",
+      "To handle standard HTTP GET requests."
+    ],
+    "correct": 0,
+    "why": "Async APIs handle I/O-bound concurrency; CPU-intensive calculations require Worker Threads to avoid blocking the main event loop.",
+    "whyAr": "الـ APIs اللاتزامنية مخصصة لعمليات الإدخال والإخراج I/O، بينما العمليات الحسابية الثقيلة تتطلب Worker Threads لتفادي تجميد الخيط الرئيسي."
+  },
+  {
+    "q": "What is the primary advantage of SharedArrayBuffer over postMessage() between workers?",
+    "qAr": "ما هي الميزة الأساسية لـ SharedArrayBuffer مقارنة بـ postMessage() بين الخيوط؟",
+    "options": [
+      "Zero-copy in-memory shared access without serializing or cloning data between thread boundaries.",
+      "Automatically prevents race conditions without Atomics.",
+      "It works across different physical computers.",
+      "It formats data as JSON."
+    ],
+    "correct": 0,
+    "why": "SharedArrayBuffer allows multiple threads to read and write the exact same shared memory region without serialization overhead.",
+    "whyAr": "يتيح لعدة خيوط القراءة والكتابة في نفس مساحة الذاكرة في الـ RAM دون الحاجة لنسخ أو تسلسل البيانات (Zero-Copy)."
+  },
+  {
+    "q": "What is the role of the Atomics API in multi-threaded Node.js applications?",
+    "qAr": "ما هو الدور الأساسي لواجهة Atomics في تطبيقات Node.js متعددة الخيوط؟",
+    "options": [
+      "Provides thread-safe atomic operations and synchronization primitives on SharedArrayBuffer memory.",
+      "Compresses worker thread output.",
+      "Encrypts memory buffers.",
+      "Monitors CPU temperature."
+    ],
+    "correct": 0,
+    "why": "Atomics guarantees uninterrupted hardware-level memory operations, preventing race conditions and corrupted shared states.",
+    "whyAr": "توفر عمليات ذرية آمنة على مستوى العتاد لمنع تضارب الخيوط وحالات سباق الذاكرة (Race Conditions)."
+  },
+  {
+    "q": "Why is it recommended to use a Worker Pool rather than creating a new Worker on every single request?",
+    "qAr": "لماذا يوصى باستخدام مجمع خيوط (Worker Pool) بدلاً من إنشاء Worker جديد مع كل طلب؟",
+    "options": [
+      "Creating a Worker has significant overhead (spawning a new V8 isolate and memory space); pools reuse existing workers.",
+      "Workers can only be created once per day.",
+      "Operating systems only allow 1 worker.",
+      "Worker pools reduce network bandwidth."
+    ],
+    "correct": 0,
+    "why": "Spawning a worker allocates a new V8 instance (~30MB+ RAM and CPU startup cost); a pool maintains a reusable fleet of workers.",
+    "whyAr": "إنشاء خيط عمل جديد يستهلك وقتاً وذاكرة لبناء بيئة V8 جديدة؛ بينما مجمع الخيوط يعيد استخدام خيوط جاهزة ومفتوحة مسبقاً."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #84CC16; font-size: 1.05rem; margin-bottom: 4px;">Multi-threaded Concurrency & Shared Memory</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">Node.js 24 worker_threads</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تنفذ نمط MessagePort و Transferable Objects لنقل ملكية Buffer بحجم 500MB بين الخيوط بدون استهلاك بايت واحد إضافي من الـ RAM؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">نستخدم خاصية Transferable Objects في postMessage: نستدعي parentPort.postMessage({ buffer }, [buffer.buffer]). تمرير الـ ArrayBuffer كمعامل ثانٍ في مصفوفة النقل يخبر محرك V8 بنقل ملكية مؤشر الذاكرة (Memory Pointer Transfer) فوراً إلى الخيط المستقبل وتفريغه من الخيط المرسل (Detached Buffer) في زمن 0ms وبدون نسخ أي بايت في الذاكرة، محققاً أقصى كفاءة أداء ممكنة في معالجة الملفات الضخمة.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-nodejs" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #84CC16; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

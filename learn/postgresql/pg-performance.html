@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="fsa-track" content="postgresql">
+  <meta name="fsa-lesson" content="pg-performance">
+  <meta name="fsa-level" content="3">
+  <meta name="fsa-order" content="14">
+  <meta name="fsa-title" content="PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling">
+  <meta name="fsa-est-minutes" content="35">
+  <meta name="fsa-teaches-version" content="PostgreSQL 18 Performance">
+  <meta name="fsa-pattern-label" content="Query Optimization & Infrastructure Sizing">
+  <meta name="fsa-root" content="../../">
+
+  <title>PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling · FullStack Academy</title>
+
+  <!-- Google Fonts: Cairo, Inter, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens & Fonts -->
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+
+  <style>
+    :root {
+      --track-accent-current: #60A5FA;
+    }
+    .fsa-article__header {
+      padding-block: var(--space-8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+    .fsa-step-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      transition: all 0.25s ease;
+    }
+    .fsa-step-card:hover {
+      border-color: var(--track-accent-current);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+    .fsa-playground {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="fsa-skip-link">تخطي إلى المحتوى الرئيسي · Skip to Main Content</a>
+
+  <!-- Mobile Drawer Toggle -->
+  <button type="button" class="fsa-btn fsa-btn--ghost fsa-drawer-btn" data-fsa-drawer-toggle aria-label="Toggle Sidebar Navigation" style="display: none;">
+    <svg width="20" height="20"><use href="../../assets/icons.svg#fsa-icon-menu"></use></svg>
+  </button>
+
+  <div class="fsa-shell">
+    <!-- Left Navigation Sidebar Container -->
+    <aside class="fsa-sidebar" id="sidebar">
+      <div class="fsa-sidebar__header">
+        <a href="../../index.html" class="fsa-logo">
+          <span class="fsa-logo__mark">⚡</span>
+          <span class="fsa-logo__text">FullStack Academy</span>
+        </a>
+      </div>
+      <nav class="fsa-sidebar__nav" aria-label="Course Curriculum Navigation">
+        <div class="fsa-sidebar__section">
+          <div class="fsa-sidebar__title">PostgreSQL 18 · القواعد العلائقية المتقدمة</div>
+          <div class="fsa-progress" style="margin-block: var(--space-2);">
+            <div class="fsa-progress__bar" style="width: 70%; background: #60A5FA;"></div>
+          </div>
+          <ul class="fsa-nav-list" id="trackNavList">
+            <li class="fsa-nav-item"><a href="../../index.html#track-postgresql" class="fsa-nav-link">← العودة لجميع دروس المسار</a></li>
+            <li class="fsa-nav-item"><a href="../../dashboard.html" class="fsa-nav-link">📊 لوحة المتابعة الشخصية</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Learning Column -->
+    <main class="fsa-main" id="main-content">
+      <article class="fsa-article">
+        <!-- ================= BEAT 1: HOOK & OBJECTIVES ================= -->
+        <header class="fsa-article__header">
+          <div class="fsa-breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">الرئيسية</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <a href="../../index.html#track-postgresql">postgresql</a>
+            <span class="fsa-breadcrumbs__sep">/</span>
+            <span aria-current="page">pg-performance</span>
+          </div>
+
+          <div style="display: flex; gap: var(--space-2); margin-block: var(--space-4); flex-wrap: wrap;">
+            <span class="fsa-chip fsa-chip--track" style="background: #60A5FA; color: #000; font-weight: 800;">POSTGRESQL</span>
+            <span class="fsa-badge fsa-badge--info">Level 3</span>
+            <span class="fsa-badge fsa-badge--success">PostgreSQL 18 Performance</span>
+            <span class="fsa-badge fsa-badge--warning">⏱️ 35 دقيقة تفاعلية</span>
+          </div>
+
+          <h1 class="fsa-title" style="font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.3; font-weight: 900; margin-bottom: 12px;">PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling</h1>
+          <p class="fsa-subtitle fsa-ar" dir="rtl" style="font-size: 1.3rem; color: #94A3B8; margin-bottom: 24px; font-weight: 600;">تحسين أداء PostgreSQL: تشريح EXPLAIN ANALYZE، ضبط الذاكرة (shared_buffers) ومجمعات PgBouncer</p>
+
+          <div class="fsa-objectives" style="margin-block-start: var(--space-6); background: rgba(15, 23, 42, 0.6); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+            <h3 style="margin-block-end: var(--space-3); font-size: var(--fs-md); color: #60A5FA; font-weight: 800;">🎯 الأهداف الهندسية لهذا الدرس (Learning Objectives)</h3>
+            <ul style="padding-inline-start: var(--space-4); margin: 0; line-height: 1.9; font-size: 1.02rem;">
+              <li>تشريح خطة تنفيذ الاستعلامات بـ EXPLAIN (ANALYZE, BUFFERS, VERBOSE, SETTINGS) وكشف تكاليف الـ Cost والمؤشرات الحقيقية.</li>
+              <li>ضبط معايير الذاكرة الجوهرية في postgresql.conf: shared_buffers, work_mem, maintenance_work_mem, و effective_cache_size.</li>
+              <li>حل معضلة استهلاك اتصالات الـ Backend (Process-per-connection) باستخدام مجمع الاتصالات الخفيف PgBouncer.</li>
+              <li>تفعيل امتداد pg_stat_statements لاصطياد أبطأ وأكثر الاستعلامات استهلاكاً لموارد السيرفر في بيئة الإنتاج.</li>
+            </ul>
+          </div>
+        </header>
+
+        <!-- ================= BEAT 2: THE REAL-WORLD PROBLEM & CONTEXT ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="السياق والمشكلة" id="story">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المشكلة الهندسية والسياق الواقعي · The Architectural Problem</h2>
+
+          <div class="fsa-callout" data-kind="analogy" style="background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-callout__title" style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #F59E0B; display: flex; align-items: center; gap: 10px;">
+              <svg width="22" height="22"><use href="../../assets/icons.svg#fsa-icon-lightbulb"></use></svg>
+              <span>رؤية الواقع العملي والنموذج الذهني · Real-World Context &amp; Mental Model</span>
+            </div>
+            <p class="fsa-ar" dir="rtl" style="margin-bottom: var(--space-3); line-height: var(--lh-ar); font-size: 1.05rem;">في خوادم الإنتاج الكبرى، عندما يشتكي المستخدمون من بطء الموقع، يقوم المطور المبتدئ بمضاعفة حجم السيرفر (Upgrading Cloud Tier)، ليكتشف بعد يومين أن السيرفر عاد للبطء مجدداً وتضاعفت الفاتورة الشهرية!
+      السبب هو أن الإعدادات الافتراضية لـ PostgreSQL في ملف <code dir="ltr">postgresql.conf</code> صُممت تاريخياً لتعمل على أجهزة قديمة جداً بـ 128MB RAM فقط!
+      لو كان سيرفرك يمتلك 64GB RAM، فإن بوستجريس لن تستخدم افتراضياً سوى 128MB لذاكرة الـ <code dir="ltr">shared_buffers</code> وتترك باقي الـ RAM نائمة!
+      بالإضافة إلى ذلك، كل اتصال جديد في PostgreSQL ينشئ عملية نظام تشغيل منفصلة (Forked OS Process) تستهلك ~10MB من الـ RAM؛ لو اتصل 1000 مستخدم في نفس اللحظة، سينهار الخادم فوراً باستهلاك الذاكرة.
+      الحل المعماري هو:
+      1. ضبط معايير الذاكرة الاحترافية (<code dir="ltr">shared_buffers = 25% RAM</code>, <code dir="ltr">work_mem</code>).
+      2. وضع مجمع اتصالات فائق الخفة **PgBouncer** أمام قاعدة البيانات.
+      3. تشخيص الاستعلامات بـ **EXPLAIN ANALYZE** وامتداد **pg_stat_statements**.
+      في هذا الدرس الختامي لمسار PostgreSQL 18، هنتعلم إزاي نحول خادمك إلى آلة فائقة السرعة تتحمل ملايين العمليات.</p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 3: STEP-BY-STEP MECHANICS ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="خطوات التنفيذ" id="mechanics" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">كيف تعمل المنظومة خطوة بخطوة · Mechanics &amp; Execution Pipeline</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">01</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تشريح خطة التنفيذ بـ EXPLAIN (ANALYZE, BUFFERS)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                مقارنة التكلفة التقديرية (cost) بالزمن الفعلي (actual time) وعدد صفحات الذاكرة المقروءة من الكاش (Buffers: shared hit).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">02</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">ضبط ذاكرة التخزين المؤقت (shared_buffers)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تخصيص 25% من إجمالي ذاكرة السيرفر لـ shared_buffers لتخزين الجداول والفهارس النشطة في الـ RAM.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">03</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">ضبط ذاكرة الفرز والعمليات (work_mem)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تخصيص ذاكرة مخصصة لكل عملية فرز (Sort) أو دمج (Hash Join) لمنع تسريب العمليات إلى القرص الصلب (Spilling to Disk).
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">04</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">تجميع الاتصالات المليوني بـ PgBouncer (Transaction Pooling)</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                إدارة 10,000 اتصال من تطبيقات Node.js وتمريرها عبر 50 اتصالاً حقيقياً فقط لقاعدة البيانات بأعلى كفاءة.
+              </p>
+            </div>
+
+            <div class="fsa-step-card">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #60A5FA; color: #000; font-weight: 900; font-size: 0.9rem;">05</span>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin: 0;">مراقبة الاستعلامات التراكمية بـ pg_stat_statements</h3>
+              </div>
+              <p class="fsa-ar" dir="rtl" style="margin: 0; color: #94A3B8; font-size: 1rem; line-height: 1.8; padding-inline-start: 46px;">
+                تسجيل وتجميع أزمنة تنفيذ جميع استعلامات النظام وتحديد الاستعلامات التي تستهلك أكثر من 80% من وقت المعالج.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 4: INTERACTIVE VISUALIZER & DIAGRAM ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="المحاكي البصري" id="see" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">المحاكي البصري التفاعلي · Interactive Architecture &amp; Execution Trace</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            تتبع تدفق البيانات ومسار التنفيذ والتحولات المعمارية داخل المحرك:
+          </p>
+
+          <div class="fsa-diagram" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+            <svg viewBox="0 0 740 130" width="100%" height="130" aria-label="PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling Architecture Flow Diagram">
+              <title>PostgreSQL Performance Tuning: EXPLAIN ANALYZE, Memory Config & Connection Pooling Conceptual Architecture Flow</title>
+              <defs>
+                <linearGradient id="grad-pg-performance" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(20, 25)">
+                <rect width="190" height="75" rx="10" fill="#090D16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+                <text x="95" y="38" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="700">Client / Input State</text>
+                <text x="95" y="58" text-anchor="middle" fill="#64748B" font-size="11">Initial Context &amp; Params</text>
+              </g>
+              <path d="M 220 62 L 270 62" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="4 4" />
+              <g transform="translate(280, 20)">
+                <rect width="200" height="85" rx="12" fill="url(#grad-pg-performance)" stroke="#60A5FA" stroke-width="2" />
+                <text x="100" y="42" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="800">Query Optimization & Infrastructure Sizing</text>
+                <text x="100" y="64" text-anchor="middle" fill="#CBD5E1" font-size="11">Deterministic Execution Pipeline</text>
+              </g>
+              <path d="M 490 62 L 540 62" stroke="#10B981" stroke-width="2.5" />
+              <g transform="translate(550, 25)">
+                <rect width="170" height="75" rx="10" fill="#090D16" stroke="#10B981" stroke-width="1.5" />
+                <text x="85" y="38" text-anchor="middle" fill="#10B981" font-size="13" font-weight="700">Verified Output</text>
+                <text x="85" y="58" text-anchor="middle" fill="#64748B" font-size="11">Immutable State &amp; UI</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 5: ACTIVE PLAYGROUND ================= -->
+        <section class="fsa-section fsa-section--playground" data-fsa-section="playground" data-fsa-section-label="محرر التجارب" id="try" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">محرر التجارب الحية والتنفيذ المباشر · Live Interactive Playground</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 20px;">
+            جرب الكود بنفسك، عدل المتغيرات، وشاهد المخرجات الفورية في الـ Console المعزول:
+          </p>
+
+          <div class="fsa-playground" id="pg-performancePlayground">
+            <div class="fsa-playground__toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+              <span class="fsa-badge" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA; font-weight: 700;">Database Query Simulator & Engine</span>
+              <button type="button" class="fsa-btn fsa-btn--primary fsa-btn--sm fsa-playground__run" aria-label="Run Code" style="background: #60A5FA; color: #000; font-weight: 800; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer;">
+                <span>تشغيل الكود · Run</span>
+              </button>
+            </div>
+            <textarea class="fsa-playground__editor" aria-label="Code Editor" spellcheck="false" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.6; min-height: 220px;">// محاكي حساب إعدادات الذاكرة المثالية لخادم PostgreSQL (pgtune simulation)
+function calculatePgConf(totalRamGB, isWebBackend = true) {
+  const sharedBuffersGB = totalRamGB * 0.25; // 25% of RAM
+  const effectiveCacheGB = totalRamGB * 0.75; // 75% of RAM
+  const workMemMB = Math.max(16, Math.floor((totalRamGB * 1024 * 0.25) / 100)); // لـ 100 اتصال متزامن
+
+  return {
+    "shared_buffers": `${sharedBuffersGB.toFixed(1)} GB`,
+    "effective_cache_size": `${effectiveCacheGB.toFixed(1)} GB`,
+    "work_mem": `${workMemMB} MB`,
+    "maintenance_work_mem": `${Math.min(2, totalRamGB * 0.05).toFixed(1)} GB`,
+    "max_connections": isWebBackend ? 100 : 20
+  };
+}
+
+console.log("Calculated Production postgresql.conf for 32GB RAM Server:");
+console.log(calculatePgConf(32));</textarea>
+            <div class="fsa-playground__output" aria-live="polite" style="padding: 16px 20px; background: #050811; color: #94A3B8; font-family: var(--font-mono); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06);">اضغط "تشغيل الكود" لمعاينة النتيجة ومخرجات الـ Console...</div>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 6: PREDICT & EXPLORE ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="exploration" data-fsa-section-label="تحدي التوقع" id="explore" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تحدي التوقع قبل التشغيل · Predict Before You Run</h2>
+          <div class="fsa-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: var(--space-6);">
+            <div class="fsa-challenge-box__title" style="font-size: 1.2rem; font-weight: 800; color: #FBBF24; margin-bottom: 12px;">🤔 سؤال تحدي كبار المهندسين:</div>
+            <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; line-height: 1.8; color: #F8FAFC; margin-bottom: 16px;">ماذا يعني مؤشر "Buffers: shared hit: 1200 read: 0" في تقرير EXPLAIN (ANALYZE, BUFFERS)؟</p>
+            <details class="fsa-details" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px 18px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #60A5FA;">اضغط هنا للكشف عن الإجابة والتحليل الهندسي الدقيق</summary>
+              <div class="fsa-details__body" style="padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 10px;">
+                <p class="fsa-ar" dir="rtl" style="font-size: 1.02rem; line-height: 1.85; color: #CBD5E1; margin: 0;">يعني أن جميع الـ 1200 صفحة من البيانات والفهارس المطلوبة لتنفيذ هذا الاستعلام تم العثور عليها وقراءتها مباشرة من ذاكرة الـ RAM (shared_buffers cache)، وأنه لم تكن هناك حاجة لقراءة أي بايت واحد من القرص الصلب (read: 0). هذه هي الحالة المثالية للاستعلامات فائقة السرعة ذات الأداء الصاروخي.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 7: CODE ANATOMY ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="concept" data-fsa-section-label="تشريح الكود" id="anatomy" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">تشريح الكود المعماري سطراً بسطر · Annotated Code Anatomy</h2>
+          <div class="fsa-code-block" dir="ltr" style="background: #020617; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: var(--space-5); overflow-x: auto; text-align: left;">
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.7;"><code><span style="color: #F8FAFC;">-- تفعيل وتشخيص أبطأ 5 استعلامات عبر pg_stat_statements</span> <span style="color: #64748B;">// أداة الرصد المركزية</span>
+<span style="color: #F8FAFC;">CREATE EXTENSION IF NOT EXISTS pg_stat_statements;  </span> <span style="color: #64748B;">// تثبيت الامتداد</span>
+<span style="color: #F8FAFC;">SELECT                                              </span> <span style="color: #64748B;">// استعلام التحليل</span>
+<span style="color: #F8FAFC;">  query, calls,                                     </span> <span style="color: #64748B;">// نص الاستعلام وعدد مرات استدعائه</span>
+<span style="color: #F8FAFC;">  ROUND(total_exec_time::numeric, 2) as total_time_ms,</span> <span style="color: #64748B;">// إجمالي الوقت المستهلك</span>
+<span style="color: #F8FAFC;">  ROUND(mean_exec_time::numeric, 2) as avg_time_ms, </span> <span style="color: #64748B;">// متوسط زمن التنفيذ</span>
+<span style="color: #F8FAFC;">  ROUND((100 * total_exec_time / SUM(total_exec_time) OVER())::numeric, 2) as percentage</span> <span style="color: #64748B;">// النسبة المئوية من إجمالي وقت السيرفر</span>
+<span style="color: #F8FAFC;">FROM pg_stat_statements                             </span> <span style="color: #64748B;">// جدول الإحصائيات</span>
+<span style="color: #F8FAFC;">ORDER BY total_exec_time DESC                       </span> <span style="color: #64748B;">// فرز بالأكثر استهلاكاً</span>
+<span style="color: #F8FAFC;">LIMIT 5;                                            </span> <span style="color: #64748B;">// أعلى 5 اختناقات</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 8: COMMON PITFALLS & MISTAKES ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="comparison" data-fsa-section-label="أخطاء شائعة" id="practice" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">معرض الأخطاء الشائعة والحلول الهندسية · Production Mistakes Gallery</h2>
+          
+          <div class="fsa-mistakes-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-5); margin-block: var(--space-4);">
+            <div class="fsa-mistake-card fsa-mistake-card--bad" style="border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(244, 63, 94, 0.04);">
+              <div style="color: #FB7185; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">❌ الكود المسبب للأعطال (Anti-Pattern)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(244, 63, 94, 0.2);"><code>// خطأ شائع: فتح 1000 اتصال مباشر من خوادم Node.js بدون PgBouncer
+// كل اتصال يستهلك 10MB RAM وتتنافس 1000 عملية على الـ CPU مما يؤدي لـ Context Switching وتجمد السيرفر!</code></pre>
+            </div>
+
+            <div class="fsa-mistake-card fsa-mistake-card--good" style="border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: var(--space-5); background: rgba(16, 185, 129, 0.04);">
+              <div style="color: #34D399; font-weight: 800; font-size: 1rem; margin-bottom: 10px;">✅ الحل الهندسي القياسي (Best Practice)</div>
+              <pre dir="ltr" style="background: #050811; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; overflow-x: auto; border: 1px solid rgba(16, 185, 129, 0.2);"><code>// الحل المعماري: استخدام PgBouncer في نمط Transaction Pooling
+// 1000 اتصال من Node.js -&gt; PgBouncer -&gt; 30 اتصال فقط لـ PostgreSQL بأقصى سرعة</code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-inline-start: 4px solid #F59E0B;">
+            <p class="fsa-ar" dir="rtl" style="color: #CBD5E1; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+              <strong style="color: #FBBF24;">التشخيص الهندسي:</strong> الخوادم تنهار بكثرة الاتصالات المباشرة، بينما PgBouncer يثبت عدد الاتصالات الفعلية ويوجه الطلبات عبر طابور فائق الكفاءة.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= BEAT 9: MASTERY CHECKPOINT QUIZ ================= -->
+        <section class="fsa-section fsa-section--immersive" data-fsa-section="challenge" data-fsa-section-label="اختبار الإتقان" id="prove" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">اختبار الإتقان الهندسي · Mastery Checkpoints (4+ Questions)</h2>
+          <p class="fsa-ar" dir="rtl" style="font-size: 1.05rem; color: #94A3B8; margin-bottom: 24px;">
+            أجب على حزمة الأسئلة التقييمية التالية لتثبيت فهمك العميق للمفاهيم واختبار جاهزيتك لبيئات الإنتاج:
+          </p>
+
+          <div class="fsa-checkpoint" id="pg-performanceCheckpoint" data-quiz-id="pg-performance-quiz"></div>
+          <script type="application/json" class="fsa-quiz-data">
+[
+  {
+    "q": "What is the recommended baseline sizing for \"shared_buffers\" in a dedicated PostgreSQL production server?",
+    "qAr": "ما هو الحجم الموصى به لمعيار \"shared_buffers\" في خادم PostgreSQL مخصص للإنتاج؟",
+    "options": [
+      "Approximately 25% of total system RAM (e.g. 8GB on a 32GB RAM machine).",
+      "100% of system RAM.",
+      "128 Megabytes (default).",
+      "5 Gigabytes always regardless of RAM."
+    ],
+    "correct": 0,
+    "why": "PostgreSQL relies on both its internal shared_buffers (~25% RAM) and the OS Kernel Page Cache (~75% RAM) in tandem.",
+    "whyAr": "تعتمد بوستجريس على تناغم ذاكرتها الداخلية shared_buffers (25%) مع كاش نظام التشغيل OS Page Cache (75%)."
+  },
+  {
+    "q": "Why is PgBouncer essential when running microservices or serverless Node.js architectures against PostgreSQL?",
+    "qAr": "لماذا يعتبر PgBouncer ضرورياً عند تشغيل خدمات Node.js أو Serverless مع PostgreSQL؟",
+    "options": [
+      "PostgreSQL uses a heavy process-per-connection model; PgBouncer pools and multiplexes thousands of client connections into a small fixed set of server backends.",
+      "PgBouncer encrypts hard drives.",
+      "PgBouncer compiles SQL to WebAssembly.",
+      "It replaces the PostgreSQL database."
+    ],
+    "correct": 0,
+    "why": "PgBouncer prevents connection exhaustion and high RAM overhead by multiplexing dynamic client connections into a lean database connection pool.",
+    "whyAr": "يمنع نفاد اتصالات السيرفر واستهلاك الذاكرة عبر تجميع آلاف الاتصالات العابرة وتمريرها عبر عدد ثابت ومحدود من الاتصالات الحقيقية."
+  },
+  {
+    "q": "What does \"Sort Method: external merge Disk\" indicate in an EXPLAIN ANALYZE report?",
+    "qAr": "ماذا يشير مؤشر \"Sort Method: external merge Disk\" في تقرير EXPLAIN ANALYZE؟",
+    "options": [
+      "The sort operation exceeded the allocated \"work_mem\" and had to spill temporary data to slow disk storage.",
+      "The query was served from fast RAM cache.",
+      "An optimal index sort occurred.",
+      "A network error happened."
+    ],
+    "correct": 0,
+    "why": "Spilling to disk means work_mem was too small to hold the dataset in memory during sorting, resulting in slow disk I/O.",
+    "whyAr": "يعني أن حجم البيانات المراد فرزها تجاوز ذاكرة work_mem مما أجبر المحرك على الكتابة المؤقتة على القرص الصلب البطيء."
+  },
+  {
+    "q": "What does the extension \"pg_stat_statements\" track in PostgreSQL?",
+    "qAr": "ما الذي يرصده امتداد \"pg_stat_statements\" في PostgreSQL؟",
+    "options": [
+      "Aggregated runtime performance statistics (execution counts, total/mean duration, disk blocks read) across all executed SQL statements.",
+      "Developer git commit history.",
+      "User passwords.",
+      "Internet bandwidth usage."
+    ],
+    "correct": 0,
+    "why": "pg_stat_statements is the gold-standard diagnostics tool, tracking execution counts and cumulative latency per normalized SQL query.",
+    "whyAr": "هو المعيار الذهبي لتشخيص الأداء، حيث يسجل عدد مرات استدعاء ومتوسط أزمنة واستهلاك الذاكرة لكل استعلام SQL في النظام."
+  }
+]
+          </script>
+        </section>
+
+        <!-- ================= BEAT 10: PRODUCTION RECAP & INTERVIEW Q&A ================= -->
+        <section class="fsa-section fsa-section--contained" data-fsa-section="recap" data-fsa-section-label="في بيئة العمل" id="production" style="margin-block: var(--space-10);">
+          <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">خلاصة بيئة العمل وأسئلة المقابلات · Production Recap &amp; Senior Notes</h2>
+
+          <!-- Mini Glossary Term Cards -->
+          <div class="fsa-glossary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-block: var(--space-4);">
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #60A5FA; font-size: 1.05rem; margin-bottom: 4px;">Query Optimization & Infrastructure Sizing</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">النمط المعماري الأساسي المعتمد في المنظومة لضمان التوسع والكفاءة.</div>
+            </div>
+            <div class="fsa-term-card" style="padding: var(--space-4); background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-weight: 800; color: #10B981; font-size: 1.05rem; margin-bottom: 4px;">PostgreSQL 18 Performance</div>
+              <div style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6;">المعايير المعتمدة والمطابقة لأحدث إصدارات بيئات التشغيل الحية.</div>
+            </div>
+          </div>
+
+          <!-- Interview Accordion -->
+          <details class="fsa-details" style="margin-block-start: var(--space-4); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: var(--space-4);">
+            <summary style="cursor: pointer; font-weight: 800; color: #F59E0B; font-size: 1.05rem;">💼 سؤال إنترفيو للمهندسين الكبار (Senior Interview Question)</summary>
+            <div class="fsa-details__body" style="padding-top: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: var(--space-3);">
+              <p class="fsa-ar" dir="rtl" style="font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">سؤال إنترفيو للمهندسين الكبار: كيف تحلل استعلاماً بطيئاً في الإنتاج باستخدام EXPLAIN (ANALYZE, BUFFERS) وتكتشف أين يضيع الوقت بالضبط؟</p>
+              <p class="fsa-ar" dir="rtl" style="color: #94A3B8; font-size: 1rem; line-height: 1.85; margin: 0;">1. نفحص Actual Time في العقدة الجذرية لمعرفة إجمالي زمن التنفيذ بالمللي ثانية. 2. نبحث عن أي عقدة تحتوي على Seq Scan على جدول كبير أو Filter حذف نسبة ضخمة من الصفوف (Rows Removed by Filter)، مما يدل على غياب الفهرس. 3. نفحص Buffers: shared read مقارنة بـ shared hit لمعرفة هل الاستعلام يقرأ من القرص البطيء أم من كاش الذاكرة. 4. نفحص أسلوب الفرز Sort Method: إذا وجدنا external merge Disk، فهذا يعني أن work_mem غير كافية ويجب زيادتها لتتم العملية في الـ RAM فورياً (quicksort memory).</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- Navigation Next/Previous Footer -->
+        <footer class="fsa-article__footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-8); border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: var(--space-12);">
+          <a href="../../index.html#track-postgresql" class="fsa-btn fsa-btn--secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700;">
+            ← فهرس المسار
+          </a>
+          <a href="../../dashboard.html" class="fsa-btn fsa-btn--primary" style="background: #60A5FA; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 800;">
+            لوحة المتابعة الشخصية →
+          </a>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <!-- Shared Learning Engine Scripts -->
+  <script src="../../js/fsa-namespace.js"></script>
+  <script src="../../js/theme.js"></script>
+  <script src="../../js/progress.js"></script>
+  <script src="../../js/learning.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>
