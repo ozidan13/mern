@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة</title>
-  <meta name="description" content="تعلم هندسة الويب الشاملة (MERN & PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع محاكيات مباشرة وتشريح الكود">
+  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة (106 درساً تفاعلياً)</title>
+  <meta name="description" content="تعلم هندسة الويب الشاملة (MERN & PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات مباشرة وتشريح الكود">
 
   <!-- Core Tokens & Fonts -->
   <link rel="stylesheet" href="css/tokens.css">
@@ -123,7 +123,7 @@
       position: relative;
       z-index: 10;
       width: 100%;
-      max-width: 1440px;
+      max-width: 1480px;
     }
 
     /* =================== TOP BAR NAV =================== */
@@ -182,7 +182,7 @@
     /* =================== TITLE SECTION =================== */
     .title-section {
       text-align: center;
-      margin-bottom: 45px;
+      margin-bottom: 35px;
     }
 
     .title-badge {
@@ -231,7 +231,7 @@
     .title-section p {
       font-size: 1.15rem;
       color: #94a3b8;
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
       line-height: 1.8;
       opacity: 0;
@@ -243,14 +243,14 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* =================== STATS & ACTION BAR =================== */
+    /* =================== STATS BAR =================== */
     .stats-bar {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 36px;
       flex-wrap: wrap;
-      margin-bottom: 45px;
+      margin-bottom: 35px;
       opacity: 0;
       animation: fadeSlideUp 0.8s ease 0.8s forwards;
     }
@@ -282,6 +282,45 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
+    /* Interactive Live Search Box */
+    .curriculum-search-bar {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto 35px;
+      position: relative;
+    }
+
+    .curriculum-search-input {
+      width: 100%;
+      padding: 14px 44px 14px 20px;
+      border-radius: 100px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #fff;
+      font-family: var(--font-arabic);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .curriculum-search-input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .curriculum-search-icon {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #60a5fa;
+      pointer-events: none;
+      width: 18px;
+      height: 18px;
+    }
+
     /* Quick Resume Box */
     .quick-resume-box {
       display: flex;
@@ -292,7 +331,7 @@
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(59, 130, 246, 0.3);
       border-radius: 16px;
-      margin-bottom: 45px;
+      margin-bottom: 40px;
       box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.15);
       flex-wrap: wrap;
     }
@@ -337,12 +376,12 @@
 
     /* =================== TRACK CARD =================== */
     .track-card {
-      background: rgba(15, 15, 25, 0.75);
+      background: rgba(15, 15, 25, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
-      padding: 22px;
+      padding: 20px;
       position: relative;
       overflow: hidden;
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease;
@@ -358,7 +397,6 @@
       transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Top Glowing Line */
     .track-card::before {
       content: '';
       position: absolute;
@@ -376,29 +414,10 @@
       opacity: 1;
     }
 
-    /* Corner Glow on Hover */
-    .track-card::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-      background: radial-gradient(circle, var(--track-glow, rgba(59, 130, 246, 0.1)), transparent 70%);
-    }
-
-    .track-card:hover::after {
-      opacity: 1;
-    }
-
     .track-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 20px 50px -15px var(--track-shadow, rgba(59, 130, 246, 0.2));
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 20px 50px -15px var(--track-shadow, rgba(59, 130, 246, 0.25));
     }
 
     /* Track Header */
@@ -406,16 +425,16 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
       z-index: 1;
     }
 
     .track-number {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -434,7 +453,7 @@
     }
 
     .track-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: #fff;
       margin-bottom: 2px;
@@ -444,7 +463,7 @@
     }
 
     .track-subtitle {
-      font-size: 0.73rem;
+      font-size: 0.70rem;
       color: #64748b;
       font-weight: 500;
       font-family: var(--font-mono);
@@ -452,57 +471,71 @@
       text-align: right;
     }
 
-    /* Lessons List */
+    .track-badge-count {
+      padding: 3px 8px;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--track-color, #60a5fa);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+
+    /* Lessons Scrollable List */
     .lessons-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
       position: relative;
       z-index: 1;
       flex: 1;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-inline-end: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    .lessons-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .lessons-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    .lessons-list::-webkit-scrollbar-thumb:hover {
+      background: var(--track-color, #60a5fa);
     }
 
     .lesson-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
+      gap: 9px;
+      padding: 8px 10px;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 12px;
+      border-radius: 10px;
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
       overflow: hidden;
     }
 
-    .lesson-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .lesson-item:hover::before {
-      opacity: 1;
-    }
-
     .lesson-item:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.12);
-      transform: translateX(-4px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.14);
+      transform: translateX(-3px);
     }
 
     .lesson-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       flex-shrink: 0;
       background: var(--track-icon-bg, rgba(59, 130, 246, 0.12));
       color: var(--track-icon-color, #60a5fa);
@@ -520,7 +553,7 @@
 
     .lesson-name {
       font-family: var(--font-sans);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       color: #f1f5f9;
       direction: ltr;
@@ -538,25 +571,55 @@
 
     .lesson-desc {
       font-family: var(--font-arabic);
-      font-size: 0.70rem;
+      font-size: 0.67rem;
       color: #64748b;
       direction: rtl;
       text-align: right;
-      line-height: 1.4;
+      line-height: 1.3;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
+    .lesson-time-chip {
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      color: #475569;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      flex-shrink: 0;
+    }
+
     .lesson-arrow {
       color: #334155;
-      font-size: 0.75rem;
       transition: transform 0.3s ease, color 0.3s ease;
+      flex-shrink: 0;
     }
 
     .lesson-item:hover .lesson-arrow {
       transform: translateX(-3px);
       color: #94a3b8;
+    }
+
+    .track-card-footer {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+    }
+
+    .track-hub-link {
+      font-size: 0.75rem;
+      color: var(--track-color, #60a5fa);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.25s ease;
+    }
+
+    .track-hub-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
     }
 
     /* Footer Note */
@@ -567,16 +630,6 @@
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       color: #64748b;
       font-size: 0.85rem;
-    }
-
-    .footer-note a {
-      color: #60a5fa;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer-note a:hover {
-      color: #c084fc;
     }
   </style>
 </head>
@@ -591,12 +644,12 @@
     <div class="aurora aurora-2"></div>
     <div class="aurora aurora-3"></div>
 
-    <!-- Floating particles canvas -->
+    <!-- Floating Canvas Particles -->
     <canvas id="particles"></canvas>
 
     <div class="hero-content">
-      
-      <!-- Top Navigation Bar -->
+
+      <!-- Navigation Top Bar -->
       <nav class="fsa-nav-header">
         <a href="index.html" class="fsa-nav-brand">
           <svg style="width: 22px; height: 22px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-code"></use></svg>
@@ -635,12 +688,12 @@
       <div class="title-section">
         <div class="title-badge">
           <span class="title-badge-dot"></span>
-          <span>Zero-Build · Zero Dependencies · 100% Offline Platform</span>
+          <span>Zero-Build · Zero Dependencies · 100% Offline Platform · 106 Lessons</span>
         </div>
 
         <h1>FullStack Academy · الخوارزميات وهندسة الويب</h1>
         <p>
-          تعلم هندسة الويب الشاملة (MERN &amp; PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع محاكيات مباشرة، تشريح الكود سطراً بسطر، وتمارين تنفيذ داخل المتصفح بدون أي تثبيت.
+          تعلم هندسة الويب الشاملة (MERN &amp; PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات مباشرة، تشريح الكود سطراً بسطر، وتمارين تنفيذ داخل المتصفح بدون أي تثبيت.
         </p>
       </div>
 
@@ -654,8 +707,8 @@
         <div class="stat-divider"></div>
 
         <div class="stat-item">
-          <div class="stat-number">106+</div>
-          <div class="stat-label">دروس تفاعلية</div>
+          <div class="stat-number">106</div>
+          <div class="stat-label">درساً تفاعلياً</div>
         </div>
 
         <div class="stat-divider"></div>
@@ -673,6 +726,12 @@
         </div>
       </div>
 
+      <!-- Live Search Box Across All 106 Lessons -->
+      <div class="curriculum-search-bar">
+        <input type="text" id="curriculumLiveFilter" class="curriculum-search-input" placeholder="ابحث بين 106 دروس (مثال: useState, JWT, Docker, Redis, Prisma, BSON)..." aria-label="تصفية الدروس المباشرة">
+        <svg class="curriculum-search-icon"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
+      </div>
+
       <!-- Quick Resume Box (Personalized from localStorage) -->
       <div class="quick-resume-box" id="quickResumeBox">
         <div class="quick-resume-info">
@@ -681,7 +740,7 @@
           </div>
           <div>
             <div style="font-size: 0.78rem; color: #60a5fa; font-weight: 700;" id="resumeTrackLabel">المسار الموصى به: الأساسيات</div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: #fff;" id="resumeLessonTitle">How the Web Works: HTTP/3 &amp; DNS Resolution</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: #fff;" id="resumeLessonTitle">How the Web Works: HTTP/3 &amp; DNS Lifecycle</div>
           </div>
         </div>
 
@@ -690,294 +749,1127 @@
         </a>
       </div>
 
-      <!-- 8 Tracks Matrix Grid -->
-      <div class="tracks-container">
+      <!-- 8 Tracks Matrix Grid (All 106 Lessons) -->
+      <div class="tracks-container" id="tracksGrid">
         
-        <!-- Track 1: Foundations -->
-        <div class="track-card" style="--track-color: #F59E0B; --track-glow: rgba(245, 158, 11, 0.12); --track-shadow: rgba(245, 158, 11, 0.25); --track-gradient: linear-gradient(135deg, #F59E0B, #D97706); --track-icon-bg: rgba(245, 158, 11, 0.15); --track-icon-color: #FBBF24;">
+        <!-- Track 1: أساسيات الويب واللغة -->
+        <div class="track-card" style="--track-color: #F59E0B; --track-glow: rgba(245, 158, 11, 0.12); --track-shadow: rgba(245, 158, 11, 0.25); --track-gradient: linear-gradient(135deg, #F59E0B, #D97706); --track-icon-bg: rgba(245, 158, 11, 0.15); --track-icon-color: #FBBF24;" data-track-id="foundations">
           <div class="track-header">
             <div class="track-number">1</div>
             <div class="track-info">
               <div class="track-title">أساسيات الويب واللغة</div>
-              <div class="track-subtitle">Web &amp; JS Foundations (ES2026)</div>
+              <div class="track-subtitle">Web & JS Foundations (ES2026)</div>
             </div>
+            <span class="track-badge-count">16 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/foundations/how-web-works.html" class="lesson-item">
-              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
-              <div class="lesson-text">
-                <div class="lesson-name">How the Web Works</div>
-                <div class="lesson-desc">بروتوكولات HTTP/3، فك نطاقات DNS، وتدفق الطلبات</div>
-              </div>
-              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-            </a>
-            <a href="learn/foundations/js-essentials.html" class="lesson-item">
+            
+            <a href="learn/foundations/how-web-works.html" class="lesson-item" data-lesson-slug="how-web-works" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">JS Execution &amp; Scope</div>
-                <div class="lesson-desc">مكدس V8 Call Stack، نطاق الدوال، ومفهوم Closures</div>
+                <div class="lesson-name">How the Web Works: HTTP/3 & DNS Lifecycle</div>
+                <div class="lesson-desc">Network Lifecycle</div>
               </div>
+              <span class="lesson-time-chip">25m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/foundations/async-js.html" class="lesson-item">
+            <a href="learn/foundations/html-semantic.html" class="lesson-item" data-lesson-slug="html-semantic" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Semantic HTML, Document Outlines & Accessibility (a11y)</div>
+                <div class="lesson-desc">الهيكل الدلالي للـ HTML ومعايير الوصول الشامل (a11y)</div>
+              </div>
+              <span class="lesson-time-chip">20m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-essentials.html" class="lesson-item" data-lesson-slug="js-essentials" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Async JS &amp; Event Loop</div>
-                <div class="lesson-desc">وعود الـ Promises، والمهام الصغرى Microtasks</div>
+                <div class="lesson-name">JS Execution Context, Scope & Closures</div>
+                <div class="lesson-desc">V8 Execution Model</div>
               </div>
+              <span class="lesson-time-chip">30m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/foundations/fetch-api.html" class="lesson-item">
+            <a href="learn/foundations/css-box-model.html" class="lesson-item" data-lesson-slug="css-box-model" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Fetch API &amp; Streams</div>
-                <div class="lesson-desc">حل التدفق الثنائي، معايير REST، و AbortController</div>
+                <div class="lesson-name">CSS Box Model, Flexbox Axis & Modern CSS Grid</div>
+                <div class="lesson-desc">نموذج الصندوق في CSS ومحاور Flexbox وشبكات Grid الحديثة</div>
               </div>
+              <span class="lesson-time-chip">22m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-types-operators.html" class="lesson-item" data-lesson-slug="js-types-operators" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Primitive Types, Type Coercion & Symbols/BigInt</div>
+                <div class="lesson-desc">أنواع البيانات الأولية، فخاخ التحويل التلقائي (Coercion) والرموز</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-control-flow.html" class="lesson-item" data-lesson-slug="js-control-flow" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Control Flow, Iteration Protocols & Labeled Statements</div>
+                <div class="lesson-desc">التحكم في مسار التنفيذ، بروتوكولات التكرار والحلقات المعنونة</div>
+              </div>
+              <span class="lesson-time-chip">20m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-functions.html" class="lesson-item" data-lesson-slug="js-functions" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Functions, Arrow Mechanics, Rest/Spread & Currying</div>
+                <div class="lesson-desc">الدوال البرمجية، كواليس الدوال السهمية، المعاملات المتبقية والـ Currying</div>
+              </div>
+              <span class="lesson-time-chip">25m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-arrays-methods.html" class="lesson-item" data-lesson-slug="js-arrays-methods" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Array Pipeline: Map, Filter, Reduce, FlatMap & Performance</div>
+                <div class="lesson-desc">خط أنابيب المصفوفات: Map, Filter, Reduce والتحسين الأدائي</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-objects-prototypes.html" class="lesson-item" data-lesson-slug="js-objects-prototypes" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Objects, Prototypes, Descriptors & Property Shadowing</div>
+                <div class="lesson-desc">الكائنات البرمجية، الـ Prototypes وواصفات الخصائص في V8</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-classes-oop.html" class="lesson-item" data-lesson-slug="js-classes-oop" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">ES6 Classes, Private Fields (#), Inheritance & Static Methods</div>
+                <div class="lesson-desc">الفئات الكلاسيكية في ES6، الحقول الخاصة (#) والوراثة في V8</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/async-js.html" class="lesson-item" data-lesson-slug="async-js" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Asynchronous JS: Event Loop & Promises</div>
+                <div class="lesson-desc">Concurrency Model</div>
+              </div>
+              <span class="lesson-time-chip">35m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/fetch-api.html" class="lesson-item" data-lesson-slug="fetch-api" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Fetch API, Streams & AbortController</div>
+                <div class="lesson-desc">Network Streaming</div>
+              </div>
+              <span class="lesson-time-chip">30m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-async-await.html" class="lesson-item" data-lesson-slug="js-async-await" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Async/Await Control Flow, Sequential vs Parallel & Error Guards</div>
+                <div class="lesson-desc">التحكم في العمليات اللاتزامنية بـ Async/Await والتنفيذ المتوازي</div>
+              </div>
+              <span class="lesson-time-chip">25m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-modules.html" class="lesson-item" data-lesson-slug="js-modules" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">ES Modules (ESM) vs CommonJS (CJS), Tree-Shaking & Dynamic Imports</div>
+                <div class="lesson-desc">أنظمة الحزم: ES Modules مقابل CommonJS والتحميل الديناميكي</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-error-handling.html" class="lesson-item" data-lesson-slug="js-error-handling" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Error Hierarchies, Custom Errors, Stack Traces & Defensive Coding</div>
+                <div class="lesson-desc">معمارية معالجة الأخطاء، الأصناف المخصصة وتتبع المكدس (Stack Trace)</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/foundations/js-modern-features.html" class="lesson-item" data-lesson-slug="js-modern-features" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Modern ECMAScript: Optional Chaining, Nullish Coalescing, WeakRefs & Temporal</div>
+                <div class="lesson-desc">جافاسكربت الحديثة: الروابط الاختيارية، دمج الـ Null والذاكرة الضعيفة</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/foundations/index.html" class="track-hub-link">
+              <span>استعراض مسار أساسيات الويب واللغة بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 2: React.js -->
-        <div class="track-card" style="--track-color: #38BDF8; --track-glow: rgba(56, 189, 248, 0.12); --track-shadow: rgba(56, 189, 248, 0.25); --track-gradient: linear-gradient(135deg, #0284C7, #0369A1); --track-icon-bg: rgba(56, 189, 248, 0.15); --track-icon-color: #38BDF8;">
+        <!-- Track 2: ريآكت الحديثة -->
+        <div class="track-card" style="--track-color: #38BDF8; --track-glow: rgba(56, 189, 248, 0.12); --track-shadow: rgba(56, 189, 248, 0.25); --track-gradient: linear-gradient(135deg, #0284C7, #0369A1); --track-icon-bg: rgba(56, 189, 248, 0.15); --track-icon-color: #38BDF8;" data-track-id="react">
           <div class="track-header">
             <div class="track-number">2</div>
             <div class="track-info">
               <div class="track-title">ريآكت الحديثة</div>
               <div class="track-subtitle">React.js 19.2 Architecture</div>
             </div>
+            <span class="track-badge-count">18 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/react/thinking-in-react.html" class="lesson-item">
+            
+            <a href="learn/react/thinking-in-react.html" class="lesson-item" data-lesson-slug="thinking-in-react" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Thinking in React</div>
-                <div class="lesson-desc">تدفق البيانات الأحادي وتقسيم شجرة المكونات</div>
+                <div class="lesson-name">Thinking in React: Component Hierarchy</div>
+                <div class="lesson-desc">Component Mental Model</div>
               </div>
+              <span class="lesson-time-chip">25m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/react/use-state.html" class="lesson-item">
+            <a href="learn/react/jsx-deep-dive.html" class="lesson-item" data-lesson-slug="jsx-deep-dive" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">useState &amp; Fiber Hooks</div>
-                <div class="lesson-desc">ترتيب استدعاء الـ Hooks والتحديثات المتزامنة</div>
+                <div class="lesson-name">JSX Under the Hood: React.createElement, AST & Modern JSX Transform</div>
+                <div class="lesson-desc">كواليس JSX: دالة createElement والتحويل البرمجي الحديث في ريآكت 19</div>
               </div>
+              <span class="lesson-time-chip">20m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/react/use-effect.html" class="lesson-item">
-              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
-              <div class="lesson-text">
-                <div class="lesson-name">useEffect &amp; Lifecycle</div>
-                <div class="lesson-desc">المزامنة مع الأنظمة الخارجية ودوال التنظيف</div>
-              </div>
-              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
-            </a>
-            <a href="learn/react/reconciliation.html" class="lesson-item">
+            <a href="learn/react/use-state.html" class="lesson-item" data-lesson-slug="use-state" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Reconciliation &amp; VDOM</div>
-                <div class="lesson-desc">خوارزمية المقارنة O(n) وحفظ الهوية عبر المفاتيح</div>
+                <div class="lesson-name">useState Hook: Fiber Linked Lists & Immutability</div>
+                <div class="lesson-desc">State Architecture</div>
               </div>
+              <span class="lesson-time-chip">30m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/event-handling.html" class="lesson-item" data-lesson-slug="event-handling" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">SyntheticEvent System, Event Delegation & Controlled Forms</div>
+                <div class="lesson-desc">نظام الأحداث الاصطناعي (SyntheticEvent) والمدخلات المضبوطة في ريآكت</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/conditional-rendering.html" class="lesson-item" data-lesson-slug="conditional-rendering" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Conditional Rendering Patterns, Short-Circuits & Early Returns</div>
+                <div class="lesson-desc">أنماط العرض الشرطي، فخاخ الدوائر القصيرة (&amp;&amp;) والعودة المبكرة</div>
+              </div>
+              <span class="lesson-time-chip">20m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/lists-keys.html" class="lesson-item" data-lesson-slug="lists-keys" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Lists, Stable Keys Strategies & The Index-as-Key Hazard</div>
+                <div class="lesson-desc">عرض القوائم، استراتيجيات الـ Keys المستقرة ومخاطر استخدام الفهرس (Index)</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-effect.html" class="lesson-item" data-lesson-slug="use-effect" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">useEffect Hook: Synchronization & Cleanup</div>
+                <div class="lesson-desc">Lifecycle Synchronization</div>
+              </div>
+              <span class="lesson-time-chip">35m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/reconciliation.html" class="lesson-item" data-lesson-slug="reconciliation" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Reconciliation: Virtual DOM & Diffing Algorithm</div>
+                <div class="lesson-desc">Reconciliation Engine</div>
+              </div>
+              <span class="lesson-time-chip">30m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/component-patterns.html" class="lesson-item" data-lesson-slug="component-patterns" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Advanced Component Patterns: Compound Components & Render Props</div>
+                <div class="lesson-desc">أنماط المكونات المتقدمة: المكونات المركبة ودوال العرض (Render Props)</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-reducer.html" class="lesson-item" data-lesson-slug="use-reducer" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Complex State Transitions with useReducer & State Machines</div>
+                <div class="lesson-desc">إدارة الحالات المعقدة بهوك useReducer وآلات الحالة المحدودة</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-context.html" class="lesson-item" data-lesson-slug="use-context" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Context API: Eliminating Prop Drilling & Context Splitting</div>
+                <div class="lesson-desc">واجهة Context API: القضاء على تمرير الخصائص المضني وتقسيم السياقات</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-ref-dom.html" class="lesson-item" data-lesson-slug="use-ref-dom" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">useRef: Mutable Value Persistence & Direct DOM Node Access</div>
+                <div class="lesson-desc">هوك useRef: الاحتفاظ بالقيم المتغيرة والوصول المباشر للـ DOM</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/use-memo-callback.html" class="lesson-item" data-lesson-slug="use-memo-callback" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lightbulb"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Performance Optimization: useMemo, useCallback & Referential Equality</div>
+                <div class="lesson-desc">تحسين الأداء بهوك useMemo و useCallback ومطابقة المراجع في الذاكرة</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/custom-hooks.html" class="lesson-item" data-lesson-slug="custom-hooks" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Custom Hooks: Logic Extraction, Composition & Clean Architecture</div>
+                <div class="lesson-desc">الهوكس المخصصة (Custom Hooks): استخراج المنطق المعقد وتركيب السلوكيات</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/react-router.html" class="lesson-item" data-lesson-slug="react-router" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Client-Side Routing: React Router v7, Nested Routes & Loaders</div>
+                <div class="lesson-desc">التوجيه في تطبيقات الصفحة الواحدة: ريآكت راوتر 7 والمسارات المتداخلة</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/data-fetching.html" class="lesson-item" data-lesson-slug="data-fetching" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Data Fetching, Cache Invalidation, SWR & TanStack Query Patterns</div>
+                <div class="lesson-desc">استراتيجيات جلب البيانات، إبطال الكاش وأنماط SWR و TanStack Query</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/state-management.html" class="lesson-item" data-lesson-slug="state-management" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Global State Management with Zustand: Stores, Selectors & Slices</div>
+                <div class="lesson-desc">إدارة الحالة العامة بمكتبة Zustand: المتاجر والمحددات والشرائح</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/react/react-best-practices.html" class="lesson-item" data-lesson-slug="react-best-practices" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">React Production Checklist: Project Structure, Profiler & Performance Audits</div>
+                <div class="lesson-desc">دليل الإنتاج لريآكت: الهيكلة المعيارية، فاحص الأداء وقائمة التحقق</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/react/index.html" class="track-hub-link">
+              <span>استعراض مسار ريآكت الحديثة بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 3: Node.js -->
-        <div class="track-card" style="--track-color: #84CC16; --track-glow: rgba(132, 204, 22, 0.12); --track-shadow: rgba(132, 204, 22, 0.25); --track-gradient: linear-gradient(135deg, #65A30D, #4D7C0F); --track-icon-bg: rgba(132, 204, 22, 0.15); --track-icon-color: #A3E635;">
+        <!-- Track 3: نود جي إس والبيئة -->
+        <div class="track-card" style="--track-color: #84CC16; --track-glow: rgba(132, 204, 22, 0.12); --track-shadow: rgba(132, 204, 22, 0.25); --track-gradient: linear-gradient(135deg, #65A30D, #4D7C0F); --track-icon-bg: rgba(132, 204, 22, 0.15); --track-icon-color: #A3E635;" data-track-id="nodejs">
           <div class="track-header">
             <div class="track-number">3</div>
             <div class="track-info">
               <div class="track-title">نود جي إس والبيئة</div>
               <div class="track-subtitle">Node.js 24 LTS Runtime</div>
             </div>
+            <span class="track-badge-count">14 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/nodejs/what-node-is.html" class="lesson-item">
+            
+            <a href="learn/nodejs/what-node-is.html" class="lesson-item" data-lesson-slug="what-node-is" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Node.js &amp; libuv Core</div>
-                <div class="lesson-desc">محرك V8 وتفويض العمليات لمكتبة libuv والـ Thread Pool</div>
+                <div class="lesson-name">What Node.js Is: V8 & libuv Architecture</div>
+                <div class="lesson-desc">Runtime Architecture</div>
               </div>
+              <span class="lesson-time-chip">25m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/nodejs/event-loop.html" class="lesson-item">
+            <a href="learn/nodejs/node-modules.html" class="lesson-item" data-lesson-slug="node-modules" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">The 6-Phase Event Loop</div>
-                <div class="lesson-desc">المراحل الست بالتفصيل وفروق nextTick و setImmediate</div>
+                <div class="lesson-name">Module Systems: CommonJS vs ECMAScript Modules (ESM) in Node.js 24</div>
+                <div class="lesson-desc">أنظمة الوحدات في Node.js 24: مقارنة CommonJS و ES Modules</div>
               </div>
+              <span class="lesson-time-chip">22m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/nodejs/streams-buffers.html" class="lesson-item">
+            <a href="learn/nodejs/event-loop.html" class="lesson-item" data-lesson-slug="event-loop" data-level="2">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Streams, Buffers &amp; Flow</div>
-                <div class="lesson-desc">معالجة التدفقات الثنائية والتحكم في Backpressure</div>
+                <div class="lesson-name">The 6-Phase Node.js Event Loop</div>
+                <div class="lesson-desc">Event Loop Architecture</div>
               </div>
+              <span class="lesson-time-chip">30m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/event-emitter.html" class="lesson-item" data-lesson-slug="event-emitter" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">The EventEmitter Pattern, Custom Events & Memory Leak Guards</div>
+                <div class="lesson-desc">نمط EventEmitter والأحداث المخصصة وحماية تسريب الذاكرة</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/fs-path.html" class="lesson-item" data-lesson-slug="fs-path" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">File System Operations: Promises API, Streams & Path Normalization</div>
+                <div class="lesson-desc">نظام الملفات والمسارات في Node.js: واجهة الوعود وتطبيع المسارات</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/http-module.html" class="lesson-item" data-lesson-slug="http-module" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Native HTTP/HTTPS Servers & Raw Request Routing Without Frameworks</div>
+                <div class="lesson-desc">خوادم HTTP/HTTPS الأصلية وتوجيه الطلبات الخام بدون أطر عمل</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/process-env.html" class="lesson-item" data-lesson-slug="process-env" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">The Process Object, Environment Variables, CLI Args & OS Signals</div>
+                <div class="lesson-desc">كائن Process وإدارة متغيرات البيئة وإشارات نظام التشغيل في Node.js</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/error-handling-node.html" class="lesson-item" data-lesson-slug="error-handling-node" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Operational vs Programmer Errors, Uncaught Exceptions & Process Safety</div>
+                <div class="lesson-desc">معمارية الأخطاء في Node.js: الاستثناءات غير الملتقطة وأمان العمليات</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/streams-buffers.html" class="lesson-item" data-lesson-slug="streams-buffers" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Streams, Buffers & Backpressure Management</div>
+                <div class="lesson-desc">Streaming Architecture</div>
+              </div>
+              <span class="lesson-time-chip">35m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/child-processes.html" class="lesson-item" data-lesson-slug="child-processes" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Multiprocessing in Node.js: spawn, fork, exec & Worker Threads</div>
+                <div class="lesson-desc">تعدد المعالجات في Node.js: العمليات الفرعية وخيوط المعالجة (Worker Threads)</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/npm-packages.html" class="lesson-item" data-lesson-slug="npm-packages" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">NPM Ecosystem, Semantic Versioning (SemVer), Package-Lock & Security Audits</div>
+                <div class="lesson-desc">منظومة حزم NPM، الترقيم الدلالي (SemVer) وملفات القفل وتدقيق الأمان</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/testing-node.html" class="lesson-item" data-lesson-slug="testing-node" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Automated Testing with Jest: Unit Tests, Mocks, Spies & Integration</div>
+                <div class="lesson-desc">الاختبارات المؤتمتة في Node.js بـ Jest: اختبارات الوحدات والمحاكاة (Mocks)</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/debugging-node.html" class="lesson-item" data-lesson-slug="debugging-node" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Node.js Debugging: Inspector Protocol, Chrome DevTools & Memory Leak Profiling</div>
+                <div class="lesson-desc">تنقيح أخطاء Node.js: بروتوكول Inspector وأدوات DevTools وتشخيص الذاكرة</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/nodejs/security-node.html" class="lesson-item" data-lesson-slug="security-node" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Node.js Security Best Practices: Helmet, Input Sanitization, Rate Limiting & CSRF</div>
+                <div class="lesson-desc">أمان خوادم Node.js: ترويسات Helmet، تطهير المدخلات وتحديد معدل الطلبات</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/nodejs/index.html" class="track-hub-link">
+              <span>استعراض مسار نود جي إس والبيئة بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 4: Express.js -->
-        <div class="track-card" style="--track-color: #A1A1AA; --track-glow: rgba(161, 161, 170, 0.12); --track-shadow: rgba(161, 161, 170, 0.25); --track-gradient: linear-gradient(135deg, #71717A, #52525B); --track-icon-bg: rgba(161, 161, 170, 0.15); --track-icon-color: #E4E4E7;">
+        <!-- Track 4: إكسبريس وبناء الـ APIs -->
+        <div class="track-card" style="--track-color: #A1A1AA; --track-glow: rgba(161, 161, 170, 0.12); --track-shadow: rgba(161, 161, 170, 0.25); --track-gradient: linear-gradient(135deg, #71717A, #52525B); --track-icon-bg: rgba(161, 161, 170, 0.15); --track-icon-color: #E4E4E7;" data-track-id="express">
           <div class="track-header">
             <div class="track-number">4</div>
             <div class="track-info">
               <div class="track-title">إكسبريس وبناء الـ APIs</div>
               <div class="track-subtitle">Express.js 5.2 Server</div>
             </div>
+            <span class="track-badge-count">14 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/express/hello-express.html" class="lesson-item">
+            
+            <a href="learn/express/hello-express.html" class="lesson-item" data-lesson-slug="hello-express" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Server &amp; Route Setup</div>
-                <div class="lesson-desc">إنشاء الخادم، التوجيه الأساسي، وتخصيص المنافذ</div>
+                <div class="lesson-name">Hello Express: Server Architecture & Routing</div>
+                <div class="lesson-desc">Server Architecture</div>
               </div>
+              <span class="lesson-time-chip">25m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/express/middleware.html" class="lesson-item">
+            <a href="learn/express/routing-params.html" class="lesson-item" data-lesson-slug="routing-params" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Middleware Pipeline</div>
-                <div class="lesson-desc">سلسلة المعالجات الوسيطة واستدعاء دالة next()</div>
+                <div class="lesson-name">Express 5 Routing, Route Parameters, Query Strings & Sub-Routers</div>
+                <div class="lesson-desc">توجيه المسارات في إكسبريس 5، معاملات الـ URL وتفريغ الموجهات الفرعية</div>
               </div>
+              <span class="lesson-time-chip">22m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="learn/express/rest-crud.html" class="lesson-item">
+            <a href="learn/express/request-response.html" class="lesson-item" data-lesson-slug="request-response" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Production REST CRUD</div>
-                <div class="lesson-desc">معايير REST وأكواد الردود وفحص المدخلات</div>
+                <div class="lesson-name">Request & Response Lifecycle, Content Negotiation & Custom Responses</div>
+                <div class="lesson-desc">دورة حياة الطلب والاستجابة، تفاوض المحتوى وأنماط الردود القياسية</div>
               </div>
+              <span class="lesson-time-chip">24m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/middleware.html" class="lesson-item" data-lesson-slug="middleware" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Middleware Conveyor Pipeline & Error Guards</div>
+                <div class="lesson-desc">Middleware Pipeline</div>
+              </div>
+              <span class="lesson-time-chip">30m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/error-handling-express.html" class="lesson-item" data-lesson-slug="error-handling-express" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Centralized Error Middleware, Express 5 Auto-Catch & Custom AppErrors</div>
+                <div class="lesson-desc">معمارية معالجة الأخطاء المركزية والالتقاط التلقائي في إكسبريس 5</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/validation-sanitization.html" class="lesson-item" data-lesson-slug="validation-sanitization" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Schema Validation & Sanitization with Zod in Express APIs</div>
+                <div class="lesson-desc">التحقق الصارم وتطهير البيانات بمكتبة Zod في خوادم إكسبريس</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/authentication.html" class="lesson-item" data-lesson-slug="authentication" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Authentication Architecture: JWTs, Password Hashing & HttpOnly Cookies</div>
+                <div class="lesson-desc">معمارية التوثيق: رموز JWT، تشفير كلمات السر وكوكيز HttpOnly الآمنة</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/authorization-rbac.html" class="lesson-item" data-lesson-slug="authorization-rbac" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Role-Based Access Control (RBAC), Permissions & Auth Guards</div>
+                <div class="lesson-desc">التحكم بالوصول القائم على الأدوار (RBAC) وحراس الصلاحيات</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/file-uploads.html" class="lesson-item" data-lesson-slug="file-uploads" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Multi-Part Form Data & Secure File Uploads with Multer</div>
+                <div class="lesson-desc">معالجة الملفات المرفوعة وبيانات Multipart/form-data بمكتبة Multer</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/api-pagination.html" class="lesson-item" data-lesson-slug="api-pagination" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">API Pagination & Query Optimization: Offset vs Cursor-Based Pagination</div>
+                <div class="lesson-desc">تقسيم نتائج الـ API (Pagination): مقارنة الـ Offset والـ Cursor وأداء الفهارس</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/rest-crud.html" class="lesson-item" data-lesson-slug="rest-crud" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Production REST CRUD API & Validation</div>
+                <div class="lesson-desc">REST Architecture</div>
+              </div>
+              <span class="lesson-time-chip">35m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/rate-limiting-security.html" class="lesson-item" data-lesson-slug="rate-limiting-security" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">API Rate Limiting, CORS Whitelisting & Advanced Security Headers</div>
+                <div class="lesson-desc">تأمين الخوادم المتقدم: تحديد معدل الطلبات، سياسات CORS وترويسات الحماية</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/api-documentation.html" class="lesson-item" data-lesson-slug="api-documentation" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">API Documentation with OpenAPI 3.1 & Swagger UI Generation</div>
+                <div class="lesson-desc">توثيق واجهات الـ REST API بمعيار OpenAPI 3.1 ومولدات Swagger UI</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/express/deployment-production.html" class="lesson-item" data-lesson-slug="deployment-production" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Express Production Readiness: PM2 Cluster, Reverse Proxy & Graceful Shutdowns</div>
+                <div class="lesson-desc">دليل إنتاج إكسبريس: إدارة العمليات بـ PM2 والـ Reverse Proxy مع Nginx</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/express/index.html" class="track-hub-link">
+              <span>استعراض مسار إكسبريس وبناء الـ APIs بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 5: MongoDB -->
-        <div class="track-card" style="--track-color: #22C55E; --track-glow: rgba(34, 197, 94, 0.12); --track-shadow: rgba(34, 197, 94, 0.25); --track-gradient: linear-gradient(135deg, #16A34A, #15803D); --track-icon-bg: rgba(34, 197, 94, 0.15); --track-icon-color: #4ADE80;">
+        <!-- Track 5: مونجو وقواعد المستندات -->
+        <div class="track-card" style="--track-color: #22C55E; --track-glow: rgba(34, 197, 94, 0.12); --track-shadow: rgba(34, 197, 94, 0.25); --track-gradient: linear-gradient(135deg, #16A34A, #15803D); --track-icon-bg: rgba(34, 197, 94, 0.15); --track-icon-color: #4ADE80;" data-track-id="mongodb">
           <div class="track-header">
             <div class="track-number">5</div>
             <div class="track-info">
               <div class="track-title">مونجو وقواعد المستندات</div>
               <div class="track-subtitle">MongoDB 8.0 NoSQL Engine</div>
             </div>
+            <span class="track-badge-count">10 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/mongodb/document-model.html" class="lesson-item">
+            
+            <a href="learn/mongodb/document-model.html" class="lesson-item" data-lesson-slug="document-model" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">BSON Document Model</div>
-                <div class="lesson-desc">تضمين البيانات مقابل الإسناد وحد الـ 16MB</div>
+                <div class="lesson-name">MongoDB Document Model: BSON & Embedding</div>
+                <div class="lesson-desc">Document Store</div>
               </div>
+              <span class="lesson-time-chip">30m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="reference/mongodb/cheatsheet.html" class="lesson-item">
-              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-book"></use></svg></div>
+            <a href="learn/mongodb/crud-operations.html" class="lesson-item" data-lesson-slug="crud-operations" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Query &amp; Update Operators</div>
-                <div class="lesson-desc">عوامل المقارنة $gt وتحديث المصفوفات $push و $set</div>
+                <div class="lesson-name">MongoDB CRUD Operations: BSON Data Types, Query Selectors & Atomic Updates</div>
+                <div class="lesson-desc">عمليات الـ CRUD في مونجو دي بي: أنواع BSON والمشغلات الذرية للبيانات</div>
               </div>
+              <span class="lesson-time-chip">24m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/schema-design.html" class="lesson-item" data-lesson-slug="schema-design" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">MongoDB Schema Design: Embedding vs Referencing & 16MB Threshold</div>
+                <div class="lesson-desc">تصميم مخططات MongoDB: التضمين مقابل المراجع وحد الـ 16MB الحرج</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/indexes-performance.html" class="lesson-item" data-lesson-slug="indexes-performance" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">MongoDB Index Strategies: Single, Compound, Multikey, TTL & Explain Plans</div>
+                <div class="lesson-desc">استراتيجيات الفهارس في MongoDB: الفهارس المركبة، مؤقتات TTL وخطط التنفيذ</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/aggregation-pipeline.html" class="lesson-item" data-lesson-slug="aggregation-pipeline" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">MongoDB Aggregation Framework: $match, $group, $lookup, $unwind & $facet</div>
+                <div class="lesson-desc">خط أنابيب التجميع (Aggregation Pipeline): المعالجة التحليلية والربط في MongoDB</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/transactions-acid.html" class="lesson-item" data-lesson-slug="transactions-acid" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Multi-Document ACID Transactions & Session Management in MongoDB</div>
+                <div class="lesson-desc">المعاملات البنكية الشاملة (ACID Transactions) وإدارة الجلسات في MongoDB</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/mongoose-odm.html" class="lesson-item" data-lesson-slug="mongoose-odm" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Mongoose 8 ODM: Schemas, Models, Middleware Hooks, Virtuals & Lean Queries</div>
+                <div class="lesson-desc">مكتبة Mongoose 8: المخططات، خطافات الـ Middleware والاستعلامات الخفيفة (Lean)</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/schema-validation.html" class="lesson-item" data-lesson-slug="schema-validation" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">MongoDB Collection-Level JSON Schema Validation ($jsonSchema)</div>
+                <div class="lesson-desc">التحقق من صحة البيانات على مستوى محرك MongoDB عبر $jsonSchema</div>
+              </div>
+              <span class="lesson-time-chip">22m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/sharding-replication.html" class="lesson-item" data-lesson-slug="sharding-replication" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">High Availability: Replica Sets, Oplog, Sharded Clusters & Horizontal Scaling</div>
+                <div class="lesson-desc">التوافرية العالية والتوسع الأفقي: مجموعات النسخ المتطابقة (Replica Sets) والـ Sharding</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/mongodb/backup-security.html" class="lesson-item" data-lesson-slug="backup-security" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Production MongoDB Security: RBAC, TLS Encryption, mongodump & Recovery</div>
+                <div class="lesson-desc">أمان MongoDB للإنتاج: تشفير الاتصالات، صلاحيات المستخدمين والنسخ الاحتياطي</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/mongodb/index.html" class="track-hub-link">
+              <span>استعراض مسار مونجو وقواعد المستندات بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 6: PostgreSQL -->
-        <div class="track-card" style="--track-color: #60A5FA; --track-glow: rgba(96, 165, 250, 0.12); --track-shadow: rgba(96, 165, 250, 0.25); --track-gradient: linear-gradient(135deg, #2563EB, #1D4ED8); --track-icon-bg: rgba(96, 165, 250, 0.15); --track-icon-color: #93C5FD;">
+        <!-- Track 6: بوستجرس والأنظمة العلائقية -->
+        <div class="track-card" style="--track-color: #60A5FA; --track-glow: rgba(96, 165, 250, 0.12); --track-shadow: rgba(96, 165, 250, 0.25); --track-gradient: linear-gradient(135deg, #2563EB, #1D4ED8); --track-icon-bg: rgba(96, 165, 250, 0.15); --track-icon-color: #93C5FD;" data-track-id="postgresql">
           <div class="track-header">
             <div class="track-number">6</div>
             <div class="track-info">
               <div class="track-title">بوستجرس والأنظمة العلائقية</div>
               <div class="track-subtitle">PostgreSQL 18.x Relational</div>
             </div>
+            <span class="track-badge-count">10 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/postgresql/relational-model.html" class="lesson-item">
+            
+            <a href="learn/postgresql/relational-model.html" class="lesson-item" data-lesson-slug="relational-model" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">ACID &amp; Relational Core</div>
-                <div class="lesson-desc">الذرية والاتساق وسلامة المعاملات البنكية</div>
+                <div class="lesson-name">PostgreSQL Relational Model & ACID Guarantees</div>
+                <div class="lesson-desc">Relational Architecture</div>
               </div>
+              <span class="lesson-time-chip">30m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="reference/postgresql/cheatsheet.html" class="lesson-item">
-              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-book"></use></svg></div>
+            <a href="learn/postgresql/sql-syntax-data-types.html" class="lesson-item" data-lesson-slug="sql-syntax-data-types" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">SQL Joins &amp; Commands</div>
-                <div class="lesson-desc">عمليات الدمج INNER و LEFT JOIN والتحكم بالمعاملات</div>
+                <div class="lesson-name">SQL DDL/DML & PostgreSQL Advanced Types: UUID, JSONB, Arrays & Timestamptz</div>
+                <div class="lesson-desc">أوامر SQL الأساسية وأنواع بيانات PostgreSQL المتقدمة: UUID و JSONB والمصفوفات</div>
               </div>
+              <span class="lesson-time-chip">24m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/joins-relations.html" class="lesson-item" data-lesson-slug="joins-relations" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Normalization (1NF-3NF), Foreign Keys, ON DELETE & SQL Joins Mechanics</div>
+                <div class="lesson-desc">تطبيع قواعد البيانات (1NF إلى 3NF)، المفاتيح الأجنبية وكواليس الـ SQL Joins</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/indexes-query-planner.html" class="lesson-item" data-lesson-slug="indexes-query-planner" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">PostgreSQL Indexes & Query Optimization: B-Tree, GIN, BRIN & EXPLAIN ANALYZE</div>
+                <div class="lesson-desc">فهارس PostgreSQL ومخطط الاستعلامات: B-Tree و GIN و BRIN وأداة EXPLAIN ANALYZE</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/transactions-concurrency.html" class="lesson-item" data-lesson-slug="transactions-concurrency" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-clock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Transactions, Isolation Levels, MVCC & Row-Level Locking in PostgreSQL</div>
+                <div class="lesson-desc">المعاملات والتزامن في PostgreSQL: مستويات العزل، معمارية MVCC والأقفال</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/jsonb-hybrid-patterns.html" class="lesson-item" data-lesson-slug="jsonb-hybrid-patterns" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">PostgreSQL JSONB: Hybrid Relational-Document Storage, Operators & Indexing</div>
+                <div class="lesson-desc">حقول JSONB في PostgreSQL: التخزين الهجين، المشغلات وفهارس الاحتواء السريعة</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/subqueries-ctes.html" class="lesson-item" data-lesson-slug="subqueries-ctes" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Advanced SQL: Common Table Expressions (CTEs), Recursive CTEs & Window Functions</div>
+                <div class="lesson-desc">استعلامات SQL المتقدمة: الجداول المؤقتة (CTEs)، التكرار ودوال النوافذ (Window Functions)</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/triggers-stored-procedures.html" class="lesson-item" data-lesson-slug="triggers-stored-procedures" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">PL/pgSQL Functions, Triggers, Audit Logging & Generated Columns</div>
+                <div class="lesson-desc">دوال PL/pgSQL، مشغلات الـ Triggers، سجلات التدقيق والأعمدة المحسوبة</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/connection-pooling.html" class="lesson-item" data-lesson-slug="connection-pooling" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">PostgreSQL Connection Lifecycles & High-Performance Pooling with PgBouncer</div>
+                <div class="lesson-desc">دورة حياة الاتصالات وتجميع الاتصالات عالي الأداء بـ PgBouncer</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/postgresql/security-backup-pg.html" class="lesson-item" data-lesson-slug="security-backup-pg" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">PostgreSQL Production Security: Row-Level Security (RLS), pg_dump & WAL Archiving</div>
+                <div class="lesson-desc">أمان وتأمين PostgreSQL: أمان مستوى الصف (RLS)، النسخ بـ pg_dump وأرشفة WAL</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/postgresql/index.html" class="track-hub-link">
+              <span>استعراض مسار بوستجرس والأنظمة العلائقية بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 7: Prisma ORM -->
-        <div class="track-card" style="--track-color: #818CF8; --track-glow: rgba(129, 140, 248, 0.12); --track-shadow: rgba(129, 140, 248, 0.25); --track-gradient: linear-gradient(135deg, #6366F1, #4F46E5); --track-icon-bg: rgba(129, 140, 248, 0.15); --track-icon-color: #A5B4FC;">
+        <!-- Track 7: بريزما والتعامل الآمن -->
+        <div class="track-card" style="--track-color: #818CF8; --track-glow: rgba(129, 140, 248, 0.12); --track-shadow: rgba(129, 140, 248, 0.25); --track-gradient: linear-gradient(135deg, #6366F1, #4F46E5); --track-icon-bg: rgba(129, 140, 248, 0.15); --track-icon-color: #A5B4FC;" data-track-id="prisma">
           <div class="track-header">
             <div class="track-number">7</div>
             <div class="track-info">
               <div class="track-title">بريزما والتعامل الآمن</div>
               <div class="track-subtitle">Prisma 7.x Type-Safe ORM</div>
             </div>
+            <span class="track-badge-count">10 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/prisma/what-is-an-orm.html" class="lesson-item">
+            
+            <a href="learn/prisma/what-is-an-orm.html" class="lesson-item" data-lesson-slug="what-is-an-orm" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">What is an ORM</div>
-                <div class="lesson-desc">محرك Rust والأمان النوعي الكامل Type Safety</div>
+                <div class="lesson-name">What is an ORM: Prisma Architecture & Type Safety</div>
+                <div class="lesson-desc">ORM Architecture</div>
               </div>
+              <span class="lesson-time-chip">30m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="reference/prisma/errors.html" class="lesson-item">
+            <a href="learn/prisma/schema-modeling.html" class="lesson-item" data-lesson-slug="schema-modeling" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma Schema DSL: Models, Data Types, Attributes (@id, @map) & Multi-File Schemas</div>
+                <div class="lesson-desc">لغة نمذجة المخططات في بريزما: النماذج والسمات (@id, @map) وتقسيم المخططات</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/migrations-lifecycle.html" class="lesson-item" data-lesson-slug="migrations-lifecycle" data-level="1">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma Migrate: prisma migrate dev, deploy, reset & The Shadow Database</div>
+                <div class="lesson-desc">دورة حياة الهجرات في بريزما: الهجرة الآمنة، النشر وقاعدة البيانات الظلية (Shadow DB)</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/crud-queries.html" class="lesson-item" data-lesson-slug="crud-queries" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-alert"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Prisma Errors Playbook</div>
-                <div class="lesson-desc">تشخيص أخطاء P2002 و P2025 وحلها إنتاجياً</div>
+                <div class="lesson-name">Prisma Client CRUD: findUnique, findFirst, findMany, create, update & delete</div>
+                <div class="lesson-desc">عمليات CRUD في عميل بريزما: الاستعلامات الدقيقة، الفرز والتحديثات المتعددة</div>
               </div>
+              <span class="lesson-time-chip">24m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/relations-filtering.html" class="lesson-item" data-lesson-slug="relations-filtering" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Nested Relations, Deep Querying: include vs select & Fluent API</div>
+                <div class="lesson-desc">العلاقات المتداخلة في بريزما: مقارنة include و select والاستعلامات العميقة</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/transactions-batching.html" class="lesson-item" data-lesson-slug="transactions-batching" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma Transactions: Sequential Batching vs Interactive $transaction</div>
+                <div class="lesson-desc">معاملات بريزما: التجميع المتسلسل والمعاملات التفاعلية ($transaction)</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/raw-queries.html" class="lesson-item" data-lesson-slug="raw-queries" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-code"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Raw SQL Escape Hatches: $queryRaw, $executeRaw & SQL Template Tags</div>
+                <div class="lesson-desc">استعلامات SQL الخام في بريزما: دوال $queryRaw وتأمين قوالب الـ SQL Tagged</div>
+              </div>
+              <span class="lesson-time-chip">24m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/middleware-extensions.html" class="lesson-item" data-lesson-slug="middleware-extensions" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma Client Extensions: Query, Model, Result & Client Methods</div>
+                <div class="lesson-desc">توسيعات عميل بريزما (Prisma Client Extensions): تعديل النتائج والحذف الناعم</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/performance-optimization.html" class="lesson-item" data-lesson-slug="performance-optimization" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma Performance Optimization: Solving N+1 Queries, Select Projection & Index Tuning</div>
+                <div class="lesson-desc">تحسين أداء بريزما: حل مشكلة استعلامات N+1 وتحديد الأعمدة وضبط الفهارس</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/prisma/production-deployment.html" class="lesson-item" data-lesson-slug="production-deployment" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-alert"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Prisma in Production: Connection Limits, Accelerate, Pulse & Serverless Architecture</div>
+                <div class="lesson-desc">بريزما في بيئات الإنتاج: إدارة حدود الاتصال، التسريع السحابي ومعمارية Serverless</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/prisma/index.html" class="track-hub-link">
+              <span>استعراض مسار بريزما والتعامل الآمن بالكامل ←</span>
             </a>
           </div>
         </div>
 
-        <!-- Track 8: Architecture -->
-        <div class="track-card" style="--track-color: #C084FC; --track-glow: rgba(192, 132, 252, 0.12); --track-shadow: rgba(192, 132, 252, 0.25); --track-gradient: linear-gradient(135deg, #9333EA, #7E22CE); --track-icon-bg: rgba(192, 132, 252, 0.15); --track-icon-color: #E9D5FF;">
+        <!-- Track 8: المعمارية وتصميم النظم -->
+        <div class="track-card" style="--track-color: #C084FC; --track-glow: rgba(192, 132, 252, 0.12); --track-shadow: rgba(192, 132, 252, 0.25); --track-gradient: linear-gradient(135deg, #9333EA, #7E22CE); --track-icon-bg: rgba(192, 132, 252, 0.15); --track-icon-color: #E9D5FF;" data-track-id="architecture">
           <div class="track-header">
             <div class="track-number">8</div>
             <div class="track-info">
-              <div class="track-title">المعمارية الشاملة</div>
-              <div class="track-subtitle">Full-Stack Architecture</div>
+              <div class="track-title">المعمارية وتصميم النظم</div>
+              <div class="track-subtitle">Full-Stack Architecture & Next.js</div>
             </div>
+            <span class="track-badge-count">14 درساً</span>
           </div>
           <div class="lessons-list">
-            <a href="learn/architecture/request-lifecycles.html" class="lesson-item">
+            
+            <a href="learn/architecture/layered-architecture.html" class="lesson-item" data-lesson-slug="layered-architecture" data-level="1">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">End-to-End Request Flow</div>
-                <div class="lesson-desc">رحلة الطلب: React &larr; Express &larr; Prisma &larr; Postgres</div>
+                <div class="lesson-name">N-Tier Layered Architecture: Controllers, Services, Repositories & DTOs</div>
+                <div class="lesson-desc">المعمارية متعددة الطبقات (N-Tier): وحدات التحكم والخدمات والمستودعات والـ DTOs</div>
               </div>
+              <span class="lesson-time-chip">26m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
             </a>
-            <a href="projects/index.html" class="lesson-item">
+            <a href="learn/architecture/clean-architecture.html" class="lesson-item" data-lesson-slug="clean-architecture" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Clean Architecture & Hexagonal Ports/Adapters in Modern Node.js</div>
+                <div class="lesson-desc">العمارة النظيفة (Clean Architecture) والمنافذ والمحولات (Hexagonal) في Node.js</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/auth-security-deep-dive.html" class="lesson-item" data-lesson-slug="auth-security-deep-dive" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Enterprise Auth Architecture: OAuth 2.1, OIDC, Session Rotation & SSO</div>
+                <div class="lesson-desc">معمارية التوثيق المتقدمة للمؤسسات: بروتوكول OAuth 2.1 وتسجيل الدخول الموحد (SSO)</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/caching-redis.html" class="lesson-item" data-lesson-slug="caching-redis" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Distributed Caching with Redis: Cache-Aside, Write-Through & Invalidation Strategies</div>
+                <div class="lesson-desc">الكاش الموزع بـ Redis: أنماط Cache-Aside والتحديث المتزامن وإبطال الكاش</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/realtime-websockets.html" class="lesson-item" data-lesson-slug="realtime-websockets" data-level="2">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Real-Time Architecture: WebSockets, Socket.io, SSE & Redis Pub/Sub Adapters</div>
+                <div class="lesson-desc">معمارية التطبيقات الحية: الـ WebSockets وإشارات SSE وموزع Redis Pub/Sub</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/message-queues.html" class="lesson-item" data-lesson-slug="message-queues" data-level="2">
               <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg></div>
               <div class="lesson-text">
-                <div class="lesson-name">Capstone Projects Hub</div>
-                <div class="lesson-desc">مشاريع التخرج العملية مع قوائم التحقق المحفوظة</div>
+                <div class="lesson-name">Asynchronous Job Processing: Message Queues (BullMQ / RabbitMQ) & Dead Letter Queues</div>
+                <div class="lesson-desc">معالجة المهام غير المتزامنة: طوابير الرسائل (BullMQ / RabbitMQ) وطوابير الرسائل الميتة</div>
               </div>
+              <span class="lesson-time-chip">28m</span>
               <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/request-lifecycles.html" class="lesson-item" data-lesson-slug="request-lifecycles" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">End-to-End Full-Stack Request Lifecycle</div>
+                <div class="lesson-desc">System Architecture</div>
+              </div>
+              <span class="lesson-time-chip">40m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/microservices-monolith.html" class="lesson-item" data-lesson-slug="microservices-monolith" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Modular Monolith vs Microservices: Domain Boundaries & Strategic DDD</div>
+                <div class="lesson-desc">المونوليث المعياري مقابل الميكروسيرفيس: حدود النطاق وتصميم Domain-Driven Design</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/api-gateway.html" class="lesson-item" data-lesson-slug="api-gateway" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-lock"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">API Gateway Pattern, Reverse Proxies, SSL Termination & Global Load Balancing</div>
+                <div class="lesson-desc">نمط بوابة الـ API، الخوادم العكسية وإنهاء تشفير SSL وتوزيع الأحمال</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/event-driven-architecture.html" class="lesson-item" data-lesson-slug="event-driven-architecture" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-database"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Event-Driven Architecture (EDA): Event Sourcing, CQRS & The Outbox Pattern</div>
+                <div class="lesson-desc">المعمارية الموجهة بالأحداث (EDA): تدفق الأحداث، فصل الاستعلامات ونمط الـ Outbox</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/system-design-case-studies.html" class="lesson-item" data-lesson-slug="system-design-case-studies" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-terminal"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">System Design Masterclass: High-Scale URL Shortener, Chat & E-Commerce Systems</div>
+                <div class="lesson-desc">التصميم المعماري للأنظمة الكبرى: تصميم منصة اختصار الروابط والمحادثات والمتجر الإلكتروني</div>
+              </div>
+              <span class="lesson-time-chip">30m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/performance-tuning.html" class="lesson-item" data-lesson-slug="performance-tuning" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-check"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Full-Stack Performance Tuning: V8 Heap Dumps, Profiling & Critical Path Audits</div>
+                <div class="lesson-desc">تحسين الأداء الشامل: تحليل ذاكرة V8 Heap، فحص مسار الرسم الحرج واختناقات الشبكة</div>
+              </div>
+              <span class="lesson-time-chip">26m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/observability-monitoring.html" class="lesson-item" data-lesson-slug="observability-monitoring" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-flame"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Production Observability: Structured Logging (Pino), Metrics & OpenTelemetry Tracing</div>
+                <div class="lesson-desc">المراقبة الشاملة في الإنتاج (Observability): السجلات المهيكلة بـ Pino والتتبع الموزع</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+            <a href="learn/architecture/ci-cd-devops.html" class="lesson-item" data-lesson-slug="ci-cd-devops" data-level="3">
+              <div class="lesson-icon"><svg style="width:14px;height:14px;"><use href="assets/icons.svg#fsa-icon-layers"></use></svg></div>
+              <div class="lesson-text">
+                <div class="lesson-name">Production DevOps: Multi-Stage Docker Builds, GitHub Actions CI/CD & Zero-Downtime Deployments</div>
+                <div class="lesson-desc">دليل DevOps للإنتاج: حاويات Docker متعددة المراحل، أنابيب CI/CD والنشر بدون توقف</div>
+              </div>
+              <span class="lesson-time-chip">28m</span>
+              <svg class="lesson-arrow" style="width:12px;height:12px;"><use href="assets/icons.svg#fsa-icon-chevron-left"></use></svg>
+            </a>
+          </div>
+          <div class="track-card-footer">
+            <a href="learn/architecture/index.html" class="track-hub-link">
+              <span>استعراض مسار المعمارية وتصميم النظم بالكامل ←</span>
             </a>
           </div>
         </div>
-
       </div>
 
       <!-- Footer Section -->
       <footer class="footer-note">
-        <p>© 2026 FullStack Academy | صُممت كمعيار مفتوح ومستقل للتعليم البرمجي عالي الجودة باللغة العربية</p>
+        <p>© 2026 FullStack Academy | 106 دروس تفاعلية تغطي MERN &amp; PostgreSQL بالكامل | صُممت كمعيار مفتوح ومستقل للتعليم البرمجي عالي الجودة باللغة العربية</p>
       </footer>
 
     </div>
@@ -990,6 +1882,7 @@
   <script src="data/tips.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/progress.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/app.js"></script>
 
   <script>
@@ -1087,22 +1980,32 @@
 
     document.querySelectorAll('.track-card').forEach(card => observer.observe(card));
 
-    // =================== TILT EFFECT ON CARDS ===================
-    document.querySelectorAll('.track-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = `translateY(-6px) perspective(800px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+    // =================== LIVE SEARCH FILTER ===================
+    const filterInput = document.getElementById('curriculumLiveFilter');
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const lessonItems = document.querySelectorAll('.lesson-item');
+        const trackCards = document.querySelectorAll('.track-card');
+
+        lessonItems.forEach(item => {
+          const text = (item.innerText || '').toLowerCase();
+          const href = (item.getAttribute('href') || '').toLowerCase();
+          const matches = !query || text.includes(query) || href.includes(query);
+          item.style.display = matches ? 'flex' : 'none';
+        });
+
+        // Hide track card if zero lessons match
+        trackCards.forEach(card => {
+          const visibleLessons = card.querySelectorAll('.lesson-item:not([style*="display: none"])');
+          card.style.display = (visibleLessons.length > 0) ? 'flex' : 'none';
+        });
       });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0)';
-      });
-    });
+    }
 
     // =================== DYNAMIC RESUME FROM LOCALSTORAGE ===================
     document.addEventListener('DOMContentLoaded', () => {
-      if (window.FSA.progress && window.FSA.curriculum) {
+      if (window.FSA && window.FSA.progress && window.FSA.curriculum) {
         const store = window.FSA.progress.getStore();
         const curriculum = window.FSA.curriculum;
         
@@ -1114,7 +2017,7 @@
           const title = document.getElementById('resumeLessonTitle');
           const btn = document.getElementById('resumeActionBtn');
 
-          if (trackLabel) trackLabel.textContent = `متابعة الدراسة (${completedCount} دروس مكتملة)`;
+          if (trackLabel) trackLabel.textContent = `متابعة الدراسة (${completedCount} من 106 دروس مكتملة)`;
           if (title) title.textContent = nextLesson.title;
           if (btn) {
             btn.href = nextLesson.url;
