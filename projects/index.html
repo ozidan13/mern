@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Production Projects & Milestone Briefs · المشاريع العملية — FullStack Academy</title>
+  <title>مركز مشاريع التخرج والتطبيقات الإنتاجية · Capstone Projects — FullStack Academy</title>
   
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/base.css">
@@ -16,8 +16,8 @@
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
         <a href="../index.html" class="fsa-topbar__brand">
-          <span>FullStack Academy</span>
-          <span class="fsa-topbar__brand-badge">Projects</span>
+          <span>⚡ FullStack Academy</span>
+          <span class="fsa-topbar__brand-badge">Projects Hub</span>
         </a>
       </div>
 
@@ -27,54 +27,92 @@
         </button>
         <a href="../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
           <svg><use href="../assets/icons.svg#fsa-icon-flame"></use></svg>
-          <span>Dashboard</span>
+          <span>لوحة المتابعة</span>
         </a>
       </div>
     </header>
 
     <main class="fsa-main" style="max-width: 1100px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
       <div class="fsa-lesson-header">
-        <nav class="fsa-breadcrumbs">
-          <a href="../index.html">Home</a> &rsaquo;
-          <span>Projects</span>
+        <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+          <a href="../index.html">الرئيسية</a> &rsaquo;
+          <span aria-current="page">مشاريع التخرج العملية</span>
         </nav>
-        <h1>Capstone & Level-Gate Projects</h1>
+        <h1>مشاريع التخرج والتطبيقات الإنتاجية (Capstone Projects)</h1>
         <p class="fsa-lead">
-          Real-world project briefs with requirements, interactive milestone checklists, and self-review rubrics.
+          مواصفات مشاريع واقعية متكاملة تشمل المتطلبات الهندسية، معمارية النظام، قوائم التحقق التفاعلية، ومعايير المراجعة.
         </p>
         <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-md); margin-block-start: var(--space-2);">
-          مشاريع عملية متكاملة لترسيخ المفاهيم التي تعلمتها في كل مسار مع قائمة مهام تفاعلية تُحفظ محلياً.
+          كل مشروع يختبر فهمك العميق للمسارات ويساعدك في بناء Portfolio هندسي حقيقي يُبهر مدراء التوظيف في المقابلات التقنية.
         </p>
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-5); margin-block-start: var(--space-6);">
+        
         <!-- React Project -->
-        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-react);">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="fsa-card__title">React Kanban Task Board</div>
-            <span class="fsa-badge">React Gate</span>
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-react); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="fsa-card__title">React Kanban Task Board</div>
+              <span class="fsa-badge fsa-badge--info">React 19 Gate</span>
+            </div>
+            <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-3); line-height: 1.6;">
+              تطبيق إدارة مهام متقدم بالسحب والإفلات (Drag &amp; Drop) مع حفظ الحالة محلياً وفلاتر بحث سريعة.
+            </p>
           </div>
-          <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-3);">
-            Drag-and-drop Kanban task management application with localStorage persistence and filter tags.
-          </p>
-          <a href="kanban-board.html" class="fsa-btn fsa-btn--primary fsa-btn--sm">
-            <span>View Brief & Milestones · تفاصيل المشروع</span>
+          <a href="kanban-board.html" class="fsa-btn fsa-btn--primary fsa-btn--sm" style="margin-block-start: var(--space-4);">
+            <span>استعراض المتطلبات والمهام &larr;</span>
           </a>
         </div>
 
         <!-- Node & Express Project -->
-        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-express);">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="fsa-card__title">Production Auth & REST API</div>
-            <span class="fsa-badge">Backend Gate</span>
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-express); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="fsa-card__title">Production Auth &amp; REST API</div>
+              <span class="fsa-badge fsa-badge--success">Backend Gate</span>
+            </div>
+            <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-3); line-height: 1.6;">
+              خادم موثوق بـ Express 5 + PostgreSQL + Prisma يدعم تدوير JWTs، والتحكم بالأدوار RBAC ومكافحة الهجمات.
+            </p>
           </div>
-          <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-3);">
-            Express, Prisma, and PostgreSQL authentication server with JWT rotation, RBAC, and rate limiting.
-          </p>
-          <a href="rest-api.html" class="fsa-btn fsa-btn--primary fsa-btn--sm">
-            <span>View Brief & Milestones · تفاصيل المشروع</span>
+          <a href="rest-api.html" class="fsa-btn fsa-btn--primary fsa-btn--sm" style="margin-block-start: var(--space-4);">
+            <span>استعراض المتطلبات والمهام &larr;</span>
           </a>
         </div>
+
+        <!-- Full-Stack E-Commerce Project -->
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-arch); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="fsa-card__title">MERN Production E-Commerce</div>
+              <span class="fsa-badge fsa-badge--warning">Full-Stack Capstone</span>
+            </div>
+            <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-3); line-height: 1.6;">
+              متجر إلكتروني شامل مع كتالوج سريع، سلة شراء تفاعلية، بوابة دفع Stripe، وتخزين مؤقت بـ Redis.
+            </p>
+          </div>
+          <a href="ecommerce-platform.html" class="fsa-btn fsa-btn--primary fsa-btn--sm" style="margin-block-start: var(--space-4);">
+            <span>استعراض المتطلبات والمهام &larr;</span>
+          </a>
+        </div>
+
+        <!-- Real-Time Chat Project -->
+        <div class="fsa-card" style="border-inline-start: 4px solid var(--track-node); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="fsa-card__title">Distributed WebSockets Chat</div>
+              <span class="fsa-badge fsa-badge--info">Real-Time Gate</span>
+            </div>
+            <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block: var(--space-3); line-height: 1.6;">
+              خادم محادثة حية موزع يدعم غرف الدردشة المتعددة والتزامن الأفقي عبر قنوات Redis Pub/Sub.
+            </p>
+          </div>
+          <a href="realtime-chat.html" class="fsa-btn fsa-btn--primary fsa-btn--sm" style="margin-block-start: var(--space-4);">
+            <span>استعراض المتطلبات والمهام &larr;</span>
+          </a>
+        </div>
+
       </div>
     </main>
   </div>

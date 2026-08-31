@@ -1252,6 +1252,17 @@
     "norm": "react error diagnostics & solutions maximum update depth exceeded how to fix · الحل النموذجي hydration failed because the initial ui does not match complete diagnostic playbook for common react runtime and render errors. triggered when: a component repeatedly calls setstate inside render or inside a useeffect without a dependency array, creating an infinite rendering loop. السبب: استدعاء داله تحديث الحاله (setstate) مباشره اثناء رسم المكون او داخل useeffect بدون مصفوفه اعتماديات، مما يجبر react علي اعاده الرسم بلا توقف. // ❌ broken: invokes handler immediately on render &lt;button onclick={setcount(count + 1)}&gt;click&lt;/button&gt; // ✅ fixed: pass an inline arrow function &lt;button onclick={() => setcount(c => c + 1)}&gt;click&lt;/button&gt; hydration failed because the initial ui does not match ssr mismatch triggered when: the server-rendered html markup differs from the client's first render pass (e.g. using window , localstorage , or date.now() during initial render). السبب: اختلاف محتوي الـ html المولد علي السيرفر عن ما تم حسابه علي المتصفح عند اول دوره رسم."
   },
   {
+    "t": "مشروع التخرج الأكبر: متجر إلكتروني متكامل (Production E-Commerce)",
+    "url": "projects/ecommerce-platform.html",
+    "track": "",
+    "kind": "project",
+    "level": "1",
+    "h": "نظرة عامة على معمارية المشروع · System Blueprint · قائمة مراحل التنفيذ التفاعلية · Interactive Milestones · معايير التقييم الذاتي · Evaluation Rubric",
+    "body": "بناء متجر إلكتروني حقيقي من الصفر: React 19 + Express 5 + MongoDB / PostgreSQL + Stripe Payments + Caching. في هذا المشروع، ستطبق كل ما تعلمته في المسارات الثمانية لبناء تطبيق تجارة إلكترونية متكامل جاهز للنشر في بيئة الإنتاج: قم بتحديد المراحل التي تنتهي منها، وسيتم حفظ تقدمك تلقائياً في المتصفح.",
+    "code": "",
+    "norm": "مشروع التخرج الاكبر: متجر الكتروني متكامل (production e-commerce) نظره عامه علي معماريه المشروع · system blueprint قائمه مراحل التنفيذ التفاعليه · interactive milestones معايير التقييم الذاتي · evaluation rubric بناء متجر الكتروني حقيقي من الصفر: react 19 + express 5 + mongodb / postgresql + stripe payments + caching. في هذا المشروع، ستطبق كل ما تعلمته في المسارات الثمانيه لبناء تطبيق تجاره الكترونيه متكامل جاهز للنشر في بيئه الانتاج: قم بتحديد المراحل التي تنتهي منها، وسيتم حفظ تقدمك تلقائيا في المتصفح."
+  },
+  {
     "t": "Capstone Project: React Kanban Task Board",
     "url": "projects/kanban-board.html",
     "track": "",
@@ -1261,6 +1272,17 @@
     "body": "Build a production-grade multi-column task board with state persistence and filter capabilities. مشروع عملي لبناء لوحة كانبان متكاملة لإدارة المهام باستخدام React 19 وحفظ البيانات محلياً. Check off milestones as you complete them. Your progress is saved automatically.",
     "code": "",
     "norm": "capstone project: react kanban task board project milestones · مراحل التنفيذ build a production-grade multi-column task board with state persistence and filter capabilities. مشروع عملي لبناء لوحه كانبان متكامله لاداره المهام باستخدام react 19 وحفظ البيانات محليا. check off milestones as you complete them. your progress is saved automatically."
+  },
+  {
+    "t": "مشروع عملي: خادم محادثة فورية موزع (Real-Time Chat &amp; Pub/Sub)",
+    "url": "projects/realtime-chat.html",
+    "track": "",
+    "kind": "project",
+    "level": "1",
+    "h": "نظرة عامة على معمارية التراسل الموزع · Distributed WebSocket Engine · مراحل التنفيذ التفاعلية · Milestones Checklist",
+    "body": "بناء منظومة تراسل حي تدعم آلاف المستخدمين المتزامنين باستخدام WebSockets، وقنوات Redis Pub/Sub للمزامنة عبر الخوادم.",
+    "code": "",
+    "norm": "مشروع عملي: خادم محادثه فوريه موزع (real-time chat &amp; pub/sub) نظره عامه علي معماريه التراسل الموزع · distributed websocket engine مراحل التنفيذ التفاعليه · milestones checklist بناء منظومه تراسل حي تدعم الاف المستخدمين المتزامنين باستخدام websockets، وقنوات redis pub/sub للمزامنه عبر الخوادم."
   },
   {
     "t": "Capstone Project: Production Authentication & REST API",

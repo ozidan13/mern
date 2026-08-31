@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard · لوحة المتابعة الشخصية — FullStack Academy</title>
+  <title>لوحة المتابعة الشخصية · Student Dashboard — FullStack Academy</title>
   
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -14,7 +14,7 @@
   <style>
     .db-grid-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: var(--space-4);
       margin-block: var(--space-6);
     }
@@ -26,10 +26,11 @@
       display: flex;
       align-items: center;
       gap: var(--space-4);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
     }
     .db-stat-icon {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: var(--radius-md);
       background: var(--tint-primary);
       display: flex;
@@ -48,6 +49,36 @@
       gap: var(--space-4);
       margin-block: var(--space-4);
     }
+    .bookmark-item, .review-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+    .bookmark-item:hover, .review-item:hover {
+      border-color: var(--accent-primary);
+      background: var(--surface-hover);
+      transform: translateX(-2px);
+    }
+    .track-progress-bar {
+      height: 6px;
+      background: var(--surface-sunken);
+      border-radius: 100px;
+      overflow: hidden;
+      margin-block-start: 8px;
+    }
+    .track-progress-fill {
+      height: 100%;
+      background: var(--accent-primary);
+      border-radius: 100px;
+      transition: width 0.4s ease;
+    }
   </style>
 </head>
 <body>
@@ -58,6 +89,7 @@
     <header class="fsa-topbar">
       <div class="fsa-topbar__start">
         <a href="index.html" class="fsa-topbar__brand">
+          <svg style="width: 22px; height: 22px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-code"></use></svg>
           <span>FullStack Academy</span>
         </a>
       </div>
@@ -66,7 +98,7 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>Search · بحث</span>
+            <span>بحث شامل في 106 دروس</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
@@ -76,28 +108,28 @@
         <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
           <svg><use href="assets/icons.svg#fsa-icon-sun"></use></svg>
         </button>
-        <a href="learn/index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+        <a href="index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
           <svg><use href="assets/icons.svg#fsa-icon-book"></use></svg>
-          <span>Curriculum</span>
+          <span>الرئيسية والمنهج</span>
         </a>
       </div>
     </header>
 
-    <main id="main-content" class="fsa-main" style="max-width: 1200px; margin-inline: auto; width: 100%;">
+    <main id="main-content" class="fsa-main" style="max-width: 1200px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
       
       <!-- Welcome & Continue Hero -->
-      <div class="fsa-card" style="background: linear-gradient(135deg, var(--bg-surface), var(--bg-raised)); border-color: var(--border-default); margin-block-end: var(--space-6);">
+      <div class="fsa-card" style="background: linear-gradient(135deg, rgba(15,23,42,0.8), rgba(30,41,59,0.8)); border-color: rgba(59,130,246,0.3); margin-block-end: var(--space-6); padding: var(--space-6);">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
           <div>
-            <h1 style="font-size: var(--fs-2xl); margin-block-end: var(--space-1);">Welcome back, Learner! 👋</h1>
+            <h1 style="font-size: var(--fs-2xl); margin-block-end: var(--space-1);">مرحباً بك في لوحة المتابعة! 👋</h1>
             <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); font-size: var(--fs-md);">
-              أهلاً بك مجدداً! تقدّمك محفوظ محلياً في جهازك بدون الحاجة لأي حساب.
+              تقدّمك ونتائج اختباراتك محفوظة ومحمية محلياً في جهازك بدون الحاجة لأي حساب أو تسجيل دخول.
             </p>
           </div>
           <div id="continueCardBtn">
-            <a href="learn/foundations/how-web-works.html" class="fsa-btn fsa-btn--primary">
+            <a href="learn/foundations/how-web-works.html" class="fsa-btn fsa-btn--primary" id="continueLearningLink">
               <svg><use href="assets/icons.svg#fsa-icon-play"></use></svg>
-              <span>Continue Learning · متابعة الدراسة</span>
+              <span>متابعة الدرس التالي &larr;</span>
             </a>
           </div>
         </div>
@@ -106,41 +138,41 @@
       <!-- Stats Grid -->
       <div class="db-grid-stats">
         <div class="db-stat-card">
-          <div class="db-stat-icon" style="background: var(--tint-warning);">
+          <div class="db-stat-icon" style="background: rgba(245,158,11,0.15);">
             <svg style="color: var(--accent-warning);"><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
           </div>
           <div>
-            <div style="font-size: var(--fs-2xl); font-weight: 700;" id="streakCount">0</div>
-            <div style="font-size: var(--fs-xs); color: var(--text-muted);">Days Streak · أيام متتالية</div>
+            <div style="font-size: var(--fs-2xl); font-weight: 800; color: #fbbf24;" id="streakCount">0</div>
+            <div style="font-size: var(--fs-xs); color: var(--text-muted);">أيام المذاكرة المتتالية · Streak</div>
           </div>
         </div>
 
         <div class="db-stat-card">
-          <div class="db-stat-icon" style="background: var(--tint-success);">
+          <div class="db-stat-icon" style="background: rgba(34,197,94,0.15);">
             <svg style="color: var(--accent-success);"><use href="assets/icons.svg#fsa-icon-check-circle"></use></svg>
           </div>
           <div>
-            <div style="font-size: var(--fs-2xl); font-weight: 700;" id="completedCount">0 / 0</div>
-            <div style="font-size: var(--fs-xs); color: var(--text-muted);">Lessons Done · دروس مكتملة</div>
+            <div style="font-size: var(--fs-2xl); font-weight: 800; color: #4ade80;" id="completedCount">0 / 106</div>
+            <div style="font-size: var(--fs-xs); color: var(--text-muted);">دروس مكتملة ومختبرة · Lessons Done</div>
           </div>
         </div>
 
         <div class="db-stat-card">
-          <div class="db-stat-icon" style="background: var(--tint-primary);">
-            <svg><use href="assets/icons.svg#fsa-icon-bookmark"></use></svg>
+          <div class="db-stat-icon" style="background: rgba(59,130,246,0.15);">
+            <svg style="color: #60a5fa;"><use href="assets/icons.svg#fsa-icon-bookmark"></use></svg>
           </div>
           <div>
-            <div style="font-size: var(--fs-2xl); font-weight: 700;" id="bookmarksCount">0</div>
-            <div style="font-size: var(--fs-xs); color: var(--text-muted);">Saved Bookmarks · الإشارات</div>
+            <div style="font-size: var(--fs-2xl); font-weight: 800; color: #60a5fa;" id="bookmarksCount">0</div>
+            <div style="font-size: var(--fs-xs); color: var(--text-muted);">دروس محفوظة كمرجع · Bookmarks</div>
           </div>
         </div>
       </div>
 
       <!-- Per-Track Progress Cards -->
-      <section style="margin-block: var(--space-10);">
+      <section style="margin-block: var(--space-8);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-block-end: var(--space-4);">
-          <h2>Track Progress · التقدّم في المسارات</h2>
-          <a href="learn/index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">View All Tracks &rsaquo;</a>
+          <h2>التقدّم التفصيلي في المسارات الثمانية · 8 Tracks Progress</h2>
+          <a href="index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">عرض كل الدروس (106) &larr;</a>
         </div>
         <div class="db-tracks-grid" id="tracksGrid">
           <!-- Rendered dynamically from curriculum + store -->
@@ -148,59 +180,71 @@
       </section>
 
       <!-- Bookmarks & Spaced Repetition Review Queue -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-6); margin-block: var(--space-10);">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-6); margin-block: var(--space-8);">
         
         <!-- Bookmarks Card -->
         <div class="fsa-card">
           <div class="fsa-card__title" style="display: flex; align-items: center; gap: 8px;">
             <svg style="width: 18px; height: 18px; color: var(--accent-primary);"><use href="assets/icons.svg#fsa-icon-bookmark"></use></svg>
-            <span>Bookmarks · الدروس المحفوظة</span>
+            <span>الدروس المحفوظة كمرجع (Bookmarks)</span>
           </div>
           <ul id="bookmarksList" style="list-style: none; padding: 0; margin-block-start: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);">
-            <li style="color: var(--text-muted); font-size: var(--fs-sm);">No bookmarked lessons yet. Bookmark any lesson while reading!</li>
+            <li style="color: var(--text-muted); font-size: var(--fs-sm);">لا توجد دروس محفوظة حالياً. يمكنك حفظ أي درس بالضغط على علامة المرجع أثناء المذاكرة!</li>
           </ul>
         </div>
 
-        <!-- Review Queue Card -->
+        <!-- Capstone Projects Card -->
         <div class="fsa-card">
           <div class="fsa-card__title" style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 18px; height: 18px; color: var(--accent-warning);"><use href="assets/icons.svg#fsa-icon-refresh"></use></svg>
-            <span>Review Queue · بنك المراجعة والتكرار</span>
+            <svg style="width: 18px; height: 18px; color: var(--accent-success);"><use href="assets/icons.svg#fsa-icon-flame"></use></svg>
+            <span>مشاريع التخرج العملية (Capstone Projects)</span>
           </div>
-          <ul id="reviewQueueList" style="list-style: none; padding: 0; margin-block-start: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);">
-            <li style="color: var(--text-muted); font-size: var(--fs-sm);">Your review queue is clear! Missed checkpoint questions appear here automatically.</li>
-          </ul>
+          <div style="margin-block-start: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);">
+            <a href="projects/kanban-board.html" class="review-item">
+              <span>React Kanban Task Board</span>
+              <span class="fsa-badge fsa-badge--info">React</span>
+            </a>
+            <a href="projects/rest-api.html" class="review-item">
+              <span>Production Auth &amp; REST API</span>
+              <span class="fsa-badge fsa-badge--success">Backend</span>
+            </a>
+            <a href="projects/ecommerce-platform.html" class="review-item">
+              <span>MERN Production E-Commerce</span>
+              <span class="fsa-badge fsa-badge--warning">Full-Stack</span>
+            </a>
+            <a href="projects/realtime-chat.html" class="review-item">
+              <span>Distributed WebSockets &amp; Redis Chat</span>
+              <span class="fsa-badge fsa-badge--info">Real-Time</span>
+            </a>
+          </div>
         </div>
 
       </div>
 
       <!-- Backup & Data Export/Import Section -->
-      <section class="fsa-card" style="margin-block: var(--space-10); border-style: dashed;">
+      <section class="fsa-card" style="margin-block: var(--space-8); border-style: dashed;">
         <div class="fsa-card__title">
-          <span>Data Storage & Portability · حفظ ونقل البيانات</span>
+          <span>حفظ ونقل البيانات احتياطياً · Data Portability</span>
         </div>
         <p style="font-size: var(--fs-sm); color: var(--text-secondary); margin-block-start: var(--space-2);">
-          Your study streak, completed exercises, and quiz results live in your browser's local storage.
-          Export your progress file at any time to switch devices or backup your record.
-        </p>
-        <p class="fsa-ar" dir="rtl" style="font-size: var(--fs-sm); color: var(--text-muted); margin-block-start: var(--space-1);">
-          تقدر تصدّر ملف تقدّمك كنسخة احتياطية أو تنقله لأي جهاز أو متصفح تاني وتكمل مذاكرتك من غير ما تخسر أي تقدم!
+          جميع سجلات مذاكرتك، وإجابات الاختبارات، والإشارات المرجعية محفوظة داخل جهازك عبر LocalStorage.
+          يمكنك تصدير ملف النسخة الاحتياطية ونقله لأي جهاز أو متصفح آخر في أي وقت.
         </p>
         
         <div style="display: flex; gap: var(--space-3); margin-block-start: var(--space-5); flex-wrap: wrap;">
           <button class="fsa-btn fsa-btn--primary fsa-btn--sm" id="exportProgressBtn">
             <svg><use href="assets/icons.svg#fsa-icon-copy"></use></svg>
-            <span>Export Progress JSON · تصدير النسخة الاحتياطية</span>
+            <span>تصدير النسخة الاحتياطية (Export JSON)</span>
           </button>
 
           <button class="fsa-btn fsa-btn--ghost fsa-btn--sm" id="importProgressBtn">
             <svg><use href="assets/icons.svg#fsa-icon-refresh"></use></svg>
-            <span>Import Progress JSON · استعادة نسخة</span>
+            <span>استعادة نسخة احتياطية (Import JSON)</span>
           </button>
           <input type="file" id="importFileInput" accept=".json" style="display: none;">
 
           <button class="fsa-btn fsa-btn--danger fsa-btn--sm" id="resetProgressBtn" style="margin-inline-start: auto;">
-            <span>Reset All Progress · تصفير السجل</span>
+            <span>تصفير السجل وإعادة البدء</span>
           </button>
         </div>
       </section>
@@ -215,76 +259,119 @@
   <script src="data/tips.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/progress.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/app.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const stats = window.FSA.progress.getStats();
-      const store = window.FSA.progress.getStore();
+      const stats = window.FSA.progress ? window.FSA.progress.getStats() : { completedCount: 0, total: 106, streakDays: 0, bookmarksCount: 0 };
+      const store = window.FSA.progress ? window.FSA.progress.getStore() : { lessons: {}, bookmarks: {} };
       const curriculum = window.FSA.curriculum || { tracks: [], flatList: [] };
 
       // Render stats
-      document.getElementById('streakCount').textContent = stats.streakDays;
-      document.getElementById('completedCount').textContent = `${stats.completedCount} / ${stats.total}`;
-      document.getElementById('bookmarksCount').textContent = stats.bookmarksCount;
+      const streakEl = document.getElementById('streakCount');
+      if (streakEl) streakEl.textContent = stats.streakDays || 0;
+      
+      const compEl = document.getElementById('completedCount');
+      if (compEl) compEl.textContent = `${stats.completedCount || 0} / 106`;
+      
+      const bmEl = document.getElementById('bookmarksCount');
+      if (bmEl) bmEl.textContent = Object.keys(store.bookmarks || {}).length;
 
-      // Render Tracks
+      // Next Lesson Resume Link
+      const nextLesson = curriculum.flatList.find(l => !store.lessons[l.slug] || store.lessons[l.slug].status !== 'completed');
+      if (nextLesson) {
+        const link = document.getElementById('continueLearningLink');
+        if (link) {
+          link.href = nextLesson.url;
+          link.querySelector('span').textContent = `متابعة: ${nextLesson.title} ←`;
+        }
+      }
+
+      // Render Tracks Grid
       const tracksGrid = document.getElementById('tracksGrid');
-      if (tracksGrid) {
+      if (tracksGrid && curriculum.tracks) {
         tracksGrid.innerHTML = curriculum.tracks.map(track => {
           const trackLessons = curriculum.flatList.filter(l => l.track === track.id);
           const completedInTrack = trackLessons.filter(l => store.lessons[l.slug]?.status === 'completed').length;
           const percent = trackLessons.length > 0 ? Math.round((completedInTrack / trackLessons.length) * 100) : 0;
 
           return `
-            <a href="learn/${track.id}/index.html" class="fsa-card">
+            <a href="learn/${track.id}/index.html" class="fsa-card" style="text-decoration: none; color: inherit;">
               <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
-                  <div class="fsa-card__title">${track.title}</div>
-                  <div class="fsa-card__meta">${completedInTrack} of ${trackLessons.length} lessons</div>
+                  <div class="fsa-card__title" style="font-size: var(--fs-md);">${track.title}</div>
+                  <div class="fsa-card__meta">${completedInTrack} من ${trackLessons.length} دروس مكتملة (${percent}%)</div>
                 </div>
-                <svg class="fsa-ring" width="36" height="36" viewBox="0 0 36 36" style="--ring-value: ${percent};">
-                  <circle class="fsa-ring__track" cx="18" cy="18" r="14"></circle>
-                  <circle class="fsa-ring__value" cx="18" cy="18" r="14"></circle>
-                </svg>
+                <span class="fsa-badge ${percent === 100 ? 'fsa-badge--success' : 'fsa-badge--info'}">${percent}%</span>
+              </div>
+              <div class="track-progress-bar">
+                <div class="track-progress-fill" style="width: ${percent}%;"></div>
               </div>
             </a>
           `;
         }).join('');
       }
 
+      // Render Bookmarks
+      const bookmarksList = document.getElementById('bookmarksList');
+      if (bookmarksList && store.bookmarks && Object.keys(store.bookmarks).length > 0) {
+        bookmarksList.innerHTML = Object.keys(store.bookmarks).map(slug => {
+          const lesson = curriculum.flatList.find(l => l.slug === slug || l.slug.endsWith(slug));
+          const title = lesson ? lesson.title : slug;
+          const url = lesson ? lesson.url : `learn/${slug}.html`;
+          return `
+            <li>
+              <a href="${url}" class="bookmark-item">
+                <span>📌 ${title}</span>
+                <span style="font-size: var(--fs-xs); color: var(--accent-primary);">فتح الدرس &larr;</span>
+              </a>
+            </li>
+          `;
+        }).join('');
+      }
+
       // Export / Import / Reset handlers
-      document.getElementById('exportProgressBtn').addEventListener('click', () => {
-        window.FSA.progress.exportJSON();
-      });
+      const exportBtn = document.getElementById('exportProgressBtn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+          window.FSA.progress.exportJSON();
+        });
+      }
 
       const fileInput = document.getElementById('importFileInput');
-      document.getElementById('importProgressBtn').addEventListener('click', () => {
-        fileInput.click();
-      });
+      const importBtn = document.getElementById('importProgressBtn');
+      if (importBtn && fileInput) {
+        importBtn.addEventListener('click', () => {
+          fileInput.click();
+        });
 
-      fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const res = window.FSA.progress.importJSON(event.target.result);
-          if (res.success) {
-            alert('Progress successfully restored! · تم استعادة تقدمك بنجاح');
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const res = window.FSA.progress.importJSON(event.target.result);
+            if (res.success) {
+              alert('Progress successfully restored! · تم استعادة تقدمك بنجاح');
+              location.reload();
+            } else {
+              alert('Failed to import file: ' + res.error);
+            }
+          };
+          reader.readAsText(file);
+        });
+      }
+
+      const resetBtn = document.getElementById('resetProgressBtn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (confirm('هل أنت متأكد من رغبتك في تصفير كل سجلات التقدم؟ لا يمكن التراجع عن هذا الإجراء.')) {
+            window.FSA.progress.reset();
             location.reload();
-          } else {
-            alert('Failed to import file: ' + res.error);
           }
-        };
-        reader.readAsText(file);
-      });
-
-      document.getElementById('resetProgressBtn').addEventListener('click', () => {
-        if (confirm('Are you sure you want to reset all progress? This action cannot be undone.')) {
-          window.FSA.progress.reset();
-          location.reload();
-        }
-      });
+        });
+      }
     });
   </script>
 </body>

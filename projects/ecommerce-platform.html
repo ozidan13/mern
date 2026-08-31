@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مشروع التخرج الأكبر: متجر إلكتروني متكامل MERN E-Commerce · FullStack Academy</title>
+  
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/learning.css">
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="../index.html" class="fsa-topbar__brand">
+          <span>⚡ FullStack Academy</span>
+        </a>
+      </div>
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span>لوحة المتابعة</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="fsa-main" style="max-width: 900px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html">الرئيسية</a> &rsaquo;
+        <a href="index.html">المشاريع</a> &rsaquo;
+        <span aria-current="page">متجر إلكتروني إنتاجي كامل (MERN)</span>
+      </nav>
+
+      <div class="fsa-lesson-header">
+        <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3);">
+          <span class="fsa-chip fsa-chip--track">CAPSTONE GATE</span>
+          <span class="fsa-badge fsa-badge--success">Full-Stack Production</span>
+        </div>
+        <h1>مشروع التخرج الأكبر: متجر إلكتروني متكامل (Production E-Commerce)</h1>
+        <p class="fsa-lead">
+          بناء متجر إلكتروني حقيقي من الصفر: React 19 + Express 5 + MongoDB / PostgreSQL + Stripe Payments + Caching.
+        </p>
+      </div>
+
+      <!-- Architectural Diagram & Overview -->
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>نظرة عامة على معمارية المشروع · System Blueprint</h2>
+        <p class="fsa-ar" dir="rtl" style="color: var(--text-secondary); line-height: 1.8;">
+          في هذا المشروع، ستطبق كل ما تعلمته في المسارات الثمانية لبناء تطبيق تجارة إلكترونية متكامل جاهز للنشر في بيئة الإنتاج:
+        </p>
+        <div style="background: var(--surface-sunken); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-xs); direction: ltr; margin-block: var(--space-4);">
+[React 19 Client + Zustand] &larr;HTTPS/REST&rarr; [Express 5 API Gateway]
+                                                  |
+           +--------------------------------------+--------------------------------------+
+           |                                      |                                      |
+   [Postgres/Prisma Catalog]            [MongoDB Event Logs]                   [Redis 7 Cache Layer]
+        </div>
+      </section>
+
+      <!-- Milestone Checklist (Persisted in localStorage) -->
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>قائمة مراحل التنفيذ التفاعلية · Interactive Milestones</h2>
+        <p style="color: var(--text-secondary); font-size: var(--fs-sm);">
+          قم بتحديد المراحل التي تنتهي منها، وسيتم حفظ تقدمك تلقائياً في المتصفح.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-3); margin-block-start: var(--space-4);" id="milestonesList">
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="0" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 1: نمذجة قاعدة البيانات وتجهيز الـ Schema</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">تصميم جداول المستخدمين، المنتجات، التصنيفات، وسلة الشراء والطلبات.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="1" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 2: خادم الـ REST API والتحقق من الهوية (JWT + RBAC)</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">بناء نقاط نهاية المنتجات والتوثيق الآمن، وحماية لوحة تحكم المشرف Admin.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="2" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 3: واجهة المستخدم بريآكت 19 وإدارة الحالة بـ Zustand</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">صفحة الكتالوج، الفلاتر والبحث الحي، وسلة الشراء التفاعلية المحدثة فورياً.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="3" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 4: بوابة الدفع ومعالجة الـ Webhooks بأمان</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">ربط Stripe Checkout والتحقق من التوقيع الرقمي للـ Webhook لمنع التزوير.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="4" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 5: تحسين الأداء والتخزين المؤقت بريديس والنشر بـ Docker</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">تخزين كويريز المنتجات في Redis، وبناء ملف Dockerfile و docker-compose للإنتاج.</div>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Self Evaluation Rubric -->
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>معايير التقييم الذاتي · Evaluation Rubric</h2>
+        <ul style="line-height: 1.8; color: var(--text-secondary); padding-inline-start: var(--space-4);">
+          <li><strong>الأمان:</strong> لا يتم تخزين كلمات المرور كنص صريح، واستخدام bcrypt مع JWTs مشفرة.</li>
+          <li><strong>الأداء:</strong> استجابة نقاط النهاية للبحث والكتالوج في أقل من 50ms باستخدام الفهارس (Indexes).</li>
+          <li><strong>الاعتمادية:</strong> التعامل مع جميع حالات الأخطاء (400, 401, 403, 404, 500) برسائل موحدة.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/fsa-namespace.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/progress.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const store = window.FSA.progress ? window.FSA.progress.getStore() : null;
+      const projectId = 'capstone-ecommerce';
+      const checkboxes = document.querySelectorAll('[data-milestone]');
+
+      if (store && store.projects && store.projects[projectId]) {
+        const saved = store.projects[projectId].milestones || [];
+        checkboxes.forEach((cb, idx) => {
+          cb.checked = !!saved[idx];
+        });
+      }
+
+      checkboxes.forEach((cb) => {
+        cb.addEventListener('change', () => {
+          const currentStore = window.FSA.progress.getStore();
+          currentStore.projects = currentStore.projects || {};
+          currentStore.projects[projectId] = currentStore.projects[projectId] || { milestones: [] };
+          currentStore.projects[projectId].milestones = Array.from(checkboxes).map(c => c.checked);
+          window.FSA.progress.saveStore(currentStore);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

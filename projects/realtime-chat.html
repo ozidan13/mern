@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مشروع عملي: محادثة فورية متعددة الغرف WebSockets & Redis Chat · FullStack Academy</title>
+  
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/learning.css">
+</head>
+<body>
+  <div class="fsa-shell">
+    <header class="fsa-topbar">
+      <div class="fsa-topbar__start">
+        <a href="../index.html" class="fsa-topbar__brand">
+          <span>⚡ FullStack Academy</span>
+        </a>
+      </div>
+      <div class="fsa-topbar__end">
+        <button id="themeToggleBtn" class="fsa-btn fsa-btn--ghost fsa-btn--icon" data-fsa-theme-toggle aria-label="Toggle Theme">
+          <svg><use href="../assets/icons.svg#fsa-icon-sun"></use></svg>
+        </button>
+        <a href="../dashboard.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">
+          <svg><use href="../assets/icons.svg#fsa-icon-flame"></use></svg>
+          <span>لوحة المتابعة</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="fsa-main" style="max-width: 900px; margin-inline: auto; width: 100%; padding-block: var(--space-8);">
+      <nav class="fsa-breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html">الرئيسية</a> &rsaquo;
+        <a href="index.html">المشاريع</a> &rsaquo;
+        <span aria-current="page">محادثة فورية متعددة الغرف (WebSockets &amp; Redis)</span>
+      </nav>
+
+      <div class="fsa-lesson-header">
+        <div style="display: flex; gap: var(--space-2); margin-block: var(--space-3);">
+          <span class="fsa-chip fsa-chip--track">REALTIME GATE</span>
+          <span class="fsa-badge fsa-badge--info">Distributed Architecture</span>
+        </div>
+        <h1>مشروع عملي: خادم محادثة فورية موزع (Real-Time Chat &amp; Pub/Sub)</h1>
+        <p class="fsa-lead">
+          بناء منظومة تراسل حي تدعم آلاف المستخدمين المتزامنين باستخدام WebSockets، وقنوات Redis Pub/Sub للمزامنة عبر الخوادم.
+        </p>
+      </div>
+
+      <!-- Architectural Overview -->
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>نظرة عامة على معمارية التراسل الموزع · Distributed WebSocket Engine</h2>
+        <div style="background: var(--surface-sunken); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--fs-xs); direction: ltr; margin-block: var(--space-4);">
+[Client A] &harr; (WS) &harr; [Node.js Node 1] \
+                                           +== [Redis Pub/Sub Bus] ==+
+[Client B] &harr; (WS) &harr; [Node.js Node 2] /
+        </div>
+      </section>
+
+      <!-- Milestones -->
+      <section class="fsa-card" style="margin-block: var(--space-6);">
+        <h2>مراحل التنفيذ التفاعلية · Milestones Checklist</h2>
+        <div style="display: flex; flex-direction: column; gap: var(--space-3); margin-block-start: var(--space-4);" id="milestonesList">
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="0" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 1: مصافحة الـ WebSocket والتحقق من الـ JWT Token</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">اعتراض طلب ترقية الاتصال (Upgrade Request) وتوثيق المستخدم قبل فتح القناة.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="1" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 2: نظام الغرف والقنوات (Rooms &amp; Channels)</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">بناء منطق الانضمام للغرف، ومغادرتها، وبث الرسائل لجميع المتواجدين فقط.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="2" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 3: المزامنة الأفقية عبر Redis Pub/Sub</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">ربط خوادم Node.js متعددة بقناة Redis لنقل الرسائل للمستخدمين المتصلين بنود أخرى.</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 12px; padding: var(--space-3); background: var(--bg-raised); border-radius: var(--radius-md); cursor: pointer;">
+            <input type="checkbox" data-milestone="3" style="width: 18px; height: 18px;">
+            <div>
+              <strong>المرحلة 4: حفظ سجل المحادثات والـ Unread Counter</strong>
+              <div style="font-size: var(--fs-xs); color: var(--text-muted);">حفظ الرسائل في قاعدة البيانات مع دعم التمرير اللانهائي واسترجاع المحادثات القديمة.</div>
+            </div>
+          </label>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/fsa-namespace.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/progress.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const store = window.FSA.progress ? window.FSA.progress.getStore() : null;
+      const projectId = 'realtime-chat';
+      const checkboxes = document.querySelectorAll('[data-milestone]');
+
+      if (store && store.projects && store.projects[projectId]) {
+        const saved = store.projects[projectId].milestones || [];
+        checkboxes.forEach((cb, idx) => {
+          cb.checked = !!saved[idx];
+        });
+      }
+
+      checkboxes.forEach((cb) => {
+        cb.addEventListener('change', () => {
+          const currentStore = window.FSA.progress.getStore();
+          currentStore.projects = currentStore.projects || {};
+          currentStore.projects[projectId] = currentStore.projects[projectId] || { milestones: [] };
+          currentStore.projects[projectId].milestones = Array.from(checkboxes).map(c => c.checked);
+          window.FSA.progress.saveStore(currentStore);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
