@@ -1,4 +1,4 @@
-# CodeHub Masterpiece Overhaul Masterplan — UI/UX & Deep Curriculum (54 Lessons)
+# CodeHub Masterpiece Overhaul Masterplan — UI/UX & Deep Curriculum (106 Lessons)
 
 > **Document Version:** 2.0.0 (Production Masterplan)  
 > **Target:** Complete Zero-to-Hero Interactive Educational Platform  
@@ -18,7 +18,7 @@ The student must never need to leave the platform to understand any concept from
 ## 📋 Comprehensive 5-Phase Implementation Blueprint
 
 ### 🏛️ Phase 1: `index.html` & Typography UI/UX Overhaul
-**Goal:** Transform the homepage into a breathtaking, spacious, readable glassmorphic portal where all 54 lessons are immediately visible, legible, and richly presented.
+**Goal:** Transform the homepage into a breathtaking, spacious, readable glassmorphic portal where all 106 lessons are immediately visible, legible, and richly presented.
 
 #### Detailed Actions:
 1. **Typography & Font System:**
@@ -99,7 +99,7 @@ The student must never need to leave the platform to understand any concept from
 ---
 
 ### 🚀 Phase 5: CI-Lite Validation, Search Index & Production Push
-**Goal:** Validate all 54 lessons with zero errors and push clean commits to `origin main`.
+**Goal:** Validate all 106 lessons with zero errors and push clean commits to `origin main`.
 
 ---
 
@@ -107,8 +107,8 @@ The student must never need to leave the platform to understand any concept from
 
 | Phase | Description | Deliverable | Status |
 |:---:|:---|:---|:---:|
-| **1** | `index.html` UI/UX & Typography Overhaul | Responsive, spacious, uncompressed 54-lesson portal | 🟡 In Progress |
+| **1** | `index.html` UI/UX & Typography Overhaul | Responsive, spacious, uncompressed 106-lesson portal | 🟡 In Progress |
 | **2** | Deep Curriculum Data Expansion (Tracks 1-8) | Deep dataset modules in `scripts/curriculum-data/` | ⚪ Queued |
 | **3** | Lesson Generator & Interactive Template | Updated `generate-all-lessons.mjs` + 88 regenerated lessons | ⚪ Queued |
 | **4** | Upgrade Initial 18 Lessons | 18 updated lesson files in `learn/` | ⚪ Queued |
-| **5** | Quality Gate & Search Index Rebuild | 100% test pass on 54 lessons + push to `origin main` | ⚪ Queued |
+| **5** | Quality Gate & Search Index Rebuild | 100% test pass on 106 lessons + push to `origin main` | ⚪ Queued |

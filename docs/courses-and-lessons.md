@@ -2,7 +2,7 @@
 
 > **Platform Deployment URL**: [https://ozidan13.github.io/mern](https://ozidan13.github.io/mern)  
 > **Source Repository**: [https://github.com/ozidan13/mern](https://github.com/ozidan13/mern)  
-> **Generated Timestamp**: `2026-09-01T10:19:44.389Z`  
+> **Generated Timestamp**: `2026-09-01T10:23:44.956Z`  
 > **Curriculum Scope**: **8 Full Tracks**, **140 Comprehensive Lessons**, **~72.0 Hours of Interactive Learning**
 
 ---
@@ -273,7 +273,7 @@ Developers and automation scripts can import this structured object directly:
     "nameAr": "أكاديمية الفول ستاك الحديثة",
     "deployedBaseUrl": "https://ozidan13.github.io/mern",
     "repoUrl": "https://github.com/ozidan13/mern",
-    "generatedAt": "2026-09-01T10:19:44.389Z",
+    "generatedAt": "2026-09-01T10:23:44.956Z",
     "totalTracks": 8,
     "totalLessons": 140,
     "totalEstHours": "72.0"
