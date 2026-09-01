@@ -98,7 +98,7 @@
         <button class="fsa-topbar__search-btn" data-fsa-search-trigger>
           <span style="display: flex; align-items: center; gap: 6px;">
             <svg style="width: 14px; height: 14px;"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
-            <span>بحث شامل في 106 دروس</span>
+            <span>بحث شامل في 54 درساً</span>
           </span>
           <kbd class="fsa-topbar__search-kbd">Ctrl K</kbd>
         </button>
@@ -152,7 +152,7 @@
             <svg style="color: var(--accent-success);"><use href="assets/icons.svg#fsa-icon-check-circle"></use></svg>
           </div>
           <div>
-            <div style="font-size: var(--fs-2xl); font-weight: 800; color: #4ade80;" id="completedCount">0 / 106</div>
+            <div style="font-size: var(--fs-2xl); font-weight: 800; color: #4ade80;" id="completedCount">0 / 54</div>
             <div style="font-size: var(--fs-xs); color: var(--text-muted);">دروس مكتملة ومختبرة · Lessons Done</div>
           </div>
         </div>
@@ -172,7 +172,7 @@
       <section style="margin-block: var(--space-8);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-block-end: var(--space-4);">
           <h2>التقدّم التفصيلي في المسارات الثمانية · 8 Tracks Progress</h2>
-          <a href="index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">عرض كل الدروس (106) &larr;</a>
+          <a href="index.html" class="fsa-btn fsa-btn--ghost fsa-btn--sm">عرض كل الدروس (54) &larr;</a>
         </div>
         <div class="db-tracks-grid" id="tracksGrid">
           <!-- Rendered dynamically from curriculum + store -->
@@ -264,7 +264,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const stats = window.FSA.progress ? window.FSA.progress.getStats() : { completedCount: 0, total: 106, streakDays: 0, bookmarksCount: 0 };
+      const stats = window.FSA.progress ? window.FSA.progress.getStats() : { completedCount: 0, total: 54, streakDays: 0, bookmarksCount: 0 };
       const store = window.FSA.progress ? window.FSA.progress.getStore() : { lessons: {}, bookmarks: {} };
       const curriculum = window.FSA.curriculum || { tracks: [], flatList: [] };
 
@@ -273,7 +273,7 @@
       if (streakEl) streakEl.textContent = stats.streakDays || 0;
       
       const compEl = document.getElementById('completedCount');
-      if (compEl) compEl.textContent = `${stats.completedCount || 0} / 106`;
+      if (compEl) compEl.textContent = `${stats.completedCount || 0} / 54`;
       
       const bmEl = document.getElementById('bookmarksCount');
       if (bmEl) bmEl.textContent = Object.keys(store.bookmarks || {}).length;

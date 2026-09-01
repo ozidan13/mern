@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-// 1. Read all 106 lesson files and extract their full metadata
+// 1. Read all 54 lesson files and extract their full metadata
 const lessonsByTrack = {
   foundations: [],
   react: [],
@@ -192,7 +192,7 @@ let totalCount = 0;
 for (const [t, list] of Object.entries(lessonsByTrack)) {
   totalCount += list.length;
 }
-console.log(`\nVerified ${totalCount} / 106 lessons across all 8 tracks.`);
+console.log(`\nVerified ${totalCount} / 54 lessons across all 8 tracks.`);
 
 // Render Track Nav Pills
 const trackNavPillsHtml = Object.keys(trackMetadata).map(trackKey => {
@@ -276,8 +276,8 @@ const fullIndexHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة — 106 درساً تفاعلياً من الصفر للاحتراف</title>
-  <meta name="description" content="تعلم هندسة الويب الشاملة (MERN & PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات مباشرة وتشريح الكود">
+  <title>FullStack Academy | أكاديمية الفول ستاك الحديثة — 54 درساً تفاعلياً من الصفر للاحتراف</title>
+  <meta name="description" content="تعلم هندسة الويب الشاملة (MERN & PERN Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 54 درساً متكاملاً، محاكيات مباشرة وتشريح الكود">
 
   <!-- Google Fonts: Cairo (Arabic), Inter (Latin), Fira Code (Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -967,12 +967,12 @@ const fullIndexHtml = `<!DOCTYPE html>
       <div class="hero-title-box">
         <div class="hero-badge">
           <span class="hero-badge-dot"></span>
-          <span>Zero-Build · 100% Offline · 106 Interactive Masterclasses</span>
+          <span>Zero-Build · 100% Offline · 54 Interactive Masterclasses</span>
         </div>
 
         <h1>FullStack Academy · الخوارزميات وهندسة الويب</h1>
         <p>
-          تعلم هندسة الويب الشاملة (MERN &amp; PostgreSQL Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 106 دروس متكاملة، محاكيات تشغيل حية، تشريح الكود سطراً بسطر، واختبارات إتقان فورية بدون الحاجة لأي اتصال بالإنترنت.
+          تعلم هندسة الويب الشاملة (MERN &amp; PostgreSQL Stack) بطريقة تفاعلية ومبسطة باللغة العربية مع 54 درساً متكاملاً، محاكيات تشغيل حية، تشريح الكود سطراً بسطر، واختبارات إتقان فورية بدون الحاجة لأي اتصال بالإنترنت.
         </p>
       </div>
 
@@ -984,7 +984,7 @@ const fullIndexHtml = `<!DOCTYPE html>
         </div>
         <div class="hero-stat-sep"></div>
         <div class="hero-stat">
-          <div class="hero-stat-num">106</div>
+          <div class="hero-stat-num">54</div>
           <div class="hero-stat-label">درساً تفاعلياً شاملاً</div>
         </div>
         <div class="hero-stat-sep"></div>
@@ -999,9 +999,9 @@ const fullIndexHtml = `<!DOCTYPE html>
         </div>
       </div>
 
-      <!-- Live Search Box Across All 106 Lessons -->
+      <!-- Live Search Box Across All 54 Lessons -->
       <div class="hero-search-wrapper">
-        <input type="text" id="curriculumLiveFilter" class="hero-search-input" placeholder="🔍 ابحث في 106 دروس (مثال: useState, JWT, Docker, Redis, Prisma, BSON, Event Loop)..." aria-label="تصفية الدروس المباشرة">
+        <input type="text" id="curriculumLiveFilter" class="hero-search-input" placeholder="🔍 ابحث في 54 درساً (مثال: useState, JWT, Docker, Redis, Prisma, BSON, Event Loop)..." aria-label="تصفية الدروس المباشرة">
         <svg class="hero-search-icon"><use href="assets/icons.svg#fsa-icon-search"></use></svg>
       </div>
     </div>
@@ -1109,7 +1109,7 @@ const fullIndexHtml = `<!DOCTYPE html>
     <!-- Footer Note -->
     <footer class="ch-footer">
       <p>© 2026 FullStack Academy | صُممت كمعيار مفتوح ومستقل للتعليم البرمجي عالي الجودة باللغة العربية</p>
-      <p style="font-size: 0.85rem; color: #475569; margin-top: 6px;">106 دروس متكاملة · 8 مسارات متخصصة · 100% أوفلاين بدون خوادم خارجية</p>
+      <p style="font-size: 0.85rem; color: #475569; margin-top: 6px;">54 درساً متكاملاً · 8 مسارات متخصصة · 100% أوفلاين بدون خوادم خارجية</p>
     </footer>
   </main>
 
@@ -1231,4 +1231,4 @@ const fullIndexHtml = `<!DOCTYPE html>
 `;
 
 fs.writeFileSync(path.join(rootDir, 'index.html'), fullIndexHtml, 'utf-8');
-console.log('✅ Generated ultra-premium index.html with all 106 lessons successfully!');
+console.log('✅ Generated ultra-premium index.html with all 54 lessons successfully!');

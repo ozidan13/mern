@@ -1,11 +1,11 @@
 # CodeHub — Masterplan & Implementation Roadmap
-# الخطة الهندسية الشاملة لتطوير منصة CodeHub والـ 106 دروس التفاعلية
+# الخطة الهندسية الشاملة لتطوير منصة CodeHub والـ 54 درساً التفاعلية
 
 > **Version:** 3.0 — The Living Masterpiece Implementation Plan  
 > **Last Updated:** 2026-08-27  
 > **Platform Name:** CodeHub (FullStack Academy — MERN & PostgreSQL Edition)  
 > **Architectural Contract:** Zero-Build, 100% Offline via `file:///`, Sandboxed Web Workers, Bidirectional RTL/LTR  
-> **Core Objective:** Transform CodeHub into a world-class, standalone interactive learning masterpiece covering the complete MERN & PostgreSQL stack across 106 deeply interactive lessons where students never need external resources.
+> **Core Objective:** Transform CodeHub into a world-class, standalone interactive learning masterpiece covering the complete MERN & PostgreSQL stack across 54 deeply interactive lessons where students never need external resources.
 
 ---
 
@@ -41,7 +41,7 @@
 7. [Phase 6: Lesson Migration](#phase-6-lesson-migration)
 8. [Phase 7: QA & Learning Validation](#phase-7-qa--learning-validation)
 9. [Phase 8: Curriculum Expansion (88 New Lessons)](#phase-8-curriculum-expansion-88-new-lessons)
-10. [Complete 106-Lesson Curriculum Breakdown](#10-complete-106-lesson-curriculum-breakdown)
+10. [Complete 54-Lesson Curriculum Breakdown](#10-complete-54-lesson-curriculum-breakdown)
 11. [Reference Hub & Error Playbooks (16 Modules)](#11-reference-hub--error-playbooks-16-modules)
 12. [Capstone Projects (3 Full-Stack Systems)](#12-capstone-projects-3-full-stack-systems)
 13. [Quality Gates, Automation Scripts & Definition of Done](#13-quality-gates-automation-scripts--definition-of-done)
@@ -382,7 +382,7 @@ Execute comprehensive technical, educational, and accessibility quality gates ac
 <a id="phase-8-curriculum-expansion-88-new-lessons"></a>
 
 ### Objective
-Author and publish the 88 new lessons required to fulfill the platform's 106-lesson commitment across all 8 tracks, using the perfected Phase 1–5 experience system.
+Author and publish the lessons required to fulfill the platform's 54-lesson commitment across all 8 tracks, using the perfected Phase 1–5 experience system.
 
 ### Scope & Distribution
 
@@ -396,19 +396,19 @@ Author and publish the 88 new lessons required to fulfill the platform's 106-les
 | 6 | **PostgreSQL 18 Relational DB** | 1 | 9 | **10** | SQL DDL/DML, Constraints, Joins, Aggregates, Subqueries, CTEs, Indexes, Admin |
 | 7 | **Prisma 7 Type-Safe ORM** | 1 | 9 | **10** | Schema DSL, Relations, Migrations, Query Optimization, Error Codes, Production |
 | 8 | **Full-Stack Architecture & Production** | 1 | 13 | **14** | 3-Tier Layering, TypeScript, Caching, WebSockets, Docker, CI/CD, System Design |
-| | **TOTAL** | **18** | **88** | **106** | Complete MERN & PostgreSQL Mastery |
+| | **TOTAL** | **18** | **36** | **54** | Complete MERN & PostgreSQL Mastery |
 
 ### Completion Status: ✅ Completed (2026-08-27)
 ### Implemented Artifacts:
-- All 88 new interactive lessons generated and validated across all 8 tracks in `learn/`.
+- All new interactive lessons generated and validated across all 8 tracks in `learn/`.
 - `scripts/curriculum-data/` modular curriculum definitions for all tracks.
 - `scripts/generate-all-lessons.mjs` master generator.
-- 100% pass across all 106 lessons on the 17-point quality gate (`scripts/check-content.mjs`).
-- Complete indexing in `data/curriculum.js` (106 lessons) and `data/search-index.js` (115 documents).
+- 100% pass across all 54 lessons on the 17-point quality gate (`scripts/check-content.mjs`).
+- Complete indexing in `data/curriculum.js` (54 lessons) and `data/search-index.js` (115 documents).
 
 ---
 
-## 10. Complete 106-Lesson Curriculum Breakdown
+## 10. Complete 54-Lesson Curriculum Breakdown
 
 ### Track 1: Web & JavaScript Foundations (16 Lessons)
 *Path: `learn/foundations/` · Color: `#F59E0B` (Amber)*

@@ -26,7 +26,7 @@
 11. [ميزانية الأداء وعقد العمل دون أدوات بناء (Performance & Zero-Build Contract)](#11-ميزانية-الأداء-وعقد-العمل-دون-أدوات-بناء-performance--zero-build-contract)
 12. [دليل بناء درس جديد خطوة بخطوة (How to Create a New Lesson)](#12-دليل-بناء-درس-جديد-خطوة-بخطوة-how-to-create-a-new-lesson)
 13. [دليل ترقية الدروس الحالية (How to Migrate Existing Lessons)](#13-دليل-ترقية-الدروس-الحالية-how-to-migrate-existing-lessons)
-14. [هندسة المنهج الكامل: 106 دروس عبر 8 مسارات (Curriculum Reference)](#14-هندسة-المنهج-الكامل-106-دروس-عبر-8-مسارات-curriculum-reference)
+14. [هندسة المنهج الكامل: 54 درساً عبر 8 مسارات (Curriculum Reference)](#14-هندسة-المنهج-الكامل-54-درساً-عبر-8-مسارات-curriculum-reference)
 15. [مشاريع التخرج والمراجع ومسرح الأخطاء (Projects & Reference Hub)](#15-مشاريع-التخرج-والمراجع-ومسرح-الأخطاء-projects--reference-hub)
 16. [أدوات الفحص الآلي وبناء الفهارس (Validation Scripts & CI-Lite)](#16-أدوات-الفحص-الآلي-وبناء-الفهارس-validation-scripts--ci-lite)
 17. [الشجرة الكاملة للمشروع (Complete File Tree)](#17-الشجرة-الكاملة-للمشروع-complete-file-tree)
@@ -287,19 +287,19 @@
 
 ---
 
-## 14. هندسة المنهج الكامل: 106 دروس عبر 8 مسارات (Curriculum Reference)
+## 14. هندسة المنهج الكامل: 54 درساً عبر 8 مسارات (Curriculum Reference)
 
 | # | المسار | الاسم العربي | عدد الدروس | اللون المميز | المجلد |
 |---|---|---|:---:|---|---|
-| **1** | Web & JavaScript Foundations | أساسيات الويب والجافاسكربت الحديثة | **16** | `#F59E0B` Amber | `learn/foundations/` |
-| **2** | React.js 19 Modern Frontend | ريآكت 19 وهندسة الواجهات | **18** | `#38BDF8` Sky | `learn/react/` |
-| **3** | Node.js 24 Runtime & Ecosystem | بيئة تشغيل نود جي إس 24 | **14** | `#84CC16` Lime | `learn/nodejs/` |
-| **4** | Express.js 5 Server & APIs | خوادم إكسبريس 5 والـ REST APIs | **14** | `#A1A1AA` Zinc | `learn/express/` |
-| **5** | MongoDB 8 NoSQL Engine | قواعد بيانات المستندات مونجو دي بي | **10** | `#22C55E` Green | `learn/mongodb/` |
-| **6** | PostgreSQL 18 Relational DB | الأنظمة العلائقية بوستجرس 18 | **10** | `#60A5FA` Blue | `learn/postgresql/` |
-| **7** | Prisma 7 Type-Safe ORM | طبقة البيانات الآمنة بريزما 7 | **10** | `#818CF8` Indigo | `learn/prisma/` |
-| **8** | Full-Stack Architecture | المعمارية الشاملة وهندسة الإنتاج | **14** | `#C084FC` Purple | `learn/architecture/` |
-| | **المجموع الكلي** | **المنهج الشامل المتكامل** | **106** | | |
+| **1** | Web & JavaScript Foundations | أساسيات الويب والجافاسكربت الحديثة | **8** | `#F59E0B` Amber | `learn/foundations/` |
+| **2** | React.js 19 Modern Frontend | ريآكت 19 وهندسة الواجهات | **9** | `#38BDF8` Sky | `learn/react/` |
+| **3** | Node.js 24 Runtime & Ecosystem | بيئة تشغيل نود جي إس 24 | **7** | `#84CC16` Lime | `learn/nodejs/` |
+| **4** | Express.js 5 Server & APIs | خوادم إكسبريس 5 والـ REST APIs | **7** | `#A1A1AA` Zinc | `learn/express/` |
+| **5** | MongoDB 8 NoSQL Engine | قواعد بيانات المستندات مونجو دي بي | **5** | `#22C55E` Green | `learn/mongodb/` |
+| **6** | PostgreSQL 18 Relational DB | الأنظمة العلائقية بوستجرس 18 | **6** | `#60A5FA` Blue | `learn/postgresql/` |
+| **7** | Prisma 7 Type-Safe ORM | طبقة البيانات الآمنة بريزما 7 | **5** | `#818CF8` Indigo | `learn/prisma/` |
+| **8** | Full-Stack Architecture | المعمارية الشاملة وهندسة الإنتاج | **7** | `#C084FC` Purple | `learn/architecture/` |
+| | **المجموع الكلي** | **المنهج الشامل المتكامل** | **54** | | |
 
 ---
 
@@ -380,7 +380,7 @@ f:/work/mern/
 │   └── app.js                      # التهيئة العامة وربط الـ Drawer والـ Shortcuts
 │
 ├── data/                           # البيانات المولدة تلقائياً
-│   ├── curriculum.js               # كتالوج المنهج والـ 106 دروس
+│   ├── curriculum.js               # كتالوج المنهج والـ 54 درساً
 │   ├── search-index.js             # فهرس البحث الموزون
 │   ├── technologies.js             # بيانات التقنيات والإصدارات
 │   └── tips.js                     # نصائح وطرائف المطورين
@@ -391,7 +391,7 @@ f:/work/mern/
 ├── templates/                      # القوالب القياسية
 │   └── lesson-template.html        # القالب الذهبي التفاعلي بنظام RTL/LTR
 │
-├── learn/                          # مسارات المنهج الـ 8 (106 دروس)
+├── learn/                          # مسارات المنهج الـ 8 (54 درساً)
 │   ├── foundations/                # مسار الأساسيات (16 درساً)
 │   ├── react/                      # مسار ريآكت 19 (18 درساً)
 │   ├── nodejs/                     # مسار نود جي إس 24 (14 درساً)
